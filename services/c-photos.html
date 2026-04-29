@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../typography.css" />
   <link rel="stylesheet" href="../components.css" />
   <link rel="stylesheet" href="../patterns.css" />
+  <link rel="stylesheet" href="../mobile-nav.css" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -187,6 +188,22 @@
       <li><a href="../contact.html">Contact</a></li>
       <li><a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="navbar-cta">立即預約</a></li>
     </ul>
+
+    <input type="checkbox" id="mnav-toggle" class="mnav-toggle" hidden>
+    <label for="mnav-toggle" class="mnav-burger" aria-label="開啟選單">
+      <span></span><span></span><span></span>
+    </label>
+    <div class="mnav-overlay" aria-hidden="true">
+      <ul>
+        <li><a href="../about.html"><span class="en">About</span>關於我們</a></li>
+        <li><a href="../index.html#services"><span class="en">Services</span>服務內容</a></li>
+        <li><a href="../portfolio.html"><span class="en">Portfolio</span>作品集</a></li>
+        <li><a href="../booking.html"><span class="en">Booking</span>預約諮詢</a></li>
+        <li><a href="../contact.html"><span class="en">Contact</span>聯絡我們</a></li>
+        <li class="mnav-divider"></li>
+        <li><a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="mnav-cta">立即預約 LINE 諮詢</a></li>
+      </ul>
+    </div>
   </nav>
 
   <!-- § 5.1 HERO -->
