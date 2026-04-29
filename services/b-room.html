@@ -10,142 +10,12 @@
   <link rel="stylesheet" href="../typography.css" />
   <link rel="stylesheet" href="../components.css" />
   <link rel="stylesheet" href="../patterns.css" />
-  <link rel="stylesheet" href="../mobile-nav.css" />
+  <link rel="stylesheet" href="../site.css" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
 
-  <style>
-    .photo-fill { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .bilingual-subtitle {
-      font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light);
-      color: var(--color-ink-muted); font-size: clamp(1.125rem, 1.6vw, 1.5rem);
-      letter-spacing: 0.02em; margin-top: var(--space-3);
-    }
-    .bilingual-subtitle.on-dark { color: var(--color-hairline); }
-
-    .eyebrow-bilingual {
-      font-family: var(--font-sans); font-size: var(--fs-xs);
-      font-weight: var(--fw-medium); letter-spacing: var(--tracking-widest);
-      text-transform: uppercase; color: var(--color-gold);
-      display: inline-flex; align-items: center; gap: var(--space-3);
-    }
-    .eyebrow-bilingual::before { content: ""; width: 24px; height: 0.5px; background: var(--color-gold); }
-    .eyebrow-bilingual .cn {
-      font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light);
-      letter-spacing: 0.02em; text-transform: none;
-      color: var(--color-ink-muted); font-size: var(--fs-base);
-    }
-
-    .navbar-cta {
-      font-family: var(--font-sans); font-size: var(--fs-xs);
-      font-weight: var(--fw-medium); letter-spacing: var(--tracking-widest);
-      text-transform: uppercase; padding: 8px 18px;
-      background: var(--color-gold); color: var(--color-paper) !important;
-      border: 0.5px solid var(--color-gold);
-      transition: all var(--duration-base) var(--ease-silk);
-      margin-left: var(--space-3);
-    }
-    .navbar-cta:hover { background: var(--color-gold-deep); border-color: var(--color-gold-deep); }
-
-    /* Service Hero — 左文右圖（與 a-voir 反向） */
-    .service-hero {
-      display: grid; grid-template-columns: 1fr 1fr;
-      min-height: 88vh; align-items: center;
-    }
-    @media (max-width: 900px) { .service-hero { grid-template-columns: 1fr; min-height: auto; } }
-    .service-hero-text {
-      padding: var(--space-9) var(--space-8);
-      background: var(--color-paper-warm);
-      height: 100%; display: flex; flex-direction: column; justify-content: center;
-      order: 1;
-    }
-    .service-hero-image { position: relative; height: 100%; min-height: 60vh; overflow: hidden; order: 2; }
-    .service-hero-image img { width: 100%; height: 100%; object-fit: cover; }
-    .service-hero-text h1 { font-size: clamp(3rem, 7vw, 6rem); line-height: 1; }
-
-    /* 服務項目卡片 */
-    .service-item {
-      padding: var(--space-7) var(--space-6);
-      background: var(--color-cream);
-      border: 0.5px solid var(--color-hairline);
-      height: 100%;
-      transition: border-color var(--duration-slow) var(--ease-silk);
-    }
-    .service-item:hover { border-color: var(--color-gold); }
-    .service-item .num {
-      font-family: var(--font-mono); font-size: var(--fs-xs);
-      letter-spacing: var(--tracking-widest); color: var(--color-gold);
-      text-transform: uppercase;
-    }
-    .service-item h4 {
-      font-family: var(--font-display); font-weight: var(--fw-light);
-      font-size: var(--fs-xl); margin: var(--space-3) 0 var(--space-4);
-    }
-    .service-item p {
-      font-family: var(--font-serif); font-size: var(--fs-md);
-      color: var(--color-ink-soft); line-height: 1.85; margin: 0;
-    }
-
-    /* 場合分類 — 大圖 */
-    .occasion-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-5);
-    }
-    @media (max-width: 700px) { .occasion-grid { grid-template-columns: 1fr; } }
-    .occasion-card {
-      position: relative; aspect-ratio: 4 / 5;
-      overflow: hidden; border: 0.5px solid var(--color-hairline);
-      isolation: isolate;
-    }
-    .occasion-card .photo-fill { transition: transform var(--duration-slowest) var(--ease-silk); }
-    .occasion-card:hover .photo-fill { transform: scale(1.04); }
-    .occasion-card::after {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(26,22,17,0.05) 30%, rgba(26,22,17,0.7) 100%);
-      z-index: 1;
-    }
-    .occasion-card .label {
-      position: absolute; bottom: var(--space-6); left: var(--space-6); right: var(--space-6);
-      z-index: 2; color: var(--color-paper);
-    }
-    .occasion-card .label .eyebrow-bilingual { color: var(--color-gold-light); }
-    .occasion-card .label .eyebrow-bilingual .cn { color: var(--color-hairline); }
-    .occasion-card .label h3 {
-      font-family: var(--font-display); font-weight: var(--fw-light);
-      font-size: clamp(1.75rem, 3vw, 2.5rem);
-      color: var(--color-paper); margin: var(--space-3) 0;
-    }
-    .occasion-card .label p {
-      font-family: var(--font-serif); font-size: var(--fs-md);
-      color: var(--color-hairline); margin: 0; line-height: 1.7;
-    }
-
-    /* Q&A */
-    .qa-list { border-top: 0.5px solid var(--color-hairline); }
-    .qa-item { padding: var(--space-6) 0; border-bottom: 0.5px solid var(--color-hairline); }
-    .qa-item h4 {
-      font-family: var(--font-display); font-weight: var(--fw-regular);
-      font-size: var(--fs-md); color: var(--color-ink); margin: 0 0 var(--space-3);
-      display: flex; gap: var(--space-3); align-items: baseline;
-    }
-    .qa-item h4 .q-mark {
-      font-family: var(--font-display); font-style: italic; font-weight: var(--fw-thin);
-      color: var(--color-gold); font-size: var(--fs-xl);
-    }
-    .qa-item p {
-      font-family: var(--font-serif); font-size: var(--fs-md);
-      color: var(--color-ink-soft); line-height: 1.85;
-      margin: 0; padding-left: var(--space-6);
-    }
-
-    .booking-cta { background: var(--color-ink); color: var(--color-paper); padding: var(--space-10) var(--space-6); text-align: center; }
-    .booking-cta h2 { color: var(--color-paper); }
-    .booking-cta .lead { color: var(--color-hairline); }
-    .booking-cta .bilingual-subtitle { color: var(--color-hairline); }
-  </style>
 </head>
 <body class="tx-paper">
 
@@ -305,7 +175,7 @@
           <div class="label">
             <span class="eyebrow-bilingual">PLATE I<span class="cn">Weddings</span></span>
             <h3>婚禮 <span class="display-italic">Weddings</span></h3>
-            <p>新娘秘書・婚禮整體形象統籌 — 待業主提供作品</p>
+            <p>新娘秘書・婚禮整體形象統籌 — <span style="color: var(--color-gold);">作品集即將上架　Coming Soon</span></p>
           </div>
         </a>
 
@@ -314,7 +184,7 @@
           <div class="label">
             <span class="eyebrow-bilingual">PLATE II<span class="cn">Portraits</span></span>
             <h3>形象照 <span class="display-italic">Portraits</span></h3>
-            <p>個人形象・企業形象・品牌形象 — 待業主提供作品</p>
+            <p>個人形象・企業形象・品牌形象 — <span style="color: var(--color-gold);">作品集即將上架　Coming Soon</span></p>
           </div>
         </a>
 
@@ -323,7 +193,7 @@
           <div class="label">
             <span class="eyebrow-bilingual">PLATE III<span class="cn">Events</span></span>
             <h3>活動 <span class="display-italic">Events</span></h3>
-            <p>發表會・頒獎典禮・品牌活動 — 待業主提供作品</p>
+            <p>發表會・頒獎典禮・品牌活動 — <span style="color: var(--color-gold);">作品集即將上架　Coming Soon</span></p>
           </div>
         </a>
 
@@ -332,7 +202,7 @@
           <div class="label">
             <span class="eyebrow-bilingual">PLATE IV<span class="cn">Media</span></span>
             <h3>自媒體 <span class="display-italic">Media</span></h3>
-            <p>頻道造型・直播形象・內容創作 — 待業主提供作品</p>
+            <p>頻道造型・直播形象・內容創作 — <span style="color: var(--color-gold);">作品集即將上架　Coming Soon</span></p>
           </div>
         </a>
       </div>
