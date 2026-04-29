@@ -558,6 +558,53 @@
   line-height: 1.7;
 }
 
+/* === 三大主張卡（about § 2.5） === */
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+.principle-card {
+  padding: var(--space-7) var(--space-6);
+  background: var(--color-cream);
+  border: 0.5px solid var(--color-hairline);
+  height: 100%;
+  text-align: center;
+  transition: border-color var(--duration-slow) var(--ease-silk);
+}
+.principle-card:hover { border-color: var(--color-gold); }
+.principle-card .num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-thin);
+  color: var(--color-gold);
+  font-size: var(--fs-3xl);
+  line-height: 1;
+  display: block;
+}
+.principle-card h4 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-xl);
+  margin: var(--space-4) 0 var(--space-1);
+}
+.principle-card .en {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  display: block;
+  margin-bottom: var(--space-4);
+}
+.principle-card p {
+  font-family: var(--font-serif);
+  font-size: var(--fs-base);
+  color: var(--color-ink-soft);
+  line-height: 1.85;
+  margin: 0;
+}
+
 /* === 主理人卡（about § 2.6） === */
 .person-card { text-align: center; }
 .person-card .person-portrait {
@@ -1356,6 +1403,7 @@
   /* Service item / theme card 3 卡 → 2 卡 */
   .scenario-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .info-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .principles-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .commitment-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
@@ -1742,6 +1790,11 @@
 
   /* === Occasion grid 2 → 1 === */
   .occasion-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* === Principles grid 3 → 1 === */
+  .principles-grid {
     grid-template-columns: 1fr !important;
   }
 
