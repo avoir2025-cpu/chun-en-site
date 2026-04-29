@@ -102,6 +102,73 @@
 .mnav-burger,
 .mnav-overlay { display: none; }
 
+/* =============================================================
+   NAVBAR 桌機版雙語（主英 + 副中小字）
+   ============================================================= */
+@media (min-width: 769px) {
+  .navbar-nav-left a:not(.navbar-cta),
+  .navbar-nav-right a:not(.navbar-cta) {
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 1px !important;
+    line-height: 1.1 !important;
+  }
+  .navbar-nav-left a:not(.navbar-cta)::after,
+  .navbar-nav-right a:not(.navbar-cta)::after {
+    content: attr(data-cn);
+    display: block;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: var(--fw-light);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--color-ink-muted);
+    line-height: 1;
+    margin-top: 2px;
+  }
+  /* navbar 高度自然撐開（雙行字） */
+  .navbar { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+}
+
+/* =============================================================
+   FLOATING LINE BUTTON（右下角浮動）
+   ============================================================= */
+.floating-line-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #06C755;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s var(--ease-silk),
+              box-shadow 0.3s var(--ease-silk);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.floating-line-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+}
+.floating-line-btn svg { width: 26px; height: 26px; }
+@media (max-width: 768px) {
+  .floating-line-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+  }
+}
+
 
 /* =============================================================
    § 3  PAGE HEROES
@@ -132,7 +199,13 @@
 }
 .about-hero::after {
   content: ""; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg, rgba(26,22,17,0.35) 0%, rgba(26,22,17,0.55) 100%);
+  /* Vignette: 中央暗（文字清楚）+ 邊緣保留照片細節 */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(26,22,17,0.7) 0%,
+    rgba(26,22,17,0.4) 55%,
+    rgba(26,22,17,0.55) 100%
+  );
 }
 .about-hero-content {
   position: relative; z-index: 2;
@@ -160,7 +233,13 @@
 }
 .booking-hero::after {
   content: ""; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg, rgba(26,22,17,0.4) 0%, rgba(26,22,17,0.6) 100%);
+  /* Vignette: 中央暗 + 邊緣保留 */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(26,22,17,0.7) 0%,
+    rgba(26,22,17,0.45) 55%,
+    rgba(26,22,17,0.6) 100%
+  );
 }
 .booking-hero-content {
   position: relative; z-index: 2;
@@ -219,7 +298,13 @@
 }
 .service-hero-bleed::after {
   content: ""; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg, rgba(26,22,17,0.5) 0%, rgba(26,22,17,0.65) 100%);
+  /* Vignette: 中央暗（文字清楚）+ 邊緣保留 */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(26,22,17,0.75) 0%,
+    rgba(26,22,17,0.5) 55%,
+    rgba(26,22,17,0.65) 100%
+  );
 }
 .service-hero-bleed-content {
   position: relative; z-index: 2;
