@@ -115,10 +115,10 @@
 }
 .page-hero h1 { font-size: clamp(2.25rem, 6vw, 5rem); line-height: 1.1; }
 
-/* About hero — Logo 牆全幅 */
+/* About hero — Logo 牆全幅（與 booking-hero 統一高度） */
 .about-hero {
   position: relative;
-  min-height: 78vh;
+  min-height: 64vh;
   overflow: hidden;
   isolation: isolate;
   display: flex;
@@ -1764,8 +1764,8 @@
   .booking-hero { min-height: 56vh !important; }
 
 
-  /* === About hero 高度縮小 === */
-  .about-hero { min-height: 70vh !important; }
+  /* === About hero 高度縮小（與 booking-hero 統一）=== */
+  .about-hero { min-height: 56vh !important; }
 
 
   /* === Service hero bleed 高度縮小 === */
