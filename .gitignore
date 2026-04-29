@@ -1,0 +1,44 @@
+# ============================================================
+# CHUN.EN 官網 — Git 忽略清單
+# ============================================================
+
+# ---------- 原始素材（不上 GitHub）----------
+# DSC 原始大圖（370MB，只忽略 repo 根目錄；assets/images/ 中的壓縮版會保留）
+/DSC*.jpg
+/DSC*.JPG
+/DSC*.jpeg
+
+# ---------- 內部文件（業主 brief / 文案審閱稿）----------
+CHUN_EN_Website_Brief.md
+_COPY_AUDIT.md
+_COPY_AUDIT_v2_2.md
+_COPY_AUDIT*.md
+
+# ---------- OS / 編輯器產物 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# ---------- 編輯器設定 ----------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ---------- Node / 建置產物（未來如果引入工具）----------
+node_modules/
+dist/
+build/
+.cache/
+
+# ---------- 環境變數 ----------
+.env
+.env.local
+.env.*.local
+
+# ---------- 部署輔助 ----------
+.netlify/
+.vercel/

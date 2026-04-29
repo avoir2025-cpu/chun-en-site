@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHUN.EN 形象美學 — 整合型個人形象服務 · 台中</title>
+  <meta name="description" content="CHUN.EN 形象美學整合形象規劃、妝髮造型與形象攝影。同一團隊、同一空間，從風格定位到影像交付的全流程服務。" />
+
+  <meta property="og:title" content="CHUN.EN 形象美學 — 整合型個人形象服務" />
+  <meta property="og:description" content="形象，是專業最沉穩的開場。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="zh_TW" />
+
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="typography.css" />
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="patterns.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    .photo-fill { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* 中文主標下方的英文副標 */
+    .bilingual-subtitle {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: var(--fw-light);
+      color: var(--color-ink-muted);
+      font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+      letter-spacing: 0.02em;
+      margin-top: var(--space-3);
+    }
+    .bilingual-subtitle.on-dark { color: var(--color-hairline); }
+
+    /* Eyebrow 雙語格式：UPPERCASE EN｜中文 */
+    .eyebrow-bilingual {
+      font-family: var(--font-sans);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-gold);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .eyebrow-bilingual::before {
+      content: "";
+      width: 24px;
+      height: 0.5px;
+      background: var(--color-gold);
+    }
+    .eyebrow-bilingual .cn {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: var(--fw-light);
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--color-ink-muted);
+      font-size: var(--fs-base);
+    }
+
+    /* Navbar CTA 按鈕（小尺寸） */
+    .navbar-cta {
+      font-family: var(--font-sans);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      padding: 8px 18px;
+      background: var(--color-gold);
+      color: var(--color-paper) !important;
+      border: 0.5px solid var(--color-gold);
+      transition: all var(--duration-base) var(--ease-silk);
+      margin-left: var(--space-3);
+    }
+    .navbar-cta:hover { background: var(--color-gold-deep); border-color: var(--color-gold-deep); }
+
+    /* Hero Layered（巨型 C 字背景 + 雙語標語） */
+    .hero-layered-content .display { line-height: 1.05; }
+
+    /* 服務承諾引文（pull quote 變體） */
+    .service-pledge {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 0 var(--space-5);
+    }
+    .service-pledge .pledge-strong {
+      font-family: var(--font-display);
+      font-weight: var(--fw-regular);
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      color: var(--color-ink);
+      line-height: 1.4;
+      margin: 0 0 var(--space-5);
+    }
+    .service-pledge .pledge-body {
+      font-family: var(--font-serif);
+      font-size: var(--fs-md);
+      color: var(--color-ink-soft);
+      line-height: 1.85;
+      margin: 0;
+    }
+
+    /* 服務承諾 4 卡片 */
+    .commitment-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    @media (max-width: 900px) { .commitment-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .commitment-grid { grid-template-columns: 1fr; } }
+
+    .commitment-card {
+      padding: var(--space-7) var(--space-5);
+      border-top: 0.5px solid var(--color-hairline);
+      border-right: 0.5px solid var(--color-hairline);
+    }
+    .commitment-card:last-child { border-right: 0; }
+    @media (max-width: 900px) {
+      .commitment-card:nth-child(2n) { border-right: 0; }
+    }
+    @media (max-width: 600px) {
+      .commitment-card { border-right: 0; }
+    }
+    .commitment-card .num {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: var(--fw-thin);
+      color: var(--color-gold);
+      font-size: var(--fs-3xl);
+      line-height: 1;
+    }
+    .commitment-card h4 {
+      font-family: var(--font-display);
+      font-weight: var(--fw-light);
+      font-size: var(--fs-lg);
+      margin: var(--space-4) 0 var(--space-1);
+    }
+    .commitment-card .en {
+      font-family: var(--font-sans);
+      font-size: var(--fs-xs);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      display: block;
+      margin-bottom: var(--space-4);
+    }
+    .commitment-card p {
+      font-family: var(--font-serif);
+      font-size: var(--fs-base);
+      color: var(--color-ink-soft);
+      line-height: 1.85;
+      margin: 0;
+    }
+
+    /* Lookbook 內含照片 */
+    .lookbook-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .lookbook-item-caption {
+      position: absolute;
+      bottom: var(--space-5); left: var(--space-5); right: var(--space-5);
+      z-index: 2;
+      color: var(--color-paper);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: var(--space-3);
+    }
+    .lookbook-item-caption .cn {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: var(--fw-light);
+      font-size: var(--fs-md);
+      color: var(--color-paper);
+    }
+    .lookbook-item-caption .en {
+      font-family: var(--font-sans);
+      font-size: var(--fs-xs);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-gold-light);
+    }
+    .lookbook-item::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(26,22,17,0.7) 100%);
+      z-index: 1; pointer-events: none;
+    }
+
+    /* 服務範例 / 情境卡 */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+    @media (max-width: 900px) { .scenario-grid { grid-template-columns: 1fr; gap: var(--space-6); } }
+
+    .scenario-card {
+      background: var(--color-cream);
+      border: 0.5px solid var(--color-hairline);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color var(--duration-slow) var(--ease-silk);
+      height: 100%;
+    }
+    .scenario-card:hover { border-color: var(--color-gold); }
+    .scenario-photo {
+      aspect-ratio: 4 / 3;
+      position: relative;
+      overflow: hidden;
+    }
+    .scenario-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform var(--duration-slowest) var(--ease-silk);
+    }
+    .scenario-card:hover .scenario-photo img { transform: scale(1.04); }
+    .scenario-photo::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(26,22,17,0.05) 40%, rgba(26,22,17,0.55) 100%);
+    }
+    .scenario-photo .photo-label {
+      position: absolute;
+      bottom: var(--space-4); left: var(--space-5);
+      z-index: 2;
+      color: var(--color-paper);
+      font-family: var(--font-sans);
+      font-size: var(--fs-xs);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .scenario-photo .photo-label .cn {
+      font-family: var(--font-display);
+      font-style: italic;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--color-paper);
+      font-size: var(--fs-md);
+    }
+    .scenario-photo .photo-label .en { color: var(--color-gold-light); }
+
+    .scenario-content {
+      padding: var(--space-6) var(--space-5) var(--space-5);
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .scenario-content h4 {
+      font-family: var(--font-display);
+      font-weight: var(--fw-light);
+      font-size: var(--fs-xl);
+      margin: 0 0 var(--space-3);
+    }
+    .scenario-content .desc {
+      font-family: var(--font-serif);
+      font-size: var(--fs-base);
+      color: var(--color-ink-soft);
+      line-height: 1.85;
+      margin: 0 0 var(--space-5);
+    }
+    .scenario-content .combo {
+      padding: var(--space-4) 0;
+      border-top: 0.5px solid var(--color-hairline-soft);
+      margin-top: auto;
+    }
+    .scenario-content .combo .combo-label {
+      font-family: var(--font-sans);
+      font-size: var(--fs-xs);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-gold);
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+    .scenario-content .combo .combo-text {
+      font-family: var(--font-serif);
+      font-size: var(--fs-base);
+      color: var(--color-ink);
+      line-height: 1.6;
+    }
+    .scenario-cta {
+      padding: var(--space-4) var(--space-5);
+      border-top: 0.5px solid var(--color-hairline-soft);
+    }
+
+    /* Booking CTA section */
+    .booking-cta { background: var(--color-ink); color: var(--color-paper); padding: var(--space-10) var(--space-6); text-align: center; }
+    .booking-cta h2 { color: var(--color-paper); }
+    .booking-cta .lead { color: var(--color-hairline); }
+    .booking-cta .eyebrow { color: var(--color-gold); }
+    .booking-cta .bilingual-subtitle { color: var(--color-hairline); }
+  </style>
+</head>
+<body class="tx-paper">
+
+  <!-- ============================================================ NAVBAR ============================================================ -->
+  <nav class="navbar reveal-slow">
+    <ul class="navbar-nav-left">
+      <li><a href="about.html">About</a></li>
+      <li><a href="#services">Services</a></li>
+    </ul>
+    <a href="index.html" class="navbar-brand wordmark-expand">CHUN.EN</a>
+    <ul class="navbar-nav-right">
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="booking.html">Booking</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="navbar-cta">立即預約</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============================================================ § 1.1 HERO — 巨型 C 字 + 雙語標語 ============================================================ -->
+  <section class="hero-layered">
+    <div class="hero-side-text hero-side-text-left">
+      <span class="text-vertical">CHUN.EN · Taichung · 2026</span>
+    </div>
+    <div class="hero-side-text hero-side-text-right">
+      <span class="text-vertical">À Voir｜B Room｜C Photos</span>
+    </div>
+
+    <span class="hero-layered-bg-letter">C</span>
+
+    <div class="hero-layered-content">
+      <div class="reveal reveal-delay-1">
+        <span class="eyebrow-bilingual">
+          INTEGRATED IMAGE SERVICES
+          <span class="cn">整合型形象服務</span>
+        </span>
+      </div>
+
+      <h1 class="display reveal reveal-delay-2" style="margin-top: var(--space-6);">
+        形象，是專業最沉穩的<span class="display-italic text-gold">開場</span>
+      </h1>
+      <p class="bilingual-subtitle reveal reveal-delay-2">Image is your first credential.</p>
+
+      <div class="bracketed reveal reveal-delay-3"
+           style="margin-top: var(--space-7); max-width: 620px; margin-left: auto; margin-right: auto;">
+        <p class="font-serif" style="margin: 0; color: var(--color-ink-soft); text-align: center; font-size: var(--fs-md); line-height: 1.85;">
+          CHUN.EN 形象美學整合形象規劃、妝髮造型與形象攝影。<br>
+          同一團隊、同一空間，從風格定位到影像交付的全流程服務。
+        </p>
+      </div>
+
+      <div class="flex justify-center gap-5 reveal reveal-delay-4"
+           style="margin-top: var(--space-8); flex-wrap: wrap;">
+        <a href="booking.html" class="btn btn-primary"><span class="arrow">預約諮詢 Book a Consultation</span></a>
+        <a href="#services" class="btn btn-ghost link-expand">了解服務內容 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ § 1.2 MARQUEE ============================================================ -->
+  <div class="marquee">
+    <div class="marquee-track">
+      <span class="marquee-item">形象規劃</span>
+      <span class="marquee-item">妝髮造型</span>
+      <span class="marquee-item">形象攝影</span>
+      <span class="marquee-item">一站式整合服務</span>
+      <span class="marquee-item">À Voir × B Room × C Photos</span>
+      <span class="marquee-item">CHUN.EN</span>
+      <span class="marquee-item">形象規劃</span>
+      <span class="marquee-item">妝髮造型</span>
+      <span class="marquee-item">形象攝影</span>
+      <span class="marquee-item">一站式整合服務</span>
+      <span class="marquee-item">À Voir × B Room × C Photos</span>
+      <span class="marquee-item">CHUN.EN</span>
+    </div>
+  </div>
+
+  <!-- ============================================================ § 1.3 品牌身份揭露 ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="editorial-spread">
+
+        <div style="position: relative;">
+          <div class="image-plate">
+            <div class="image-plate-frame" style="aspect-ratio: 3 / 2;">
+              <img class="photo-fill" src="assets/images/dsc03134.jpg"
+                   alt="CHUN.EN 品牌形象牆 — 三大子品牌" loading="lazy" />
+            </div>
+            <div class="caption">
+              <span class="caption-plate">Plate I.</span>
+              <span class="caption-title">CHUN.EN Atelier</span>
+              <span>台中工作室</span>
+            </div>
+          </div>
+        </div>
+
+        <div></div>
+
+        <div style="position: relative; padding: var(--space-7) 0;">
+          <span class="eyebrow-bilingual" style="position: relative; z-index: 1;">
+            ABOUT US
+            <span class="cn">關於 CHUN.EN</span>
+          </span>
+
+          <h2 style="position: relative; z-index: 1;
+                     font-size: clamp(2rem, 4vw, 3.25rem);
+                     margin-top: var(--space-5); line-height: 1.2;">
+            三個子品牌，一個<span class="display-italic text-gold">整合服務</span>
+          </h2>
+          <p class="bilingual-subtitle" style="position: relative; z-index: 1;">
+            Three brands. One integrated experience.
+          </p>
+
+          <p class="lead" style="position: relative; z-index: 1; margin-top: var(--space-6);">
+            CHUN.EN 形象美學由三個子品牌組成 ——
+            <strong style="color: var(--color-ink); font-weight: var(--fw-regular);">「À Voir 洞見」</strong>、
+            <strong style="color: var(--color-ink); font-weight: var(--fw-regular);">「B Room 勾勒」</strong>、
+            <strong style="color: var(--color-ink); font-weight: var(--fw-regular);">「C Photos 定格」</strong>
+            —— 從風格規劃、妝髮造型到形象攝影，於同一空間、同一團隊內完成。
+          </p>
+
+          <p class="font-serif" style="position: relative; z-index: 1; margin-top: var(--space-5); font-size: var(--fs-md); color: var(--color-ink-muted); line-height: 1.85;">
+            客戶不需要在不同工作室之間奔走，也不需要重複向不同團隊解釋自己的需求。所有服務皆共享同一份對您的理解。
+          </p>
+
+          <div style="position: relative; z-index: 1; margin-top: var(--space-7);">
+            <a href="about.html" class="btn btn-ghost link-expand">認識 CHUN.EN →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ § 1.4 三大子品牌 ============================================================ -->
+  <section id="services" class="section bg-paper-warm">
+    <div class="container">
+
+      <div class="text-center mb-8">
+        <span class="eyebrow-bilingual">
+          OUR SERVICES
+          <span class="cn">服務內容</span>
+        </span>
+        <h2 class="mt-5">三個子品牌，一套<span class="display-italic text-gold">整合服務</span></h2>
+        <p class="bilingual-subtitle">Three brands, one integrated experience.</p>
+        <p class="lead mt-6" style="margin-left: auto; margin-right: auto; text-align: center; max-width: 56ch;">
+          依需求單獨選用，亦可整合為套組方案。每一筆服務，皆能完整對應您的形象需求。
+        </p>
+      </div>
+
+      <div class="grid">
+
+        <!-- À Voir -->
+        <div class="col-4 text-center hover-lift">
+          <div class="img-arch">
+            <img class="photo-fill" src="assets/images/dsc03229.jpg"
+                 alt="À Voir 形象規劃 — 服飾選品空間" loading="lazy" />
+          </div>
+          <p class="caption" style="justify-content: center; margin-top: var(--space-5);">
+            <span class="caption-plate">Plate I</span>
+            <span>Image Planning · 形象規劃</span>
+          </p>
+          <h4 class="font-display light italic" style="margin-top: var(--space-3); font-size: var(--fs-2xl);">À Voir</h4>
+          <span style="font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light); color: var(--color-gold); font-size: var(--fs-md); margin: var(--space-2) 0 var(--space-3); display: block;">洞 見</span>
+          <p class="font-serif" style="font-size: var(--fs-md); color: var(--color-ink-muted); max-width: 32ch; margin: 0 auto; line-height: 1.85;">
+            形象診斷、風格定位、衣櫃規劃與選購陪同。為個人與企業建立可長期使用的視覺語言。
+          </p>
+          <div style="margin-top: var(--space-5);">
+            <a href="services/a-voir.html" class="btn btn-ghost link-expand">了解 À Voir →</a>
+          </div>
+        </div>
+
+        <!-- B Room -->
+        <div class="col-4 text-center hover-lift">
+          <div class="img-arch">
+            <img class="photo-fill" src="assets/images/dsc03184.jpg"
+                 alt="B Room 妝髮造型 — 雙拱形化妝鏡台" loading="lazy" />
+          </div>
+          <p class="caption" style="justify-content: center; margin-top: var(--space-5);">
+            <span class="caption-plate">Plate II</span>
+            <span>Hair & Makeup · 妝髮造型</span>
+          </p>
+          <h4 class="font-display light italic" style="margin-top: var(--space-3); font-size: var(--fs-2xl);">B Room</h4>
+          <span style="font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light); color: var(--color-gold); font-size: var(--fs-md); margin: var(--space-2) 0 var(--space-3); display: block;">勾 勒</span>
+          <p class="font-serif" style="font-size: var(--fs-md); color: var(--color-ink-muted); max-width: 32ch; margin: 0 auto; line-height: 1.85;">
+            形象照妝髮、活動造型、新娘秘書與自媒體造型。因應光線、場合與攝影需求精準調校。
+          </p>
+          <div style="margin-top: var(--space-5);">
+            <a href="services/b-room.html" class="btn btn-ghost link-expand">了解 B Room →</a>
+          </div>
+        </div>
+
+        <!-- C Photos -->
+        <div class="col-4 text-center hover-lift">
+          <div class="img-arch">
+            <img class="photo-fill" src="assets/images/dsc03259.jpg"
+                 alt="C Photos 形象攝影 — 攝影棚" loading="lazy" />
+          </div>
+          <p class="caption" style="justify-content: center; margin-top: var(--space-5);">
+            <span class="caption-plate">Plate III</span>
+            <span>Image Photography · 形象攝影</span>
+          </p>
+          <h4 class="font-display light italic" style="margin-top: var(--space-3); font-size: var(--fs-2xl);">C Photos</h4>
+          <span style="font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light); color: var(--color-gold); font-size: var(--fs-md); margin: var(--space-2) 0 var(--space-3); display: block;">定 格</span>
+          <p class="font-serif" style="font-size: var(--fs-md); color: var(--color-ink-muted); max-width: 32ch; margin: 0 auto; line-height: 1.85;">
+            個人形象照、企業形象與品牌攝影。與 À Voir、B Room 整合，從穿搭到光影一致呈現。
+          </p>
+          <div style="margin-top: var(--space-5);">
+            <a href="services/c-photos.html" class="btn btn-ghost link-expand">了解 C Photos →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ § 1.5 服務承諾引文 ============================================================ -->
+  <section class="section">
+    <div class="container-narrow">
+      <div class="reveal-slow service-pledge">
+        <p class="pledge-strong">
+          形象不是裝飾，是<span class="display-italic text-gold">專業可信度</span>的延伸。
+        </p>
+        <p class="pledge-body">
+          我們協助客戶建立一致、貼合本人氣質的視覺語言──讓您在尚未開口前，已先取得信任。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ § 1.6 服務流程 ============================================================ -->
+  <section class="section bg-paper-warm">
+    <div class="container">
+      <div class="editorial-spread">
+
+        <div style="position: relative; padding: var(--space-7) 0; text-align: right;">
+          <span class="eyebrow-bilingual" style="position: relative; z-index: 1;">
+            OUR PROCESS
+            <span class="cn">服務流程</span>
+          </span>
+
+          <h2 style="position: relative; z-index: 1; font-size: clamp(2rem, 4vw, 3.25rem); margin-top: var(--space-5); line-height: 1.2;">
+            四個階段，<span class="display-italic text-gold">完整交付</span>
+          </h2>
+          <p class="bilingual-subtitle">A four-stage process, end to end.</p>
+
+          <p class="lead" style="position: relative; z-index: 1; margin-top: var(--space-6); margin-left: auto;">
+            從第一次諮詢到成果交付，皆由同一團隊負責，確保整體一致性。
+          </p>
+
+          <ol style="list-style: none; padding: 0; margin: var(--space-6) 0 0; font-family: var(--font-serif); color: var(--color-ink-soft); position: relative; z-index: 1;">
+            <li style="padding: var(--space-4) 0; border-top: 0.5px solid var(--color-hairline);">
+              <span class="font-mono text-xs uppercase tracked-wider text-gold">01</span>
+              <span style="font-size: var(--fs-md); margin-left: var(--space-3);">諮詢　Consultation</span>
+            </li>
+            <li style="padding: var(--space-4) 0; border-top: 0.5px solid var(--color-hairline);">
+              <span class="font-mono text-xs uppercase tracked-wider text-gold">02</span>
+              <span style="font-size: var(--fs-md); margin-left: var(--space-3);">形象診斷　Diagnostic</span>
+            </li>
+            <li style="padding: var(--space-4) 0; border-top: 0.5px solid var(--color-hairline);">
+              <span class="font-mono text-xs uppercase tracked-wider text-gold">03</span>
+              <span style="font-size: var(--fs-md); margin-left: var(--space-3);">造型與拍攝　Production</span>
+            </li>
+            <li style="padding: var(--space-4) 0; border-top: 0.5px solid var(--color-hairline); border-bottom: 0.5px solid var(--color-hairline);">
+              <span class="font-mono text-xs uppercase tracked-wider text-gold">04</span>
+              <span style="font-size: var(--fs-md); margin-left: var(--space-3);">後製與交付　Delivery</span>
+            </li>
+          </ol>
+
+          <div style="position: relative; z-index: 1; margin-top: var(--space-7);">
+            <a href="about.html" class="btn btn-ghost link-expand">了解完整流程 →</a>
+          </div>
+        </div>
+
+        <div></div>
+
+        <div class="image-plate">
+          <div class="image-plate-frame">
+            <img class="photo-fill" src="assets/images/dsc03201.jpg"
+                 alt="CHUN.EN 諮詢空間 — 圓桌與設計師椅" loading="lazy"
+                 style="aspect-ratio: 3/4;" />
+          </div>
+          <div class="caption">
+            <span class="caption-plate">Plate II.</span>
+            <span class="caption-title">Consultation</span>
+            <span>諮詢長桌</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ § 1.7 服務承諾區（取代舊 Stats） ============================================================ -->
+  <section class="section">
+    <div class="container">
+
+      <div class="text-center mb-8">
+        <span class="eyebrow-bilingual">
+          OUR COMMITMENT
+          <span class="cn">服務承諾</span>
+        </span>
+        <h2 class="mt-5">為何選擇 <span class="display-italic text-gold">CHUN.EN</span></h2>
+      </div>
+
+      <div class="commitment-grid">
+        <div class="commitment-card">
+          <span class="num">01</span>
+          <h4>整合服務</h4>
+          <span class="en">Integrated Service</span>
+          <p>三個子品牌一站完成，形象規劃、妝髮造型、攝影一條龍交付。</p>
+        </div>
+        <div class="commitment-card">
+          <span class="num">02</span>
+          <h4>專屬團隊</h4>
+          <span class="en">Dedicated Team</span>
+          <p>從諮詢到交付皆由同一團隊負責，避免訊息斷層。</p>
+        </div>
+        <div class="commitment-card">
+          <span class="num">03</span>
+          <h4>完全預約制</h4>
+          <span class="en">By Appointment</span>
+          <p>不接受 walk-in，每位客戶皆獲得專屬時段與完整服務深度。</p>
+        </div>
+        <div class="commitment-card">
+          <span class="num">04</span>
+          <h4>長期諮詢視角</h4>
+          <span class="en">Long-Term Perspective</span>
+          <p>不追逐流行範本，著重建立可長期使用的個人形象資產。</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ § 1.8 工作室一隅 — Lookbook 8 張 ============================================================ -->
+  <section class="section bg-paper-warm">
+    <div class="container text-center mb-7">
+      <span class="eyebrow-bilingual">
+        OUR ATELIER
+        <span class="cn">工作室一隅</span>
+      </span>
+      <h2 class="mt-5">空間，是服務的<span class="display-italic text-gold">延伸</span></h2>
+      <p class="bilingual-subtitle">Where every service begins.</p>
+      <p class="lead mt-6" style="margin-left: auto; margin-right: auto; text-align: center; max-width: 56ch;">
+        工作室位於台中，專為形象規劃、妝髮造型與攝影服務的整合動線而設計。
+      </p>
+    </div>
+
+    <div class="lookbook">
+
+      <div class="lookbook-item">
+        <img class="lookbook-photo" src="assets/images/dsc03269.jpg" alt="拱形空間單椅與暖光" loading="lazy" />
+        <div class="lookbook-item-caption">
+          <span class="cn">拱形空間</span>
+          <span class="en">The Arch</span>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img class="lookbook-photo" src="assets/images/dsc03134.jpg" alt="CHUN.EN 品牌形象牆" loading="lazy" />
+        <div class="lookbook-item-caption">
+          <span class="cn">品牌形象牆</span>
+          <span class="en">Brand Identity</span>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img class="lookbook-photo" src="assets/images/dsc03184.jpg" alt="B Room 妝髮鏡台" loading="lazy" />
+        <div class="lookbook-item-caption">
+          <span class="cn">B Room 妝髮區</span>
+          <span class="en">Hair & Makeup</span>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img class="lookbook-photo" src="assets/images/dsc03219.jpg" alt="橘色牆面與單椅" loading="lazy" />
+        <div class="lookbook-item-caption">
+          <span class="cn">橘牆一角</span>
+          <span class="en">Warm Corner</span>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img class="lookbook-photo" src="assets/images/dsc03229.jpg" alt="À Voir 服飾選品" loading="lazy" />
+        <div class="lookbook-item-caption">
+          <span class="cn">À Voir 服飾選品</span>
+          <span class="en">Wardrobe Selection</span>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img class="lookbook-photo" src="assets/images/dsc03259.jpg" alt="C Photos 攝影棚" loading="lazy" />
+        <div class="lookbook-item-caption">
+          <span class="cn">C Photos 攝影區</span>
+          <span class="en">Photography Studio</span>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img class="lookbook-photo" src="assets/images/dsc03201.jpg" alt="諮詢長桌" loading="lazy" />
+        <div class="lookbook-item-caption">
+          <span class="cn">諮詢長桌</span>
+          <span class="en">Consultation Table</span>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img class="lookbook-photo" src="assets/images/dsc03239.jpg" alt="茶水區" loading="lazy" />
+        <div class="lookbook-item-caption">
+          <span class="cn">茶水區</span>
+          <span class="en">Lounge</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container text-center mt-5">
+      <p class="text-xs uppercase tracked-wider" style="color: var(--color-ink-faint);">→ 橫向滑動瀏覽</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ § 1.9 服務範例 / 情境（v2.1 新區塊） ============================================================ -->
+  <section class="section">
+    <div class="container">
+
+      <div class="text-center mb-8">
+        <span class="eyebrow-bilingual">
+          YOUR MOMENT
+          <span class="cn">屬於您的時刻</span>
+        </span>
+        <h2 class="mt-5">無論您此刻所處的<span class="display-italic text-gold">階段</span></h2>
+        <p class="bilingual-subtitle">Wherever you are in your journey.</p>
+        <p class="lead mt-6" style="margin-left: auto; margin-right: auto; text-align: center; max-width: 60ch;">
+          CHUN.EN 形象美學沒有一套標準方案。每位客戶的需求都從一場 LINE 諮詢開始，依時刻與場合量身規劃。
+        </p>
+      </div>
+
+      <div class="scenario-grid">
+
+        <!-- 情境 01 -->
+        <article class="scenario-card">
+          <div class="scenario-photo">
+            <img src="assets/images/dsc03219.jpg" alt="職場轉型情境" loading="lazy" />
+            <div class="photo-label">
+              <span class="cn">職場轉型</span>
+              <span class="en">Scenario 01</span>
+            </div>
+          </div>
+          <div class="scenario-content">
+            <h4>職場轉型階段</h4>
+            <p class="desc">
+              升遷、轉職、職涯轉換之際，需要一套足以支撐新角色的形象資產。從風格定位、職場穿搭到形象照，建立可長期使用的專業形象。
+            </p>
+            <div class="combo">
+              <span class="combo-label">Service Combo · 服務組合</span>
+              <span class="combo-text">À Voir 形象規劃 + B Room 妝髮 + C Photos 形象照</span>
+            </div>
+          </div>
+          <div class="scenario-cta">
+            <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="btn btn-ghost btn-block link-expand">LINE 諮詢此情境 →</a>
+          </div>
+        </article>
+
+        <!-- 情境 02 -->
+        <article class="scenario-card">
+          <div class="scenario-photo">
+            <img src="assets/images/dsc03201.jpg" alt="企業領導者情境" loading="lazy" />
+            <div class="photo-label">
+              <span class="cn">企業領導者</span>
+              <span class="en">Scenario 02</span>
+            </div>
+          </div>
+          <div class="scenario-content">
+            <h4>企業主與品牌經營者</h4>
+            <p class="desc">
+              對外溝通的每個場合，都需要一致的專業氣質。從個人形象到企業 CIS，從活動造型到媒體形象，由同一團隊統籌規劃。
+            </p>
+            <div class="combo">
+              <span class="combo-label">Service Combo · 服務組合</span>
+              <span class="combo-text">À Voir 企業 CIS + B Room 活動統籌 + C Photos 企業形象</span>
+            </div>
+          </div>
+          <div class="scenario-cta">
+            <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="btn btn-ghost btn-block link-expand">LINE 諮詢此情境 →</a>
+          </div>
+        </article>
+
+        <!-- 情境 03 -->
+        <article class="scenario-card">
+          <div class="scenario-photo">
+            <img src="assets/images/dsc03269.jpg" alt="個人品牌情境" loading="lazy" />
+            <div class="photo-label">
+              <span class="cn">個人品牌</span>
+              <span class="en">Scenario 03</span>
+            </div>
+          </div>
+          <div class="scenario-content">
+            <h4>自媒體與個人品牌</h4>
+            <p class="desc">
+              當形象本身即是內容，需要可長期累積、識別度穩定的視覺語言。長期合作方案，依內容主題微調，維持品牌調性。
+            </p>
+            <div class="combo">
+              <span class="combo-label">Service Combo · 服務組合</span>
+              <span class="combo-text">À Voir 風格規劃 + B Room 自媒體妝髮 + C Photos 形象資產</span>
+            </div>
+          </div>
+          <div class="scenario-cta">
+            <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="btn btn-ghost btn-block link-expand">LINE 諮詢此情境 →</a>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="text-center mt-7">
+        <p class="font-serif" style="color: var(--color-ink-muted); font-size: var(--fs-md); max-width: 60ch; margin: 0 auto var(--space-6); line-height: 1.85;">
+          以上僅為常見情境範例，實際服務皆依個案需求量身規劃。婚禮、發表會、企業尾牙、媒體曝光等特殊時刻，亦可透過 LINE 諮詢取得專屬方案建議。
+        </p>
+        <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="btn btn-gold"><span class="arrow">加入 LINE 開始諮詢 →</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ § 1.10 品牌精神 ============================================================ -->
+  <section class="section bg-paper-warm">
+    <div class="container-narrow">
+      <div class="text-center mb-8">
+        <span class="eyebrow-bilingual">
+          OUR PHILOSOPHY
+          <span class="cn">服務理念</span>
+        </span>
+        <h2 class="mt-5">為何採取<span class="display-italic text-gold">整合模式</span></h2>
+      </div>
+
+      <div class="columns-2 drop-cap"
+           style="font-family: var(--font-serif); font-size: var(--fs-md);
+                  line-height: var(--lh-loose); color: var(--color-ink-soft);">
+        <p>
+          多數人在處理形象需求時，必須在不同的工作室之間奔走──先到一處做形象諮詢，再換一家拍攝，造型師、攝影師、風格顧問彼此從未對話。最終得到的，是一份被切割成數段、缺少統一氣質的形象資產。
+        </p>
+
+        <p>
+          CHUN.EN 形象美學選擇將<em>形象規劃</em>、<em>妝髮造型</em>與<em>形象攝影</em>，整合於同一空間、同一團隊。從風格定位到鏡頭快門，皆共享同一份對客戶的理解。
+        </p>
+
+        <p>
+          我們不替客戶套用流行範本，也不追逐單次潮流。每一次服務從理解客戶開始，產出可長期使用的形象資產──適合工作場合、重要時刻，亦能隨時間累積為個人品牌。
+        </p>
+      </div>
+
+      <div class="text-center mt-7">
+        <div class="bracketed">
+          <p class="font-display italic"
+             style="font-size: var(--fs-lg); color: var(--color-gold); margin: 0;">
+            CHUN.EN 形象美學・台中
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ § 1.11 Booking CTA ============================================================ -->
+  <section class="booking-cta">
+    <div class="container-narrow">
+      <span class="eyebrow-bilingual" style="color: var(--color-gold);">
+        READY TO START
+        <span class="cn" style="color: var(--color-hairline);">開始諮詢</span>
+      </span>
+      <h2 class="mt-5" style="font-size: clamp(2rem, 4vw, 3rem);">
+        準備好升級您的<span class="display-italic text-gold">形象資產</span>了嗎？
+      </h2>
+      <p class="bilingual-subtitle on-dark">Ready to invest in your image?</p>
+      <p class="lead mt-6" style="margin-left: auto; margin-right: auto; max-width: 60ch;">
+        所有服務皆從一次諮詢開始。我們以 LINE 官方帳號接受第一次接觸──先了解需求，再決定方案。
+      </p>
+
+      <div class="flex justify-center gap-5 mt-7" style="flex-wrap: wrap;">
+        <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="btn btn-gold"><span class="arrow">加入 LINE 諮詢</span></a>
+        <a href="contact.html" class="btn btn-outline" style="border-color: var(--color-paper); color: var(--color-paper);">聯絡其他方式</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ FOOTER ============================================================ -->
+  <footer class="footer-luxury">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-col">
+          <a href="index.html" class="wordmark-expand mb-5" style="display: inline-block;">CHUN.EN</a>
+          <p class="font-serif italic mt-4" style="color: var(--color-ink-soft); max-width: 32ch;">
+            CHUN.EN 形象美學<br>
+            京珀彩妝有限公司<br>
+            整合型個人形象服務
+          </p>
+          <p class="text-sm mt-5" style="color: var(--color-ink-muted); line-height: 1.85;">
+            403 臺中市西區<br>
+            臺灣大道二段 300 號 A 棟 6F-1<br>
+            <a href="https://maps.app.goo.gl/ey2JQd5JV9D5Xh4f8" target="_blank" rel="noopener"
+               style="color: var(--color-ink-soft); border-bottom: 0.5px solid var(--color-hairline); padding-bottom: 1px;">
+              View on Google Maps →
+            </a>
+          </p>
+          <p class="text-xs mt-5" style="color: var(--color-ink-faint); font-style: italic;">
+            採完全預約制 By Appointment Only
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h6>服務內容 Services</h6>
+          <ul>
+            <li><a href="services/a-voir.html">À Voir｜形象規劃</a></li>
+            <li><a href="services/b-room.html">B Room｜妝髮造型</a></li>
+            <li><a href="services/c-photos.html">C Photos｜形象攝影</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h6>關於 About</h6>
+          <ul>
+            <li><a href="about.html">品牌故事</a></li>
+            <li><a href="portfolio.html">作品集</a></li>
+            <li><a href="#">部落格（即將上線）</a></li>
+            <li><a href="contact.html">聯絡我們</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h6>預約 Booking</h6>
+          <ul>
+            <li><a href="booking.html">預約諮詢</a></li>
+            <li><a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener">LINE 官方帳號</a></li>
+            <li><a href="booking.html#notes">預約須知</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h6>追蹤 Follow</h6>
+          <ul>
+            <li><a href="https://instagram.com/321_a_voir" target="_blank" rel="noopener">Instagram (@321_a_voir)</a></li>
+            <li><a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener">LINE 官方帳號</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p class="text-xs uppercase tracked-wider" style="color: var(--color-ink-muted); margin: 0;">
+          © 2026 CHUN.EN 形象美學・京珀彩妝有限公司・All Rights Reserved
+        </p>
+        <p class="text-xs font-mono" style="color: var(--color-ink-faint); margin: 0;">
+          台中市｜整合型個人形象服務
+        </p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

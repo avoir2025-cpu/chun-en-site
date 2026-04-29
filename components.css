@@ -1,0 +1,886 @@
+/* ============================================================
+   COMPONENTS — Maison
+   hairline 細節、sharp corners、金色點綴、極大留白
+   ============================================================ */
+
+/* ---------- 版面容器 ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.container-narrow {
+  max-width: var(--container-narrow);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.section {
+  padding: var(--space-9) 0;
+}
+
+.section-lg { padding: var(--space-10) 0; }
+.section-sm { padding: var(--space-8) 0; }
+
+/* ---------- 網格 ---------- */
+.grid {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.col-12 { grid-column: span 12; }
+.col-8  { grid-column: span 8; }
+.col-6  { grid-column: span 6; }
+.col-4  { grid-column: span 4; }
+.col-3  { grid-column: span 3; }
+
+@media (max-width: 768px) {
+  .col-8, .col-6, .col-4, .col-3 { grid-column: span 12; }
+}
+
+.grid-auto {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Flex */
+.flex            { display: flex; }
+.flex-col        { flex-direction: column; }
+.flex-wrap       { flex-wrap: wrap; }
+.items-center    { align-items: center; }
+.items-start     { align-items: flex-start; }
+.items-end       { align-items: flex-end; }
+.justify-between { justify-content: space-between; }
+.justify-center  { justify-content: center; }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+.gap-7 { gap: var(--space-7); }
+
+/* ============================================================
+   BUTTON：精品式極簡 — 細邊框、寬字距、緩慢動畫
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-6);
+  height: 48px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  border: 1px solid transparent;
+  border-radius: 0;   /* 精品：直角 */
+  cursor: pointer;
+  transition: all var(--duration) var(--ease-silk);
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+  background: none;
+}
+
+.btn:focus-visible {
+  outline: 1px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* === Primary：黑底白字（Chanel 式） === */
+.btn-primary {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border-color: var(--color-ink);
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--color-ink);
+}
+
+/* === Gold：香檳金（Cartier 式，關鍵 CTA 專用） === */
+.btn-gold {
+  background: var(--color-gold);
+  color: var(--color-paper);
+  border-color: var(--color-gold);
+}
+.btn-gold:hover {
+  background: var(--color-gold-deep);
+  border-color: var(--color-gold-deep);
+}
+
+/* === Outline：金邊（精品最愛的變體） === */
+.btn-outline {
+  background: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+.btn-outline:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.btn-outline-gold {
+  background: transparent;
+  color: var(--color-gold);
+  border-color: var(--color-gold);
+}
+.btn-outline-gold:hover {
+  background: var(--color-gold);
+  color: var(--color-paper);
+}
+
+/* === Ghost：僅文字 + 下劃線（Hermès 式極簡） === */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-ink);
+  padding: 0;
+  height: auto;
+  border: none;
+  position: relative;
+  border-bottom: 0.5px solid var(--color-ink);
+  padding-bottom: var(--space-2);
+  border-radius: 0;
+}
+.btn-ghost:hover {
+  color: var(--color-gold);
+  border-bottom-color: var(--color-gold);
+}
+
+/* 尺寸 */
+.btn-sm { height: 36px; padding: 0 var(--space-5); font-size: 10px; }
+.btn-lg { height: 56px; padding: 0 var(--space-7); }
+.btn-block { width: 100%; }
+
+/* 箭頭 */
+.btn .arrow::after {
+  content: "  →";
+  display: inline-block;
+  transition: transform var(--duration-slow) var(--ease-silk);
+}
+.btn:hover .arrow::after {
+  transform: translateX(6px);
+}
+
+/* ============================================================
+   FORM：極簡，下劃線式輸入（Dior/Hermès 慣用）
+   ============================================================ */
+.form-group {
+  margin-bottom: var(--space-6);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  color: var(--color-ink-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: var(--space-3) 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
+  color: var(--color-ink);
+  background: transparent;
+  border: none;
+  border-bottom: 0.5px solid var(--color-hairline);
+  border-radius: 0;
+  transition: border-color var(--duration) var(--ease-silk);
+}
+
+.form-control:hover {
+  border-bottom-color: var(--color-ink-muted);
+}
+
+.form-control:focus {
+  outline: none;
+  border-bottom-color: var(--color-gold);
+  border-bottom-width: 1px;
+}
+
+.form-control::placeholder {
+  color: var(--color-ink-faint);
+  font-style: italic;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+  border: 0.5px solid var(--color-hairline);
+  padding: var(--space-4);
+}
+
+.form-hint {
+  display: block;
+  margin-top: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  color: var(--color-ink-muted);
+  font-style: italic;
+}
+
+.form-error { color: var(--color-danger); }
+
+/* ============================================================
+   CARD：無邊框、無陰影、純靠 hairline 與留白
+   ============================================================ */
+.card {
+  background: var(--color-cream);
+  border: 0.5px solid var(--color-hairline);
+  border-radius: 0;
+  overflow: hidden;
+  transition: all var(--duration-slow) var(--ease-silk);
+  position: relative;
+}
+
+.card:hover {
+  border-color: var(--color-ink-faint);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* 頂部金線裝飾卡（精品招牌） */
+.card-gold-top {
+  position: relative;
+}
+.card-gold-top::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--color-gold);
+  transition: all var(--duration-slow) var(--ease-silk);
+  transform: translateX(-50%);
+}
+.card-gold-top:hover::before {
+  width: 100%;
+}
+
+/* 圖框式卡片（雙線裝飾，Tiffany 風） */
+.card-framed {
+  padding: var(--space-3);
+  background: transparent;
+  border: 0.5px solid var(--color-hairline);
+}
+.card-framed > .card {
+  border: 0.5px solid var(--color-hairline);
+}
+
+.card-body {
+  padding: var(--space-7) var(--space-6);
+}
+
+.card-body-lg {
+  padding: var(--space-8) var(--space-7);
+}
+
+.card-header {
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 0.5px solid var(--color-hairline);
+}
+
+.card-footer {
+  padding: var(--space-5) var(--space-6);
+  border-top: 0.5px solid var(--color-hairline);
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-xl);
+  margin: 0 0 var(--space-4) 0;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.card-text {
+  font-family: var(--font-serif);
+  color: var(--color-ink-soft);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  margin: 0;
+}
+
+/* ============================================================
+   NAVBAR：極細邊、LOGO 居中、左右對稱（精品官網標配）
+   ============================================================ */
+.navbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: var(--space-5) var(--space-6);
+  background: var(--color-paper);
+  border-bottom: 0.5px solid var(--color-hairline);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-nav-left,
+.navbar-nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-nav-right {
+  justify-content: flex-end;
+}
+
+.navbar-nav-left a,
+.navbar-nav-right a {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-ink-soft);
+  transition: color var(--duration) var(--ease-silk);
+}
+
+.navbar-nav-left a:hover,
+.navbar-nav-right a:hover,
+.navbar-nav-left a.active,
+.navbar-nav-right a.active {
+  color: var(--color-gold);
+}
+
+.navbar-brand {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-regular);
+  color: var(--color-ink);
+  letter-spacing: var(--tracking-wider);
+  text-align: center;
+  line-height: 1;
+}
+
+/* 簡化版 wordmark-only LOGO */
+.navbar-brand.wordmark {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-ultra);
+}
+
+/* ============================================================
+   BADGE：精品徽章（極薄、金色、全大寫）
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: var(--fw-regular);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-ink-muted);
+  border: 0.5px solid var(--color-hairline);
+  border-radius: 0;
+  background: transparent;
+}
+
+.badge-gold {
+  color: var(--color-gold);
+  border-color: var(--color-gold);
+}
+
+.badge-ink {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border-color: var(--color-ink);
+}
+
+.badge-success { color: var(--color-success); border-color: var(--color-success); }
+.badge-danger  { color: var(--color-danger); border-color: var(--color-danger); }
+
+/* ============================================================
+   ALERT：極簡告示（無重色底、僅邊框 + 金線）
+   ============================================================ */
+.alert {
+  padding: var(--space-5) var(--space-6);
+  border: 0.5px solid var(--color-hairline);
+  border-left: 2px solid var(--color-gold);
+  background: transparent;
+  margin-bottom: var(--space-4);
+  font-family: var(--font-serif);
+  font-size: var(--fs-base);
+  color: var(--color-ink-soft);
+}
+
+.alert strong {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  font-size: var(--fs-xs);
+  color: var(--color-ink);
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.alert-info    { border-left-color: var(--color-gold); }
+.alert-success { border-left-color: var(--color-success); }
+.alert-warning { border-left-color: var(--color-warning); }
+.alert-danger  { border-left-color: var(--color-danger); }
+
+/* ============================================================
+   精品專屬裝飾：雙線分隔、金色小花飾
+   ============================================================ */
+.divider-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin: var(--space-8) 0;
+  color: var(--color-gold);
+  font-size: var(--fs-md);
+}
+
+.divider-ornament::before,
+.divider-ornament::after {
+  content: "";
+  flex: 1;
+  max-width: 120px;
+  height: 0.5px;
+  background: var(--color-hairline);
+}
+
+.divider-ornament-symbol {
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+/* 角落裝飾線（卡片加強） */
+.corner-ornament {
+  position: relative;
+  padding: var(--space-5);
+}
+
+.corner-ornament::before,
+.corner-ornament::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 0.5px solid var(--color-gold);
+}
+
+.corner-ornament::before {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.corner-ornament::after {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.mt-0 { margin-top: 0; }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-5 { margin-top: var(--space-5); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-7 { margin-top: var(--space-7); }
+.mt-8 { margin-top: var(--space-8); }
+.mb-0 { margin-bottom: 0; }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-5 { margin-bottom: var(--space-5); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-7 { margin-bottom: var(--space-7); }
+.mb-8 { margin-bottom: var(--space-8); }
+
+.p-5 { padding: var(--space-5); }
+.p-6 { padding: var(--space-6); }
+.p-7 { padding: var(--space-7); }
+
+.bg-paper      { background: var(--color-paper); }
+.bg-paper-warm { background: var(--color-paper-warm); }
+.bg-paper-deep { background: var(--color-paper-deep); }
+.bg-cream      { background: var(--color-cream); }
+.bg-ink        { background: var(--color-ink); color: var(--color-paper); }
+
+.border-hairline { border: 0.5px solid var(--color-hairline); }
+.border-gold     { border: 0.5px solid var(--color-gold); }
+.border-top-gold { border-top: 1px solid var(--color-gold); }
+
+/* ============================================================
+   LAYERED HERO — Bottega/Loewe 風層疊式 Hero
+   ============================================================ */
+.hero-layered {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  padding: var(--space-9) var(--space-6);
+}
+
+.hero-layered-bg-letter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-thin);
+  font-size: clamp(15rem, 45vw, 40rem);
+  line-height: 0.8;
+  color: var(--color-gold);
+  opacity: 0.08;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.08em;
+}
+
+.hero-layered-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 900px;
+}
+
+/* 縱向裝飾條（hero 兩側） */
+.hero-side-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+.hero-side-text-left  { left: var(--space-5); }
+.hero-side-text-right { right: var(--space-5); transform: translateY(-50%) rotate(180deg); }
+
+/* ============================================================
+   ASYMMETRIC EDITORIAL — 不對稱版面（Apartamento 雜誌風）
+   ============================================================ */
+.editorial-spread {
+  display: grid;
+  grid-template-columns: 5fr 1fr 6fr;
+  gap: var(--space-6);
+  align-items: center;
+  position: relative;
+  padding: var(--space-9) 0;
+}
+
+@media (max-width: 900px) {
+  .editorial-spread {
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+}
+
+.editorial-image {
+  aspect-ratio: 3 / 4;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 大數字背景 */
+.editorial-numeral {
+  position: absolute;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-thin);
+  font-size: clamp(8rem, 18vw, 18rem);
+  line-height: 0.8;
+  color: var(--color-gold);
+  opacity: 0.15;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   LOOKBOOK — 橫向滾動展示（Hermès / Dior 招牌）
+   ============================================================ */
+.lookbook {
+  display: flex;
+  gap: var(--space-5);
+  overflow-x: auto;
+  padding: var(--space-6) var(--space-6);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.lookbook::-webkit-scrollbar { display: none; }
+
+.lookbook-item {
+  flex: 0 0 320px;
+  aspect-ratio: 3 / 4;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+  border: 0.5px solid var(--color-hairline);
+}
+
+.lookbook-item-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   SCROLL REVEAL — 入場動畫（CSS-only fade-up）
+   ============================================================ */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes reveal-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.reveal {
+  animation: reveal-up 1.2s var(--ease-silk) both;
+}
+
+.reveal-slow {
+  animation: reveal-fade 2s var(--ease-silk) both;
+}
+
+.reveal-delay-1 { animation-delay: 0.2s; }
+.reveal-delay-2 { animation-delay: 0.4s; }
+.reveal-delay-3 { animation-delay: 0.6s; }
+.reveal-delay-4 { animation-delay: 0.8s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-slow { animation: none; }
+}
+
+/* ============================================================
+   WORDMARK — LOGO 字距擴張動畫（精品互動細節）
+   ============================================================ */
+.wordmark-expand {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-ultra);
+  color: var(--color-ink);
+  display: inline-block;
+  transition: letter-spacing var(--duration-slow) var(--ease-silk);
+}
+
+.wordmark-expand:hover {
+  letter-spacing: 0.7em;
+}
+
+/* ============================================================
+   IMAGE PLATE — 博物館 plate 邊框 + 圖說
+   ============================================================ */
+.image-plate {
+  position: relative;
+  padding: var(--space-3);
+  border: 0.5px solid var(--color-hairline);
+}
+
+.image-plate-frame {
+  border: 0.5px solid var(--color-hairline);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================================
+   FOOTER — 多欄精品 footer
+   ============================================================ */
+.footer-luxury {
+  background: var(--color-paper-deep);
+  border-top: 0.5px solid var(--color-hairline);
+  padding: var(--space-9) 0 var(--space-7);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(4, 1fr);
+  gap: var(--space-7);
+  margin-bottom: var(--space-8);
+}
+
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+}
+
+.footer-col h6 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-ink);
+  margin-bottom: var(--space-5);
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col li {
+  margin-bottom: var(--space-3);
+  color: var(--color-ink-soft);
+  font-size: var(--fs-sm);
+  font-family: var(--font-serif);
+}
+
+.footer-col a {
+  color: var(--color-ink-soft);
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.footer-col a:hover { color: var(--color-gold); }
+
+/* 訂閱輸入（精品 footer 必備） */
+.newsletter-input {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+  border-bottom: 0.5px solid var(--color-ink);
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.newsletter-input input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-serif);
+  font-size: var(--fs-base);
+  color: var(--color-ink);
+  font-style: italic;
+}
+
+.newsletter-input button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-ink);
+  padding: 0;
+  transition: color var(--duration) var(--ease-silk);
+}
+.newsletter-input button:hover { color: var(--color-gold); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-6);
+  border-top: 0.5px solid var(--color-hairline);
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+/* ============================================================
+   MAISON ADDRESS — 店址名片
+   ============================================================ */
+.address-block {
+  text-align: left;
+}
+.address-block h6 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-md);
+  color: var(--color-gold);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: var(--space-3);
+}
+.address-block p {
+  font-family: var(--font-serif);
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+  margin: 0;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   MICRO INTERACTION — 細膩 hover 效果
+   ============================================================ */
+.hover-lift {
+  transition: transform var(--duration-slow) var(--ease-silk);
+}
+.hover-lift:hover { transform: translateY(-3px); }
+
+.hover-zoom {
+  overflow: hidden;
+}
+.hover-zoom > * {
+  transition: transform var(--duration-slow) var(--ease-silk);
+}
+.hover-zoom:hover > * { transform: scale(1.05); }
+
+/* 金線從中心展開的下劃線 */
+.link-expand {
+  position: relative;
+  display: inline-block;
+  border: none;
+}
+.link-expand::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 0.5px;
+  background: var(--color-gold);
+  transition: all var(--duration-slow) var(--ease-silk);
+  transform: translateX(-50%);
+}
+.link-expand:hover::after { width: 100%; }
+.link-expand:hover { color: var(--color-gold); }

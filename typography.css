@@ -1,0 +1,531 @@
+/* ============================================================
+   TYPOGRAPHY — Maison
+   Didone 襯線為王、Sans 為輔、寬字距為魂
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-base);
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+  font-feature-settings: "liga", "kern";
+}
+
+/* ============================================================
+   標題階層：Didone 襯線 + 細字重
+   ============================================================ */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-light);   /* 精品：細 */
+  color: var(--color-ink);
+  margin: 0 0 var(--space-5) 0;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+h1, .h1 {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-light);
+  letter-spacing: var(--tracking-display);
+}
+
+h2, .h2 {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-light);
+  letter-spacing: var(--tracking-tight);
+}
+
+h3, .h3 {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-regular);
+}
+
+h4, .h4 {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-regular);
+}
+
+/* H5/H6 切換到 Sans（作為小標、tracked-out） */
+h5, .h5, h6, .h6 {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  margin: 0 0 var(--space-4) 0;
+}
+
+h5, .h5 {
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+h6, .h6 {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-ink-muted);
+}
+
+/* ============================================================
+   DISPLAY：封面級巨字（雜誌感）
+   ============================================================ */
+.display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-display);
+  color: var(--color-ink);
+}
+
+/* 斜體 Display（Didone 斜體最美） */
+.display-italic {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-regular);
+  font-style: italic;
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-display);
+}
+
+/* ============================================================
+   MEGA & MONSTER — Bottega / Loewe / Saint Laurent 級巨型字
+   ============================================================ */
+.display-mega {
+  font-family: var(--font-display);
+  font-size: var(--fs-mega);
+  font-weight: var(--fw-light);
+  font-style: italic;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--color-ink);
+}
+
+/* 背景層巨字（layered hero 用，半透明、絕對定位） */
+.display-monster {
+  font-family: var(--font-display);
+  font-size: var(--fs-monster);
+  font-weight: var(--fw-thin);
+  font-style: italic;
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: var(--color-gold);
+  opacity: 0.12;
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+/* ============================================================
+   PULL QUOTE — 編輯雜誌式引文（縱向金線）
+   ============================================================ */
+.pull-quote {
+  position: relative;
+  padding: var(--space-7) 0 var(--space-7) var(--space-7);
+  margin: var(--space-9) 0;
+  max-width: 38ch;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-regular);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.25;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+
+.pull-quote::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-gold);
+}
+
+.pull-quote cite {
+  display: block;
+  margin-top: var(--space-5);
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-ink-muted);
+}
+
+/* ============================================================
+   VERTICAL TEXT — 縱向標籤（Aesop / Saint Laurent 招牌）
+   ============================================================ */
+.text-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   CAPTION — Museum plate 圖說（Plate I — Title）
+   ============================================================ */
+.caption {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-ink-muted);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 0.5px solid var(--color-hairline);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.caption-plate {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--color-gold);
+}
+
+.caption-title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-ink);
+  flex: 1;
+  text-align: center;
+}
+
+/* ============================================================
+   SPECIMEN — 字型樣張（單字母大特寫）
+   ============================================================ */
+.specimen {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-thin);
+  font-size: clamp(8rem, 22vw, 22rem);
+  line-height: 0.85;
+  color: var(--color-ink);
+  letter-spacing: -0.06em;
+}
+
+/* ============================================================
+   MULTI-COLUMN — 雜誌式多欄文字
+   ============================================================ */
+.columns-2 {
+  column-count: 2;
+  column-gap: var(--space-7);
+  column-rule: 0.5px solid var(--color-hairline);
+}
+
+.columns-3 {
+  column-count: 3;
+  column-gap: var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .columns-2, .columns-3 { column-count: 1; }
+}
+
+/* Wordmark（LOGO 級） */
+.wordmark {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-ultra);
+  color: var(--color-ink);
+}
+
+/* ============================================================
+   EYEBROW：精品網站必備的 all-caps tracked-out 小標
+   ============================================================ */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-ink-muted);
+  margin-bottom: var(--space-5);
+}
+
+.eyebrow-gold {
+  color: var(--color-gold);
+}
+
+/* Eyebrow 配線（精品常見） */
+.eyebrow-line {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.eyebrow-line::before,
+.eyebrow-line::after {
+  content: "";
+  display: inline-block;
+  width: 40px;
+  height: 0.5px;
+  background: var(--color-hairline);
+}
+
+/* 編號（Chapter I、No. 01 等） */
+.numeral {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-regular);
+  color: var(--color-gold);
+  font-size: var(--fs-md);
+}
+
+/* ============================================================
+   段落與內文
+   ============================================================ */
+p {
+  margin: 0 0 var(--space-5) 0;
+  max-width: var(--content-max);
+  color: var(--color-ink-soft);
+}
+
+.lead {
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-loose);
+  color: var(--color-ink-soft);
+  max-width: 52ch;
+}
+
+.lead-large {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-light);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-ink);
+  max-width: 48ch;
+}
+
+/* 首字大寫（Drop Cap，雜誌風） */
+.drop-cap::first-letter {
+  font-family: var(--font-display);
+  font-size: 4.5em;
+  font-weight: var(--fw-regular);
+  float: left;
+  line-height: 0.85;
+  margin: 0.08em 0.1em 0 -0.04em;
+  color: var(--color-gold);
+}
+
+/* ============================================================
+   字型切換工具類
+   ============================================================ */
+.font-display { font-family: var(--font-display); }
+.font-serif   { font-family: var(--font-serif); }
+.font-sans    { font-family: var(--font-sans); }
+.font-mono    { font-family: var(--font-mono); }
+
+.italic { font-style: italic; }
+.thin   { font-weight: var(--fw-thin); }
+.light  { font-weight: var(--fw-light); }
+
+/* ============================================================
+   尺寸與顏色工具
+   ============================================================ */
+.text-xs  { font-size: var(--fs-xs); }
+.text-sm  { font-size: var(--fs-sm); }
+.text-md  { font-size: var(--fs-md); }
+.text-lg  { font-size: var(--fs-lg); }
+
+.text-ink      { color: var(--color-ink); }
+.text-soft     { color: var(--color-ink-soft); }
+.text-muted    { color: var(--color-ink-muted); }
+.text-faint    { color: var(--color-ink-faint); }
+.text-gold     { color: var(--color-gold); }
+
+.text-center   { text-align: center; }
+.text-right    { text-align: right; }
+.text-balance  { text-wrap: balance; }
+.text-pretty   { text-wrap: pretty; }
+
+.uppercase     { text-transform: uppercase; }
+.tracked       { letter-spacing: var(--tracking-wide); }
+.tracked-wide  { letter-spacing: var(--tracking-wider); }
+.tracked-wider { letter-spacing: var(--tracking-widest); }
+
+/* ============================================================
+   連結：精品式極細底線（hover 時從左延伸）
+   ============================================================ */
+a {
+  color: var(--color-ink);
+  text-decoration: none;
+  position: relative;
+  transition: color var(--duration) var(--ease-silk);
+}
+
+/* 內文中的連結：hover 時浮現金色底線 */
+p a, li a, blockquote a {
+  background-image: linear-gradient(var(--color-gold), var(--color-gold));
+  background-size: 0% 0.5px;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  padding-bottom: 2px;
+  transition: background-size var(--duration) var(--ease-silk),
+              color var(--duration) var(--ease-silk);
+}
+
+p a:hover, li a:hover, blockquote a:hover {
+  background-size: 100% 0.5px;
+  color: var(--color-gold);
+}
+
+/* ============================================================
+   清單：極簡式
+   ============================================================ */
+ul, ol {
+  margin: 0 0 var(--space-5) 0;
+  padding-left: var(--space-5);
+}
+
+li {
+  margin-bottom: var(--space-3);
+  color: var(--color-ink-soft);
+  line-height: var(--lh-base);
+}
+
+ul li::marker {
+  color: var(--color-gold);
+  content: "—  ";   /* 精品愛用 em dash 作項目符號 */
+}
+
+ol li::marker {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--color-gold);
+}
+
+/* ============================================================
+   引用：大字 + 斜體 + 金色引號
+   ============================================================ */
+blockquote {
+  margin: var(--space-8) auto;
+  padding: var(--space-5) 0;
+  max-width: 40ch;
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-xl);
+  line-height: 1.4;
+  color: var(--color-ink);
+  position: relative;
+}
+
+blockquote::before {
+  content: "\201C";   /* 金色裝飾引號 */
+  display: block;
+  font-size: 4rem;
+  line-height: 0.8;
+  color: var(--color-gold);
+  margin-bottom: var(--space-3);
+  font-style: normal;
+}
+
+blockquote cite {
+  display: block;
+  margin-top: var(--space-5);
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-ink-muted);
+}
+
+/* ============================================================
+   程式碼：極為節制
+   ============================================================ */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 0.15em 0.4em;
+  background: var(--color-paper-warm);
+  border: 0.5px solid var(--color-hairline);
+  color: var(--color-ink);
+}
+
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  padding: var(--space-6);
+  background: var(--color-paper-warm);
+  border: 0.5px solid var(--color-hairline);
+  overflow-x: auto;
+  line-height: 1.7;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+/* ============================================================
+   水平線：髮絲 + 中央金色小記號（精品式裝飾）
+   ============================================================ */
+hr {
+  border: none;
+  height: 0.5px;
+  background: var(--color-hairline);
+  margin: var(--space-8) 0;
+  position: relative;
+}
+
+hr.ornament {
+  background: transparent;
+  height: auto;
+  text-align: center;
+  margin: var(--space-9) 0;
+}
+
+hr.ornament::before {
+  content: "·  ·  ·";
+  display: inline-block;
+  color: var(--color-gold);
+  font-size: var(--fs-md);
+  letter-spacing: var(--tracking-wider);
+}
+
+/* 強調文字 */
+strong, b {
+  font-weight: var(--fw-medium);
+  color: var(--color-ink);
+}
+
+em, i {
+  font-style: italic;
+  font-family: var(--font-display);
+}

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>聯絡我們 — CHUN.EN 形象美學</title>
+  <meta name="description" content="聯絡 CHUN.EN 形象美學 — 工作室位於台中。透過 LINE、Email、聯絡表單或親至工作室洽詢。" />
+
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="typography.css" />
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="patterns.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    .photo-fill { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .bilingual-subtitle {
+      font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light);
+      color: var(--color-ink-muted); font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+      letter-spacing: 0.02em; margin-top: var(--space-3);
+    }
+    .bilingual-subtitle.on-dark { color: var(--color-hairline); }
+
+    .eyebrow-bilingual {
+      font-family: var(--font-sans); font-size: var(--fs-xs);
+      font-weight: var(--fw-medium); letter-spacing: var(--tracking-widest);
+      text-transform: uppercase; color: var(--color-gold);
+      display: inline-flex; align-items: center; gap: var(--space-3);
+    }
+    .eyebrow-bilingual::before { content: ""; width: 24px; height: 0.5px; background: var(--color-gold); }
+    .eyebrow-bilingual .cn {
+      font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light);
+      letter-spacing: 0.02em; text-transform: none;
+      color: var(--color-ink-muted); font-size: var(--fs-base);
+    }
+
+    .navbar-cta {
+      font-family: var(--font-sans); font-size: var(--fs-xs);
+      font-weight: var(--fw-medium); letter-spacing: var(--tracking-widest);
+      text-transform: uppercase; padding: 8px 18px;
+      background: var(--color-gold); color: var(--color-paper) !important;
+      border: 0.5px solid var(--color-gold);
+      transition: all var(--duration-base) var(--ease-silk);
+      margin-left: var(--space-3);
+    }
+    .navbar-cta:hover { background: var(--color-gold-deep); border-color: var(--color-gold-deep); }
+
+    .page-hero {
+      position: relative;
+      padding: var(--space-10) var(--space-6) var(--space-8);
+      text-align: center;
+    }
+    .page-hero h1 { font-size: clamp(2.5rem, 7vw, 5.5rem); }
+
+    /* 三種管道 */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-5);
+    }
+    @media (max-width: 800px) { .info-grid { grid-template-columns: 1fr; } }
+
+    .info-card {
+      padding: var(--space-7) var(--space-6);
+      background: var(--color-cream);
+      border: 0.5px solid var(--color-hairline);
+      transition: border-color var(--duration-slow) var(--ease-silk);
+      height: 100%;
+      display: flex; flex-direction: column;
+    }
+    .info-card:hover { border-color: var(--color-gold); }
+    .info-card .roman {
+      font-family: var(--font-display); font-style: italic; font-weight: var(--fw-thin);
+      color: var(--color-gold); font-size: var(--fs-3xl); line-height: 1;
+    }
+    .info-card h3 {
+      font-family: var(--font-display); font-weight: var(--fw-light);
+      font-size: var(--fs-xl); margin: var(--space-5) 0 var(--space-2);
+    }
+    .info-card .french {
+      font-family: var(--font-display); font-style: italic;
+      color: var(--color-gold); font-size: var(--fs-md);
+      display: block; margin-bottom: var(--space-5);
+    }
+    .info-card p,
+    .info-card address {
+      font-family: var(--font-serif); font-style: normal;
+      font-size: var(--fs-md); color: var(--color-ink-soft);
+      line-height: 1.85; margin: 0 0 var(--space-5);
+    }
+
+    /* QR 圖（contact 頁也用） */
+    .info-qr {
+      width: 160px; height: 160px;
+      border: 0.5px solid var(--color-hairline);
+      padding: var(--space-3);
+      background: var(--color-paper);
+      margin: 0 0 var(--space-5);
+      position: relative;
+      align-self: flex-start;
+    }
+    .info-qr img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .info-qr .qr-fallback {
+      position: absolute; inset: var(--space-3);
+      background:
+        repeating-linear-gradient(45deg, var(--color-paper-warm) 0px, var(--color-paper-warm) 5px, var(--color-paper-deep) 5px, var(--color-paper-deep) 10px);
+      display: none;
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: var(--space-1);
+      color: var(--color-ink-muted);
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      text-align: center;
+      padding: var(--space-3);
+    }
+    .info-qr img.broken + .qr-fallback { display: flex; }
+
+    /* 地圖 */
+    .map-frame {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border: 0.5px solid var(--color-hairline);
+      padding: var(--space-3);
+      background: var(--color-paper-warm);
+    }
+    .map-frame iframe { display: block; width: 100%; height: 100%; border: 0; filter: grayscale(35%) contrast(0.95); }
+
+    /* 表單 */
+    .form-card {
+      padding: 0;
+      background: var(--color-cream);
+      border: 0.5px solid var(--color-hairline);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+    }
+    @media (max-width: 700px) { .form-row { grid-template-columns: 1fr; gap: 0; } }
+
+    /* 社群卡（兩張並排） */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    @media (max-width: 600px) { .social-grid { grid-template-columns: 1fr; } }
+    .social-card {
+      padding: var(--space-7) var(--space-6);
+      background: var(--color-cream);
+      border: 0.5px solid var(--color-hairline);
+      text-align: center;
+      text-decoration: none;
+      transition: all var(--duration-slow) var(--ease-silk);
+      display: flex; flex-direction: column;
+      align-items: center; gap: var(--space-2);
+    }
+    .social-card:hover { border-color: var(--color-gold); transform: translateY(-2px); }
+    .social-card .label {
+      font-family: var(--font-sans); font-size: var(--fs-xs);
+      letter-spacing: var(--tracking-widest); text-transform: uppercase;
+      color: var(--color-ink-muted);
+    }
+    .social-card .name {
+      font-family: var(--font-display); font-weight: var(--fw-light);
+      font-size: var(--fs-xl); color: var(--color-ink);
+    }
+    .social-card .handle {
+      font-family: var(--font-mono); font-size: var(--fs-xs);
+      color: var(--color-gold);
+    }
+
+    /* 工作室位置 — 採完全預約制（簡化版） */
+    .hours-block {
+      padding: var(--space-7) var(--space-6);
+      background: var(--color-paper-warm);
+      border: 0.5px solid var(--color-hairline);
+      text-align: center;
+      max-width: 600px;
+      margin: var(--space-7) auto 0;
+    }
+    .hours-block .main-msg {
+      font-family: var(--font-display); font-weight: var(--fw-light);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      color: var(--color-ink);
+      margin: var(--space-5) 0 var(--space-3);
+    }
+    .hours-block .sub-msg {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: var(--fs-md);
+      color: var(--color-ink-muted); line-height: 1.85;
+      margin: 0;
+    }
+
+    .booking-cta { background: var(--color-ink); color: var(--color-paper); padding: var(--space-10) var(--space-6); text-align: center; }
+    .booking-cta h2 { color: var(--color-paper); }
+    .booking-cta .lead { color: var(--color-hairline); }
+    .booking-cta .bilingual-subtitle { color: var(--color-hairline); }
+  </style>
+</head>
+<body class="tx-paper">
+
+  <nav class="navbar reveal-slow">
+    <ul class="navbar-nav-left">
+      <li><a href="about.html">About</a></li>
+      <li><a href="index.html#services">Services</a></li>
+    </ul>
+    <a href="index.html" class="navbar-brand wordmark-expand">CHUN.EN</a>
+    <ul class="navbar-nav-right">
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="booking.html">Booking</a></li>
+      <li><a href="contact.html" class="text-gold">Contact</a></li>
+      <li><a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="navbar-cta">立即預約</a></li>
+    </ul>
+  </nav>
+
+  <!-- § 8.1 HERO -->
+  <section class="page-hero">
+    <span class="eyebrow-bilingual">
+      CONTACT
+      <span class="cn">聯絡我們</span>
+    </span>
+    <h1 class="display reveal" style="margin-top: var(--space-6);">
+      三種接觸 CHUN.EN 的<span class="display-italic text-gold">方式</span>
+    </h1>
+    <p class="bilingual-subtitle reveal reveal-delay-1">Three ways to reach us.</p>
+    <p class="font-serif italic reveal reveal-delay-2"
+       style="font-size: var(--fs-md); margin-top: var(--space-6); max-width: 56ch; margin-left: auto; margin-right: auto; color: var(--color-ink-soft);">
+      選擇最舒服的方式──LINE、Email、表單，或親自走一趟工作室。
+    </p>
+  </section>
+
+  <!-- § 8.2 三種管道 -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-8">
+        <span class="eyebrow-bilingual">
+          THREE CHANNELS
+          <span class="cn">三種管道</span>
+        </span>
+        <h2 class="mt-5">三種<span class="display-italic text-gold">聯絡方式</span></h2>
+      </div>
+
+      <div class="info-grid">
+
+        <article class="info-card">
+          <span class="roman">I</span>
+          <h3>LINE 官方帳號</h3>
+          <span class="french">LINE Official</span>
+
+          <div class="info-qr">
+            <img src="public/images/LINE_QRCode.png" alt="CHUN.EN LINE QR Code"
+                 onerror="this.classList.add('broken');" />
+            <div class="qr-fallback">
+              <span>LINE QR</span>
+              <span style="text-transform: none; font-style: italic; color: var(--color-ink-faint);">
+                public/images/<br>LINE_QRCode.png
+              </span>
+            </div>
+          </div>
+
+          <p>最即時的諮詢方式。加入後由諮詢團隊回覆。</p>
+          <p style="font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--color-ink-muted); letter-spacing: var(--tracking-wide);">
+            CHUN.EN 形象美學<br>服務諮詢團隊
+          </p>
+
+          <div style="margin-top: auto;">
+            <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="btn btn-outline btn-block">
+              <span class="arrow">加入 LINE</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <span class="roman">II</span>
+          <h3>Email 電子郵件</h3>
+          <span class="french">Email</span>
+          <p>適合正式洽談、企業合作、媒體聯繫。</p>
+          <address style="font-family: var(--font-mono); font-size: var(--fs-md); color: var(--color-ink); letter-spacing: var(--tracking-wide);">
+            avoir2025@gmail.com
+          </address>
+          <p style="font-family: var(--font-serif); font-style: italic; font-size: var(--fs-sm); color: var(--color-ink-muted);">
+            將於工作日盡快回覆
+          </p>
+
+          <div style="margin-top: auto;">
+            <a href="mailto:avoir2025@gmail.com" class="btn btn-outline btn-block">
+              <span class="arrow">寄送 Email</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <span class="roman">III</span>
+          <h3>親至工作室</h3>
+          <span class="french">Visit</span>
+          <p>所有面對面諮詢採完全預約制──請先以 LINE 或表單預約再前往。</p>
+          <p style="font-family: var(--font-serif); font-size: var(--fs-base); color: var(--color-ink); line-height: 1.85;">
+            403 臺中市西區<br>
+            臺灣大道二段 300 號<br>
+            A 棟 6F-1<br>
+            <span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-ink-muted); letter-spacing: var(--tracking-wide);">
+              座標 24.1534, 120.6670
+            </span>
+          </p>
+
+          <div style="margin-top: auto;">
+            <a href="booking.html" class="btn btn-outline btn-block">
+              <span class="arrow">預約面談</span>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- § 8.3 工作室位置 -->
+  <section class="section bg-paper-warm">
+    <div class="container">
+      <div class="text-center mb-8">
+        <span class="eyebrow-bilingual">
+          LOCATION
+          <span class="cn">工作室位置</span>
+        </span>
+        <h2 class="mt-5">CHUN.EN <span class="display-italic text-gold">Atelier</span></h2>
+        <p class="font-serif" style="margin-top: var(--space-5); font-size: var(--fs-md); color: var(--color-ink-soft); line-height: 1.9;">
+          403 臺中市西區臺灣大道二段 300 號 A 棟 6F-1
+        </p>
+        <div class="mt-6">
+          <a href="https://maps.app.goo.gl/ey2JQd5JV9D5Xh4f8" target="_blank" rel="noopener" class="btn btn-outline-gold">
+            <span class="arrow">在 Google Maps 開啟</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Google Maps 嵌入 -->
+      <!-- 註：目前以座標查詢嵌入，營業時間/評論顯示有限。
+           若業主想要完整顯示營業時間，請從 Google My Business 商家頁面 → 分享 → 嵌入地圖
+           取得完整 iframe code（pb=...）替換下方 src 屬性。 -->
+      <div class="map-frame" style="max-width: 1100px; margin: 0 auto;">
+        <iframe
+          src="https://www.google.com/maps?q=24.1534,120.6670&hl=zh-TW&z=17&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="CHUN.EN Atelier Map"></iframe>
+      </div>
+
+      <div class="hours-block">
+        <span class="eyebrow-bilingual">
+          HOURS
+          <span class="cn">營業時間</span>
+        </span>
+        <p class="main-msg">採完全預約制 <span class="display-italic text-gold">By Appointment Only</span></p>
+        <p class="sub-msg">
+          實際營業時間請以上方 Google Maps 顯示為準。<br>
+          未預約恕不接待。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 8.4 聯絡表單 -->
+  <section class="section">
+    <div class="container-narrow">
+      <div class="text-center mb-8">
+        <span class="eyebrow-bilingual">
+          MESSAGE
+          <span class="cn">留言</span>
+        </span>
+        <h2 class="mt-5">寄一封<span class="display-italic text-gold">訊息</span></h2>
+        <p class="bilingual-subtitle">Send us a message.</p>
+        <p class="lead mt-6" style="margin-left: auto; margin-right: auto; max-width: 56ch;">
+          若您偏好以表單留言，諮詢團隊將於工作日盡快回覆。
+        </p>
+      </div>
+
+      <form class="form-card frame-double">
+        <div class="card-body-lg" style="padding: var(--space-9) var(--space-8);">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="name">姓名 Name</label>
+              <input class="form-control" id="name" name="name" type="text" placeholder="您的姓名" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contact">聯絡方式 Contact</label>
+              <input class="form-control" id="contact" name="contact" type="text" placeholder="LINE ID／手機／Email" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="service">諮詢服務 Service</label>
+            <select class="form-control" id="service" name="service">
+              <option value="">— 請選擇您感興趣的服務 —</option>
+              <option>À Voir 形象規劃</option>
+              <option>B Room 妝髮造型</option>
+              <option>C Photos 形象攝影</option>
+              <option>客製化方案／企業合作</option>
+              <option>媒體採訪／異業合作</option>
+              <option>尚未確定，想先了解</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="timing">期待時間 Timing</label>
+            <input class="form-control" id="timing" name="timing" type="text" placeholder="例：2026 年 5 月、暑期、明確日期或「彈性」皆可" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="message">訊息內容 Message</label>
+            <textarea class="form-control" id="message" name="message" rows="6" placeholder="請告訴我們您的需求、場合、預期成果，或任何想先確認的問題。"></textarea>
+            <span class="form-hint">您留下的資訊將嚴格保密──僅用於回覆此次諮詢。</span>
+          </div>
+
+          <div class="alert alert-info mt-6">
+            <strong>隱私聲明｜Privacy</strong>
+            您的個資受嚴格保護。我們不會將您的聯絡資訊用於行銷推播或轉交第三方。
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg mt-6">
+            <span class="arrow">送出 Submit</span>
+          </button>
+
+          <p class="text-xs mt-5 text-center" style="color: var(--color-ink-faint); font-style: italic;">
+            表單送達 → avoir2025@gmail.com
+          </p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- § 8.5 追蹤我們 -->
+  <section class="section bg-paper-deep">
+    <div class="container">
+      <div class="text-center mb-8">
+        <span class="eyebrow-bilingual">
+          FOLLOW US
+          <span class="cn">追蹤我們</span>
+        </span>
+        <h2 class="mt-5">追蹤 <span class="display-italic text-gold">CHUN.EN</span></h2>
+        <p class="lead mt-6" style="margin-left: auto; margin-right: auto; max-width: 56ch;">
+          作品日記、空間札記、形象相關內容──皆於以下平台分享。
+        </p>
+      </div>
+
+      <div class="social-grid">
+        <a href="https://instagram.com/321_a_voir" class="social-card" target="_blank" rel="noopener">
+          <span class="label">Plate I.</span>
+          <span class="name">Instagram</span>
+          <span class="handle">@321_a_voir</span>
+        </a>
+        <a href="https://lin.ee/rVFo0r2" class="social-card" target="_blank" rel="noopener">
+          <span class="label">Plate II.</span>
+          <span class="name">LINE 官方帳號</span>
+          <span class="handle">CHUN.EN・服務諮詢團隊</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 8.6 CTA -->
+  <section class="booking-cta">
+    <div class="container-narrow">
+      <span class="eyebrow-bilingual" style="color: var(--color-gold);">
+        READY TO START
+        <span class="cn" style="color: var(--color-hairline);">開始</span>
+      </span>
+      <h2 class="mt-5" style="font-size: clamp(2rem, 4vw, 3rem);">
+        準備好了，<span class="display-italic text-gold">那就開始吧</span>
+      </h2>
+      <p class="bilingual-subtitle on-dark">Ready when you are.</p>
+      <p class="lead mt-6" style="margin-left: auto; margin-right: auto; max-width: 56ch;">
+        無論透過哪一種管道──LINE、Email、表單或親自前來──我們皆會以同樣的耐性回應您的訊息。
+      </p>
+      <div class="flex justify-center gap-5 mt-7" style="flex-wrap: wrap;">
+        <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="btn btn-gold"><span class="arrow">加入 LINE 開始諮詢</span></a>
+        <a href="mailto:avoir2025@gmail.com" class="btn btn-outline" style="border-color: var(--color-paper); color: var(--color-paper);">寄送 Email</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer-luxury">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="wordmark-expand mb-5" style="display: inline-block;">CHUN.EN</a>
+          <p class="font-serif italic mt-4" style="color: var(--color-ink-soft); max-width: 32ch;">
+            CHUN.EN 形象美學<br>京珀彩妝有限公司<br>整合型個人形象服務
+          </p>
+          <p class="text-sm mt-5" style="color: var(--color-ink-muted); line-height: 1.85;">
+            403 臺中市西區<br>臺灣大道二段 300 號 A 棟 6F-1<br>
+            <a href="https://maps.app.goo.gl/ey2JQd5JV9D5Xh4f8" target="_blank" rel="noopener"
+               style="color: var(--color-ink-soft); border-bottom: 0.5px solid var(--color-hairline); padding-bottom: 1px;">View on Google Maps →</a>
+          </p>
+          <p class="text-xs mt-5" style="color: var(--color-ink-faint); font-style: italic;">採完全預約制 By Appointment Only</p>
+        </div>
+        <div class="footer-col">
+          <h6>服務內容 Services</h6>
+          <ul>
+            <li><a href="services/a-voir.html">À Voir｜形象規劃</a></li>
+            <li><a href="services/b-room.html">B Room｜妝髮造型</a></li>
+            <li><a href="services/c-photos.html">C Photos｜形象攝影</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h6>關於 About</h6>
+          <ul>
+            <li><a href="about.html">品牌故事</a></li>
+            <li><a href="portfolio.html">作品集</a></li>
+            <li><a href="#">部落格（即將上線）</a></li>
+            <li><a href="contact.html">聯絡我們</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h6>預約 Booking</h6>
+          <ul>
+            <li><a href="booking.html">預約諮詢</a></li>
+            <li><a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener">LINE 官方帳號</a></li>
+            <li><a href="booking.html#notes">預約須知</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h6>追蹤 Follow</h6>
+          <ul>
+            <li><a href="https://instagram.com/321_a_voir" target="_blank" rel="noopener">Instagram (@321_a_voir)</a></li>
+            <li><a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener">LINE 官方帳號</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="text-xs uppercase tracked-wider" style="color: var(--color-ink-muted); margin: 0;">
+          © 2026 CHUN.EN 形象美學・京珀彩妝有限公司・All Rights Reserved
+        </p>
+        <p class="text-xs font-mono" style="color: var(--color-ink-faint); margin: 0;">台中市｜整合型個人形象服務</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

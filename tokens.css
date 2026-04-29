@@ -1,0 +1,165 @@
+/* ============================================================
+   DESIGN TOKENS — "Maison"
+   精品美學：Hermès 的節制 · Chanel 的黑白 · Dior 的優雅
+              Tiffany 的工藝 · Cartier 的金色 · Bodoni 的靈魂
+   ============================================================ */
+
+:root {
+  /* ---------- 色彩：乳白 + 暖炭 + 香檳金（精品三色法則） ---------- */
+
+  /* 品牌中心：香檳金（Cartier/Rolex 取色）— 只在最關鍵處登場 */
+  --color-gold:          #a88a5c;   /* 主金 */
+  --color-gold-deep:     #8a6f43;   /* 深金（hover） */
+  --color-gold-light:    #c9a961;   /* 亮金 */
+  --color-gold-ink:      rgba(168, 138, 92, 0.12);
+
+  /* 文字：暖炭黑（非冷灰），有手寫墨水感 */
+  --color-ink:           #1a1611;   /* 主文字，像印刷油墨 */
+  --color-ink-soft:      #3d342a;
+  --color-ink-muted:     #6b5d4f;
+  --color-ink-faint:     #9a8f80;
+  --color-ink-whisper:   #c9bfb2;
+
+  /* 背景：象牙白（精品標誌性，絕不用純白） */
+  --color-paper:         #faf7f2;   /* 主背景：紙張質地 */
+  --color-paper-warm:    #f5f0e6;   /* 暖乳白：次級區塊 */
+  --color-paper-deep:    #ede6d8;   /* 深乳白：強調區 */
+  --color-cream:         #ffffff;   /* 純白：僅用於卡片對比 */
+
+  /* Hairline 髮絲邊（精品的標誌） */
+  --color-hairline:      #d9cfbf;
+  --color-hairline-soft: #e8e0d0;
+
+  /* 狀態色（精品只用極淡色調） */
+  --color-success:       #6b8e5a;
+  --color-warning:       #b8860b;
+  --color-danger:        #8b3a2f;
+
+  /* ---------- 字型：Didone 襯線為主、Sans 為輔 ---------- */
+
+  /* Display：高對比襯線（Vogue/Dior 式 Didone） */
+  --font-display: "Playfair Display", "Bodoni Moda", "Cormorant Garamond",
+                  "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+
+  /* Serif：正文襯線（較柔和） */
+  --font-serif: "Cormorant Garamond", "EB Garamond", "Noto Serif TC", Georgia, serif;
+
+  /* Sans：極節制使用（標籤、導覽、按鈕） */
+  --font-sans: "Jost", "Avenir Next", "Montserrat", -apple-system,
+               "Noto Sans TC", "PingFang TC", sans-serif;
+
+  /* Mono（僅內部資料） */
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+
+  /* ---------- 字級：精品偏大字級，強調氣勢 ---------- */
+  --fs-xs:    0.6875rem;  /* 11px — tracked-out 小標專用 */
+  --fs-sm:    0.8125rem;  /* 13px */
+  --fs-base:  0.9375rem;  /* 15px */
+  --fs-md:    1.125rem;   /* 18px — 精品內文常用 */
+  --fs-lg:    1.5rem;
+  --fs-xl:    2rem;
+  --fs-2xl:   2.75rem;
+  --fs-3xl:   3.75rem;
+  --fs-4xl:   5rem;
+  --fs-display: clamp(3rem, 10vw, 8rem);   /* 超大 Display，像封面 */
+  --fs-mega:    clamp(5rem, 18vw, 16rem);  /* 巨型字（Bottega/Loewe 級） */
+  --fs-monster: clamp(8rem, 28vw, 28rem);  /* 怪物級背景字（layered hero） */
+
+  /* ---------- 第二強調色（深綠：Loro Piana / Brunello Cucinelli「靜奢」） ---------- */
+  --color-forest:        #2d3a2d;
+  --color-forest-deep:   #1a2419;
+
+  /* 酒紅（Berluti / Cartier 紅毯） */
+  --color-bordeaux:      #5c1a1a;
+
+  /* ---------- 字重：精品偏瘦，厚重是大忌 ---------- */
+  --fw-thin:     200;
+  --fw-light:    300;
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;   /* 罕用 */
+
+  /* ---------- 行距 ---------- */
+  --lh-display: 0.95;   /* Display 字緊貼 */
+  --lh-tight:   1.1;
+  --lh-base:    1.7;    /* 精品偏大行距，呼吸感 */
+  --lh-loose:   1.9;
+
+  /* ---------- 字距：精品的靈魂在這裡 ---------- */
+  --tracking-display: -0.02em;   /* 大標微縮 */
+  --tracking-tight:   -0.01em;
+  --tracking-normal:   0;
+  --tracking-wide:     0.05em;
+  --tracking-wider:    0.15em;
+  --tracking-widest:   0.35em;   /* All caps 標籤的魂 */
+  --tracking-ultra:    0.5em;    /* LOGO 等級間距 */
+
+  /* ---------- 間距：精品極大留白 ---------- */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.5rem;
+  --space-6:  2.5rem;
+  --space-7:  4rem;
+  --space-8:  6rem;
+  --space-9:  9rem;
+  --space-10: 12rem;   /* 封面級區塊 */
+
+  /* ---------- 圓角：精品幾乎不圓 ---------- */
+  --radius-none: 0;
+  --radius-sm:   1px;
+  --radius-md:   2px;
+  --radius-lg:   4px;
+  --radius-pill: 9999px;   /* 僅徽章 */
+
+  /* ---------- 邊框：髮絲等級 ---------- */
+  --border-hairline: 0.5px solid var(--color-hairline);
+  --border-thin:     1px solid var(--color-hairline);
+  --border-gold:     1px solid var(--color-gold);
+
+  /* ---------- 陰影：幾乎沒有，精品靠層次不靠陰影 ---------- */
+  --shadow-whisper: 0 1px 0 rgba(26, 22, 17, 0.04);
+  --shadow-soft:    0 2px 24px -8px rgba(26, 22, 17, 0.08);
+  --shadow-deep:    0 20px 60px -20px rgba(26, 22, 17, 0.15);
+
+  /* ---------- 動畫：緩慢、從容（精品不急） ---------- */
+  --ease-silk:    cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-slow:    cubic-bezier(0.4, 0, 0.2, 1);
+  --duration:     400ms;
+  --duration-slow: 800ms;
+
+  /* ---------- 版面 ---------- */
+  --container-max:    1280px;
+  --container-narrow: 680px;
+  --content-max:      58ch;
+}
+
+/* ---------- 深色模式：香檳金 × 夜色 ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-ink:           #f5f0e6;
+    --color-ink-soft:      #d9cfbf;
+    --color-ink-muted:     #9a8f80;
+    --color-ink-faint:     #6b5d4f;
+    --color-ink-whisper:   #3d342a;
+
+    --color-paper:         #13110d;   /* 深夜色，帶暖 */
+    --color-paper-warm:    #1c1814;
+    --color-paper-deep:    #242018;
+    --color-cream:         #1a1611;
+
+    --color-hairline:      #3d342a;
+    --color-hairline-soft: #2a251e;
+
+    --color-gold:          #c9a961;
+    --color-gold-deep:     #a88a5c;
+    --color-gold-light:    #e0c27f;
+  }
+}
+
+/* ---------- 選取反白色 ---------- */
+::selection {
+  background: var(--color-gold);
+  color: var(--color-paper);
+}

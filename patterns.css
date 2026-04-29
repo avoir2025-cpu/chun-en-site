@@ -1,0 +1,678 @@
+/* ============================================================
+   PATTERNS & TEXTURES — Maison
+   純 CSS / SVG 實作的精品紋理、幾何與裝飾
+   ============================================================ */
+
+/* ============================================================
+   TEXTURES — 紙張、亞麻、大理石、絲綢
+   ============================================================ */
+
+/* 紙張紋理：SVG turbulence 噪點（Hermès 紙袋質地） */
+.tx-paper {
+  position: relative;
+  isolation: isolate;
+}
+.tx-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.08  0 0 0 0 0.06  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0.7;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* 亞麻織紋（細十字交織） */
+.tx-linen {
+  background-color: var(--color-paper);
+  background-image:
+    repeating-linear-gradient(0deg,
+      rgba(168,138,92,0.04) 0px, rgba(168,138,92,0.04) 1px,
+      transparent 1px, transparent 4px),
+    repeating-linear-gradient(90deg,
+      rgba(168,138,92,0.04) 0px, rgba(168,138,92,0.04) 1px,
+      transparent 1px, transparent 4px);
+}
+
+/* 大理石（Cartier、Bvlgari 旗艦店地板感） */
+.tx-marble {
+  background-color: var(--color-paper);
+  background-image:
+    radial-gradient(at 20% 30%, rgba(168,138,92,0.08) 0%, transparent 50%),
+    radial-gradient(at 75% 60%, rgba(26,22,17,0.04) 0%, transparent 60%),
+    radial-gradient(at 50% 90%, rgba(168,138,92,0.06) 0%, transparent 55%),
+    linear-gradient(105deg, transparent 40%, rgba(26,22,17,0.03) 50%, transparent 60%);
+}
+
+/* 絲綢光澤（極細斜紋） */
+.tx-silk {
+  background-color: var(--color-paper-warm);
+  background-image:
+    repeating-linear-gradient(135deg,
+      rgba(168,138,92,0.03) 0px, rgba(168,138,92,0.03) 1px,
+      transparent 1px, transparent 3px);
+}
+
+/* ============================================================
+   PATTERNS — 圖樣
+   ============================================================ */
+
+/* 細點陣（Tiffany 包裝紙感） */
+.pt-dots {
+  background-color: var(--color-paper);
+  background-image: radial-gradient(circle, var(--color-hairline) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* 對角線條紋（Burberry 風，極淡） */
+.pt-stripes {
+  background-color: var(--color-paper);
+  background-image: repeating-linear-gradient(45deg,
+    transparent, transparent 12px,
+    rgba(168,138,92,0.05) 12px, rgba(168,138,92,0.05) 13px);
+}
+
+/* 鑽石格紋（菱格，Chanel 縫線靈感） */
+.pt-diamond {
+  background-color: var(--color-paper);
+  background-image:
+    linear-gradient(45deg, var(--color-hairline-soft) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--color-hairline-soft) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--color-hairline-soft) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--color-hairline-soft) 75%);
+  background-size: 32px 32px;
+  background-position: 0 0, 0 16px, 16px -16px, -16px 0;
+}
+
+/* Monogram 重複（LV 啟發，用品牌字母重複） */
+.pt-monogram {
+  background-color: var(--color-paper-warm);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><text x='30' y='38' font-family='Playfair Display, Georgia, serif' font-size='28' font-style='italic' font-weight='400' fill='%23a88a5c' fill-opacity='0.10' text-anchor='middle'>M</text></svg>");
+  background-size: 60px 60px;
+}
+
+/* 方格網（建築藍圖感） */
+.pt-grid {
+  background-color: var(--color-paper);
+  background-image:
+    linear-gradient(var(--color-hairline-soft) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, var(--color-hairline-soft) 0.5px, transparent 0.5px);
+  background-size: 48px 48px;
+}
+
+/* 暗色模式紋理回退 */
+@media (prefers-color-scheme: dark) {
+  .tx-paper::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.95  0 0 0 0 0.85  0 0 0 0.04 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode: screen;
+  }
+}
+
+/* ============================================================
+   GEOMETRIC SHAPES — 幾何形（Aesop / Aperol 拱門靈感）
+   ============================================================ */
+
+/* 拱門：頂部半圓 + 底部直角（精品櫥窗、廣告招牌愛用） */
+.shape-arch {
+  border-radius: 999px 999px 0 0;
+  overflow: hidden;
+}
+
+/* 半拱（左半邊） */
+.shape-arch-half {
+  border-radius: 999px 0 0 0;
+  overflow: hidden;
+}
+
+/* 圓形徽章（手錶錶盤、印章） */
+.shape-medallion {
+  border-radius: 50%;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+/* 八角形（Bvlgari Octo 系列、復古郵票） */
+.shape-octagon {
+  clip-path: polygon(
+    30% 0%, 70% 0%,
+    100% 30%, 100% 70%,
+    70% 100%, 30% 100%,
+    0% 70%, 0% 30%
+  );
+}
+
+/* 鑽石形（菱形 45°） */
+.shape-diamond {
+  transform: rotate(45deg);
+  aspect-ratio: 1 / 1;
+}
+.shape-diamond > * { transform: rotate(-45deg); }
+
+/* 雙線框（Tiffany 經典） */
+.frame-double {
+  position: relative;
+  padding: 12px;
+  border: 0.5px solid var(--color-gold);
+}
+.frame-double::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 0.5px solid var(--color-gold);
+  pointer-events: none;
+}
+
+/* 三線框（Bvlgari 珠寶盒） */
+.frame-triple {
+  position: relative;
+  padding: 16px;
+  border: 0.5px solid var(--color-hairline);
+}
+.frame-triple::before,
+.frame-triple::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+.frame-triple::before {
+  inset: 4px;
+  border: 0.5px solid var(--color-gold);
+}
+.frame-triple::after {
+  inset: 8px;
+  border: 0.5px solid var(--color-hairline);
+}
+
+/* ============================================================
+   ORNAMENTS — 裝飾元素（SVG 內聯）
+   ============================================================ */
+
+/* Art Deco 扇形射線（Tiffany 1925 風） */
+.deco-fan {
+  width: 80px;
+  height: 40px;
+  background: conic-gradient(from 270deg at 50% 100%,
+    transparent 0deg,
+    var(--color-gold) 5deg, transparent 8deg,
+    transparent 12deg,
+    var(--color-gold) 17deg, transparent 20deg,
+    transparent 25deg,
+    var(--color-gold) 30deg, transparent 33deg,
+    transparent 38deg,
+    var(--color-gold) 43deg, transparent 46deg,
+    transparent 51deg,
+    var(--color-gold) 56deg, transparent 59deg,
+    transparent 64deg,
+    var(--color-gold) 69deg, transparent 72deg,
+    transparent 90deg
+  );
+  margin: 0 auto;
+  opacity: 0.6;
+}
+
+/* 太陽射線（Versace 啟發） */
+.deco-sunburst {
+  width: 64px;
+  height: 64px;
+  background:
+    repeating-conic-gradient(
+      var(--color-gold) 0deg 1deg,
+      transparent 1deg 15deg
+    );
+  border-radius: 50%;
+  opacity: 0.5;
+  margin: 0 auto;
+}
+
+/* 鑽石小記號（裝飾分隔） */
+.deco-diamond {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--color-gold);
+  transform: rotate(45deg);
+}
+
+/* 星型 SVG 分隔（六角星） */
+.deco-star::before {
+  content: "✦";
+  color: var(--color-gold);
+  font-size: var(--fs-md);
+  letter-spacing: var(--tracking-wider);
+}
+
+/* 花卉飾紋（fleur-de-lis 簡化） */
+.deco-fleur {
+  display: inline-block;
+  font-family: var(--font-display);
+  color: var(--color-gold);
+  font-style: italic;
+  font-size: var(--fs-lg);
+  line-height: 1;
+}
+
+/* 章節分隔：左線—菱形—右線 */
+.divider-deco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin: var(--space-8) 0;
+}
+
+.divider-deco::before,
+.divider-deco::after {
+  content: "";
+  flex: 1;
+  max-width: 100px;
+  height: 0.5px;
+  background: linear-gradient(90deg,
+    transparent, var(--color-gold), transparent);
+}
+
+.divider-deco-symbol {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* 翻頁式邊角（書頁折角） */
+.corner-fold {
+  position: relative;
+  overflow: hidden;
+}
+.corner-fold::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(225deg,
+    var(--color-paper-deep) 50%,
+    var(--color-hairline) 50%);
+  box-shadow: -2px 2px 4px rgba(0,0,0,0.05);
+}
+
+/* ============================================================
+   IMAGE TREATMENTS — 圖像處理
+   ============================================================ */
+
+/* 黑白變彩色 hover */
+.img-monochrome {
+  filter: grayscale(100%) contrast(1.1);
+  transition: filter var(--duration-slow) var(--ease-silk);
+}
+.img-monochrome:hover {
+  filter: grayscale(0%) contrast(1);
+}
+
+/* 復古褐色調 */
+.img-sepia {
+  filter: sepia(40%) contrast(0.95);
+}
+
+/* 拱門遮罩 */
+.img-arch {
+  border-radius: 999px 999px 0 0;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+}
+
+/* 圓形畫框 */
+.img-medallion {
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: 0.5px solid var(--color-gold);
+  outline: 4px solid var(--color-paper);
+  outline-offset: -8px;
+}
+
+/* ============================================================
+   MARQUEE — 跑馬燈（精品官網現代款）
+   ============================================================ */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  border-top: 0.5px solid var(--color-hairline);
+  border-bottom: 0.5px solid var(--color-hairline);
+  padding: var(--space-5) 0;
+  background: var(--color-paper-warm);
+  user-select: none;
+}
+
+.marquee-track {
+  display: flex;
+  gap: var(--space-7);
+  animation: marquee 40s linear infinite;
+  white-space: nowrap;
+  padding-right: var(--space-7);
+}
+
+.marquee-item {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-light);
+  font-style: italic;
+  color: var(--color-ink);
+  letter-spacing: var(--tracking-tight);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-7);
+}
+
+.marquee-item::after {
+  content: "✦";
+  color: var(--color-gold);
+  font-style: normal;
+  font-size: var(--fs-md);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ============================================================
+   STAT — 大數字統計（精品愛用 italic 巨型數字）
+   ============================================================ */
+.stat {
+  text-align: center;
+  padding: var(--space-6) 0;
+}
+
+.stat-number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 8vw, 7rem);
+  font-weight: var(--fw-light);
+  font-style: italic;
+  line-height: 0.9;
+  color: var(--color-gold);
+  letter-spacing: var(--tracking-display);
+}
+
+.stat-label {
+  display: block;
+  margin-top: var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-ink-muted);
+}
+
+/* ============================================================
+   ANIMATED LINE — 入場線條動畫（Aesop 風）
+   ============================================================ */
+.line-draw {
+  position: relative;
+  padding-bottom: var(--space-6);
+}
+.line-draw::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transform: translateX(-50%);
+  animation: line-draw 1.5s var(--ease-silk) forwards;
+}
+
+@keyframes line-draw {
+  to { width: 80px; }
+}
+
+/* 垂直分隔線（精品店內展示櫃靈感） */
+.column-rule {
+  position: relative;
+}
+.column-rule::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  left: 50%;
+  width: 0.5px;
+  background: linear-gradient(180deg,
+    transparent, var(--color-hairline) 20%,
+    var(--color-hairline) 80%, transparent);
+  transform: translateX(-50%);
+}
+
+/* ============================================================
+   STAMP / SEAL — 印章（手工坊認證感）
+   ============================================================ */
+.seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border: 0.5px solid var(--color-gold);
+  border-radius: 50%;
+  position: relative;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--fs-md);
+  color: var(--color-gold);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.seal::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 0.5px solid var(--color-gold);
+  border-radius: 50%;
+}
+
+.seal-text {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  font-style: normal;
+  font-family: var(--font-sans);
+}
+
+/* ============================================================
+   HATCHING — 雕版印刷式斜線陰影（古董質感）
+   ============================================================ */
+.tx-hatching {
+  background-color: var(--color-paper);
+  background-image:
+    repeating-linear-gradient(45deg,
+      var(--color-ink) 0px, var(--color-ink) 0.5px,
+      transparent 0.5px, transparent 4px);
+  opacity: 0.95;
+}
+
+.tx-hatching-soft {
+  background-color: var(--color-paper);
+  background-image:
+    repeating-linear-gradient(45deg,
+      rgba(26,22,17,0.08) 0px, rgba(26,22,17,0.08) 0.5px,
+      transparent 0.5px, transparent 5px);
+}
+
+/* 漸變 hatching（從密到疏） */
+.tx-hatching-gradient {
+  background:
+    repeating-linear-gradient(45deg,
+      var(--color-ink) 0px, var(--color-ink) 0.5px,
+      transparent 0.5px, transparent 3px),
+    linear-gradient(180deg, var(--color-paper) 0%, var(--color-paper) 60%, transparent 100%);
+  background-blend-mode: multiply;
+}
+
+/* ============================================================
+   ABSTRACT COMPOSITION — 抽象幾何構圖（精品 hero 圖）
+   ============================================================ */
+.composition-arch {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: var(--color-paper-warm);
+  overflow: hidden;
+}
+
+.composition-arch::before {
+  /* 大金圓 */
+  content: "";
+  position: absolute;
+  width: 65%;
+  aspect-ratio: 1;
+  background: var(--color-gold);
+  border-radius: 50%;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.85;
+}
+
+.composition-arch::after {
+  /* 黑墨方塊 */
+  content: "";
+  position: absolute;
+  width: 40%;
+  aspect-ratio: 1;
+  background: var(--color-ink);
+  bottom: 0;
+  left: 0;
+}
+
+.composition-arch-letter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-thin);
+  font-size: 14rem;
+  color: var(--color-paper);
+  z-index: 2;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  mix-blend-mode: difference;
+}
+
+/* 直立金線 + 黑墨點構圖 */
+.composition-vertical {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: var(--color-paper);
+  overflow: hidden;
+}
+
+.composition-vertical::before {
+  content: "";
+  position: absolute;
+  top: 12%;
+  bottom: 12%;
+  left: 50%;
+  width: 1px;
+  background: var(--color-gold);
+}
+
+.composition-vertical::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--color-ink);
+  border-radius: 50%;
+  top: calc(50% - 7px);
+  left: calc(50% - 7px);
+}
+
+/* 三色塊（Mondrian 式精品變奏） */
+.composition-blocks {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: var(--color-paper);
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 2fr;
+  gap: 0;
+  border: 0.5px solid var(--color-hairline);
+}
+
+.composition-blocks > div:nth-child(1) {
+  grid-column: 1; grid-row: 1;
+  background: var(--color-gold);
+}
+.composition-blocks > div:nth-child(2) {
+  grid-column: 2; grid-row: 1 / span 2;
+  background: var(--color-ink);
+}
+.composition-blocks > div:nth-child(3) {
+  grid-column: 1; grid-row: 2;
+  background: var(--color-paper-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 6rem;
+  color: var(--color-ink);
+  line-height: 1;
+}
+
+/* ============================================================
+   GOLD LINE — 純金分隔線變奏
+   ============================================================ */
+.line-gold-thin {
+  height: 0.5px;
+  background: var(--color-gold);
+  opacity: 0.6;
+}
+
+.line-gold-glow {
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    transparent 20%,
+    var(--color-gold) 50%,
+    transparent 80%,
+    transparent 100%);
+}
+
+/* 上下雙金線（包夾文字） */
+.bracketed {
+  position: relative;
+  padding: var(--space-5) 0;
+}
+
+.bracketed::before,
+.bracketed::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 60px;
+  height: 0.5px;
+  background: var(--color-gold);
+  transform: translateX(-50%);
+}
+.bracketed::before { top: 0; }
+.bracketed::after  { bottom: 0; }
+
+/* ============================================================
+   CURSOR — 自訂游標暗示
+   ============================================================ */
+.cursor-luxury {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='16' cy='16' r='6' fill='none' stroke='%23a88a5c' stroke-width='0.5'/><circle cx='16' cy='16' r='1.5' fill='%23a88a5c'/></svg>") 16 16, pointer;
+}
