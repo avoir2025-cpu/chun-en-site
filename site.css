@@ -1022,6 +1022,16 @@
 }
 
 /* === Q&A 列表 === */
+.process-note {
+  display: block;
+  font-size: var(--fs-sm);
+  font-style: italic;
+  color: var(--color-ink-muted);
+  margin-top: 4px;
+  line-height: 1.5;
+  font-family: var(--font-serif);
+}
+
 .qa-list { border-top: 0.5px solid var(--color-hairline); }
 .qa-item {
   padding: var(--space-6) 0;
@@ -1996,4 +2006,47 @@
   .service-hero-text h1 {
     font-size: clamp(2.25rem, 10vw, 3.5rem) !important;
   }
+}
+
+/* === FAQ details/summary 摺疊 === */
+.qa-item summary {
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-md);
+  color: var(--color-ink);
+  margin: 0 0 var(--space-3);
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  line-height: 1.4;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-right: 28px;
+  transition: color var(--duration-base) var(--ease-silk);
+}
+.qa-item summary::-webkit-details-marker { display: none; }
+.qa-item summary::marker { display: none; content: ""; }
+.qa-item summary:hover { color: var(--color-gold); }
+.qa-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-thin);
+  color: var(--color-gold);
+  font-size: var(--fs-xl);
+  line-height: 1;
+  transition: transform 0.3s var(--ease-silk);
+}
+.qa-item[open] summary::after {
+  content: "−";
+}
+.qa-item p {
+  animation: fadeInDown 0.3s var(--ease-silk);
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
