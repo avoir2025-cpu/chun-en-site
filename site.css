@@ -1199,6 +1199,11 @@
   background: var(--color-ink);
   border-color: var(--color-ink);
 }
+.filter-btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
 .filter-btn .count {
   margin-left: var(--space-2);
   color: var(--color-gold);
