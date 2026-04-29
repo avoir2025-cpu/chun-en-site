@@ -38,8 +38,8 @@
   /* ---------- 字型：Didone 襯線為主、Sans 為輔 ---------- */
 
   /* Display：高對比襯線（Vogue/Dior 式 Didone） */
-  --font-display: "Playfair Display", "Bodoni Moda", "Cormorant Garamond",
-                  "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+  --font-display: "Bodoni Moda", "Playfair Display", "Noto Serif TC",
+                  "Source Han Serif TC", Georgia, serif;
 
   /* Serif：正文襯線（較柔和） */
   --font-serif: "Cormorant Garamond", "EB Garamond", "Noto Serif TC", Georgia, serif;
