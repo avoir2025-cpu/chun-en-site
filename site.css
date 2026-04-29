@@ -1428,9 +1428,13 @@
   .navbar {
     grid-template-columns: auto 1fr !important;
     padding: var(--space-4) var(--space-5) !important;
-    position: relative;
+    position: sticky !important;
+    top: 0;
     z-index: 101;
-    background: var(--color-paper);
+    background: rgba(250, 247, 242, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 0.5px solid var(--color-hairline-soft);
   }
   .navbar-brand {
     text-align: center;
