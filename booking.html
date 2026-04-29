@@ -10,234 +10,12 @@
   <link rel="stylesheet" href="typography.css" />
   <link rel="stylesheet" href="components.css" />
   <link rel="stylesheet" href="patterns.css" />
-  <link rel="stylesheet" href="mobile-nav.css" />
+  <link rel="stylesheet" href="site.css" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
 
-  <style>
-    .photo-fill { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .bilingual-subtitle {
-      font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light);
-      color: var(--color-ink-muted); font-size: clamp(1.125rem, 1.6vw, 1.5rem);
-      letter-spacing: 0.02em; margin-top: var(--space-3);
-    }
-    .bilingual-subtitle.on-dark { color: var(--color-hairline); }
-
-    .eyebrow-bilingual {
-      font-family: var(--font-sans); font-size: var(--fs-xs);
-      font-weight: var(--fw-medium); letter-spacing: var(--tracking-widest);
-      text-transform: uppercase; color: var(--color-gold);
-      display: inline-flex; align-items: center; gap: var(--space-3);
-    }
-    .eyebrow-bilingual::before { content: ""; width: 24px; height: 0.5px; background: var(--color-gold); }
-    .eyebrow-bilingual .cn {
-      font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light);
-      letter-spacing: 0.02em; text-transform: none;
-      color: var(--color-ink-muted); font-size: var(--fs-base);
-    }
-
-    .navbar-cta {
-      font-family: var(--font-sans); font-size: var(--fs-xs);
-      font-weight: var(--fw-medium); letter-spacing: var(--tracking-widest);
-      text-transform: uppercase; padding: 8px 18px;
-      background: var(--color-gold); color: var(--color-paper) !important;
-      border: 0.5px solid var(--color-gold);
-      transition: all var(--duration-base) var(--ease-silk);
-      margin-left: var(--space-3);
-    }
-    .navbar-cta:hover { background: var(--color-gold-deep); border-color: var(--color-gold-deep); }
-
-    /* Booking Hero */
-    .booking-hero {
-      position: relative;
-      min-height: 70vh;
-      overflow: hidden; isolation: isolate;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .booking-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-    .booking-hero::after {
-      content: ""; position: absolute; inset: 0; z-index: 1;
-      background: linear-gradient(180deg, rgba(26,22,17,0.4) 0%, rgba(26,22,17,0.6) 100%);
-    }
-    .booking-hero-content {
-      position: relative; z-index: 2; text-align: center;
-      color: var(--color-paper);
-      padding: var(--space-9) var(--space-6); max-width: 920px;
-    }
-    .booking-hero-content h1 { color: var(--color-paper); font-size: clamp(2.5rem, 7vw, 5.5rem); }
-    .booking-hero-content .lead { color: var(--color-hairline); }
-    .booking-hero-content .bilingual-subtitle { color: var(--color-hairline); }
-
-    /* LINE 諮詢卡（單一管道，桌機左圖右按鈕） */
-    .line-card {
-      background: var(--color-cream);
-      border: 0.5px solid var(--color-gold);
-      padding: var(--space-9) var(--space-8);
-      max-width: 920px;
-      margin: 0 auto;
-    }
-    .line-card-inner {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: var(--space-8);
-      align-items: center;
-    }
-    @media (max-width: 700px) {
-      .line-card-inner { grid-template-columns: 1fr; gap: var(--space-6); text-align: center; }
-      .qr-frame { margin: 0 auto; }
-    }
-    .qr-frame {
-      width: 240px; height: 240px;
-      border: 0.5px solid var(--color-hairline);
-      padding: var(--space-3);
-      background: var(--color-paper);
-      position: relative;
-      flex-shrink: 0;
-    }
-    .qr-frame img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .qr-frame .qr-fallback {
-      position: absolute; inset: var(--space-3);
-      background:
-        repeating-linear-gradient(45deg, var(--color-paper-warm) 0px, var(--color-paper-warm) 6px, var(--color-paper-deep) 6px, var(--color-paper-deep) 12px);
-      display: none;
-      align-items: center; justify-content: center;
-      flex-direction: column; gap: var(--space-2);
-      color: var(--color-ink-muted);
-      font-family: var(--font-mono);
-      font-size: var(--fs-xs);
-      letter-spacing: var(--tracking-widest);
-      text-transform: uppercase;
-      text-align: center;
-      padding: var(--space-4);
-    }
-    /* QR 圖檔不存在時的 fallback（圖載入失敗時 JS 切換顯示） */
-    .qr-frame img.broken + .qr-fallback { display: flex; }
-
-    @media (max-width: 700px) {
-      .qr-mobile-hide { display: none; }
-    }
-
-    .line-info-block .roman {
-      font-family: var(--font-display); font-style: italic; font-weight: var(--fw-thin);
-      color: var(--color-gold); font-size: var(--fs-3xl); line-height: 1;
-    }
-    .line-info-block h3 {
-      font-family: var(--font-display); font-weight: var(--fw-light);
-      font-size: clamp(1.75rem, 3vw, 2.5rem);
-      margin: var(--space-4) 0 var(--space-2);
-    }
-    .line-info-block .french {
-      font-family: var(--font-display); font-style: italic;
-      color: var(--color-gold); font-size: var(--fs-md);
-      display: block; margin-bottom: var(--space-5);
-    }
-    .line-info-block .account {
-      font-family: var(--font-mono); font-size: var(--fs-sm);
-      color: var(--color-ink-muted);
-      letter-spacing: var(--tracking-wide);
-      margin-bottom: var(--space-5);
-    }
-    .line-info-block p {
-      font-family: var(--font-serif); font-size: var(--fs-md);
-      color: var(--color-ink-soft); line-height: 1.85;
-      margin: 0 0 var(--space-5);
-    }
-
-    .line-footer-note {
-      max-width: 600px; margin: var(--space-7) auto 0;
-      padding: var(--space-5) var(--space-6);
-      border-top: 0.5px solid var(--color-hairline-soft);
-      text-align: center;
-      font-family: var(--font-serif); font-style: italic;
-      font-size: var(--fs-base); color: var(--color-ink-muted);
-      line-height: 1.85;
-    }
-
-    /* 流程步驟（橫向） */
-    .booking-flow {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-4);
-    }
-    @media (max-width: 800px) { .booking-flow { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 500px) { .booking-flow { grid-template-columns: 1fr; } }
-    .flow-step {
-      padding: var(--space-7) var(--space-5);
-      border: 0.5px solid var(--color-hairline);
-      background: var(--color-cream);
-      text-align: center;
-      position: relative;
-    }
-    .flow-step .roman {
-      font-family: var(--font-display); font-style: italic; font-weight: var(--fw-thin);
-      color: var(--color-gold); font-size: var(--fs-3xl); line-height: 1;
-      display: block; margin-bottom: var(--space-4);
-    }
-    .flow-step h4 {
-      font-family: var(--font-display); font-weight: var(--fw-light);
-      font-size: var(--fs-lg); margin: 0 0 var(--space-3);
-    }
-    .flow-step p {
-      font-family: var(--font-serif); font-size: var(--fs-base);
-      color: var(--color-ink-muted); line-height: 1.75; margin: 0;
-    }
-
-    /* 預約期間表 */
-    .lead-time-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: var(--font-serif); font-size: var(--fs-md);
-    }
-    .lead-time-table th,
-    .lead-time-table td {
-      padding: var(--space-5) var(--space-4);
-      border-bottom: 0.5px solid var(--color-hairline);
-      text-align: left;
-    }
-    .lead-time-table thead th {
-      font-family: var(--font-sans); font-size: var(--fs-xs);
-      font-weight: var(--fw-medium); text-transform: uppercase;
-      letter-spacing: var(--tracking-widest);
-      color: var(--color-ink-muted);
-      border-bottom: 1px solid var(--color-ink);
-    }
-    .lead-time-table .days {
-      font-family: var(--font-display); font-style: italic;
-      color: var(--color-gold);
-      font-size: var(--fs-xl);
-      letter-spacing: 0;
-    }
-    .lead-time-table tbody td:first-child {
-      color: var(--color-ink); font-weight: var(--fw-regular);
-    }
-    .lead-time-note {
-      margin-top: var(--space-6);
-      padding: var(--space-5) var(--space-6);
-      background: var(--color-paper-warm);
-      border-left: 2px solid var(--color-gold);
-      font-family: var(--font-serif); font-size: var(--fs-md);
-      color: var(--color-ink-soft); line-height: 1.85;
-    }
-    .lead-time-note strong { color: var(--color-ink); font-weight: var(--fw-medium); }
-
-    /* 須知列表 */
-    .notice-list { list-style: none; padding: 0; margin: 0; }
-    .notice-list li {
-      padding: var(--space-4) 0;
-      border-bottom: 0.5px solid var(--color-hairline-soft);
-      font-family: var(--font-serif); font-size: var(--fs-md);
-      color: var(--color-ink-soft); line-height: 1.85;
-    }
-    .notice-list li::before { content: "·"; color: var(--color-gold); margin-right: var(--space-3); }
-
-    .booking-cta { background: var(--color-ink); color: var(--color-paper); padding: var(--space-10) var(--space-6); text-align: center; }
-    .booking-cta h2 { color: var(--color-paper); }
-    .booking-cta .lead { color: var(--color-hairline); }
-    .booking-cta .bilingual-subtitle { color: var(--color-hairline); }
-  </style>
 </head>
 <body class="tx-paper">
 
@@ -404,7 +182,8 @@
         </p>
       </div>
 
-      <table class="lead-time-table">
+      <div class="lead-time-table-wrap">
+        <table class="lead-time-table">
         <thead>
           <tr>
             <th>服務項目</th>
@@ -437,7 +216,8 @@
             <td style="text-align: right;"><span class="days">45</span> 日</td>
           </tr>
         </tbody>
-      </table>
+        </table>
+      </div>
 
       <div class="lead-time-note">
         以上為建議預約期間，<strong>如有急件可彈性調整</strong>──請直接透過 LINE 洽詢檔期，由諮詢團隊協助安排。
