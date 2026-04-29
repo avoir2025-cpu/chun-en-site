@@ -118,7 +118,7 @@
 /* About hero — Logo 牆全幅（與 booking-hero 統一高度） */
 .about-hero {
   position: relative;
-  min-height: 64vh;
+  min-height: 78vh;
   overflow: hidden;
   isolation: isolate;
   display: flex;
@@ -141,15 +141,15 @@
   padding: var(--space-7) var(--space-5);
   max-width: 920px;
 }
-.about-hero-content h1 { color: var(--color-paper); }
+.about-hero-content h1 { color: var(--color-paper); font-size: clamp(2.25rem, 6vw, 5rem); }
 .about-hero-content .lead,
 .about-hero-content .bilingual-subtitle { color: var(--color-hairline); }
 .about-hero-content .eyebrow-bilingual { color: var(--color-gold-light); }
 
-/* Booking hero — 暖光氛圍照 */
+/* Booking hero — 暖光氛圍照（與 about-hero 統一高度與字級） */
 .booking-hero {
   position: relative;
-  min-height: 64vh;
+  min-height: 78vh;
   overflow: hidden; isolation: isolate;
   display: flex; align-items: center; justify-content: center;
 }
@@ -1428,17 +1428,20 @@
   .navbar {
     grid-template-columns: auto 1fr !important;
     padding: var(--space-4) var(--space-5) !important;
+    height: 64px !important;
     position: sticky !important;
     top: 0;
     z-index: 101;
-    background: rgba(250, 247, 242, 0.94);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 0.5px solid var(--color-hairline-soft);
+    background: var(--color-ink) !important;
+    border-bottom: 0.5px solid var(--color-ink-soft);
   }
   .navbar-brand {
     text-align: center;
     grid-column: 2;
+    color: var(--color-paper) !important;
+  }
+  .navbar-brand:hover {
+    color: var(--color-gold-light) !important;
   }
 
   /* 漢堡按鈕（label） */
@@ -1461,7 +1464,7 @@
     display: block;
     width: 22px;
     height: 1px;
-    background: var(--color-ink);
+    background: var(--color-paper);
     margin: 3px 0;
     transition: transform 0.35s var(--ease-silk),
                 opacity 0.25s var(--ease-silk);
@@ -1476,18 +1479,21 @@
     transform: translateY(-4px) rotate(-45deg);
   }
 
-  /* Overlay 全螢幕選單 */
+  /* Overlay 從 navbar 下方展開（不蓋住 navbar） */
   .mnav-overlay {
     position: fixed;
-    inset: 0;
+    top: 64px;       /* navbar 高度，overlay 從此處展開 */
+    bottom: 0;
+    left: 0;
+    right: 0;
     background: var(--color-paper);
     z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: var(--space-9) var(--space-7);
-    transform: translateY(-100%);
+    padding: var(--space-7);
+    transform: translateY(-110%);
     transition: transform 0.45s var(--ease-silk);
     pointer-events: none;
     overflow-y: auto;
@@ -1495,14 +1501,6 @@
   .mnav-toggle:checked ~ .mnav-overlay {
     transform: translateY(0);
     pointer-events: auto;
-  }
-  .mnav-overlay::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 60px;
-    border-bottom: 0.5px solid var(--color-hairline);
-    pointer-events: none;
   }
   .mnav-overlay ul {
     list-style: none;
