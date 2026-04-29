@@ -52,7 +52,7 @@
   --font-mono: "JetBrains Mono", "Courier New", monospace;
 
   /* ---------- 字級：精品偏大字級，強調氣勢 ---------- */
-  --fs-xs:    0.6875rem;  /* 11px — tracked-out 小標專用 */
+  --fs-xs:    0.8125rem;  /* 13px — 提升小標可讀性（原 11px） */
   --fs-sm:    0.8125rem;  /* 13px */
   --fs-base:  0.9375rem;  /* 15px */
   --fs-md:    1.125rem;   /* 18px — 精品內文常用 */
