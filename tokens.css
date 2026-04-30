@@ -135,28 +135,9 @@
   --content-max:      58ch;
 }
 
-/* ---------- 深色模式：香檳金 × 夜色 ---------- */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-ink:           #f5f0e6;
-    --color-ink-soft:      #d9cfbf;
-    --color-ink-muted:     #9a8f80;
-    --color-ink-faint:     #6b5d4f;
-    --color-ink-whisper:   #3d342a;
-
-    --color-paper:         #13110d;   /* 深夜色，帶暖 */
-    --color-paper-warm:    #1c1814;
-    --color-paper-deep:    #242018;
-    --color-cream:         #1a1611;
-
-    --color-hairline:      #3d342a;
-    --color-hairline-soft: #2a251e;
-
-    --color-gold:          #c9a961;
-    --color-gold-deep:     #a88a5c;
-    --color-gold-light:    #e0c27f;
-  }
-}
+/* ---------- 深色模式自動切換已停用 ---------- */
+/* 本網站為 atelier 風格，固定使用米色基底，不隨作業系統切換深色。 */
+/* 若需深色區塊（如 Hero、Booking CTA），由 components.css/site.css 個別指定。 */
 
 /* ---------- 選取反白色 ---------- */
 ::selection {

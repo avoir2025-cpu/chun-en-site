@@ -2444,3 +2444,59 @@ h4, .h4 { font-size: clamp(1.15rem, 1.2vw + 0.3rem, 1.5rem); line-height: 1.35; 
   font-size: 0.85rem !important;
   opacity: 0.9;
 }
+
+/* ============================================================
+   ▌Emergency Fix v1 — 2026.04.30
+   ▌1) C watermark 再降透明度（避免干擾文字）
+   ▌2) 手機痛點清單 flex 子元素溢出修復
+   ▌3) H1 手動斷行：手機隱藏 br，讓自然 reflow
+   ▌4) 全站防爆：min-width:0 給所有 flex 子元素的文字
+   ============================================================ */
+
+/* 1) C 浮水印 */
+.hero-layered-bg-letter {
+  opacity: 0.05 !important;
+}
+
+/* 2) 痛點清單 — 子 span flex 子元素需 min-width:0 才能 wrap */
+.pain-list li,
+section .container-narrow ol > li {
+  min-width: 0;
+}
+.pain-list li > span:not(.font-mono),
+section .container-narrow ol > li > span:not(.font-mono) {
+  min-width: 0;
+  flex: 1 1 auto;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* 手機加強：縮小編號欄寬、放寬內距 */
+@media (max-width: 600px) {
+  .pain-list li,
+  section .container-narrow ol > li {
+    gap: var(--space-3) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .pain-list li > .font-mono,
+  section .container-narrow ol > li > .font-mono {
+    flex-shrink: 0;
+    min-width: 1.6rem;
+  }
+}
+
+/* 3) H1 手動斷行：手機讓它自然換行 */
+@media (max-width: 480px) {
+  .h1-break {
+    display: none;
+  }
+}
+
+/* 4) 通用：所有區塊容器加 box-sizing 與 max-width 防爆 */
+.container, .container-narrow {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.container { max-width: var(--container-max); margin-left: auto; margin-right: auto; }
+.container-narrow { max-width: var(--container-narrow); margin-left: auto; margin-right: auto; }
