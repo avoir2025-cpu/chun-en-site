@@ -51,6 +51,8 @@ h1, h2, h3,
 .pledge-strong,
 .bilingual-subtitle {
   text-wrap: balance;
+  overflow-wrap: normal;       /* CJK 標題寧可 overflow 也不要硬斷在字中間 */
+  word-break: keep-all;         /* 強化：CJK 之間不任意斷 */
 }
 
 /* 內文 utility（給特殊長段落使用,可選） */
