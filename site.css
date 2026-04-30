@@ -55,6 +55,21 @@ h1, h2, h3,
   word-break: keep-all;         /* 強化：CJK 之間不任意斷 */
 }
 
+/* ============================================================
+   強制所有 Bodoni Moda italic 從 thin 400 → medium 500
+   原因: Bodoni Moda 本質是 hairline Didone, italic + 小字級
+   時細筆畫看不清。提升 weight 同時保留 italic 精品調性
+   ============================================================ */
+.display-italic,
+.bilingual-subtitle,
+.eyebrow-bilingual .cn,
+em,
+.font-display.italic,
+[style*="font-display"][style*="italic"],
+[style*="--font-display"][style*="italic"] {
+  font-weight: 500 !important;
+}
+
 /* 內文 utility（給特殊長段落使用,可選） */
 .text-cn {
   word-break: keep-all;
