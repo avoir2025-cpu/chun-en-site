@@ -68,6 +68,31 @@ h1, h2, h3,
   font-weight: 600 !important;
 }
 
+/* ============================================================
+   標題字重從 light(300) 提到 regular(400)
+   原因: Bodoni Moda weight 300 在英文 brand name (CHUN.EN) 下
+   呈現 hairline thin, 看不清。提到 400 仍 elegant 但筆畫實
+   ============================================================ */
+h1, h2, h3,
+.display,
+.h-hero,
+.h-section,
+.h-card {
+  font-weight: var(--fw-regular) !important;  /* 400 */
+}
+
+/* ============================================================
+   Eyebrow 字級放大 (13px → 14-16px), 提升 section label 可讀性
+   套用全站所有 .eyebrow-bilingual
+   ============================================================ */
+.eyebrow-bilingual {
+  font-size: 0.875rem !important;       /* 14px (原 13px) */
+  letter-spacing: 0.18em !important;    /* ALL CAPS 加大字距 */
+}
+.eyebrow-bilingual .cn {
+  font-size: 1.0625rem !important;      /* 17px (原 15px) */
+}
+
 /* 手機版 ≤768px: 標題允許 break-word, 避免 overflow 容器導致排版亂 */
 @media (max-width: 768px) {
   h1, h2, h3,
