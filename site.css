@@ -2154,3 +2154,183 @@ h1, h2, h3,
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ============================================================
+   ▌Typography Overhaul v2.0 — 防爆 RWD + 品牌字體系統
+   ▌Italiana logo · Cormorant Garamond serif · Source Sans 3
+   ▌Noto Serif TC 中文標題 · Noto Sans TC 中文內文
+   ▌Author note: appended at end so cascade overrides Maison defaults.
+   ============================================================ */
+
+:root {
+  /* Brand font stacks (English fronts, Chinese fallbacks) */
+  --ff-logo:  "Italiana", "Noto Serif TC", "Cormorant Garamond", serif;
+  --ff-serif: "Cormorant Garamond", "Noto Serif TC", "Times New Roman", serif;
+  --ff-sans:  "Source Sans 3", "Noto Sans TC", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- 1) 全域防爆基礎 ----------
+   防止任何子元素溢出造成手機橫向 scroll                        */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw;
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+img, svg, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- 2) Body 內文：Source Sans 3 / Noto Sans TC ---------- */
+body {
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  font-size: clamp(15px, 1vw + 0.5rem, 17px);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+p, li, dd, dt, blockquote, figcaption,
+.btn, button, input, select, textarea,
+nav, .nav, .navbar, .navbar-link,
+footer, .footer, .footer-link {
+  font-family: var(--ff-sans);
+}
+
+/* ---------- 3) Headings：Cormorant Garamond / Noto Serif TC ---------- */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4,
+.section-title, .display-italic, .lookbook-quote {
+  font-family: var(--ff-serif);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+}
+h1, .h1 { font-size: clamp(2rem,  4.5vw + 0.5rem, 4rem);    line-height: 1.15; }
+h2, .h2 { font-size: clamp(1.65rem, 3vw + 0.4rem, 2.75rem); line-height: 1.2;  }
+h3, .h3 { font-size: clamp(1.35rem, 2vw + 0.3rem, 2rem);    line-height: 1.3;  }
+h4, .h4 { font-size: clamp(1.15rem, 1.2vw + 0.3rem, 1.5rem); line-height: 1.35; }
+
+/* ---------- 4) 品牌標 .brand-mark：Italiana ---------- */
+.brand-mark {
+  font-family: var(--ff-logo);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  /* 不強制大小，繼承父元素以維持版面 */
+}
+.navbar-brand .brand-mark,
+.wordmark-expand .brand-mark {
+  letter-spacing: 0.18em;
+}
+
+/* ---------- 5) Eyebrow / Kicker：italic 義大利風 ---------- */
+.eyebrow, .kicker, .display-italic em, .lookbook-quote em {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ---------- 6) 中文「不偽斜體」修正 ----------
+   英文字體做斜體時，中文會 fake-oblique 變形。:lang(zh) 強制正體 */
+*:lang(zh), *:lang(zh-Hant), *:lang(zh-TW) {
+  font-style: normal !important;
+}
+/* 確保有中文片段的 span 不繼承斜體 */
+.cn, .zh, [lang^="zh"] {
+  font-style: normal !important;
+  font-family: "Noto Serif TC", var(--ff-serif);
+}
+
+/* ---------- 7) 中文排版斷字 ----------
+   桌機：保留語意斷詞；手機：放寬避免溢出 */
+@media (min-width: 769px) {
+  h1, h2, h3, .section-title, .display-italic {
+    word-break: keep-all;
+    line-break: strict;
+    overflow-wrap: normal;
+    text-wrap: balance;
+  }
+}
+
+/* ---------- 8) Mobile：單欄、放寬斷字、加大觸控 ---------- */
+@media (max-width: 768px) {
+  /* 單欄排版 */
+  .grid, .grid-2, .grid-3, .grid-4,
+  .row, .columns, .two-col, .three-col {
+    display: block !important;
+  }
+  .grid > *, .grid-2 > *, .grid-3 > *, .grid-4 > *,
+  .row > *, .columns > *, .two-col > *, .three-col > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 1.25rem;
+  }
+
+  /* 標題斷字放寬，避免英文長詞或中英混排撐爆 */
+  h1, h2, h3, .section-title, .display-italic {
+    word-break: normal;
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+    hyphens: auto;
+  }
+
+  /* 字體微縮 */
+  body { font-size: 15px; line-height: 1.7; }
+
+  /* 觸控目標 ≥44px (Apple HIG) */
+  .btn, button, a.btn, input[type="submit"],
+  .navbar-link, .footer-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* 防爆：任何 fixed-width 元素強制縮回 */
+  table, pre, code, iframe {
+    max-width: 100% !important;
+    overflow-x: auto;
+  }
+
+  /* padding 縮減 */
+  .section, section { padding-left: 1rem; padding-right: 1rem; }
+}
+
+/* ---------- 9) Tablet：雙欄 ---------- */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .grid-3, .three-col {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem;
+  }
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ---------- 10) 字距微調（高 quality typography） ---------- */
+.brand-mark, h1, h2, .display-italic, .section-title {
+  font-feature-settings: "kern" 1, "liga" 1, "dlig" 1;
+}
+
+/* ---------- 11) 不允許舊字體殘留 ----------
+   若 Maison tokens 的 --font-display / --font-sans 仍指向 Bodoni / Jost / Playfair，
+   這裡硬性蓋過確保整站一致                                      */
+:root {
+  --font-display: var(--ff-serif);
+  --font-sans:    var(--ff-sans);
+  --font-mono:    var(--ff-sans);
+}
+
+/* ---------- 12) 數字 tabular（價格、時間表對齊） ---------- */
+.price, time, .num, .tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+/* ============================================================
+   ▌END Typography Overhaul v2.0
+   ============================================================ */
