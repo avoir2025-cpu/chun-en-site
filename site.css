@@ -2745,3 +2745,34 @@ p, span, li, dd, dt, td, th, a, label, blockquote {
 /* ============================================================
    ▌END Editorial-spread Mobile Fix
    ============================================================ */
+
+/* ============================================================
+   ▌Comfort Reading v1 — line-height ≥ 1.6 + 留白統一
+   ▌2026.04.30 — 高端閱讀舒適度，呼吸感
+   ============================================================ */
+
+/* 內文段落最低行高 1.7（中文需求高於 1.6） */
+p, li, dd, blockquote, td {
+  line-height: 1.75;
+}
+.lead, p.lead {
+  line-height: 1.85 !important;
+}
+.font-serif:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+  line-height: 1.85;
+}
+
+/* Hero / Section 留白稍微加大（呼吸感） */
+.hero-layered {
+  padding-top: var(--space-9);
+  padding-bottom: var(--space-9);
+}
+@media (min-width: 1024px) {
+  .section {
+    padding-top: var(--space-9);
+    padding-bottom: var(--space-9);
+  }
+}
+/* ============================================================
+   ▌END Comfort Reading
+   ============================================================ */
