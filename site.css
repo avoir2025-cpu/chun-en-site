@@ -56,13 +56,12 @@ h1, h2, h3,
 }
 
 /* ============================================================
-   強制所有 Bodoni Moda italic 加粗到 600 (SemiBold)
-   500 仍偏細,提升至 600 維持 italic 精品調性 + 小字可讀
+   小字 italic 加粗 600 (footer / eyebrow / subtitle)
+   ★ 排除 .display-italic 跟 em：那些用於大字 hero,加粗會讓中文
+   fallback 到 Noto Serif TC 700 變超粗黑體（如「對話」案例）
    ============================================================ */
-.display-italic,
 .bilingual-subtitle,
 .eyebrow-bilingual .cn,
-em,
 .font-display.italic,
 [style*="font-display"][style*="italic"],
 [style*="--font-display"][style*="italic"] {
