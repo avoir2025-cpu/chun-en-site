@@ -2342,3 +2342,105 @@ h4, .h4 { font-size: clamp(1.15rem, 1.2vw + 0.3rem, 1.5rem); line-height: 1.35; 
 /* ============================================================
    ▌END Typography Overhaul v2.0
    ============================================================ */
+
+/* ============================================================
+   ▌Navbar Services Dropdown — desktop hover, mobile in-overlay group
+   ============================================================ */
+.navbar-nav-left .has-dropdown {
+  position: relative;
+}
+.navbar-nav-left .has-dropdown > a {
+  cursor: pointer;
+}
+.navbar-nav-left .dropdown {
+  position: absolute;
+  top: 100%;
+  left: -1rem;
+  min-width: 240px;
+  margin: 0;
+  padding: var(--space-3) 0;
+  list-style: none;
+  background: var(--color-paper);
+  border: 0.5px solid var(--color-hairline);
+  box-shadow: 0 12px 32px rgba(20, 18, 14, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity .25s var(--ease-silk), transform .25s var(--ease-silk), visibility 0s linear .25s;
+  z-index: 200;
+}
+.navbar-nav-left .has-dropdown:hover .dropdown,
+.navbar-nav-left .has-dropdown:focus-within .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity .25s var(--ease-silk), transform .25s var(--ease-silk), visibility 0s linear 0s;
+}
+.navbar-nav-left .dropdown li {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+.navbar-nav-left .dropdown a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3) var(--space-5);
+  text-decoration: none;
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+  transition: background .2s var(--ease-silk), color .2s var(--ease-silk);
+  border: none;
+}
+.navbar-nav-left .dropdown a:hover {
+  background: var(--color-paper-warm);
+  color: var(--color-ink);
+}
+.navbar-nav-left .dropdown .dd-en {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  font-size: 0.95rem;
+}
+.navbar-nav-left .dropdown .dd-cn {
+  font-family: var(--ff-sans);
+  font-size: 0.78rem;
+  color: var(--color-ink-muted);
+  letter-spacing: 0.05em;
+}
+
+/* Mobile: hide desktop dropdown; mnav-overlay handles it via group + sub items */
+@media (max-width: 900px) {
+  .navbar-nav-left .dropdown { display: none !important; }
+}
+
+/* Mobile overlay group title + sub-item indent */
+.mnav-overlay .mnav-group {
+  pointer-events: none;
+  padding: 1.2rem 0 0.4rem !important;
+}
+.mnav-overlay .mnav-group-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--color-gold-light);
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+}
+.mnav-overlay .mnav-group-title .en {
+  display: block;
+  font-style: italic;
+  color: var(--color-gold);
+}
+.mnav-overlay .mnav-sub {
+  padding-left: 1.5rem !important;
+  font-size: 0.95rem !important;
+  opacity: 0.85;
+}
+.mnav-overlay .mnav-sub .en {
+  font-size: 0.85rem !important;
+  opacity: 0.9;
+}
