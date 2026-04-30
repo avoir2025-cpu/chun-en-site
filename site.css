@@ -16,6 +16,58 @@
 
 
 /* =============================================================
+   § 0  BASE — 中文排版優化
+   ------------------------------------------------------------
+   從 typography v1.0 spec 精華擷取（不取代既有 token system）：
+   - 中文長段落行高 1.85（西文 1.5 太擠）
+   - 中文不在標點處斷行（word-break: keep-all）
+   - 標點符號不出現於行首（line-break: strict）
+   - 大標題自動平衡換行（text-wrap: balance），避免孤字
+   - Font smoothing + text-rendering 提升精品調性
+   ============================================================= */
+
+:root {
+  /* 中文行高語義化 token（與既有 --lh-loose 同值,但命名更清楚） */
+  --lh-cn: 1.85;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  line-height: var(--lh-cn);
+  word-break: keep-all;       /* 中文不在標點處任意斷行 */
+  overflow-wrap: break-word;  /* 過長英文/URL 必要時才換行 */
+  line-break: strict;         /* 標點符號不出現在行首 */
+}
+
+/* 大標題自動平衡換行：避免最後一行只有 1-2 個字的孤字 */
+h1, h2, h3,
+.display,
+.pledge-strong,
+.bilingual-subtitle {
+  text-wrap: balance;
+}
+
+/* 內文 utility（給特殊長段落使用,可選） */
+.text-cn {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-break: strict;
+}
+.balance {
+  text-wrap: balance;
+}
+.nowrap {
+  white-space: nowrap;
+}
+
+
+/* =============================================================
    § 0  UTILITIES
    ============================================================= */
 
