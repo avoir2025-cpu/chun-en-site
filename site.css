@@ -2086,7 +2086,10 @@ h1, h2, h3,
 @media (max-width: 480px) {
 
   .navbar-brand {
-    font-size: var(--fs-base) !important;
+    font-size: 1.4rem !important;
+  }
+  .navbar-brand .brand-mark {
+    font-size: 1.4rem !important;
   }
 
   /* Hero CTA 按鈕全寬 */
@@ -2226,6 +2229,11 @@ h4, .h4 { font-size: clamp(1.15rem, 1.2vw + 0.3rem, 1.5rem); line-height: 1.35; 
 .navbar-brand .brand-mark,
 .wordmark-expand .brand-mark {
   letter-spacing: 0.18em;
+  font-size: clamp(1.35rem, 1.6vw + 0.6rem, 1.75rem);
+  line-height: 1;
+}
+.navbar-brand {
+  font-size: clamp(1.35rem, 1.6vw + 0.6rem, 1.75rem);
 }
 
 /* ---------- 5) Eyebrow / Kicker：italic 義大利風 ---------- */
