@@ -2173,9 +2173,11 @@ h1, h2, h3,
 }
 
 /* ---------- 1) 全域防爆基礎 ----------
-   防止任何子元素溢出造成手機橫向 scroll                        */
+   防止任何子元素溢出造成手機橫向 scroll
+   ⚠️ 用 overflow-x: clip 而非 hidden — hidden 會建立新 scroll
+       container，導致 navbar 的 position: sticky 失效            */
 html, body {
-  overflow-x: hidden !important;
+  overflow-x: clip;
   max-width: 100vw;
 }
 *, *::before, *::after {
@@ -2676,4 +2678,70 @@ p, span, li, dd, dt, td, th, a, label, blockquote {
 
 /* ============================================================
    ▌END Mobile Readability & Overflow Safety Net
+   ============================================================ */
+
+/* ============================================================
+   ▌Editorial-spread + image-plate Mobile Fix v1
+   ▌2026.04.30 — § 4 Signature 等 editorial 並排區塊在手機板
+   ▌的「位置格跑掉」修復
+   ============================================================ */
+@media (max-width: 900px) {
+
+  /* editorial-spread 單欄時，中間 1fr 空欄不該佔位 */
+  .editorial-spread > div:empty,
+  .editorial-spread > div[style=""] {
+    display: none !important;
+  }
+
+  /* 第一欄文字 div 的 inline padding: var(--space-7) 0 在手機板過大 */
+  .editorial-spread > div[style*="padding: var(--space-7) 0"] {
+    padding: 0 !important;
+  }
+
+  /* 文字側 inline text-align:right 在單欄回 left（HOW WE WORK 區） */
+  .editorial-spread > div[style*="text-align: right"] {
+    text-align: left !important;
+  }
+  .editorial-spread > div[style*="text-align: right"] ol {
+    text-align: left;
+  }
+  .editorial-spread > div[style*="text-align: right"] .lead {
+    margin-left: 0 !important;
+  }
+
+  /* image-plate 在窄螢幕限高，避免 3/4 portrait 太長 */
+  .editorial-spread .image-plate {
+    max-width: 100%;
+  }
+  .editorial-spread .image-plate-frame {
+    max-height: 60vh;
+  }
+  .editorial-spread .image-plate-frame img[style*="aspect-ratio: 3/4"],
+  .editorial-spread .image-plate-frame img[style*="aspect-ratio: 3 / 4"] {
+    max-height: 60vh;
+    object-fit: cover;
+    aspect-ratio: 4/5 !important;
+  }
+
+  /* 圖片 + 文字 順序：手機板讓圖優先（除非已是文先） */
+  /* 這裡不強制 reorder，依各區設計呈現 */
+}
+
+/* ≤640px 再加強 */
+@media (max-width: 640px) {
+  .editorial-spread {
+    gap: var(--space-5) !important;
+    padding: var(--space-5) 0 !important;
+  }
+  .editorial-spread .image-plate-frame img {
+    aspect-ratio: 4/5 !important;
+  }
+  .editorial-spread .image-plate .caption {
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    font-size: 0.78rem;
+  }
+}
+/* ============================================================
+   ▌END Editorial-spread Mobile Fix
    ============================================================ */
