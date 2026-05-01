@@ -2847,3 +2847,100 @@ p, li, dd, blockquote, td {
 /* ============================================================
    ▌END Safe-Area-Inset Support
    ============================================================ */
+
+/* ============================================================
+   ▌HOW WE WORK 流程列表 — 標題 / 描述分行
+   ============================================================ */
+.how-process {
+  text-align: left;
+}
+.how-step {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  padding: var(--space-4) 0;
+  border-top: 0.5px solid var(--color-hairline);
+}
+.how-step-last {
+  border-bottom: 0.5px solid var(--color-hairline);
+}
+.how-step-num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-gold);
+  flex-shrink: 0;
+  min-width: 2rem;
+  padding-top: 4px;
+}
+.how-step-body {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.how-step-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0;
+  margin: 0;
+  font-family: var(--ff-serif);
+  font-weight: 500;
+  font-size: var(--fs-md);
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+.how-step-title .how-en {
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+.how-step-title .how-divider {
+  margin: 0 0.4em;
+  color: var(--color-ink-faint);
+  font-style: normal;
+}
+.how-step-title .how-cn {
+  font-family: "Noto Serif TC", var(--ff-serif);
+  font-style: normal;
+  font-weight: 500;
+}
+.how-step-desc {
+  margin: var(--space-2) 0 0;
+  font-family: var(--ff-sans);
+  font-size: var(--fs-sm);
+  color: var(--color-ink-muted);
+  line-height: 1.7;
+}
+@media (max-width: 600px) {
+  .how-step {
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+  }
+  .how-step-num {
+    min-width: 1.6rem;
+  }
+  .how-step-title {
+    font-size: 0.95rem;
+  }
+  .how-step-title .how-divider {
+    margin: 0 0.3em;
+  }
+  .how-step-desc {
+    font-size: 0.85rem;
+  }
+}
+
+/* ============================================================
+   ▌Atelier Lookbook — Plate VII-XIV 編號樣式
+   ============================================================ */
+.lookbook-item-caption .plate-num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 2px;
+}
+.lookbook-item-caption .en {
+  font-style: italic;
+}
