@@ -2776,3 +2776,74 @@ p, li, dd, blockquote, td {
 /* ============================================================
    ▌END Comfort Reading
    ============================================================ */
+
+/* ============================================================
+   ▌Safe-Area-Inset Support v1
+   ▌2026.04.30 — iPhone 16 Pro / Dynamic Island / 全機型一致框架
+   ▌
+   ▌業界主流做法（Apple HIG / Google Material / Bootstrap 5.3+ / Tailwind）：
+   ▌  1. <meta viewport-fit=cover> 開啟全螢幕
+   ▌  2. env(safe-area-inset-top/right/bottom/left) 在固定/sticky 元件加 padding
+   ▌  3. 背景一定要鋪到 edge to edge（避免黑邊）
+   ▌  4. 用 max() 確保 fallback 值（safe-area 為 0 時仍有合理 padding）
+   ============================================================ */
+
+/* ---------- 1. Sticky/fixed navbar — 加 safe-area-inset 避免被
+   Dynamic Island / 瀏海 / 圓角 切到 ---------- */
+@media (max-width: 768px) {
+  .navbar {
+    padding-top: max(env(safe-area-inset-top), var(--space-3)) !important;
+    padding-bottom: var(--space-3) !important;
+    padding-left: max(env(safe-area-inset-left), var(--space-5)) !important;
+    padding-right: max(env(safe-area-inset-right), var(--space-5)) !important;
+    /* navbar 高度動態：64px content + safe-area-top */
+    height: auto !important;
+    min-height: calc(64px + env(safe-area-inset-top));
+  }
+
+  /* mobile overlay 起點對齊 navbar 底部（含 safe-area） */
+  .mnav-overlay {
+    top: calc(64px + env(safe-area-inset-top)) !important;
+    padding-left: max(env(safe-area-inset-left), var(--space-5)) !important;
+    padding-right: max(env(safe-area-inset-right), var(--space-5)) !important;
+    padding-bottom: max(env(safe-area-inset-bottom), var(--space-7)) !important;
+  }
+}
+
+/* ---------- 2. Floating LINE 按鈕 — 加 safe-area-inset 避免被
+   Home indicator（底部黑條）擋住 ---------- */
+.floating-line-btn {
+  bottom: max(env(safe-area-inset-bottom), 1.5rem) !important;
+  right: max(env(safe-area-inset-right), 1.5rem) !important;
+}
+
+/* ---------- 3. Hero 區塊 padding — 在動態島下方留出視覺呼吸 ---------- */
+@media (max-width: 768px) {
+  /* Hero 從 navbar 下方開始，已被 sticky navbar 推開，但若 navbar 不 sticky
+     的頁面，Hero 第一行可能在動態島後方 → 加 safe-area 緩衝 */
+  .about-hero,
+  .booking-hero,
+  .service-hero-bleed,
+  .hero-layered,
+  .page-hero {
+    padding-top: calc(env(safe-area-inset-top) + var(--space-7));
+  }
+}
+
+/* ---------- 4. Footer / 底部 fixed 元素 — 預留 home indicator 空間 ---------- */
+@media (max-width: 768px) {
+  footer {
+    padding-bottom: max(env(safe-area-inset-bottom), var(--space-7)) !important;
+  }
+}
+
+/* ---------- 5. 全頁 body padding-bottom 給 floating LINE 留位 ---------- */
+@media (max-width: 768px) {
+  body {
+    /* 確保最底下的 CTA 不會被 floating LINE 按鈕（56px+24px）+ home indicator 擋住 */
+    /* 不直接 padding-bottom，讓 floating button 自由疊浮，footer 自己有 padding 即可 */
+  }
+}
+/* ============================================================
+   ▌END Safe-Area-Inset Support
+   ============================================================ */
