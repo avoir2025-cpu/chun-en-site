@@ -2944,3 +2944,71 @@ p, li, dd, blockquote, td {
 .lookbook-item-caption .en {
   font-style: italic;
 }
+
+/* ============================================================
+   ▌Portfolio Masonry — Mobile Responsive
+   ▌2026.04.30 — 修復手機板縮圖過小（原 column-count: 3 寫死）
+   ▌策略：≤900px 2 欄 / ≤600px 1 欄全寬 / 觸控裝置永遠顯示 meta
+   ============================================================ */
+
+/* 平板 / 大型手機 */
+@media (max-width: 900px) {
+  .masonry {
+    column-count: 2 !important;
+    column-gap: var(--space-3) !important;
+    padding: var(--space-6) 0 !important;
+  }
+  .masonry-item {
+    margin-bottom: var(--space-3) !important;
+  }
+}
+
+/* 手機：單欄全寬，每張圖看得清楚 */
+@media (max-width: 600px) {
+  .masonry {
+    column-count: 1 !important;
+    column-gap: 0 !important;
+    padding: var(--space-5) 0 !important;
+  }
+  .masonry-item {
+    margin-bottom: var(--space-4) !important;
+  }
+  /* 觸控裝置沒有 hover 狀態，meta 永遠顯示（半透明深色漸層 + 文字） */
+  .masonry-item::after {
+    opacity: 0.7 !important;
+    background: linear-gradient(180deg, transparent 35%, rgba(26, 22, 17, 0.85) 100%) !important;
+  }
+  .masonry-item .meta {
+    opacity: 1 !important;
+    transform: none !important;
+    padding: var(--space-4) !important;
+  }
+  .masonry-item .meta .tag {
+    font-size: 0.7rem !important;
+  }
+  .masonry-item .meta h4 {
+    font-size: 1rem !important;
+  }
+  /* 取消 hover scale（觸控無 hover，避免 transition 卡住） */
+  .masonry-item:hover .photo-fill {
+    transform: none;
+  }
+}
+
+/* 觸控裝置通用（hover 不可靠） */
+@media (hover: none) {
+  .masonry-item::after { opacity: 0.6; }
+  .masonry-item .meta { opacity: 1; transform: none; }
+}
+
+/* Filter bar 在手機上也要好按 */
+@media (max-width: 600px) {
+  .filter-bar {
+    padding: var(--space-3) var(--space-4) !important;
+    gap: var(--space-2) !important;
+  }
+  .filter-btn {
+    font-size: 0.78rem !important;
+    padding: 8px 12px !important;
+  }
+}
