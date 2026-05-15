@@ -3012,3 +3012,66 @@ p, li, dd, blockquote, td {
     padding: 8px 12px !important;
   }
 }
+
+/* ============================================================
+   ▌Portfolio Masonry — 桌機左右對齊修復 v2
+   ▌2026.04.30 — column-count 改 CSS Grid，徹底等寬對齊
+   ▌+ scrollbar-gutter: stable 防止 scrollbar 造成左右視覺偏移
+   ============================================================ */
+
+/* 全域：穩定 scrollbar 寬度（避免有/沒有 scrollbar 的頁切換時頁面跳動）*/
+html {
+  scrollbar-gutter: stable;
+}
+
+/* 桌機：3 欄 grid（取代 column-count）*/
+@media (min-width: 901px) {
+  .masonry {
+    column-count: unset !important;     /* 移除 multi-column */
+    column-gap: unset !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-auto-flow: row dense;          /* 緊湊填入，視覺更平衡 */
+    gap: var(--space-4) !important;
+    padding: var(--space-7) 0 !important;
+    width: 100%;
+  }
+  .masonry-item {
+    margin-bottom: 0 !important;        /* gap 處理間距，不再用 margin */
+    break-inside: unset;
+    width: 100%;
+  }
+  /* item 自然高度（依圖片比例），不強制等高 */
+  .masonry-item .photo-fill {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+/* 平板 769-900px：2 欄 grid */
+@media (min-width: 601px) and (max-width: 900px) {
+  .masonry {
+    column-count: unset !important;
+    column-gap: unset !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: var(--space-3) !important;
+  }
+  .masonry-item {
+    margin-bottom: 0 !important;
+    break-inside: unset;
+  }
+  .masonry-item .photo-fill {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+/* 手機 ≤600px：1 欄（既有規則已處理，這裡確保 grid 一致性） */
+@media (max-width: 600px) {
+  .masonry {
+    display: block !important;          /* 單欄不需要 grid */
+  }
+}
