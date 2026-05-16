@@ -3075,3 +3075,160 @@ html {
     display: block !important;          /* 單欄不需要 grid */
   }
 }
+
+/* ============================================================
+   ▌Scaled-Desktop + Chinese Break Polish v1
+   ▌2026.05.16 — 修兩個真空地帶
+   ▌  1. 1024-1366px 顯示比例 150% 縮放區
+   ▌  2. iPhone H1 中文亂斷句
+   ============================================================ */
+
+/* ---------- 1. 1024-1366px：Scaled-Desktop 區 ----------
+   主要對應：
+   - Windows 1920×1080 @ 150% scaling → 實際 1280px viewport
+   - Windows 2560×1440 @ 150% scaling → 實際 1707px viewport (邊緣)
+   - 13" 筆電原生解析度（如 MacBook Air 13）
+   策略：保留桌機格局但縮減 padding、放寬中文斷字 */
+@media (min-width: 1024px) and (max-width: 1366px) {
+
+  /* 容器 padding 收緊，讓內容有呼吸空間 */
+  .container, .container-narrow {
+    padding-left: var(--space-5) !important;
+    padding-right: var(--space-5) !important;
+  }
+
+  /* Section 上下 padding 縮減 */
+  .section, .section-lg {
+    padding-top: var(--space-7) !important;
+    padding-bottom: var(--space-7) !important;
+  }
+
+  /* Hero-layered 雙側裝飾條太佔空間，隱藏 */
+  .hero-side-text-left,
+  .hero-side-text-right {
+    display: none !important;
+  }
+
+  /* Hero 內容 max-width 收緊 */
+  .hero-layered-content {
+    max-width: 720px;
+  }
+
+  /* H1 / H2 / H3 在此區域放寬斷字（避免溢出，但保留 text-wrap:pretty） */
+  h1, h2, h3,
+  .display,
+  .pledge-strong {
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    text-wrap: pretty;
+  }
+
+  /* Editorial spread 在此區比例調整 */
+  .editorial-spread {
+    grid-template-columns: 4fr 1fr 5fr;
+    gap: var(--space-5);
+  }
+
+  /* Commitment grid / scenario-grid 維持 3 欄但 gap 收緊 */
+  .commitment-grid,
+  .scenario-grid {
+    gap: var(--space-4) !important;
+  }
+}
+
+
+/* ---------- 2. 強化中文斷句（全 viewport，現代瀏覽器） ----------
+   word-break: auto-phrase 是 CSS Text Module Level 4 新屬性，
+   支援 Chrome 119+ / Safari 17.4+ / Firefox（roadmap）
+   會以中文「語意片語」為單位斷行，比 normal/keep-all 都聰明
+   不支援的瀏覽器自動 fallback 到原規則，無破壞性 */
+
+h1, h2, h3, h4,
+.display, .pledge-strong,
+.hero-layered-content p,
+.lead, .bilingual-subtitle {
+  /* 嘗試新屬性，若不支援自動忽略 */
+  word-break: auto-phrase;
+  text-wrap: pretty;
+  hanging-punctuation: allow-end;
+}
+
+/* 桌機保留 balance（短標題優美） */
+@media (min-width: 1367px) {
+  h1, h2, .display, .pledge-strong {
+    text-wrap: balance;
+  }
+}
+
+
+/* ---------- 3. iPhone Hero H1 強制手動斷行 ----------
+   恢復 .h1-break 在所有手機尺寸顯示，避免瀏覽器隨機亂斷
+   只在極窄裝置（≤340px，iPhone SE 第一代）才隱藏給自然 reflow */
+
+@media (max-width: 768px) {
+  .h1-break {
+    display: inline !important;
+  }
+  /* <br> 元素本身，確保斷行有效 */
+  br.h1-break {
+    display: block !important;
+    content: "" !important;
+  }
+}
+
+@media (max-width: 340px) {
+  .h1-break {
+    display: none !important;
+  }
+  br.h1-break {
+    display: none !important;
+  }
+}
+
+
+/* ---------- 4. 全站 Hero H1 收緊：避免單行過長 ----------
+   讓 H1 在中等手機（401-640px）有合理的 max-width，
+   配合 .h1-break 自然形成兩行結構 */
+
+@media (min-width: 401px) and (max-width: 640px) {
+  .hero-layered-content h1,
+  .about-hero-content h1,
+  .booking-hero-content h1,
+  .service-hero-text h1,
+  .service-hero-bleed-content h1,
+  .page-hero h1 {
+    max-width: 18ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+/* ---------- 5. 段落引導句 max-width 收緊（mid-range mobile） ----------
+   避免長 lead 段落在 iPhone 14/15/16 Pro 上產生 5-6 行的視覺壓迫 */
+
+@media (min-width: 401px) and (max-width: 640px) {
+  .lead, p.lead {
+    max-width: 28ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+/* ---------- 6. 顯示比例縮放偵測（CSS-only fallback） ----------
+   桌機用戶若有 zoom，rem 會跟著縮放，clamp() 仍能照顧。
+   這裡確保 .container 在縮放後不會「沒有 margin」貼邊 */
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  /* 雙重保險：navbar 在此 viewport 還是桌機版（≥769），
+     確保有左右 padding 不貼邊 */
+  .navbar {
+    padding-left: var(--space-5) !important;
+    padding-right: var(--space-5) !important;
+  }
+}
+
+/* ============================================================
+   ▌END Scaled-Desktop + Chinese Break Polish
+   ============================================================ */
