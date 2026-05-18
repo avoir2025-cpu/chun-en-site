@@ -3546,3 +3546,138 @@ a.btn-ghost {
     font-size: clamp(2.5rem, 11vw, 3.75rem) !important;
   }
 }
+
+/* ============================================================
+   ▌Master Polish v1 — Atelier 質感升級
+   ▌2026.05.18 — 大師級審稿後的視覺層調整
+   ▌
+   ▌Phase 1 處理：
+   ▌  A. 區塊留白 padding 從 space-7 → 120-160px 範圍
+   ▌  B. 所有 transition 統一為 0.5s ease（柔和淡出）
+   ▌  C. Plate caption 字級縮、灰度提，回到精裝書圖說感
+   ▌  D. CN/EN bilingual subtitle 對比加強
+   ▌  E. 邊框／分割線統一用 hairline 淡灰
+   ============================================================ */
+
+/* ---------- A. 區塊大留白 ---------- */
+@media (min-width: 1024px) {
+  .section,
+  .section-lg {
+    padding-top: clamp(80px, 11vh, 160px) !important;
+    padding-bottom: clamp(80px, 11vh, 160px) !important;
+  }
+  /* Hero 留白也加大 */
+  .hero-layered {
+    min-height: 85vh !important;
+    padding-top: clamp(60px, 9vh, 140px) !important;
+    padding-bottom: clamp(80px, 11vh, 160px) !important;
+  }
+}
+
+/* ---------- B. 全站 transition 統一柔化 ---------- */
+a, button, .btn,
+.btn-primary, .btn-gold, .btn-ghost, .btn-outline,
+.navbar-cta, .mnav-cta,
+.scenario-card, .commitment-card,
+.lookbook-item, .masonry-item,
+.image-plate, .image-plate-frame img,
+input, textarea, select {
+  transition: all 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) !important;
+}
+
+/* hover 不要 transform 突兀，改用顏色／陰影漸變 */
+.scenario-card:hover,
+.commitment-card:hover {
+  transform: none !important;
+  background-color: var(--color-paper-warm);
+}
+
+/* ---------- C. Plate caption 精裝書感 ---------- */
+.caption,
+.image-plate .caption {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;        /* 靠右對齊（編輯感） */
+  gap: 4px !important;
+  padding: var(--space-3) var(--space-2) 0 !important;
+  text-align: right;
+}
+.caption-plate,
+.caption .caption-plate {
+  font-family: var(--font-mono) !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.22em !important;       /* 字距加大 */
+  text-transform: uppercase;
+  color: var(--color-ink-faint) !important; /* 灰度提（從 gold → faint） */
+  opacity: 0.7;
+}
+.caption-title {
+  font-family: var(--ff-serif) !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-soft);
+}
+.caption span:not(.caption-plate):not(.caption-title) {
+  font-family: "Noto Serif TC", var(--ff-serif);
+  font-size: 0.78rem !important;
+  color: var(--color-ink-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ---------- D. CN/EN bilingual subtitle 對比加強 ---------- */
+.bilingual-subtitle {
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem) !important;
+  letter-spacing: 0.08em !important;       /* 字距加寬（西式裝飾感） */
+  color: var(--color-ink-muted) !important;
+  font-weight: 400 !important;
+  text-transform: none;
+  opacity: 0.85;
+}
+
+/* eyebrow 同樣強化對比：英文小+寬距，中文反而成為主體 */
+.eyebrow-bilingual {
+  font-size: 0.78rem !important;
+  letter-spacing: 0.22em !important;
+  color: var(--color-gold) !important;
+  opacity: 0.85;
+}
+.eyebrow-bilingual .cn {
+  font-size: 0.95rem !important;
+  letter-spacing: 0.06em !important;
+  color: var(--color-ink-soft) !important;
+  opacity: 1;
+  font-weight: 500 !important;
+  font-style: normal !important;
+}
+
+/* ---------- E. 區塊間水平分割線（atelier 細節） ---------- */
+.section + .section {
+  border-top: 0.5px solid var(--color-hairline);
+}
+/* bg-paper-warm 區塊與一般區塊之間用不同的 paper 色自動形成分區 */
+
+/* ---------- F. 滾動進入時的 fade-in 動畫（編輯感）---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal,
+  .reveal-slow {
+    animation-duration: 1.2s !important;
+    animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1) !important;
+  }
+}
+
+/* ---------- G. 按鈕 hover 從「填色翻轉」改為「柔和淡出」 ---------- */
+.btn-primary:hover,
+.btn-gold:hover {
+  opacity: 0.85;
+  /* 取消原本翻成透明 + ink color 的反差 */
+}
+.btn-ghost:hover {
+  border-bottom-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+/* ============================================================
+   ▌END Master Polish v1
+   ============================================================ */

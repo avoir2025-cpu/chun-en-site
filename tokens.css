@@ -21,14 +21,14 @@
   --color-ink-whisper:   #c9bfb2;
 
   /* 背景：象牙白（精品標誌性，絕不用純白） */
-  --color-paper:         #faf7f2;   /* 主背景：紙張質地 */
-  --color-paper-warm:    #f5f0e6;   /* 暖乳白：次級區塊 */
-  --color-paper-deep:    #ede6d8;   /* 深乳白：強調區 */
+  --color-paper:         #f5f1e8;   /* 主背景：暖沙米白（高端 atelier 質感） */
+  --color-paper-warm:    #ede5d4;   /* 暖乳白：次級區塊 */
+  --color-paper-deep:    #e2d8c4;   /* 深乳白：強調區 */
   --color-cream:         #ffffff;   /* 純白：僅用於卡片對比 */
 
   /* Hairline 髮絲邊（精品的標誌） */
-  --color-hairline:      #d9cfbf;
-  --color-hairline-soft: #e8e0d0;
+  --color-hairline:      #e5e0d3;   /* 極淡分割線（從 d9cfbf 提淺） */
+  --color-hairline-soft: #efe9da;
 
   /* 狀態色（精品只用極淡色調） */
   --color-success:       #6b8e5a;
