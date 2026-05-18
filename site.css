@@ -3374,3 +3374,41 @@ a.btn-ghost {
   white-space: nowrap;             /* 關鍵：中文也 nowrap，避免被切 */
   opacity: 0.85;
 }
+
+/* ============================================================
+   ▌Hero H1 Hierarchy v2 — 字級層次凸顯關鍵字
+   ▌2026.05.18
+   ▌  Line 1（statement）：100% H1 字級，黑字 Noto Serif TC
+   ▌  Line 2（accent）：70% H1 字級，黑字
+   ▌  Key word（hero-key）：90% accent 字級（=63% statement），
+   ▌     金色 italic Cormorant Garamond serif
+   ▌
+   ▌  視覺結果：第一行大宣言 → 第二行收斂為支持句 → 金色關鍵字
+   ▌     用「斜體 + 不同 serif + 不同色」三重對比凸顯
+   ============================================================ */
+
+.hero-h1 .hero-line-statement {
+  /* 維持原 H1 字級，作為主宣言 */
+}
+
+.hero-h1 .hero-line-accent {
+  font-size: 0.7em;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.hero-h1 .hero-key {
+  font-family: var(--ff-serif);     /* Cormorant Garamond serif */
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-gold);
+  letter-spacing: 0.02em;
+  /* 0.9em of parent (accent line 0.7em of H1) = 63% H1，與主句呼應 */
+}
+
+/* 手機 ≤640px：accent line 稍微再縮，但保留 hierarchy */
+@media (max-width: 640px) {
+  .hero-h1 .hero-line-accent {
+    font-size: 0.75em;
+  }
+}
