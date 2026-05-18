@@ -3232,3 +3232,41 @@ h1, h2, h3, h4,
 /* ============================================================
    ▌END Scaled-Desktop + Chinese Break Polish
    ============================================================ */
+
+/* ============================================================
+   ▌Chinese Break Hint v1
+   ▌2026.05.18 — 在長中文標題的逗號處放 <br class="cn-break">
+   ▌  桌機（≥1024px）隱藏 → 自然 reflow
+   ▌  其他尺寸顯示 → 強制斷在語意完整的位置
+   ============================================================ */
+
+/* 預設隱藏（桌機） */
+br.cn-break {
+  display: none;
+}
+
+/* 小於桌機所有尺寸顯示斷行 */
+@media (max-width: 1023px) {
+  br.cn-break {
+    display: block !important;
+    content: "" !important;
+    margin: 0;
+    line-height: 0;
+  }
+}
+
+/* === cn-break-always：所有尺寸都斷（用於極長句） === */
+br.cn-break-always {
+  display: block !important;
+}
+
+/* === cn-break-sm：只在小手機 ≤640 斷 === */
+br.cn-break-sm {
+  display: none;
+}
+@media (max-width: 640px) {
+  br.cn-break-sm {
+    display: block !important;
+    content: "";
+  }
+}
