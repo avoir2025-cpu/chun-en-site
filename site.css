@@ -3412,3 +3412,30 @@ a.btn-ghost {
     font-size: 0.75em;
   }
 }
+
+/* ============================================================
+   ▌CTA 雙按鈕對齊修復 v1
+   ▌2026.05.18 — .btn-primary 高 48px + .btn-ghost 是純文字底線
+   ▌  兩者放在 .flex 裡因為沒設 align-items 而沒對齊
+   ▌  全 Hero / CTA 區強制中軸對齊
+   ============================================================ */
+.hero-layered-content .flex,
+.about-hero-content .flex,
+.booking-hero-content .flex,
+.service-hero-text .flex,
+.service-hero-bleed-content .flex,
+.booking-cta .flex,
+.page-hero .flex,
+.service-hero-text > .mt-7,
+.service-hero-bleed-content > .mt-7 {
+  align-items: center !important;
+}
+
+/* Hero 內 .mt-7 wrapper（CTA 按鈕容器）也對齊 */
+.hero-layered-content .mt-7,
+.service-hero-text .mt-7 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
