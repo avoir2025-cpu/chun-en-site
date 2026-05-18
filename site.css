@@ -3491,3 +3491,58 @@ a.btn-ghost {
     font-size: 0.9em;
   }
 }
+
+/* ============================================================
+   ▌Hero H1 — Repeat: 改回「關鍵字超大放大」模式 v4 (FINAL)
+   ▌2026.05.18
+   ▌
+   ▌  正確模式參考 §5 Three Studios 的「三個子品牌，一套[整合系統]」
+   ▌  其中「整合系統」是 .display-italic = clamp(3rem, 10vw, 8rem)
+   ▌  比周圍 H2 大 ~2.5-3x
+   ▌
+   ▌  Hero H1 同理：
+   ▌    周圍黑字「形象不是包裝，是你的」「。」 → 統一小尺寸
+   ▌    關鍵字「商業競爭力」                 → 大尺寸 italic 金色
+   ▌
+   ▌  覆寫前一版錯誤的 0.85em accent ratio
+   ============================================================ */
+
+/* H1 底色字級 — 收斂為 atelier 適度 */
+.hero-layered-content .hero-h1.display,
+.hero-h1.display {
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem) !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.02em !important;
+  font-weight: 400 !important;
+}
+
+/* 兩行統一字級（覆寫前一版 0.85em） */
+.hero-h1 .hero-line,
+.hero-h1 .hero-line-statement,
+.hero-h1 .hero-line-accent {
+  font-size: 1em !important;
+  font-weight: 400 !important;
+}
+
+/* 關鍵字「商業競爭力」— 獨立大字級，italic 金色 serif */
+.hero-h1 .hero-key {
+  font-family: var(--ff-serif) !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  color: var(--color-gold) !important;
+  font-size: clamp(3rem, 6.5vw, 5.5rem) !important;   /* ≈ 2.5× of base */
+  line-height: 0.95 !important;
+  letter-spacing: 0.02em !important;
+  vertical-align: baseline;
+}
+
+/* 手機 ≤640：等比例縮 */
+@media (max-width: 640px) {
+  .hero-layered-content .hero-h1.display,
+  .hero-h1.display {
+    font-size: clamp(1.3rem, 4.5vw, 1.75rem) !important;
+  }
+  .hero-h1 .hero-key {
+    font-size: clamp(2.5rem, 11vw, 3.75rem) !important;
+  }
+}
