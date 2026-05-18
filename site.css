@@ -3699,3 +3699,94 @@ input, textarea, select {
   display: block;
   background: var(--color-paper-warm);
 }
+
+/* ============================================================
+   ▌Atelier Carousel — 桌機左右箭頭懸浮按鈕 v1
+   ▌2026.05.18
+   ▌
+   ▌  桌機：滑鼠移入區塊時左右箭頭優雅淡入
+   ▌  手機：隱藏按鈕，回歸手指滑動
+   ▌  滾動到最左/最右時對應按鈕自動 disable
+   ============================================================ */
+
+.atelier-carousel-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* lookbook 內部已有 overflow-x:auto，加 scroll-behavior:smooth */
+.atelier-carousel-wrapper .lookbook {
+  scroll-behavior: smooth;
+}
+
+/* ---------- 左右懸浮按鈕 ---------- */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  background: rgba(245, 241, 232, 0.92);   /* 與站內 --color-paper 一致 */
+  border: 0.5px solid var(--color-hairline);
+  border-radius: 50%;
+  color: var(--color-ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  opacity: 0;                              /* 平時隱藏 */
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+              background 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+              color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  box-shadow: 0 4px 24px rgba(26, 22, 17, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.carousel-arrow svg {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.prev-btn { left: 1.5rem; }
+.next-btn { right: 1.5rem; }
+
+/* 滑鼠移入 wrapper 時按鈕優雅淡入 */
+.atelier-carousel-wrapper:hover .carousel-arrow {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 按鈕本身 hover 效果：箭頭微幅滑動 + 金色高亮 */
+.carousel-arrow:hover {
+  background: var(--color-paper-warm);
+  color: var(--color-gold);
+  border-color: var(--color-gold);
+}
+.prev-btn:hover svg { transform: translateX(-3px); }
+.next-btn:hover svg { transform: translateX(3px); }
+
+/* 到達邊界時自動 disable */
+.carousel-arrow[data-disabled="true"] {
+  opacity: 0.15 !important;
+  pointer-events: none !important;
+  cursor: default;
+}
+
+/* ---------- 手機 ≤768px：隱藏按鈕，保留原生滑動 ---------- */
+@media (max-width: 768px) {
+  .carousel-arrow {
+    display: none !important;
+  }
+}
+
+/* ---------- 觸控裝置（任何尺寸）：箭頭預設不顯示，
+   避免 hover 失效造成 ghost 按鈕 ---------- */
+@media (hover: none) {
+  .carousel-arrow {
+    display: none !important;
+  }
+}
