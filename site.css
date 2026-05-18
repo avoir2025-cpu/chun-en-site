@@ -3439,3 +3439,55 @@ a.btn-ghost {
   flex-wrap: wrap;
   gap: var(--space-4);
 }
+
+/* ============================================================
+   ▌Hero H1 — 強制縮小 + Hierarchy 重新校準 v3
+   ▌2026.05.18
+   ▌
+   ▌  問題：.display class 把 H1 base 拉到 clamp(3rem, 10vw, 8rem)
+   ▌    = 桌機 8rem (128px) 太巨大、像廣告看板
+   ▌
+   ▌  修法：.hero-h1 override 到 clamp(2rem, 4vw, 3.75rem)
+   ▌    = 32-60px，atelier 適合的尺寸
+   ▌
+   ▌  Hierarchy：兩行尺寸差距收斂（85%）保持視覺平衡
+   ============================================================ */
+
+.hero-layered-content .hero-h1.display,
+.hero-h1.display {
+  font-size: clamp(2rem, 4vw, 3.75rem) !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.02em !important;
+  font-weight: 400 !important;
+}
+
+/* 兩行重新校準字級比例 */
+.hero-h1 .hero-line-statement {
+  font-size: 1em;
+}
+.hero-h1 .hero-line-accent {
+  font-size: 0.85em;     /* 從 0.7 → 0.85，差距收斂 */
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* 關鍵字 — 不再用字級對比，改用 italic + serif + 金色三重對比 */
+.hero-h1 .hero-key {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-gold);
+  letter-spacing: 0.02em;
+  /* 字級繼承 hero-line-accent 的 0.85em，不額外放大或縮小 */
+}
+
+/* 手機 ≤640px：再縮一級 */
+@media (max-width: 640px) {
+  .hero-layered-content .hero-h1.display,
+  .hero-h1.display {
+    font-size: clamp(1.6rem, 6vw, 2.25rem) !important;
+  }
+  .hero-h1 .hero-line-accent {
+    font-size: 0.9em;
+  }
+}
