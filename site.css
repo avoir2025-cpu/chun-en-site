@@ -3790,3 +3790,66 @@ input, textarea, select {
     display: none !important;
   }
 }
+
+/* ============================================================
+   ▌Featured Statement — 編輯級大引言區
+   ▌2026.05.18
+   ▌  最大號 italic serif 引言，孤立於空白中
+   ▌  Aesop / Loewe / Hermès editorial style
+   ============================================================ */
+.featured-statement {
+  background: transparent;
+  padding-top: clamp(120px, 14vh, 200px) !important;
+  padding-bottom: clamp(120px, 14vh, 200px) !important;
+}
+
+.featured-quote {
+  margin: var(--space-7) auto 0;
+  max-width: 48ch;
+  position: relative;
+  padding: 0;
+  border: none;
+}
+
+/* 上下金色細線（編輯級引號代替） */
+.featured-quote::before,
+.featured-quote::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 0.5px;
+  background: var(--color-gold);
+  margin: 0 auto;
+  opacity: 0.6;
+}
+.featured-quote::before { margin-bottom: var(--space-6); }
+.featured-quote::after  { margin-top: var(--space-6); }
+
+.featured-quote-text {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.75rem, 3.5vw, 3rem);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.featured-quote-cite {
+  display: block;
+  margin-top: var(--space-5);
+  color: var(--color-ink-muted);
+  font-style: normal;
+  letter-spacing: 0.18em;
+}
+
+@media (max-width: 640px) {
+  .featured-statement {
+    padding-top: var(--space-9) !important;
+    padding-bottom: var(--space-9) !important;
+  }
+  .featured-quote-text {
+    font-size: clamp(1.35rem, 5.5vw, 1.85rem);
+  }
+}
