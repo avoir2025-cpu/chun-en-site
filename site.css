@@ -3684,28 +3684,18 @@ input, textarea, select {
 
 /* ============================================================
    ▌Client Voices / Google Reviews 區塊樣式
-   ▌2026.05.18
+   ▌2026.05.18 — Elfsight widget 已上線
    ============================================================ */
 .google-reviews-embed {
   margin-top: var(--space-7);
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.reviews-placeholder {
   width: 100%;
-  text-align: center;
-  padding: var(--space-9) var(--space-5);
-  border: 0.5px dashed var(--color-hairline);
+}
+.google-reviews-embed [class*="elfsight-app"] {
+  width: 100%;
+}
+/* Elfsight 載入前的最小高度，避免內容跳動（CLS 防止） */
+.google-reviews-embed [class*="elfsight-app"]:empty {
+  min-height: 280px;
+  display: block;
   background: var(--color-paper-warm);
-}
-
-/* 當 Elfsight widget 插入後，移除 placeholder 樣式並讓 widget 自然渲染 */
-.google-reviews-embed:has(.elfsight-app-9c10f5a1) .reviews-placeholder,
-.google-reviews-embed:has([class*="elfsight"]) .reviews-placeholder {
-  display: none;
-}
-.google-reviews-embed [class*="elfsight"] {
-  width: 100%;
 }
