@@ -3279,3 +3279,98 @@ br.cn-break-sm {
 .brand-unit {
   white-space: nowrap;
 }
+
+/* ============================================================
+   ▌Hero H1 + Dropdown + Button + Lookbook Caption Polish v1
+   ▌2026.05.18
+   ============================================================ */
+
+/* ---------- 1. Hero H1：強制 2 行（不要 3 行擠成階梯狀） ---------- */
+.hero-layered-content .hero-h1 {
+  text-wrap: pretty !important;   /* 取消 balance 的 3 等分 */
+}
+.hero-layered-content .hero-line {
+  display: inline-block;          /* 整個邏輯行包成一個整體 */
+  white-space: nowrap;            /* 內部不再被任意斷開 */
+}
+/* 手機（≤640px）放開 nowrap，允許自然 reflow */
+@media (max-width: 640px) {
+  .hero-layered-content .hero-line {
+    white-space: normal;
+  }
+}
+
+/* ---------- 2. Services dropdown：dd-en/dd-cn 真正各自一行 ---------- */
+.navbar-nav-left .dropdown a {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 2px !important;
+}
+.navbar-nav-left .dropdown .dd-en {
+  display: block !important;
+  width: 100%;
+}
+.navbar-nav-left .dropdown .dd-cn {
+  display: block !important;
+  width: 100%;
+}
+
+/* ---------- 3. 按鈕：取消中文間距灌水 ---------- */
+.btn,
+.btn-primary,
+.btn-gold,
+.btn-ghost,
+.btn-outline,
+.navbar-cta,
+.mnav-cta {
+  letter-spacing: 0.04em !important;   /* 從 widest 收回到 4% */
+}
+/* 按鈕內中文段需明確再壓縮 */
+.btn .arrow,
+.btn-primary .arrow,
+.btn-gold .arrow,
+.btn-ghost,
+a.btn-ghost {
+  letter-spacing: 0.04em;
+  word-spacing: -0.05em;
+}
+/* 箭頭與文字之間的間距 */
+.btn .arrow::after,
+.btn-primary .arrow::after {
+  margin-left: 0.4em;
+}
+
+/* ---------- 4. Lookbook caption：中文不再被截斷成 2 字一行 ---------- */
+.lookbook-item-caption {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 2px !important;
+  padding: var(--space-3) var(--space-4) !important;
+}
+.lookbook-item-caption .plate-num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-gold);
+  white-space: nowrap;
+}
+.lookbook-item-caption .en {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--color-paper);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.lookbook-item-caption .cn {
+  font-family: "Noto Serif TC", var(--ff-serif);
+  font-size: 0.88rem;
+  color: var(--color-paper);
+  letter-spacing: 0.04em;
+  white-space: nowrap;             /* 關鍵：中文也 nowrap，避免被切 */
+  opacity: 0.85;
+}
