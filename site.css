@@ -3944,3 +3944,167 @@ section .text-center .btn-gold:not(.featured-quote *) {
 }
 
 /* === END Audit Response === */
+
+/* ============================================================
+   ▌Hero with Photo Background v1
+   ▌2026.05.19 — 第一屏加 atelier 空間照 + 深色遮罩 + 淺色文字
+   ▌  解決審稿 P0.1：第一屏缺乏視覺成果
+   ============================================================ */
+.hero-with-photo {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--color-ink);    /* fallback */
+}
+
+/* 照片本身 */
+.hero-bg-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  filter: brightness(0.55) saturate(0.85) contrast(0.95);
+}
+
+/* 深色 vignette 遮罩 — 中央較暗、邊緣更深，文字浮在中央 */
+.hero-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center,
+      rgba(20, 18, 14, 0.45) 0%,
+      rgba(20, 18, 14, 0.78) 100%),
+    linear-gradient(180deg,
+      rgba(20, 18, 14, 0.15) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(20, 18, 14, 0.4) 100%);
+  z-index: 1;
+}
+
+/* 內容層 */
+.hero-with-photo .hero-layered-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* 兩側裝飾條（vertical text）也提到最上層 */
+.hero-with-photo .hero-side-text {
+  z-index: 3;
+}
+.hero-with-photo .hero-side-text .text-vertical {
+  color: var(--color-paper);
+  opacity: 0.55;
+}
+
+/* 巨大 C 浮水印更淡（避免與背景照打架） */
+.hero-with-photo .hero-layered-bg-letter {
+  color: var(--color-gold-light) !important;
+  opacity: 0.06 !important;
+  z-index: 1;
+}
+
+/* ---------- 文字色全部翻為淺色 ---------- */
+
+/* Eyebrow */
+.hero-with-photo .eyebrow-bilingual {
+  color: var(--color-gold-light) !important;
+}
+.hero-with-photo .eyebrow-bilingual::before {
+  background: var(--color-gold-light);
+}
+.hero-with-photo .eyebrow-bilingual .cn {
+  color: var(--color-hairline) !important;
+  opacity: 1;
+}
+
+/* H1 主宣言 */
+.hero-with-photo .hero-h1,
+.hero-with-photo .hero-h1 .hero-line {
+  color: var(--color-paper) !important;
+}
+
+/* 關鍵字保留金色（在深底上金色仍對比強烈） */
+.hero-with-photo .hero-h1 .hero-key {
+  color: var(--color-gold) !important;
+}
+
+/* Subtitle */
+.hero-with-photo .bilingual-subtitle {
+  color: var(--color-hairline) !important;
+  opacity: 0.85;
+}
+
+/* Brand description */
+.hero-with-photo .hero-desc {
+  color: var(--color-paper) !important;
+  opacity: 0.95;
+}
+
+/* Bracketed 上下金色細線在深底要亮一點 */
+.hero-with-photo .bracketed::before,
+.hero-with-photo .bracketed::after {
+  background: var(--color-gold-light);
+  opacity: 0.5;
+}
+
+/* ---------- CTA 在深底上的反向處理 ---------- */
+.hero-with-photo .btn-primary {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border-color: var(--color-paper);
+}
+.hero-with-photo .btn-primary:hover {
+  background: var(--color-gold);
+  color: var(--color-paper);
+  border-color: var(--color-gold);
+  opacity: 1;
+}
+.hero-with-photo .btn-ghost {
+  color: var(--color-paper);
+  border-bottom-color: var(--color-paper);
+}
+.hero-with-photo .btn-ghost:hover {
+  color: var(--color-gold-light);
+  border-bottom-color: var(--color-gold-light);
+}
+
+/* ---------- 手機 ≤768 ---------- */
+@media (max-width: 768px) {
+  .hero-bg-photo {
+    object-position: 60% center;   /* 手機聚焦右側細節 */
+    filter: brightness(0.5) saturate(0.85);
+  }
+  .hero-bg-overlay {
+    background:
+      radial-gradient(ellipse at center,
+        rgba(20, 18, 14, 0.55) 0%,
+        rgba(20, 18, 14, 0.88) 100%);
+  }
+}
+
+/* ============================================================
+   ▌Elfsight Google Reviews — 視覺去噪
+   ▌2026.05.19 — 審稿 P0.5：亮藍按鈕 + 多彩 Google logo 與 atelier 不搭
+   ▌
+   ▌  注意：Elfsight widget 在 Shadow DOM 內，部分樣式無法從外部
+   ▌  override。最徹底的方法是去 Elfsight Dashboard 重選模板。
+   ▌  以下是能從外面壓的：包裝容器、整體背景、邊距
+   ============================================================ */
+
+/* 包裝容器去除任何衝突的背景／邊距 */
+.google-reviews-embed {
+  background: transparent;
+}
+.google-reviews-embed > div[class*="elfsight-app"] {
+  background: transparent !important;
+}
+
+/* 用 mix-blend-mode 讓 widget 內的色彩稍微融入米色背景
+   注意：這是視覺折衷方案，最佳解仍是 Elfsight Dashboard 改主題 */
+.google-reviews-embed iframe {
+  filter: contrast(0.97) saturate(0.85);
+}
