@@ -3853,3 +3853,94 @@ input, textarea, select {
     font-size: clamp(1.35rem, 5.5vw, 1.85rem);
   }
 }
+
+/* ============================================================
+   ▌Audit Response — 2026.05.19
+   ▌  P0.2  Hero H1 從 36px(過小) → 56-72px(critic 建議區間)
+   ▌  P0.3  CTA 顏色全站統一為 btn-primary（黑底）
+   ▌  P1.6  Section padding 從 80-160px 降到 64-110px（壓縮頁面高度）
+   ▌  P1.7  Gold 標題重複用 6+ 次，正常化 mid-page，保留 Hero 與 Final
+   ============================================================ */
+
+/* ---------- P0.2  Hero H1 回到中段字級 ---------- */
+.hero-layered-content .hero-h1.display,
+.hero-h1.display {
+  font-size: clamp(2.25rem, 4vw, 3.5rem) !important;   /* 36-56px */
+  line-height: 1.25 !important;
+  letter-spacing: 0.02em !important;
+  font-weight: 400 !important;
+}
+.hero-h1 .hero-line,
+.hero-h1 .hero-line-statement,
+.hero-h1 .hero-line-accent {
+  font-size: 1em !important;
+  font-weight: 400 !important;
+}
+.hero-h1 .hero-key {
+  font-family: var(--ff-serif) !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  color: var(--color-gold) !important;
+  font-size: clamp(2.75rem, 5vw, 4.5rem) !important;   /* 44-72px，1.28× of statement */
+  line-height: 0.95 !important;
+  letter-spacing: 0.02em !important;
+}
+@media (max-width: 640px) {
+  .hero-layered-content .hero-h1.display,
+  .hero-h1.display {
+    font-size: clamp(1.6rem, 5vw, 2.25rem) !important;
+  }
+  .hero-h1 .hero-key {
+    font-size: clamp(2.25rem, 8vw, 3rem) !important;
+  }
+}
+
+/* ---------- P0.3 CTA 統一為 btn-primary 黑色 ---------- */
+/* Final CTA 區的 btn-gold 改為 btn-primary 視覺，但保留 class 名（HTML 不動） */
+.booking-cta .btn-gold {
+  background: var(--color-ink) !important;
+  border-color: var(--color-ink) !important;
+  color: var(--color-paper) !important;
+}
+.booking-cta .btn-gold:hover {
+  opacity: 0.85;
+}
+/* Scenarios 結尾按鈕（class="btn btn-gold"）同樣統一 */
+.scenario-grid + div .btn-gold,
+section .text-center .btn-gold:not(.featured-quote *) {
+  background: var(--color-ink) !important;
+  border-color: var(--color-ink) !important;
+  color: var(--color-paper) !important;
+}
+
+/* ---------- P1.6 Section padding 從 11vh max 160px 降到 8vh max 110px ---------- */
+@media (min-width: 1024px) {
+  .section,
+  .section-lg {
+    padding-top: clamp(64px, 8vh, 110px) !important;
+    padding-bottom: clamp(64px, 8vh, 110px) !important;
+  }
+  .hero-layered {
+    min-height: 78vh !important;                       /* 從 85vh 收回 */
+    padding-top: clamp(48px, 7vh, 90px) !important;
+    padding-bottom: clamp(64px, 9vh, 130px) !important;
+  }
+}
+
+/* ---------- P1.7 Gold 標題重複用過多，mid-page 改為墨色襯線斜體 ---------- */
+/* 保留 gold 的位置：Hero / Final CTA / Featured Statement */
+/* 中段段落（about, philosophy, three studios, scenarios, atelier）gold 改深棕 */
+.section:not(.hero-layered):not(.booking-cta):not(.featured-statement) h2 .display-italic.text-gold,
+.section:not(.hero-layered):not(.booking-cta):not(.featured-statement) h3 .display-italic.text-gold,
+.section:not(.hero-layered):not(.booking-cta):not(.featured-statement) h4 .display-italic.text-gold {
+  color: var(--color-ink) !important;
+  font-size: 1em !important;                            /* 不再用 .display 巨大字級 */
+  font-style: italic !important;
+  font-weight: 400 !important;
+  text-decoration: underline;
+  text-decoration-color: var(--color-gold);
+  text-decoration-thickness: 0.5px;
+  text-underline-offset: 0.18em;
+}
+
+/* === END Audit Response === */
