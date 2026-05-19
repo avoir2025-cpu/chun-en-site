@@ -4248,3 +4248,70 @@ section.section .font-display.italic[style*="clamp"] {
 .service-hero-bleed-content .bilingual-subtitle {
   opacity: 0.78;
 }
+
+/* ============================================================
+   ▌Unified CTA System v1 — § 2.1 of spec 2026.05.19
+   ▌  四個 class 涵蓋所有 CTA 場景：
+   ▌    .cta-primary           深咖底米白字（淺色背景上的主 CTA）
+   ▌    .cta-primary--inverse  米白底深咖字（深色背景上的主 CTA）
+   ▌    .cta-secondary         文字 + 底線（淺底）
+   ▌    .cta-secondary--inverse 文字 + 底線（深底）
+   ▌
+   ▌  範圍：本 sprint 僅套用 index.html（首頁）
+   ▌  既有 .btn-* 系統暫不動，下個 sprint 才同步全站
+   ============================================================ */
+
+/* Primary CTA — 米色／淺色背景上 */
+.cta-primary {
+  display: inline-block;
+  background: #1A1611;
+  color: #F5F1E8;
+  padding: 0.875rem 2rem;
+  letter-spacing: 0.05em;
+  font-size: 0.95rem;
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  border: 1px solid #1A1611;
+  text-decoration: none;
+  transition: all 200ms ease;
+  cursor: pointer;
+}
+.cta-primary:hover {
+  background: transparent;
+  color: #1A1611;
+}
+
+/* Primary CTA — 深色背景上（反白版） */
+.cta-primary--inverse {
+  background: #F5F1E8;
+  color: #1A1611;
+  border: 1px solid #F5F1E8;
+}
+.cta-primary--inverse:hover {
+  background: transparent;
+  color: #F5F1E8;
+}
+
+/* Secondary CTA — 文字 + 底線（淺底） */
+.cta-secondary {
+  display: inline-block;
+  color: #1A1611;
+  font-size: 0.9rem;
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  text-decoration: none;
+  background: transparent;
+  transition: opacity 200ms ease;
+}
+.cta-secondary:hover { opacity: 0.6; }
+
+/* Secondary CTA — 深底反白版 */
+.cta-secondary--inverse {
+  color: #F5F1E8;
+}
+.cta-secondary--inverse:hover { opacity: 0.7; }
+
+/* ============================================================ */
