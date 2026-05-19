@@ -4023,9 +4023,10 @@ section .text-center .btn-gold:not(.featured-quote *) {
   color: var(--color-paper) !important;
 }
 
-/* 關鍵字保留金色（在深底上金色仍對比強烈） */
+/* 關鍵字提亮（v2.0 § 2.2）：#A88A5C → #D9B584，加 text-shadow 提對比 */
 .hero-with-photo .hero-h1 .hero-key {
-  color: var(--color-gold) !important;
+  color: #D9B584 !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
 /* Subtitle */
@@ -4034,10 +4035,17 @@ section .text-center .btn-gold:not(.featured-quote *) {
   opacity: 0.85;
 }
 
-/* Brand description */
+/* Brand description（v2.0 § 2.3）：色 #F5F1E8 full opacity，字級 +1-2px */
 .hero-with-photo .hero-desc {
-  color: var(--color-paper) !important;
-  opacity: 0.95;
+  color: #F5F1E8 !important;
+  opacity: 1 !important;
+  font-size: 1.0625rem !important;   /* 17px，從 16px 提一級 */
+  line-height: 1.9;
+}
+@media (min-width: 1024px) {
+  .hero-with-photo .hero-desc {
+    font-size: 1.125rem !important;  /* 桌機 18px */
+  }
 }
 
 /* Bracketed 上下金色細線在深底要亮一點 */
