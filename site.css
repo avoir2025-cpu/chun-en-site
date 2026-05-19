@@ -4023,9 +4023,10 @@ section .text-center .btn-gold:not(.featured-quote *) {
   color: var(--color-paper) !important;
 }
 
-/* 關鍵字保留金色（在深底上金色仍對比強烈） */
+/* 關鍵字提亮（v2.0 § 2.2）：#A88A5C → #D9B584，加 text-shadow 提對比 */
 .hero-with-photo .hero-h1 .hero-key {
-  color: var(--color-gold) !important;
+  color: #D9B584 !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
 /* Subtitle */
@@ -4034,10 +4035,17 @@ section .text-center .btn-gold:not(.featured-quote *) {
   opacity: 0.85;
 }
 
-/* Brand description */
+/* Brand description（v2.0 § 2.3）：色 #F5F1E8 full opacity，字級 +1-2px */
 .hero-with-photo .hero-desc {
-  color: var(--color-paper) !important;
-  opacity: 0.95;
+  color: #F5F1E8 !important;
+  opacity: 1 !important;
+  font-size: 1.0625rem !important;   /* 17px，從 16px 提一級 */
+  line-height: 1.9;
+}
+@media (min-width: 1024px) {
+  .hero-with-photo .hero-desc {
+    font-size: 1.125rem !important;  /* 桌機 18px */
+  }
 }
 
 /* Bracketed 上下金色細線在深底要亮一點 */
@@ -4400,4 +4408,36 @@ section.section .font-display.italic[style*="clamp"] {
   align-self: flex-start;
   margin-left: 0.5rem;            /* 跟主按鈕視覺對齊 */
   margin-top: 0;
+}
+
+/* ============================================================
+   ▌Elfsight Google Reviews — 隱藏 Write-a-Review 按鈕 v1
+   ▌2026.05.19 — v2.0 § 2.1
+   ▌
+   ▌  策略 A：CSS 透過屬性選擇器隱藏 widget 內的「Write a Review」
+   ▌  按鈕。涵蓋 Elfsight / Trustindex / Trustmary 常見 class 命名。
+   ▌
+   ▌  ⚠️ 若 Elfsight widget 用 Shadow DOM 渲染，這些規則無法
+   ▌  穿透——需改由 Elfsight 後台關閉。觀察上線後該按鈕是否仍存在。
+   ============================================================ */
+
+/* 通用：按 class 名含 write-review / leave-review 的全部隱藏 */
+[class*="write-review" i],
+[class*="leave-review" i],
+[class*="write-a-review" i],
+[class*="add-review" i],
+button[class*="review-button" i],
+a[href*="writereview"],
+a[href*="write_a_review"],
+a[href*="write-review"] {
+  display: none !important;
+}
+
+/* Elfsight 已知 button 樣式（部分版本 light DOM 可被命中） */
+.google-reviews-embed [class*="WriteReview" i],
+.google-reviews-embed [data-action="write-review"],
+.google-reviews-embed button[aria-label*="Write" i],
+.google-reviews-embed button[aria-label*="撰寫" i] {
+  display: none !important;
+  visibility: hidden !important;
 }
