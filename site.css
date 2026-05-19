@@ -4315,3 +4315,89 @@ section.section .font-display.italic[style*="clamp"] {
 .cta-secondary--inverse:hover { opacity: 0.7; }
 
 /* ============================================================ */
+
+/* ============================================================
+   ▌Core Philosophy — Editorial Quote 重整 v2
+   ▌2026.05.19 — 用戶反饋「越改越醜」
+   ▌  解法：套用 Featured Statement 的 editorial gold-hairline 模式
+   ▌  讓 Philosophy 區塊有 atelier 質感，不再只是空白裡一段文字
+   ============================================================ */
+
+.core-philosophy-quote {
+  margin: var(--space-7) auto 0;
+  max-width: 38ch;
+  padding: 0;
+  border: none;
+  position: relative;
+}
+
+/* 上下金色細線（editorial 引號替代品） */
+.core-philosophy-quote::before,
+.core-philosophy-quote::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 0.5px;
+  background: var(--color-gold);
+  margin: 0 auto;
+  opacity: 0.55;
+}
+.core-philosophy-quote::before { margin-bottom: var(--space-6); }
+.core-philosophy-quote::after  { margin-top: var(--space-6); }
+
+.core-philosophy-text {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.core-philosophy-key {
+  color: var(--color-gold);
+  font-style: italic;
+}
+
+.core-philosophy-cite {
+  display: block;
+  margin-top: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+  font-style: normal;
+}
+
+@media (max-width: 640px) {
+  .core-philosophy-text {
+    font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+  }
+  .core-philosophy-quote::before,
+  .core-philosophy-quote::after {
+    width: 32px;
+  }
+}
+
+/* ============================================================
+   ▌Blueprint CTA — 改為主按鈕 + 下方居中 secondary 排版
+   ▌2026.05.19 — 用戶反饋「了解商業視覺定位企劃 → 排版要在中間 往下移一點」
+   ============================================================ */
+.blueprint-cta-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;       /* 左對齊主按鈕（呼應 editorial-spread 左側文字塊） */
+  gap: var(--space-5);
+}
+.blueprint-cta-stack .cta-primary {
+  align-self: flex-start;
+}
+.blueprint-cta-stack .blueprint-cta-secondary {
+  align-self: flex-start;
+  margin-left: 0.5rem;            /* 跟主按鈕視覺對齊 */
+  margin-top: 0;
+}
