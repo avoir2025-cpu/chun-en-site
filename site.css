@@ -3927,21 +3927,12 @@ section .text-center .btn-gold:not(.featured-quote *) {
   }
 }
 
-/* ---------- P1.7 Gold 標題重複用過多，mid-page 改為墨色襯線斜體 ---------- */
-/* 保留 gold 的位置：Hero / Final CTA / Featured Statement */
-/* 中段段落（about, philosophy, three studios, scenarios, atelier）gold 改深棕 */
-.section:not(.hero-layered):not(.booking-cta):not(.featured-statement) h2 .display-italic.text-gold,
-.section:not(.hero-layered):not(.booking-cta):not(.featured-statement) h3 .display-italic.text-gold,
-.section:not(.hero-layered):not(.booking-cta):not(.featured-statement) h4 .display-italic.text-gold {
-  color: var(--color-ink) !important;
-  font-size: 1em !important;                            /* 不再用 .display 巨大字級 */
-  font-style: italic !important;
-  font-weight: 400 !important;
-  text-decoration: underline;
-  text-decoration-color: var(--color-gold);
-  text-decoration-thickness: 0.5px;
-  text-underline-offset: 0.18em;
-}
+/* P1.7 已撤回 — 用戶決定保留全站 .display-italic.text-gold 的
+   字級 + 顏色雙差異（與 typography.css 預設一致）：
+     font-size: var(--fs-display) = clamp(3rem, 10vw, 8rem)
+     font-style: italic
+     color: var(--color-gold)
+   無需此處 override。 */
 
 /* === END Audit Response === */
 
