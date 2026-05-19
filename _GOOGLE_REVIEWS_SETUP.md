@@ -39,14 +39,46 @@
    （或直接搜尋「CHUN.EN 形象美學」找到你的店家）
 3. 授權連動（Elfsight 需要讀取你 Google Business 的權限）
 
-### Step 4 — 客製外觀（搭配 atelier 風格）
-建議設定：
-- **背景色**：`transparent` 或 `#F5F1E8`（與網站背景一致）
-- **主色（accent）**：`#A88A5C`（金色，與站內 `--color-gold` 一致）
-- **字體**：選 `Cormorant Garamond` + `Noto Serif TC`（若選項有），或 `Serif`
-- **卡片邊框**：`0.5px solid #E5E0D3`（與站內 hairline 一致）
-- **顯示條件**：4 星以上、最近 6 個月
-- **每頁顯示**：3-5 條
+### Step 4 — 客製外觀（搭配 atelier 風格）⚠️ 重要
+
+審稿指出 Elfsight **預設模板**有亮藍 Write a Review 按鈕 + 多彩 Google logo，
+與我們米色 atelier 風格嚴重衝突。**必須做以下調整**：
+
+#### 4.1 模板選擇
+- 推薦：**Carousel · Minimal** 或 **List · Editorial**
+- **避開**：任何有大型 Write a Review 按鈕、星數面板的模板
+
+#### 4.2 顏色設定
+| 項目 | 設定值 |
+|---|---|
+| 背景 Background | `transparent`（或 `#F5F1E8`） |
+| 主色 Accent / Primary | `#A88A5C` |
+| 文字 Text color | `#1A1611` |
+| 卡片背景 Card BG | `#FFFFFF` 或 `#FAF7F2` |
+| 卡片邊框 Card border | `#E5E0D3`（0.5px） |
+| 星星色 Star color | `#A88A5C`（金色） |
+| 引號裝飾 Quote mark | `#A88A5C` |
+
+#### 4.3 字體設定
+- Primary Font：`Cormorant Garamond` 或 `Playfair Display`（若 Elfsight 提供）
+- Fallback：`Serif`
+
+#### 4.4 顯示行為設定 — **關鍵**
+| 項目 | 設定 |
+|---|---|
+| ❌ **隱藏** Write a Review 按鈕 | OFF（hide） |
+| ❌ **隱藏** Google branding logo | OFF（hide） |
+| ❌ **隱藏** Rating Summary 大數字 | OFF |
+| ✅ **顯示** 個別評論卡 | ON |
+| ✅ **顯示** 評論者頭像 | ON |
+| ✅ **顯示** 評論日期 | ON |
+| ✅ **顯示** 5 星 star rating | ON |
+
+#### 4.5 篩選條件
+- Min rating：**4 stars**
+- Max age：**12 個月** 內
+- 每次顯示：**3-5 條**輪播
+- 排序：Newest first 或 Most helpful
 
 ### Step 5 — 取得 embed code
 1. 編輯完成 → 點「Publish」
