@@ -4230,3 +4230,21 @@ section .container-narrow > .text-center > .font-display.italic[style*="clamp(1.
 section.section .font-display.italic[style*="clamp"] {
   letter-spacing: 0.02em;
 }
+
+/* ============================================================
+   ▌Dark-Photo Hero 段落色彩防呆 v1
+   ▌2026.05.19 — booking/about/c-photos 等深色 hero 內若再加段落，
+   ▌  預設文字色強制 paper（除非 inline 指定其他）
+   ============================================================ */
+.booking-hero-content p,
+.about-hero-content p,
+.service-hero-bleed-content p {
+  color: var(--color-paper);
+  opacity: 0.92;
+}
+/* lead / bilingual-subtitle 等已有色設定的不影響 */
+.booking-hero-content .bilingual-subtitle,
+.about-hero-content .bilingual-subtitle,
+.service-hero-bleed-content .bilingual-subtitle {
+  opacity: 0.78;
+}
