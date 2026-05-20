@@ -4441,3 +4441,46 @@ a[href*="write-review"] {
   display: none !important;
   visibility: hidden !important;
 }
+
+/* ============================================================
+   ▌v3.0 PR-C.1 — About + C Photos Hero 加深色 overlay
+   ▌2026.05.20 — 文字在淺背景上對比不足
+   ============================================================ */
+
+/* About Hero 與 C Photos Hero 加 ::before 暗化 layer */
+.about-hero::before,
+.service-hero-bleed::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.40) 50%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Hero 內容層放到 ::before 之上 */
+.about-hero,
+.service-hero-bleed {
+  position: relative;
+  isolation: isolate;
+}
+.about-hero-content,
+.service-hero-bleed-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================================
+   ▌v3.0 PR-C.4 — Sticky header scroll offset
+   ▌避免錨點連結將標題切到 header 下方
+   ============================================================ */
+section[id],
+section,
+[id] {
+  scroll-margin-top: 96px;
+}
