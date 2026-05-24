@@ -1679,8 +1679,7 @@ h1, h2, h3,
   }
   .navbar {
     grid-template-columns: auto 1fr !important;
-    padding: var(--space-4) var(--space-5) !important;
-    height: 64px !important;
+    /* padding / height 統一由 L2793 (safe-area block) 處理，避免衝突 */
     position: sticky !important;
     top: 0;
     z-index: 101;
@@ -2788,10 +2787,21 @@ p, li, dd, blockquote, td {
    ▌  4. 用 max() 確保 fallback 值（safe-area 為 0 時仍有合理 padding）
    ============================================================ */
 
+/* ---------- 0. html / body safe-area fallback ----------
+   若 navbar 因為 iOS Safari rendering 沒有完全填滿 safe-area-inset-top
+   區域（Dynamic Island 周邊），則由 html 的 ink 背景接管，
+   保證使用者永遠不會看到 Hero 文字/圖片穿透到動態島下方。 */
+html {
+  background-color: var(--color-ink);
+}
+
 /* ---------- 1. Sticky/fixed navbar — 加 safe-area-inset 避免被
    Dynamic Island / 瀏海 / 圓角 切到 ---------- */
 @media (max-width: 768px) {
   .navbar {
+    /* 強制 background 蓋住整個 navbar 含 safe-area padding 區域 */
+    background-color: var(--color-ink) !important;
+    background-clip: border-box !important;
     padding-top: max(env(safe-area-inset-top), var(--space-3)) !important;
     padding-bottom: var(--space-3) !important;
     padding-left: max(env(safe-area-inset-left), var(--space-5)) !important;
@@ -4782,5 +4792,71 @@ section,
   .message-template-summary {
     cursor: default;
     pointer-events: none;
+  }
+}
+
+/* ============================================================
+   PR-E § 5 Atelier 簡化版（2 張代表照 grid）
+   ============================================================ */
+.atelier-glimpse {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.atelier-glimpse-item {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.atelier-glimpse-item picture {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+}
+.atelier-glimpse-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s var(--ease-silk);
+}
+.atelier-glimpse-item:hover img {
+  transform: scale(1.03);
+}
+.atelier-glimpse-item figcaption {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+.atelier-glimpse-item figcaption .plate-num {
+  color: var(--color-gold);
+}
+.atelier-glimpse-item figcaption .en {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--color-ink);
+}
+.atelier-glimpse-item figcaption .cn {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 768px) {
+  .atelier-glimpse {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
   }
 }
