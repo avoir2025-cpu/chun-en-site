@@ -4930,3 +4930,197 @@ section,
     isolation: isolate;
   }
 }
+
+/* ============================================================
+   PR-J Scenario Tabs (代替 4 卡 stack)
+   Tab picker + single visible panel — 一次只顯示 1 個情境
+   ============================================================ */
+
+/* Tab 列 */
+.scenario-tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  border-bottom: 0.5px solid var(--color-hairline);
+  margin-bottom: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.scenario-tab {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: var(--space-4) var(--space-5);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.4s var(--ease-silk);
+  margin-bottom: -1px;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scenario-tab .cn {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--color-ink-soft);
+  transition: color 0.4s var(--ease-silk);
+}
+
+.scenario-tab .en {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  transition: color 0.4s var(--ease-silk);
+}
+
+.scenario-tab:hover .cn { color: var(--color-ink); }
+.scenario-tab:hover .en { color: var(--color-ink-soft); }
+
+.scenario-tab.is-active {
+  border-bottom-color: var(--color-gold);
+}
+.scenario-tab.is-active .cn,
+.scenario-tab.is-active .en {
+  color: var(--color-gold);
+}
+
+/* Panel 容器 */
+.scenario-panels {
+  position: relative;
+  min-height: 400px;
+}
+
+.scenario-panel {
+  display: none;
+  background: var(--color-cream);
+  border: 0.5px solid var(--color-hairline);
+  overflow: hidden;
+  grid-template-columns: 1fr 1fr;
+  animation: scenario-fade-in 0.5s var(--ease-silk);
+}
+
+.scenario-panel.is-active {
+  display: grid;
+}
+
+@keyframes scenario-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Panel 左側照片 */
+.scenario-panel-photo {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+.scenario-panel-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Panel 右側內容 */
+.scenario-panel-content {
+  padding: var(--space-7) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.scenario-panel-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.scenario-panel-title {
+  margin-top: var(--space-4);
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-weight: var(--fw-light);
+  color: var(--color-ink);
+  line-height: 1.35;
+}
+
+.scenario-panel-desc {
+  margin-top: var(--space-4);
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-size: var(--fs-md);
+  color: var(--color-ink-muted);
+  line-height: 1.85;
+}
+
+.scenario-panel-combo {
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  background: rgba(168, 138, 92, 0.06);
+  border-left: 2px solid var(--color-gold);
+}
+.scenario-panel-combo .combo-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 6px;
+}
+.scenario-panel-combo .combo-text {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--color-ink-soft);
+  line-height: 1.7;
+}
+
+.scenario-panel-cta {
+  margin-top: var(--space-6);
+}
+
+/* 手機：照片在上，文字在下 + tabs 橫向 scroll */
+@media (max-width: 768px) {
+  .scenario-panel.is-active {
+    grid-template-columns: 1fr;
+  }
+  .scenario-panel-photo {
+    aspect-ratio: 16 / 10;
+  }
+  .scenario-panel-content {
+    padding: var(--space-5) var(--space-5);
+  }
+  .scenario-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-6);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-left: calc(-1 * var(--space-5));
+    margin-right: calc(-1 * var(--space-5));
+    padding-left: var(--space-5);
+    padding-right: var(--space-5);
+  }
+  .scenario-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .scenario-tab {
+    padding: var(--space-3) var(--space-3);
+    flex-shrink: 0;
+  }
+  .scenario-tab .cn {
+    font-size: 1rem;
+  }
+}
