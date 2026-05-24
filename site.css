@@ -516,8 +516,13 @@ h1, h2, h3,
 /* === 情境卡（index § 1.9） === */
 .scenario-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);  /* 4 卡 → 桌機 2×2 grid */
   gap: var(--space-5);
+}
+@media (max-width: 768px) {
+  .scenario-grid {
+    grid-template-columns: 1fr;  /* 手機單欄 */
+  }
 }
 .scenario-card {
   background: var(--color-cream);
