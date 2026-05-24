@@ -2792,7 +2792,26 @@ p, li, dd, blockquote, td {
    區域（Dynamic Island 周邊），則由 html 的 ink 背景接管，
    保證使用者永遠不會看到 Hero 文字/圖片穿透到動態島下方。 */
 html {
-  background-color: var(--color-ink);
+  background-color: var(--color-ink) !important;
+  min-height: 100%;
+}
+html, body {
+  margin: 0;
+}
+
+/* ---------- 0b. iOS Dynamic Island 鬼影 kill（root cause fix）----------
+   `<body class="tx-paper">` 的 `.tx-paper::before` 是 SVG turbulence 雜訊
+   pseudo-element + mix-blend-mode: multiply，inset: 0 讓它從 body top edge
+   開始 paint。在 iOS Safari `viewport-fit=cover` 下，body 的 top edge
+   延伸進 safe-area-inset-top 帶（動態島下方），雜訊紋理與 dark navbar
+   重疊，高密度 anti-aliasing 被渲染成「破碎中文字符」幻象。
+
+   解法：手機端把 .tx-paper::before 的 top 推到 navbar 底部之下，
+   讓動態島下方 navbar 區只剩純色 ink 背景，不再有雜訊紋理 paint。 */
+@media (max-width: 768px) {
+  body.tx-paper::before {
+    top: calc(64px + env(safe-area-inset-top)) !important;
+  }
 }
 
 /* ---------- 1. Sticky/fixed navbar — 加 safe-area-inset 避免被
