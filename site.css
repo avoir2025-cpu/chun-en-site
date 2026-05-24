@@ -2828,6 +2828,24 @@ html, body {
     /* navbar 高度動態：64px content + safe-area-top */
     height: auto !important;
     min-height: calc(64px + env(safe-area-inset-top));
+    /* 保證 navbar 有 stacking context，::before 才能正確 absolute 定位 */
+    position: sticky;
+  }
+
+  /* navbar 強制填滿背景 — 用 ::before absolute inset:0 蓋住整個 navbar area
+     避免 navbar 自己的 background-color 沒覆蓋到 padding-top 區的情況 */
+  .navbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-ink);
+    z-index: -1;
+    pointer-events: none;
+  }
+  /* navbar 內所有 children 提升 z-index，確保不被 ::before 遮住 */
+  .navbar > * {
+    position: relative;
+    z-index: 1;
   }
 
   /* mobile overlay 起點對齊 navbar 底部（含 safe-area） */
