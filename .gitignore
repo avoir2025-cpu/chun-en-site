@@ -42,3 +42,4 @@ build/
 # ---------- 部署輔助 ----------
 .netlify/
 .vercel/
+.tmp-video-frames/
