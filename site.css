@@ -5124,3 +5124,109 @@ section,
     font-size: 1rem;
   }
 }
+
+/* ============================================================
+   PR-L § 2.5 Core Philosophy — 深底版 modifier
+   ============================================================
+   完全重用 .editorial-spread + .image-plate（已驗證 responsive）
+   只新增「深底色調」modifier，不動 layout。
+   ============================================================ */
+
+/* 深底 section modifier */
+.section.bg-ink {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* eyebrow 深底覆寫 — 主英文金色，中文 paper 偏淡 */
+.eyebrow-bilingual.eyebrow-on-dark {
+  color: var(--color-gold-light);
+}
+.eyebrow-bilingual.eyebrow-on-dark .cn {
+  color: var(--color-paper);
+  opacity: 0.85;
+}
+
+/* caption 深底覆寫 */
+.caption.caption-on-dark {
+  color: var(--color-paper);
+  opacity: 0.85;
+}
+.caption.caption-on-dark .caption-plate {
+  color: var(--color-gold);
+}
+
+/* 文字 block 容器 */
+.philosophy-text-block {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-6) 0;
+}
+
+/* 引言（編輯版） */
+.philosophy-blockquote {
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  border: 0;
+  position: relative;
+}
+.philosophy-mark {
+  display: block;
+  font-family: var(--ff-serif), "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: var(--fw-thin);
+  font-size: clamp(4rem, 6vw, 6.5rem);
+  line-height: 0.6;
+  color: var(--color-gold);
+  opacity: 0.5;
+  margin-bottom: var(--space-3);
+  user-select: none;
+}
+.philosophy-blockquote p {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-weight: var(--fw-light);
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+  color: var(--color-paper);
+  margin: 0;
+}
+.philosophy-key {
+  color: var(--color-gold);
+  font-weight: var(--fw-regular);
+}
+
+/* 副標 cite — 細金線 + mono 字 */
+.philosophy-cite-on-dark {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-7);
+  font-style: normal;
+}
+.philosophy-cite-on-dark .cite-rule {
+  width: 48px;
+  height: 0.5px;
+  background: var(--color-gold);
+  flex-shrink: 0;
+}
+.philosophy-cite-on-dark .cite-text {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  opacity: 0.9;
+}
+
+/* 手機微調 padding */
+@media (max-width: 768px) {
+  .philosophy-text-block {
+    padding: var(--space-5) 0;
+  }
+  .philosophy-blockquote p {
+    font-size: clamp(1.2rem, 5vw, 1.5rem);
+    line-height: 1.6;
+  }
+}
