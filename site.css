@@ -4652,3 +4652,135 @@ section,
     font-size: 0.9rem;
   }
 }
+
+/* ============================================================
+   PR-C 漸進揭露：details / summary 編輯感樣式
+   ============================================================ */
+
+/* === WHY NOW 自我診斷折疊（signature.html） === */
+.why-now-details {
+  max-width: 64ch;
+  margin: 0 auto;
+}
+.why-now-summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-5) var(--space-5);
+  border: 0.5px solid var(--color-hairline);
+  background: var(--color-paper);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  color: var(--color-ink);
+  letter-spacing: 0.02em;
+  transition: all 0.4s var(--ease-silk);
+  user-select: none;
+}
+.why-now-summary::-webkit-details-marker { display: none; }
+.why-now-summary:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+.why-now-summary-arrow {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--color-gold);
+  margin-left: var(--space-4);
+  transition: transform 0.4s var(--ease-silk);
+}
+.why-now-details[open] .why-now-summary {
+  border-bottom-color: var(--color-gold);
+}
+.why-now-details[open] .why-now-summary-arrow {
+  transform: rotate(180deg);
+}
+.why-now-details[open] .pain-list {
+  margin-top: var(--space-5);
+}
+
+/* === c-photos 拍攝合約折疊 === */
+.notice-details {
+  margin-top: var(--space-5);
+  border-top: 0.5px solid var(--color-hairline);
+  padding-top: var(--space-4);
+}
+.notice-details-summary {
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  padding: var(--space-2) 0;
+  user-select: none;
+  transition: opacity 0.3s var(--ease-silk);
+}
+.notice-details-summary::-webkit-details-marker { display: none; }
+.notice-details-summary:hover { opacity: 0.7; }
+
+/* === booking 訊息範本 details（手機才折疊，桌機強制展開） === */
+.message-template {
+  background: var(--color-paper-warm);
+  border: 0.5px solid var(--color-hairline);
+  padding: var(--space-5);
+  transition: border-color 0.4s var(--ease-silk);
+  height: 100%;
+}
+.message-template:hover {
+  border-color: var(--color-gold);
+}
+.message-template-summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  user-select: none;
+}
+.message-template-summary::-webkit-details-marker { display: none; }
+.message-template-summary .num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  color: var(--color-gold);
+  flex-shrink: 0;
+}
+.message-template-title {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  flex: 1;
+}
+.message-template-arrow {
+  font-family: var(--font-mono);
+  color: var(--color-gold);
+  font-size: 0.9rem;
+  transition: transform 0.4s var(--ease-silk);
+}
+.message-template[open] .message-template-arrow {
+  transform: rotate(180deg);
+}
+.message-template-body {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 0.5px solid var(--color-hairline);
+}
+
+/* 桌機 ≥1024px：強制展開所有 message-template，隱藏箭頭 */
+@media (min-width: 1024px) {
+  .message-template > .message-template-body {
+    display: block !important;
+  }
+  .message-template-arrow {
+    display: none;
+  }
+  .message-template-summary {
+    cursor: default;
+    pointer-events: none;
+  }
+}
