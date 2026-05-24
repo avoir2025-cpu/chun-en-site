@@ -2838,7 +2838,10 @@ html, body {
   }
 
   /* navbar 強制填滿背景 — 用 ::before absolute inset:0 蓋住整個 navbar area
-     避免 navbar 自己的 background-color 沒覆蓋到 padding-top 區的情況 */
+     避免 navbar 自己的 background-color 沒覆蓋到 padding-top 區的情況。
+     ::before z-index: -1 已沉到 navbar 內所有 normal-flow 內容下方，
+     不需要額外 .navbar > * 提升 z-index（這會把 .mnav-overlay 的
+     position: fixed 覆寫成 relative，破壞 mobile menu overlay）。 */
   .navbar::before {
     content: "";
     position: absolute;
@@ -2846,11 +2849,6 @@ html, body {
     background-color: var(--color-ink);
     z-index: -1;
     pointer-events: none;
-  }
-  /* navbar 內所有 children 提升 z-index，確保不被 ::before 遮住 */
-  .navbar > * {
-    position: relative;
-    z-index: 1;
   }
 
   /* mobile overlay 起點對齊 navbar 底部（含 safe-area） */
