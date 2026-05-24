@@ -404,141 +404,150 @@
         </p>
       </div>
 
-      <div class="scenario-grid">
+      <!-- Tab picker -->
+      <div class="scenario-tabs" role="tablist" aria-label="情境選擇">
+        <button class="scenario-tab is-active" data-target="job" role="tab" aria-selected="true">
+          <span class="cn">職業升級</span>
+          <span class="en">Job Upgrade</span>
+        </button>
+        <button class="scenario-tab" data-target="brand" role="tab" aria-selected="false">
+          <span class="cn">個人品牌</span>
+          <span class="en">Personal Brand</span>
+        </button>
+        <button class="scenario-tab" data-target="enterprise" role="tab" aria-selected="false">
+          <span class="cn">企業／高階主管</span>
+          <span class="en">Enterprise</span>
+        </button>
+        <button class="scenario-tab" data-target="occasion" role="tab" aria-selected="false">
+          <span class="cn">重要場合</span>
+          <span class="en">Special Occasions</span>
+        </button>
+      </div>
 
-        <article class="scenario-card">
-          <div class="scenario-photo">
+      <!-- Tab panels -->
+      <div class="scenario-panels">
+
+        <article class="scenario-panel is-active" data-panel="job" role="tabpanel">
+          <div class="scenario-panel-photo">
             <picture>
-        <source type="image/webp"
-                srcset="assets/images/dsc03219-480.webp 480w,
-                        assets/images/dsc03219-960.webp 960w,
-                        assets/images/dsc03219-1440.webp 1440w"
-                sizes="(max-width: 768px) 100vw, 50vw">
-        <img src="assets/images/dsc03219-960.jpg"
-           srcset="assets/images/dsc03219-480.jpg 480w, assets/images/dsc03219-960.jpg 960w, assets/images/dsc03219-1440.jpg 1440w"
-           sizes="(max-width: 768px) 100vw, 50vw"
-           alt="職業升級情境"
-           width="1800" height="1200" loading="lazy" decoding="async" />
-      </picture>
-            <div class="photo-label">
-              <span class="cn">職業升級</span>
-              <span class="en">Job Upgrade</span>
-            </div>
+              <source type="image/webp"
+                      srcset="assets/images/dsc03219-480.webp 480w,
+                              assets/images/dsc03219-960.webp 960w,
+                              assets/images/dsc03219-1440.webp 1440w"
+                      sizes="(max-width: 768px) 100vw, 50vw">
+              <img src="assets/images/dsc03219-960.jpg"
+                   srcset="assets/images/dsc03219-480.jpg 480w, assets/images/dsc03219-960.jpg 960w, assets/images/dsc03219-1440.jpg 1440w"
+                   sizes="(max-width: 768px) 100vw, 50vw"
+                   alt="職業升級情境"
+                   width="1800" height="1200" loading="lazy" decoding="async" />
+            </picture>
           </div>
-          <div class="scenario-content">
-            <h4>當職位往上跳，你的形象也得跟上。</h4>
-            <p class="desc">
+          <div class="scenario-panel-content">
+            <span class="scenario-panel-label">職業升級 · Job Upgrade</span>
+            <h4 class="scenario-panel-title">當職位往上跳，你的形象也得跟上。</h4>
+            <p class="scenario-panel-desc">
               升遷後第一張會議桌的照片，形象先一步替你發言。
             </p>
-            <div class="combo">
+            <div class="scenario-panel-combo">
               <span class="combo-label">Service Combo · 服務組合</span>
               <span class="combo-text"><span class="brand-unit">À Voir 形象定位</span> ＋ <span class="brand-unit">B Room 妝髮</span> ＋ <span class="brand-unit">C Photos 形象照</span></span>
             </div>
-          </div>
-          <div class="scenario-cta">
-            <a href="services/signature.html" class="cta-secondary">了解職業升級方案 →</a>
+            <div class="scenario-panel-cta">
+              <a href="services/signature.html" class="cta-secondary">了解職業升級方案 →</a>
+            </div>
           </div>
         </article>
 
-        <article class="scenario-card">
-          <div class="scenario-photo">
+        <article class="scenario-panel" data-panel="brand" role="tabpanel" hidden>
+          <div class="scenario-panel-photo">
             <picture>
-        <source type="image/webp"
-                srcset="assets/images/dsc03269-480.webp 480w,
-                        assets/images/dsc03269-960.webp 960w,
-                        assets/images/dsc03269-1440.webp 1440w"
-                sizes="(max-width: 768px) 100vw, 50vw">
-        <img src="assets/images/dsc03269-960.jpg"
-           srcset="assets/images/dsc03269-480.jpg 480w, assets/images/dsc03269-960.jpg 960w, assets/images/dsc03269-1440.jpg 1440w"
-           sizes="(max-width: 768px) 100vw, 50vw"
-           alt="個人品牌情境"
-           width="1800" height="1200" loading="lazy" decoding="async" />
-      </picture>
-            <div class="photo-label">
-              <span class="cn">個人品牌</span>
-              <span class="en">Personal Brand</span>
-            </div>
+              <source type="image/webp"
+                      srcset="assets/images/dsc03269-480.webp 480w,
+                              assets/images/dsc03269-960.webp 960w,
+                              assets/images/dsc03269-1440.webp 1440w"
+                      sizes="(max-width: 768px) 100vw, 50vw">
+              <img src="assets/images/dsc03269-960.jpg"
+                   srcset="assets/images/dsc03269-480.jpg 480w, assets/images/dsc03269-960.jpg 960w, assets/images/dsc03269-1440.jpg 1440w"
+                   sizes="(max-width: 768px) 100vw, 50vw"
+                   alt="個人品牌情境"
+                   width="1800" height="1200" loading="lazy" decoding="async" />
+            </picture>
           </div>
-          <div class="scenario-content">
-            <h4>在別人認識你的專業之前，他們先看到你的品味。</h4>
-            <p class="desc">
+          <div class="scenario-panel-content">
+            <span class="scenario-panel-label">個人品牌 · Personal Brand</span>
+            <h4 class="scenario-panel-title">在別人認識你的專業之前，他們先看到你的品味。</h4>
+            <p class="scenario-panel-desc">
               社群、課程、講座、自媒體——你的內容辨識度從一張頭像開始。
             </p>
-            <div class="combo">
+            <div class="scenario-panel-combo">
               <span class="combo-label">Service Combo · 服務組合</span>
               <span class="combo-text">Visual Positioning Blueprint ＋ 形象素材庫 ＋ 社群視覺應用</span>
             </div>
-          </div>
-          <div class="scenario-cta">
-            <a href="services/signature.html" class="cta-secondary">了解個人品牌方案 →</a>
+            <div class="scenario-panel-cta">
+              <a href="services/signature.html" class="cta-secondary">了解個人品牌方案 →</a>
+            </div>
           </div>
         </article>
 
-        <article class="scenario-card">
-          <div class="scenario-photo">
+        <article class="scenario-panel" data-panel="enterprise" role="tabpanel" hidden>
+          <div class="scenario-panel-photo">
             <picture>
-        <source type="image/webp"
-                srcset="assets/images/dsc03201-480.webp 480w,
-                        assets/images/dsc03201-960.webp 960w,
-                        assets/images/dsc03201-1440.webp 1440w"
-                sizes="(max-width: 768px) 100vw, 50vw">
-        <img src="assets/images/dsc03201-960.jpg"
-           srcset="assets/images/dsc03201-480.jpg 480w, assets/images/dsc03201-960.jpg 960w, assets/images/dsc03201-1440.jpg 1440w"
-           sizes="(max-width: 768px) 100vw, 50vw"
-           alt="企業領導者情境"
-           width="1800" height="1200" loading="lazy" decoding="async" />
-      </picture>
-            <div class="photo-label">
-              <span class="cn">企業／高階主管</span>
-              <span class="en">Enterprise</span>
-            </div>
+              <source type="image/webp"
+                      srcset="assets/images/dsc03201-480.webp 480w,
+                              assets/images/dsc03201-960.webp 960w,
+                              assets/images/dsc03201-1440.webp 1440w"
+                      sizes="(max-width: 768px) 100vw, 50vw">
+              <img src="assets/images/dsc03201-960.jpg"
+                   srcset="assets/images/dsc03201-480.jpg 480w, assets/images/dsc03201-960.jpg 960w, assets/images/dsc03201-1440.jpg 1440w"
+                   sizes="(max-width: 768px) 100vw, 50vw"
+                   alt="企業領導者情境"
+                   width="1800" height="1200" loading="lazy" decoding="async" />
+            </picture>
           </div>
-          <div class="scenario-content">
-            <h4>不要讓視覺形象，拖累你的決策說服力。</h4>
-            <p class="desc">
+          <div class="scenario-panel-content">
+            <span class="scenario-panel-label">企業／高階主管 · Enterprise</span>
+            <h4 class="scenario-panel-title">不要讓視覺形象，拖累你的決策說服力。</h4>
+            <p class="scenario-panel-desc">
               官網、媒體、簡報、活動合作——每一個曝光場合都代表組織氣場。
             </p>
-            <div class="combo">
+            <div class="scenario-panel-combo">
               <span class="combo-label">Service Combo · 服務組合</span>
               <span class="combo-text">商業視覺定位 ＋ 企業形象攝影 ＋ 活動妝髮統籌</span>
             </div>
-          </div>
-          <div class="scenario-cta">
-            <a href="services/signature.html" class="cta-secondary">了解企業形象方案 →</a>
+            <div class="scenario-panel-cta">
+              <a href="services/signature.html" class="cta-secondary">了解企業形象方案 →</a>
+            </div>
           </div>
         </article>
 
-        <article class="scenario-card">
-          <div class="scenario-photo">
+        <article class="scenario-panel" data-panel="occasion" role="tabpanel" hidden>
+          <div class="scenario-panel-photo">
             <picture>
-        <source type="image/webp"
-                srcset="assets/images/dsc03229-480.webp 480w,
-                        assets/images/dsc03229-960.webp 960w,
-                        assets/images/dsc03229-1440.webp 1440w"
-                sizes="(max-width: 768px) 100vw, 50vw">
-        <img src="assets/images/dsc03229-960.jpg"
-           srcset="assets/images/dsc03229-480.jpg 480w, assets/images/dsc03229-960.jpg 960w, assets/images/dsc03229-1440.jpg 1440w"
-           sizes="(max-width: 768px) 100vw, 50vw"
-           alt="婚禮重要場合情境"
-           width="1800" height="1200" loading="lazy" decoding="async" />
-      </picture>
-            <div class="photo-label">
-              <span class="cn">重要場合</span>
-              <span class="en">Special Occasions</span>
-            </div>
+              <source type="image/webp"
+                      srcset="assets/images/dsc03229-480.webp 480w,
+                              assets/images/dsc03229-960.webp 960w,
+                              assets/images/dsc03229-1440.webp 1440w"
+                      sizes="(max-width: 768px) 100vw, 50vw">
+              <img src="assets/images/dsc03229-960.jpg"
+                   srcset="assets/images/dsc03229-480.jpg 480w, assets/images/dsc03229-960.jpg 960w, assets/images/dsc03229-1440.jpg 1440w"
+                   sizes="(max-width: 768px) 100vw, 50vw"
+                   alt="婚禮重要場合情境"
+                   width="1800" height="1200" loading="lazy" decoding="async" />
+            </picture>
           </div>
-          <div class="scenario-content">
-            <h4>一場一次的場合，值得整套形象同行。</h4>
-            <p class="desc">
+          <div class="scenario-panel-content">
+            <span class="scenario-panel-label">重要場合 · Special Occasions</span>
+            <h4 class="scenario-panel-title">一場一次的場合，值得整套形象同行。</h4>
+            <p class="scenario-panel-desc">
               婚禮、頒獎、媒體首映——重要時刻不該為了形象分心。
             </p>
-            <div class="combo">
+            <div class="scenario-panel-combo">
               <span class="combo-label">Service Combo · 服務組合</span>
               <span class="combo-text"><span class="brand-unit">À Voir 形象定位</span> ＋ <span class="brand-unit">B Room 全日妝髮</span> ＋ <span class="brand-unit">C Photos 紀錄影像</span></span>
             </div>
-          </div>
-          <div class="scenario-cta">
-            <a href="booking.html" class="cta-secondary">了解重要場合方案 →</a>
+            <div class="scenario-panel-cta">
+              <a href="booking.html" class="cta-secondary">了解重要場合方案 →</a>
+            </div>
           </div>
         </article>
 
@@ -919,6 +928,40 @@
       slider.addEventListener('scroll', updateButtons, { passive: true });
       window.addEventListener('resize',  updateButtons);
       updateButtons();
+    })();
+  </script>
+
+  <!-- ============================================================
+       § 4 Scenarios — Tab 切換
+       ============================================================ -->
+  <script>
+    (function () {
+      const tabs = document.querySelectorAll('.scenario-tab');
+      const panels = document.querySelectorAll('.scenario-panel');
+      if (!tabs.length || !panels.length) return;
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.dataset.target;
+
+          tabs.forEach(t => {
+            t.classList.remove('is-active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          panels.forEach(p => {
+            p.classList.remove('is-active');
+            p.setAttribute('hidden', '');
+          });
+
+          tab.classList.add('is-active');
+          tab.setAttribute('aria-selected', 'true');
+          const panel = document.querySelector('.scenario-panel[data-panel="' + target + '"]');
+          if (panel) {
+            panel.classList.add('is-active');
+            panel.removeAttribute('hidden');
+          }
+        });
+      });
     })();
   </script>
 
