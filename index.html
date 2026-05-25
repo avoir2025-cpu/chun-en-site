@@ -273,15 +273,18 @@
       <!-- Tab picker（跟 § 4 Scenarios 同樣形式） -->
       <div class="scenario-tabs" role="tablist" aria-label="三大子品牌">
         <button class="scenario-tab is-active" data-target="studio-avoir" role="tab" aria-selected="true">
-          <span class="cn">À Voir · 被理解</span>
+          <span class="cn-main">À Voir</span>
+          <span class="cn-sub">被理解</span>
           <span class="en">Define</span>
         </button>
         <button class="scenario-tab" data-target="studio-broom" role="tab" aria-selected="false">
-          <span class="cn">B Room · 被精準呈現</span>
+          <span class="cn-main">B Room</span>
+          <span class="cn-sub">被精準呈現</span>
           <span class="en">Refine</span>
         </button>
         <button class="scenario-tab" data-target="studio-cphotos" role="tab" aria-selected="false">
-          <span class="cn">C Photos · 被長期使用</span>
+          <span class="cn-main">C Photos</span>
+          <span class="cn-sub">被長期使用</span>
           <span class="en">Deliver</span>
         </button>
       </div>
@@ -427,19 +430,20 @@
       <!-- Tab picker -->
       <div class="scenario-tabs" role="tablist" aria-label="情境選擇">
         <button class="scenario-tab is-active" data-target="job" role="tab" aria-selected="true">
-          <span class="cn">職業升級</span>
+          <span class="cn-main">職業升級</span>
           <span class="en">Job Upgrade</span>
         </button>
         <button class="scenario-tab" data-target="brand" role="tab" aria-selected="false">
-          <span class="cn">個人品牌</span>
+          <span class="cn-main">個人品牌</span>
           <span class="en">Personal Brand</span>
         </button>
         <button class="scenario-tab" data-target="enterprise" role="tab" aria-selected="false">
-          <span class="cn">企業／高階主管</span>
+          <span class="cn-main">企業</span>
+          <span class="cn-sub">高階主管</span>
           <span class="en">Enterprise</span>
         </button>
         <button class="scenario-tab" data-target="occasion" role="tab" aria-selected="false">
-          <span class="cn">重要場合</span>
+          <span class="cn-main">重要場合</span>
           <span class="en">Special Occasions</span>
         </button>
       </div>
@@ -954,42 +958,112 @@
   <!-- ============================================================
        Tab 切換（§ 3 Three Studios + § 4 Scenarios 共用）
        ============================================================
-       每組 tab 透過 .scenario-tabs.closest('section') 範圍化，
-       避免兩組 tab 互相干擾。
+       - 桌機：點 tab 切換 panel hide/show
+       - 手機：panels 為 horizontal scroll-snap 容器，可左右 swipe
+         點 tab 會平滑捲動到對應 panel
+         手指 swipe panel 也會即時同步高亮對應 tab
+       每組 tab 透過 closest('section') 範圍化，避免兩組互相干擾
        ============================================================ -->
   <script>
     (function () {
       const tabsGroups = document.querySelectorAll('.scenario-tabs');
       if (!tabsGroups.length) return;
 
+      const mqMobile = window.matchMedia('(max-width: 768px)');
+      const isMobile = () => mqMobile.matches;
+
       tabsGroups.forEach(group => {
-        // 找到此 group 所屬的 section（含 panels）
         const scope = group.closest('section') || document;
         const tabs = group.querySelectorAll('.scenario-tab');
+        const panelsContainer = scope.querySelector('.scenario-panels');
         const panels = scope.querySelectorAll('.scenario-panel');
-        if (!tabs.length || !panels.length) return;
+        if (!tabs.length || !panels.length || !panelsContainer) return;
 
-        tabs.forEach(tab => {
-          tab.addEventListener('click', () => {
-            const target = tab.dataset.target;
+        function activateTab(tab, { scrollPanel = false } = {}) {
+          const target = tab.dataset.target;
+          tabs.forEach(t => {
+            t.classList.remove('is-active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          tab.classList.add('is-active');
+          tab.setAttribute('aria-selected', 'true');
 
-            tabs.forEach(t => {
-              t.classList.remove('is-active');
-              t.setAttribute('aria-selected', 'false');
-            });
+          const targetPanel = scope.querySelector('.scenario-panel[data-panel="' + target + '"]');
+          if (!targetPanel) return;
+
+          if (isMobile()) {
+            // 手機：所有 panel 都顯示（CSS 控制），只需 scroll 到對應位置
+            if (scrollPanel) {
+              const panelLeft = targetPanel.offsetLeft;
+              const containerLeft = panelsContainer.scrollLeft;
+              panelsContainer.scrollTo({
+                left: panelLeft - panelsContainer.offsetLeft,
+                behavior: 'smooth'
+              });
+            }
+            // tab 也滑動到視野中央
+            tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          } else {
+            // 桌機：hide/show panels
             panels.forEach(p => {
               p.classList.remove('is-active');
               p.setAttribute('hidden', '');
             });
+            targetPanel.classList.add('is-active');
+            targetPanel.removeAttribute('hidden');
+          }
+        }
 
-            tab.classList.add('is-active');
-            tab.setAttribute('aria-selected', 'true');
-            const panel = scope.querySelector('.scenario-panel[data-panel="' + target + '"]');
-            if (panel) {
-              panel.classList.add('is-active');
-              panel.removeAttribute('hidden');
-            }
+        // ===== tab 點擊 =====
+        tabs.forEach(tab => {
+          tab.addEventListener('click', function () {
+            activateTab(tab, { scrollPanel: true });
           });
+        });
+
+        // ===== 手機 swipe 偵測 → 同步 tab 高亮 =====
+        let scrollTimer = null;
+        panelsContainer.addEventListener('scroll', function () {
+          if (!isMobile()) return;
+          if (scrollTimer) clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(function () {
+            // 找哪個 panel 中心最接近容器中心
+            const containerRect = panelsContainer.getBoundingClientRect();
+            const containerCenter = containerRect.left + containerRect.width / 2;
+            let closestPanel = null;
+            let minDist = Infinity;
+            panels.forEach(function (p) {
+              const r = p.getBoundingClientRect();
+              const c = r.left + r.width / 2;
+              const d = Math.abs(c - containerCenter);
+              if (d < minDist) { minDist = d; closestPanel = p; }
+            });
+            if (!closestPanel) return;
+            const panelId = closestPanel.dataset.panel;
+            const matchingTab = group.querySelector('.scenario-tab[data-target="' + panelId + '"]');
+            if (matchingTab && !matchingTab.classList.contains('is-active')) {
+              tabs.forEach(t => {
+                t.classList.remove('is-active');
+                t.setAttribute('aria-selected', 'false');
+              });
+              matchingTab.classList.add('is-active');
+              matchingTab.setAttribute('aria-selected', 'true');
+              matchingTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+          }, 80);
+        }, { passive: true });
+
+        // ===== 視窗 resize 切換桌機/手機時，重新校正 panel 狀態 =====
+        let lastIsMobile = isMobile();
+        window.addEventListener('resize', function () {
+          const nowMobile = isMobile();
+          if (nowMobile === lastIsMobile) return;
+          lastIsMobile = nowMobile;
+          // 切到桌機：確保只有 active panel 顯示
+          if (!nowMobile) {
+            const activeTab = group.querySelector('.scenario-tab.is-active') || tabs[0];
+            if (activeTab) activateTab(activeTab, { scrollPanel: false });
+          }
         });
       });
     })();
