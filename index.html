@@ -270,97 +270,117 @@
         </p>
       </div>
 
-      <div class="grid">
+      <!-- Tab picker（跟 § 4 Scenarios 同樣形式） -->
+      <div class="scenario-tabs" role="tablist" aria-label="三大子品牌">
+        <button class="scenario-tab is-active" data-target="studio-avoir" role="tab" aria-selected="true">
+          <span class="cn">À Voir · 被理解</span>
+          <span class="en">Define</span>
+        </button>
+        <button class="scenario-tab" data-target="studio-broom" role="tab" aria-selected="false">
+          <span class="cn">B Room · 被精準呈現</span>
+          <span class="en">Refine</span>
+        </button>
+        <button class="scenario-tab" data-target="studio-cphotos" role="tab" aria-selected="false">
+          <span class="cn">C Photos · 被長期使用</span>
+          <span class="en">Deliver</span>
+        </button>
+      </div>
 
-        <!-- À Voir -->
-        <div class="col-4 text-center hover-lift">
-          <div class="img-arch">
-            <picture>
-        <source type="image/webp"
-                srcset="assets/images/dsc03229-480.webp 480w,
-                        assets/images/dsc03229-960.webp 960w,
-                        assets/images/dsc03229-1440.webp 1440w"
-                sizes="(max-width: 900px) 100vw, 50vw">
-        <img class="photo-fill"
-           src="assets/images/dsc03229-960.jpg"
-           srcset="assets/images/dsc03229-480.jpg 480w, assets/images/dsc03229-960.jpg 960w, assets/images/dsc03229-1440.jpg 1440w"
-           sizes="(max-width: 900px) 100vw, 50vw"
-           alt="À Voir 形象定位 — 服飾選品空間"
-           width="1800" height="1200" loading="lazy" decoding="async" />
-      </picture>
-          </div>
-          <p class="caption" style="justify-content: center; margin-top: var(--space-5);">
-            <span class="caption-plate">維度 I · Define</span>
-          </p>
-          <h4 class="font-display light italic" style="margin-top: var(--space-3); font-size: var(--fs-2xl);">À Voir</h4>
-          <span style="font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light); color: var(--color-gold); font-size: var(--fs-md); margin: var(--space-2) 0 var(--space-3); display: block;">被理解</span>
-          <p class="font-serif" style="font-size: var(--fs-md); color: var(--color-ink-muted); max-width: 32ch; margin: 0 auto; line-height: 1.85;">
-            先理解你的角色與場景，再決定你該被看見的樣子。
-          </p>
-          <div style="margin-top: var(--space-5);">
-            <a href="services/a-voir.html" class="cta-secondary">了解 À Voir →</a>
-          </div>
-        </div>
+      <!-- Tab panels -->
+      <div class="scenario-panels">
 
-        <!-- B Room -->
-        <div class="col-4 text-center hover-lift">
-          <div class="img-arch">
+        <article class="scenario-panel is-active" data-panel="studio-avoir" role="tabpanel">
+          <div class="scenario-panel-photo">
             <picture>
-        <source type="image/webp"
-                srcset="assets/images/dsc03184-480.webp 480w,
-                        assets/images/dsc03184-960.webp 960w,
-                        assets/images/dsc03184-1440.webp 1440w"
-                sizes="(max-width: 900px) 100vw, 50vw">
-        <img class="photo-fill"
-           src="assets/images/dsc03184-960.jpg"
-           srcset="assets/images/dsc03184-480.jpg 480w, assets/images/dsc03184-960.jpg 960w, assets/images/dsc03184-1440.jpg 1440w"
-           sizes="(max-width: 900px) 100vw, 50vw"
-           alt="B Room 妝髮造型 — 雙拱形化妝鏡台"
-           width="1800" height="1200" loading="lazy" decoding="async" />
-      </picture>
+              <source type="image/webp"
+                      srcset="assets/images/dsc03229-480.webp 480w,
+                              assets/images/dsc03229-960.webp 960w,
+                              assets/images/dsc03229-1440.webp 1440w"
+                      sizes="(max-width: 768px) 100vw, 50vw">
+              <img src="assets/images/dsc03229-960.jpg"
+                   srcset="assets/images/dsc03229-480.jpg 480w, assets/images/dsc03229-960.jpg 960w, assets/images/dsc03229-1440.jpg 1440w"
+                   sizes="(max-width: 768px) 100vw, 50vw"
+                   alt="À Voir 形象定位 — 服飾選品空間"
+                   width="1800" height="1200" loading="lazy" decoding="async" />
+            </picture>
           </div>
-          <p class="caption" style="justify-content: center; margin-top: var(--space-5);">
-            <span class="caption-plate">維度 II · Refine</span>
-          </p>
-          <h4 class="font-display light italic" style="margin-top: var(--space-3); font-size: var(--fs-2xl);">B Room</h4>
-          <span style="font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light); color: var(--color-gold); font-size: var(--fs-md); margin: var(--space-2) 0 var(--space-3); display: block;">被精準呈現</span>
-          <p class="font-serif" style="font-size: var(--fs-md); color: var(--color-ink-muted); max-width: 32ch; margin: 0 auto; line-height: 1.85;">
-            妝髮與輪廓被精準調校，讓你的氣場在鏡頭前不被誤讀。
-          </p>
-          <div style="margin-top: var(--space-5);">
-            <a href="services/b-room.html" class="cta-secondary">了解 B Room →</a>
+          <div class="scenario-panel-content">
+            <span class="scenario-panel-label">維度 I · Define</span>
+            <h4 class="scenario-panel-title"><em>À Voir</em>　被理解</h4>
+            <p class="scenario-panel-desc">
+              先理解你的角色與場景，再決定你該被看見的樣子。
+            </p>
+            <div class="scenario-panel-combo">
+              <span class="combo-label">CHUN.EN · 形象定位</span>
+              <span class="combo-text">職業角色 · 個人氣質 · 身形比例 · 形象目標</span>
+            </div>
+            <div class="scenario-panel-cta">
+              <a href="services/a-voir.html" class="cta-secondary">了解 À Voir →</a>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <!-- C Photos -->
-        <div class="col-4 text-center hover-lift">
-          <div class="img-arch">
+        <article class="scenario-panel" data-panel="studio-broom" role="tabpanel" hidden>
+          <div class="scenario-panel-photo">
             <picture>
-        <source type="image/webp"
-                srcset="assets/images/dsc03259-480.webp 480w,
-                        assets/images/dsc03259-960.webp 960w,
-                        assets/images/dsc03259-1440.webp 1440w"
-                sizes="(max-width: 900px) 100vw, 50vw">
-        <img class="photo-fill"
-           src="assets/images/dsc03259-960.jpg"
-           srcset="assets/images/dsc03259-480.jpg 480w, assets/images/dsc03259-960.jpg 960w, assets/images/dsc03259-1440.jpg 1440w"
-           sizes="(max-width: 900px) 100vw, 50vw"
-           alt="C Photos 形象影像 — 攝影棚"
-           width="1800" height="1200" loading="lazy" decoding="async" />
-      </picture>
+              <source type="image/webp"
+                      srcset="assets/images/dsc03184-480.webp 480w,
+                              assets/images/dsc03184-960.webp 960w,
+                              assets/images/dsc03184-1440.webp 1440w"
+                      sizes="(max-width: 768px) 100vw, 50vw">
+              <img src="assets/images/dsc03184-960.jpg"
+                   srcset="assets/images/dsc03184-480.jpg 480w, assets/images/dsc03184-960.jpg 960w, assets/images/dsc03184-1440.jpg 1440w"
+                   sizes="(max-width: 768px) 100vw, 50vw"
+                   alt="B Room 妝髮造型 — 雙拱形化妝鏡台"
+                   width="1800" height="1200" loading="lazy" decoding="async" />
+            </picture>
           </div>
-          <p class="caption" style="justify-content: center; margin-top: var(--space-5);">
-            <span class="caption-plate">維度 III · Deliver</span>
-          </p>
-          <h4 class="font-display light italic" style="margin-top: var(--space-3); font-size: var(--fs-2xl);">C Photos</h4>
-          <span style="font-family: var(--font-display); font-style: italic; font-weight: var(--fw-light); color: var(--color-gold); font-size: var(--fs-md); margin: var(--space-2) 0 var(--space-3); display: block;">被長期使用</span>
-          <p class="font-serif" style="font-size: var(--fs-md); color: var(--color-ink-muted); max-width: 32ch; margin: 0 auto; line-height: 1.85;">
-            產出能延伸到官網、簡報、媒體與名片的長期視覺資產。
-          </p>
-          <div style="margin-top: var(--space-5);">
-            <a href="services/c-photos.html" class="cta-secondary">了解 C Photos →</a>
+          <div class="scenario-panel-content">
+            <span class="scenario-panel-label">維度 II · Refine</span>
+            <h4 class="scenario-panel-title"><em>B Room</em>　被精準呈現</h4>
+            <p class="scenario-panel-desc">
+              妝髮與輪廓被精準調校，讓你的氣場在鏡頭前不被誤讀。
+            </p>
+            <div class="scenario-panel-combo">
+              <span class="combo-label">CHUN.EN · 妝髮造型</span>
+              <span class="combo-text">形象照妝髮 · 活動妝髮 · 新娘造型 · 半永久紋繡</span>
+            </div>
+            <div class="scenario-panel-cta">
+              <a href="services/b-room.html" class="cta-secondary">了解 B Room →</a>
+            </div>
           </div>
-        </div>
+        </article>
+
+        <article class="scenario-panel" data-panel="studio-cphotos" role="tabpanel" hidden>
+          <div class="scenario-panel-photo">
+            <picture>
+              <source type="image/webp"
+                      srcset="assets/images/dsc03259-480.webp 480w,
+                              assets/images/dsc03259-960.webp 960w,
+                              assets/images/dsc03259-1440.webp 1440w"
+                      sizes="(max-width: 768px) 100vw, 50vw">
+              <img src="assets/images/dsc03259-960.jpg"
+                   srcset="assets/images/dsc03259-480.jpg 480w, assets/images/dsc03259-960.jpg 960w, assets/images/dsc03259-1440.jpg 1440w"
+                   sizes="(max-width: 768px) 100vw, 50vw"
+                   alt="C Photos 形象影像 — 攝影棚"
+                   width="1800" height="1200" loading="lazy" decoding="async" />
+            </picture>
+          </div>
+          <div class="scenario-panel-content">
+            <span class="scenario-panel-label">維度 III · Deliver</span>
+            <h4 class="scenario-panel-title"><em>C Photos</em>　被長期使用</h4>
+            <p class="scenario-panel-desc">
+              產出能延伸到官網、簡報、媒體與名片的長期視覺資產。
+            </p>
+            <div class="scenario-panel-combo">
+              <span class="combo-label">CHUN.EN · 形象影像</span>
+              <span class="combo-text">個人形象照 · 企業團隊 · 品牌攝影 · 商業影像企劃</span>
+            </div>
+            <div class="scenario-panel-cta">
+              <a href="services/c-photos.html" class="cta-secondary">了解 C Photos →</a>
+            </div>
+          </div>
+        </article>
 
       </div>
 
@@ -932,34 +952,44 @@
   </script>
 
   <!-- ============================================================
-       § 4 Scenarios — Tab 切換
+       Tab 切換（§ 3 Three Studios + § 4 Scenarios 共用）
+       ============================================================
+       每組 tab 透過 .scenario-tabs.closest('section') 範圍化，
+       避免兩組 tab 互相干擾。
        ============================================================ -->
   <script>
     (function () {
-      const tabs = document.querySelectorAll('.scenario-tab');
-      const panels = document.querySelectorAll('.scenario-panel');
-      if (!tabs.length || !panels.length) return;
+      const tabsGroups = document.querySelectorAll('.scenario-tabs');
+      if (!tabsGroups.length) return;
 
-      tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          const target = tab.dataset.target;
+      tabsGroups.forEach(group => {
+        // 找到此 group 所屬的 section（含 panels）
+        const scope = group.closest('section') || document;
+        const tabs = group.querySelectorAll('.scenario-tab');
+        const panels = scope.querySelectorAll('.scenario-panel');
+        if (!tabs.length || !panels.length) return;
 
-          tabs.forEach(t => {
-            t.classList.remove('is-active');
-            t.setAttribute('aria-selected', 'false');
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            const target = tab.dataset.target;
+
+            tabs.forEach(t => {
+              t.classList.remove('is-active');
+              t.setAttribute('aria-selected', 'false');
+            });
+            panels.forEach(p => {
+              p.classList.remove('is-active');
+              p.setAttribute('hidden', '');
+            });
+
+            tab.classList.add('is-active');
+            tab.setAttribute('aria-selected', 'true');
+            const panel = scope.querySelector('.scenario-panel[data-panel="' + target + '"]');
+            if (panel) {
+              panel.classList.add('is-active');
+              panel.removeAttribute('hidden');
+            }
           });
-          panels.forEach(p => {
-            p.classList.remove('is-active');
-            p.setAttribute('hidden', '');
-          });
-
-          tab.classList.add('is-active');
-          tab.setAttribute('aria-selected', 'true');
-          const panel = document.querySelector('.scenario-panel[data-panel="' + target + '"]');
-          if (panel) {
-            panel.classList.add('is-active');
-            panel.removeAttribute('hidden');
-          }
         });
       });
     })();
