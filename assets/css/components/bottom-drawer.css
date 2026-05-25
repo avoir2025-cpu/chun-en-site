@@ -1,0 +1,130 @@
+/* ============================================================
+   v4.0 BottomDrawer — 手機 nav drawer
+   ============================================================
+   API:
+     <button class="drawer-trigger" aria-label="開啟選單">☰</button>
+     <aside class="bottom-drawer" data-drawer hidden>
+       <button class="drawer-close" aria-label="關閉">×</button>
+       <nav>
+         <a href="...">關於 ABOUT</a>
+         ...
+       </nav>
+       <div class="drawer-cta">
+         <a href="..." class="cta-primary">預約諮詢</a>
+       </div>
+     </aside>
+   ============================================================ */
+
+.drawer-trigger {
+  display: none;
+  background: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  font-weight: var(--fw-light);
+  padding: var(--space-3);
+  cursor: pointer;
+  color: var(--color-ink);
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-drawer {
+  position: fixed;
+  inset: 0;
+  background: var(--color-paper);
+  z-index: 9000;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  padding:
+    max(env(safe-area-inset-top), var(--space-6))
+    var(--space-5)
+    max(env(safe-area-inset-bottom), var(--space-6));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bottom-drawer.is-open {
+  transform: translateY(0);
+}
+
+.drawer-close {
+  align-self: flex-end;
+  background: transparent;
+  border: 0;
+  font-size: 2rem;
+  font-family: var(--font-mono);
+  font-weight: var(--fw-light);
+  color: var(--color-ink);
+  cursor: pointer;
+  padding: var(--space-2);
+  line-height: 1;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.bottom-drawer nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+  margin-top: var(--space-6);
+}
+
+.bottom-drawer nav a {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-size: 1.35rem;
+  color: var(--color-ink);
+  text-decoration: none;
+  padding: var(--space-4) 0;
+  border-bottom: 0.5px solid var(--color-hairline);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bottom-drawer nav a:hover { color: var(--color-gold); }
+
+.bottom-drawer nav a .en {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.drawer-cta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 0.5px solid var(--color-hairline);
+}
+
+.drawer-cta > a {
+  text-align: center;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 767px) {
+  .drawer-trigger { display: inline-flex; }
+}
+
+@media (min-width: 768px) {
+  .bottom-drawer { display: none !important; }
+  .drawer-trigger { display: none !important; }
+}
+
+body.drawer-open {
+  overflow: hidden;
+}

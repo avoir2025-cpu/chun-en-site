@@ -1,0 +1,103 @@
+/* ============================================================
+   v4.0 Accordion — 摺疊元件
+   ============================================================
+   原生 <details>/<summary>，免 JS 也能 fallback
+   API:
+     <div class="accordion" data-accordion [data-single-open]>
+       <details class="accordion-item" [open]>
+         <summary class="accordion-trigger">
+           <span class="accordion-title">標題</span>
+           <span class="accordion-icon" aria-hidden="true">+</span>
+         </summary>
+         <div class="accordion-content">...</div>
+       </details>
+     </div>
+   ============================================================ */
+
+.accordion {
+  border-top: 0.5px solid var(--color-hairline);
+}
+
+.accordion-item {
+  border-bottom: 0.5px solid var(--color-hairline);
+}
+
+.accordion-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+  color: var(--color-ink);
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.accordion-trigger::-webkit-details-marker { display: none; }
+.accordion-trigger::marker { display: none; }
+
+.accordion-trigger:hover {
+  color: var(--color-gold);
+}
+
+.accordion-title {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+  line-height: 1.4;
+}
+
+.accordion-title .en {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.accordion-icon {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-light);
+  color: var(--color-gold);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+}
+
+.accordion-item[open] .accordion-icon {
+  transform: rotate(45deg); /* + 變 × */
+}
+
+.accordion-content {
+  padding: 0 0 var(--space-6);
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--color-ink-muted);
+  max-width: 60ch;
+}
+
+.accordion-content > * + * {
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 768px) {
+  .accordion-trigger {
+    padding: var(--space-4) 0;
+    font-size: 1.05rem;
+  }
+  .accordion-content {
+    padding-bottom: var(--space-5);
+    font-size: 0.95rem;
+  }
+}
