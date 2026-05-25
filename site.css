@@ -5051,6 +5051,13 @@ section,
   color: var(--color-ink);
   line-height: 1.35;
 }
+/* 子品牌名稱（À Voir / B Room / C Photos）在標題中以金色強調 */
+.scenario-panel-title em {
+  color: var(--color-gold);
+  font-style: italic;
+  font-family: var(--ff-serif), "Cormorant Garamond", serif;
+  font-weight: var(--fw-regular);
+}
 
 .scenario-panel-desc {
   margin-top: var(--space-4);
