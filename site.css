@@ -5066,22 +5066,25 @@ section,
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Panel 左側照片 */
+/* Panel 左側照片 — 桌機不設 aspect-ratio，image absolute 填滿 cell
+   避免 4:3 比例在寬螢幕讓圖過高、右側內容大量留白 */
 .scenario-panel-photo {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 4 / 3;
+  min-height: 280px;
 }
 .scenario-panel-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  position: absolute;
+  inset: 0;
 }
 
-/* Panel 右側內容 */
+/* Panel 右側內容 — padding 縮小 + 垂直居中讓留白均衡 */
 .scenario-panel-content {
-  padding: var(--space-7) var(--space-6);
+  padding: var(--space-6) var(--space-6);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -5151,6 +5154,7 @@ section,
 @media (max-width: 768px) {
   .scenario-panel-photo {
     aspect-ratio: 16 / 10;
+    min-height: 0;  /* 取消 desktop min-height，讓 mobile 用 aspect-ratio */
   }
   .scenario-panel-content {
     padding: var(--space-5) var(--space-5);
