@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="../patterns.css" />
   <link rel="stylesheet" href="../site.css" />
 
+  <!-- v4.0 共用元件 -->
+  <link rel="stylesheet" href="../assets/css/components/accordion.css" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -111,60 +114,76 @@
         </p>
       </div>
 
-      <div class="grid">
-        <div class="col-4">
-          <article class="theme-card">
-            <span class="num">01</span>
-            <h4>個人形象照</h4>
-            <span class="en">Personal Portrait</span>
-            <p>為你現階段的角色定格。可與 À Voir、B Room 整合。建議提早預約。</p>
-          </article>
-        </div>
+      <div class="accordion" data-accordion data-single-open>
+        <details class="accordion-item" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              <span class="group-num">I</span>
+              主題拍攝 <span class="en">Subjects · 01-04</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <ol class="signature-item-list">
+              <li>
+                <span class="signature-item-num">01</span>
+                <div>
+                  <h5>個人形象照 <span class="en">Personal Portrait</span></h5>
+                  <p>為你現階段的角色定格。可與 À Voir、B Room 整合。建議提早預約。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">02</span>
+                <div>
+                  <h5>企業團隊形象 <span class="en">Corporate Team</span></h5>
+                  <p>風格一致的組織形象。統一光線、構圖與氛圍，呈現一致的品牌氣質。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">03</span>
+                <div>
+                  <h5>品牌攝影 <span class="en">Brand Photography</span></h5>
+                  <p>為品牌主視覺、官網、廣告設計。依品牌調性建立視覺語言。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">04</span>
+                <div>
+                  <h5>商業影像企劃 <span class="en">Commercial Visual</span></h5>
+                  <p>長期可用的素材庫產出。為高曝光工作者一次規劃多場景。</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </details>
 
-        <div class="col-4">
-          <article class="theme-card">
-            <span class="num">02</span>
-            <h4>企業團隊形象</h4>
-            <span class="en">Corporate Team</span>
-            <p>風格一致的組織形象。統一光線、構圖與氛圍，呈現一致的品牌氣質。</p>
-          </article>
-        </div>
-
-        <div class="col-4">
-          <article class="theme-card">
-            <span class="num">03</span>
-            <h4>品牌攝影</h4>
-            <span class="en">Brand Photography</span>
-            <p>為品牌主視覺、官網、廣告設計。依品牌調性建立視覺語言。</p>
-          </article>
-        </div>
-
-        <div class="col-4">
-          <article class="theme-card">
-            <span class="num">04</span>
-            <h4>商業影像企劃</h4>
-            <span class="en">Commercial Visual</span>
-            <p>長期可用的素材庫產出。為高曝光工作者一次規劃多場景。</p>
-          </article>
-        </div>
-
-        <div class="col-4">
-          <article class="theme-card">
-            <span class="num">05</span>
-            <h4>情境敘事影像</h4>
-            <span class="en">Narrative Imagery</span>
-            <p>講者照、工作中、生活感影像。為簡報、社群、訪談準備。</p>
-          </article>
-        </div>
-
-        <div class="col-4">
-          <article class="theme-card">
-            <span class="num">06</span>
-            <h4>後製規劃</h4>
-            <span class="en">Post-Production Planning</span>
-            <p>為應用場景準備不同規格——橫幅、方形、直幅、各社群平台。</p>
-          </article>
-        </div>
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              <span class="group-num">II</span>
+              敘事與後製 <span class="en">Narrative · 05-06</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <ol class="signature-item-list">
+              <li>
+                <span class="signature-item-num">05</span>
+                <div>
+                  <h5>情境敘事影像 <span class="en">Narrative Imagery</span></h5>
+                  <p>講者照、工作中、生活感影像。為簡報、社群、訪談準備。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">06</span>
+                <div>
+                  <h5>後製規劃 <span class="en">Post-Production Planning</span></h5>
+                  <p>為應用場景準備不同規格——橫幅、方形、直幅、各社群平台。</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </details>
       </div>
     </div>
   </section>
@@ -397,5 +416,8 @@
     </div>
   </footer>
   <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="floating-line-btn" aria-label="LINE 諮詢"><svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg></a>
+
+  <!-- v4.0 共用元件 JS -->
+  <script src="../assets/js/components/accordion.js" defer></script>
 </body>
 </html>
