@@ -4961,12 +4961,37 @@ section,
   -webkit-tap-highlight-color: transparent;
 }
 
+/* 舊 .cn 樣式保留（向下相容） */
 .scenario-tab .cn {
   font-family: var(--ff-serif), "Noto Serif TC", serif;
   font-style: italic;
   font-size: 1.15rem;
   color: var(--color-ink-soft);
   transition: color 0.4s var(--ease-silk);
+}
+
+/* 新 .cn-main：主標（品牌名 / 情境名）*/
+.scenario-tab .cn-main {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  font-weight: var(--fw-regular);
+  color: var(--color-ink-soft);
+  line-height: 1.2;
+  transition: color 0.4s var(--ease-silk);
+  white-space: nowrap;
+}
+
+/* 新 .cn-sub：副標（描述詞）— 換到下一行 */
+.scenario-tab .cn-sub {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-size: 0.82rem;
+  font-weight: var(--fw-light);
+  color: var(--color-ink-muted);
+  line-height: 1.2;
+  transition: color 0.4s var(--ease-silk);
+  white-space: nowrap;
 }
 
 .scenario-tab .en {
@@ -4978,13 +5003,17 @@ section,
   transition: color 0.4s var(--ease-silk);
 }
 
-.scenario-tab:hover .cn { color: var(--color-ink); }
+.scenario-tab:hover .cn,
+.scenario-tab:hover .cn-main,
+.scenario-tab:hover .cn-sub { color: var(--color-ink); }
 .scenario-tab:hover .en { color: var(--color-ink-soft); }
 
 .scenario-tab.is-active {
   border-bottom-color: var(--color-gold);
 }
 .scenario-tab.is-active .cn,
+.scenario-tab.is-active .cn-main,
+.scenario-tab.is-active .cn-sub,
 .scenario-tab.is-active .en {
   color: var(--color-gold);
 }
@@ -5094,29 +5123,30 @@ section,
   margin-top: var(--space-6);
 }
 
-/* 手機：照片在上，文字在下 + tabs 橫向 scroll */
+/* 手機：照片在上，文字在下 + tabs 橫向 scroll + panels 左右 swipe */
 @media (max-width: 768px) {
-  .scenario-panel.is-active {
-    grid-template-columns: 1fr;
-  }
   .scenario-panel-photo {
     aspect-ratio: 16 / 10;
   }
   .scenario-panel-content {
     padding: var(--space-5) var(--space-5);
   }
+
+  /* ========== tabs 橫向可滑（避免擠不下） ========== */
   .scenario-tabs {
     overflow-x: auto;
     flex-wrap: nowrap;
     justify-content: flex-start;
     padding-bottom: var(--space-3);
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-5);
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     margin-left: calc(-1 * var(--space-5));
     margin-right: calc(-1 * var(--space-5));
     padding-left: var(--space-5);
     padding-right: var(--space-5);
+    /* 同步 tab 滑動到 active */
+    scroll-behavior: smooth;
   }
   .scenario-tabs::-webkit-scrollbar {
     display: none;
@@ -5124,8 +5154,46 @@ section,
   .scenario-tab {
     padding: var(--space-3) var(--space-3);
     flex-shrink: 0;
+    /* 主+副+EN 三行垂直堆疊 */
+    gap: 2px;
   }
-  .scenario-tab .cn {
-    font-size: 1rem;
+  .scenario-tab .cn,
+  .scenario-tab .cn-main {
+    font-size: 0.98rem;
+  }
+  .scenario-tab .cn-sub {
+    font-size: 0.78rem;
+  }
+
+  /* ========== panels 左右 swipe（核心 UX 改善） ========== */
+  .scenario-panels {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
+    min-height: 0;
+    /* 讓 panels 滿版（edge-to-edge），出 .container 邊界 */
+    margin-left: calc(-1 * var(--space-5));
+    margin-right: calc(-1 * var(--space-5));
+    padding: 0 var(--space-5);
+    scroll-behavior: smooth;
+    /* 提示視覺：頁邊微微露出下一張，暗示可滑 */
+  }
+  .scenario-panels::-webkit-scrollbar {
+    display: none;
+  }
+  /* 全部 panel 顯示為 flex item，並排於 panels 容器內 */
+  .scenario-panel,
+  .scenario-panel.is-active {
+    display: grid !important;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    grid-template-columns: 1fr;
+  }
+  /* 取消 hidden 屬性影響（mobile 全部顯示） */
+  .scenario-panel[hidden] {
+    display: grid !important;
   }
 }
