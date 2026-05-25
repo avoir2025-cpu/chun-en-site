@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="../patterns.css" />
   <link rel="stylesheet" href="../site.css" />
 
+  <!-- v4.0 共用元件 -->
+  <link rel="stylesheet" href="../assets/css/components/accordion.css" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -191,70 +194,111 @@
         </p>
       </div>
 
-      <div class="grid">
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">01</span>
-            <h4>深度形象訪談</h4>
-            <p>由 À Voir 主理人親自進行。從職業角色、受眾、氣質、身形條件與場景出發。</p>
+      <div class="accordion" data-accordion data-single-open>
+        <details class="accordion-item" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              <span class="group-num">I</span>
+              諮詢階段 <span class="en">Consultation · 01-03</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <ol class="signature-item-list">
+              <li>
+                <span class="signature-item-num">01</span>
+                <div>
+                  <h5>深度形象訪談</h5>
+                  <p>由 À Voir 主理人親自進行。從職業角色、受眾、氣質、身形條件與場景出發。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">02</span>
+                <div>
+                  <h5>形象定位報告</h5>
+                  <p>書面交付，含視覺方向地圖。風格座標、配色邏輯、避雷清單一次到位。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">03</span>
+                <div>
+                  <h5>服裝策略與選品</h5>
+                  <p>依定位產出服裝邏輯，含一次選購陪同。實體或線上採購均可。</p>
+                </div>
+              </li>
+            </ol>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">02</span>
-            <h4>形象定位報告</h4>
-            <p>書面交付，含視覺方向地圖。風格座標、配色邏輯、避雷清單一次到位。</p>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              <span class="group-num">II</span>
+              製作階段 <span class="en">Production · 04-06</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <ol class="signature-item-list">
+              <li>
+                <span class="signature-item-num">04</span>
+                <div>
+                  <h5>妝髮藍圖</h5>
+                  <p>由 B Room 為你量身規劃。依臉部條件、鏡頭語言與場合需求設計。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">05</span>
+                <div>
+                  <h5>影像企劃</h5>
+                  <p>含 4-6 個場景設計。拍攝方向、構圖、氛圍、應用場景一次規劃。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">06</span>
+                <div>
+                  <h5>半日至一日拍攝</h5>
+                  <p>由 C Photos 執行。依方案分級，含現場形象調整與多場景捕捉。</p>
+                </div>
+              </li>
+            </ol>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">03</span>
-            <h4>服裝策略與選品</h4>
-            <p>依定位產出服裝邏輯，含一次選購陪同。實體或線上採購均可。</p>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              <span class="group-num">III</span>
+              交付階段 <span class="en">Delivery · 07-09</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <ol class="signature-item-list">
+              <li>
+                <span class="signature-item-num">07</span>
+                <div>
+                  <h5>精修影像交付</h5>
+                  <p>含多種規格——橫幅、方形、直幅。為官網、社群、簡報準備。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">08</span>
+                <div>
+                  <h5>應用建議書</h5>
+                  <p>官網、社群、簡報、名片使用指南。讓影像在每個曝光場景都到位。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">09</span>
+                <div>
+                  <h5>90 天後續諮詢</h5>
+                  <p>首次應用後的微調建議。實際使用後的問題，由原團隊接住。</p>
+                </div>
+              </li>
+            </ol>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">04</span>
-            <h4>妝髮藍圖</h4>
-            <p>由 B Room 為你量身規劃。依臉部條件、鏡頭語言與場合需求設計。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">05</span>
-            <h4>影像企劃</h4>
-            <p>含 4-6 個場景設計。拍攝方向、構圖、氛圍、應用場景一次規劃。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">06</span>
-            <h4>半日至一日拍攝</h4>
-            <p>由 C Photos 執行。依方案分級，含現場形象調整與多場景捕捉。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">07</span>
-            <h4>精修影像交付</h4>
-            <p>含多種規格——橫幅、方形、直幅。為官網、社群、簡報準備。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">08</span>
-            <h4>應用建議書</h4>
-            <p>官網、社群、簡報、名片使用指南。讓影像在每個曝光場景都到位。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">09</span>
-            <h4>90 天後續諮詢</h4>
-            <p>首次應用後的微調建議。實際使用後的問題，由原團隊接住。</p>
-          </div>
-        </div>
+        </details>
       </div>
     </div>
   </section>
@@ -530,5 +574,8 @@
     </div>
   </footer>
   <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="floating-line-btn" aria-label="LINE 諮詢"><svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg></a>
+
+  <!-- v4.0 共用元件 JS -->
+  <script src="../assets/js/components/accordion.js" defer></script>
 </body>
 </html>
