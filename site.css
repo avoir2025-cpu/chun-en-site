@@ -5018,23 +5018,47 @@ section,
   color: var(--color-gold);
 }
 
-/* Panel 容器 */
+/* Panel 容器（CSS Grid overlay：所有 panels 疊在同一個 grid cell，
+   container 自動 = 最高的那一個 panel，切換 tab 時不再「跳高度」） */
 .scenario-panels {
+  display: grid;
+  grid-template-columns: 1fr;
   position: relative;
-  min-height: 400px;
 }
 
 .scenario-panel {
-  display: none;
+  /* 所有 panel 占同一個 grid cell（疊起） */
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   background: var(--color-cream);
   border: 0.5px solid var(--color-hairline);
   overflow: hidden;
-  grid-template-columns: 1fr 1fr;
-  animation: scenario-fade-in 0.5s var(--ease-silk);
+  /* 預設隱藏（不影響 grid 佔位，所以 container 仍會撐到最高 panel） */
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.4s var(--ease-silk),
+    visibility 0s linear 0.4s;
 }
 
 .scenario-panel.is-active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transition:
+    opacity 0.4s var(--ease-silk),
+    visibility 0s linear 0s;
+}
+
+/* JS 加 [hidden] 屬性時，繼續維持 grid 佔位（避免高度塌陷） */
+.scenario-panel[hidden] {
   display: grid;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 @keyframes scenario-fade-in {
@@ -5184,16 +5208,19 @@ section,
   .scenario-panels::-webkit-scrollbar {
     display: none;
   }
-  /* 全部 panel 顯示為 flex item，並排於 panels 容器內 */
+  /* 全部 panel 顯示為 flex item，並排於 panels 容器內
+     需覆寫 desktop 的 grid overlay (grid-column/row/visibility/opacity) */
   .scenario-panel,
-  .scenario-panel.is-active {
+  .scenario-panel.is-active,
+  .scenario-panel[hidden] {
     display: grid !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
     flex: 0 0 100%;
     scroll-snap-align: start;
     grid-template-columns: 1fr;
-  }
-  /* 取消 hidden 屬性影響（mobile 全部顯示） */
-  .scenario-panel[hidden] {
-    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 }
