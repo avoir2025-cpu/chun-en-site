@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="../patterns.css" />
   <link rel="stylesheet" href="../site.css" />
 
+  <!-- v4.0 共用元件 -->
+  <link rel="stylesheet" href="../assets/css/components/accordion.css" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -113,49 +116,76 @@
         </p>
       </div>
 
-      <div class="grid">
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">01</span>
-            <h4>形象照妝髮</h4>
-            <p>為 C Photos 拍攝量身設計。考慮鏡頭、燈光、後製，乾淨耐看。</p>
+      <div class="accordion" data-accordion data-single-open>
+        <details class="accordion-item" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              <span class="group-num">I</span>
+              鏡頭場合 <span class="en">On Camera · 01-02-05</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <ol class="signature-item-list">
+              <li>
+                <span class="signature-item-num">01</span>
+                <div>
+                  <h5>形象照妝髮</h5>
+                  <p>為 C Photos 拍攝量身設計。考慮鏡頭、燈光、後製，乾淨耐看。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">02</span>
+                <div>
+                  <h5>活動妝髮</h5>
+                  <p>講座、頒獎、發表會的高強度場合。依場合與媒體需求設計。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">05</span>
+                <div>
+                  <h5>自媒體拍攝妝髮</h5>
+                  <p>長期合作或單次拍攝皆可。為頻道建立穩定的妝髮語言。</p>
+                </div>
+              </li>
+            </ol>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">02</span>
-            <h4>活動妝髮</h4>
-            <p>講座、頒獎、發表會的高強度場合。依場合與媒體需求設計。</p>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              <span class="group-num">II</span>
+              重要場合與進階 <span class="en">Occasions · 03-04-06</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <ol class="signature-item-list">
+              <li>
+                <span class="signature-item-num">03</span>
+                <div>
+                  <h5>新娘造型</h5>
+                  <p>婚禮全日造型統籌。從白紗到晚宴，含親友妝髮統籌。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">04</span>
+                <div>
+                  <h5>企業團體妝髮</h5>
+                  <p>團隊合照、年度形象、媒體露出——維持團隊形象一致性。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">06</span>
+                <div>
+                  <h5>半永久紋繡</h5>
+                  <p>眉、眼線、唇釉。讓日常妝感更穩定，鏡頭前更從容。</p>
+                </div>
+              </li>
+            </ol>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">03</span>
-            <h4>新娘造型</h4>
-            <p>婚禮全日造型統籌。從白紗到晚宴，含親友妝髮統籌。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">04</span>
-            <h4>企業團體妝髮</h4>
-            <p>團隊合照、年度形象、媒體露出——維持團隊形象一致性。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">05</span>
-            <h4>自媒體拍攝妝髮</h4>
-            <p>長期合作或單次拍攝皆可。為頻道建立穩定的妝髮語言。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">06</span>
-            <h4>半永久紋繡</h4>
-            <p>眉、眼線、唇釉。讓日常妝感更穩定，鏡頭前更從容。</p>
-          </div>
-        </div>
+        </details>
       </div>
     </div>
   </section>
@@ -319,5 +349,8 @@
     </div>
   </footer>
   <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="floating-line-btn" aria-label="LINE 諮詢"><svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg></a>
+
+  <!-- v4.0 共用元件 JS -->
+  <script src="../assets/js/components/accordion.js" defer></script>
 </body>
 </html>

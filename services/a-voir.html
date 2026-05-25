@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="../patterns.css" />
   <link rel="stylesheet" href="../site.css" />
 
+  <!-- v4.0 共用元件 -->
+  <link rel="stylesheet" href="../assets/css/components/accordion.css" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -110,63 +113,104 @@
         </p>
       </div>
 
-      <div class="grid">
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">01</span>
-            <h4>形象診斷</h4>
-            <p>氣質、體型、色彩、姿態系統盤點。釐清現在的視覺基底。</p>
+      <div class="accordion" data-accordion data-single-open>
+        <details class="accordion-item" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              <span class="group-num">I</span>
+              診斷 <span class="en">Diagnostic · 01-02</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <ol class="signature-item-list">
+              <li>
+                <span class="signature-item-num">01</span>
+                <div>
+                  <h5>形象診斷</h5>
+                  <p>氣質、體型、色彩、姿態系統盤點。釐清現在的視覺基底。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">02</span>
+                <div>
+                  <h5>風格定位</h5>
+                  <p>建立可長期沿用的視覺語言。風格座標、配色邏輯、避雷清單。</p>
+                </div>
+              </li>
+            </ol>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">02</span>
-            <h4>風格定位</h4>
-            <p>建立可長期沿用的視覺語言。風格座標、配色邏輯、避雷清單。</p>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              <span class="group-num">II</span>
+              規劃與執行 <span class="en">Strategy · 03-05</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <ol class="signature-item-list">
+              <li>
+                <span class="signature-item-num">03</span>
+                <div>
+                  <h5>服裝策略</h5>
+                  <p>為你現階段的場景做出選擇邏輯。減少猶豫，提升一致性。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">04</span>
+                <div>
+                  <h5>衣櫥健檢</h5>
+                  <p>把現有的衣物變成有結構的選擇。留下、調整、補齊一次到位。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">05</span>
+                <div>
+                  <h5>選品建議</h5>
+                  <p>以你的定位為準則進行採購建議。實體或線上採購陪同。</p>
+                </div>
+              </li>
+            </ol>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">03</span>
-            <h4>服裝策略</h4>
-            <p>為你現階段的場景做出選擇邏輯。減少猶豫，提升一致性。</p>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              <span class="group-num">III</span>
+              延伸應用 <span class="en">Application · 06-08</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <ol class="signature-item-list">
+              <li>
+                <span class="signature-item-num">06</span>
+                <div>
+                  <h5>拍攝造型企劃</h5>
+                  <p>為 C Photos 建立服裝藍圖，承接形象定位至影像端。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">07</span>
+                <div>
+                  <h5>個人品牌視覺方向</h5>
+                  <p>為自媒體、官網、社群提供視覺一致性的方向建議。</p>
+                </div>
+              </li>
+              <li>
+                <span class="signature-item-num">08</span>
+                <div>
+                  <h5>人生節點形象規劃</h5>
+                  <p>婚禮、發表會、轉職、新角色——關鍵時刻的形象升級。</p>
+                </div>
+              </li>
+            </ol>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">04</span>
-            <h4>衣櫥健檢</h4>
-            <p>把現有的衣物變成有結構的選擇。留下、調整、補齊一次到位。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">05</span>
-            <h4>選品建議</h4>
-            <p>以你的定位為準則進行採購建議。實體或線上採購陪同。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">06</span>
-            <h4>拍攝造型企劃</h4>
-            <p>為 C Photos 建立服裝藍圖，承接形象定位至影像端。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">07</span>
-            <h4>個人品牌視覺方向</h4>
-            <p>為自媒體、官網、社群提供視覺一致性的方向建議。</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="service-item">
-            <span class="num">08</span>
-            <h4>人生節點形象規劃</h4>
-            <p>婚禮、發表會、轉職、新角色——關鍵時刻的形象升級。</p>
-          </div>
-        </div>
+        </details>
       </div>
     </div>
   </section>
@@ -384,5 +428,8 @@
     </div>
   </footer>
   <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="floating-line-btn" aria-label="LINE 諮詢"><svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg></a>
+
+  <!-- v4.0 共用元件 JS -->
+  <script src="../assets/js/components/accordion.js" defer></script>
 </body>
 </html>
