@@ -1,0 +1,64 @@
+/* ============================================================
+   v4.0 MarqueeTicker — 純 CSS 緩動橫條
+   ============================================================
+   API:
+     <div class="marquee-ticker" data-marquee>
+       <div class="marquee-track">
+         <span>客戶 A</span>
+         <span>客戶 B</span>
+         <!-- 重複內容 for seamless loop -->
+         <span>客戶 A</span>
+         <span>客戶 B</span>
+       </div>
+     </div>
+
+   無需 JS，純 CSS keyframes 連續滾動。
+   ============================================================ */
+
+.marquee-ticker {
+  width: 100%;
+  overflow: hidden;
+  border-top: 0.5px solid var(--color-hairline);
+  border-bottom: 0.5px solid var(--color-hairline);
+  padding: var(--space-4) 0;
+}
+
+.marquee-track {
+  display: inline-flex;
+  gap: var(--space-7);
+  white-space: nowrap;
+  animation: marquee-scroll 30s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track > * {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-muted);
+  flex-shrink: 0;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* hover 暫停（無障礙） */
+.marquee-ticker:hover .marquee-track,
+.marquee-ticker:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    transform: none;
+    flex-wrap: wrap;
+    white-space: normal;
+    justify-content: center;
+    gap: var(--space-5);
+  }
+}

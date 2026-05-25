@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>v4.0 共用元件 Demo｜CHUN.EN</title>
+  <meta name="description" content="v4.0 共用元件展示頁 — 給 Kay review 用，不會出現在正式頁面" />
+  <meta name="theme-color" content="#1A1611" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- 既有 design tokens / typography / 既有 components -->
+  <link rel="stylesheet" href="../tokens.css" />
+  <link rel="stylesheet" href="../typography.css" />
+  <link rel="stylesheet" href="../components.css" />
+  <link rel="stylesheet" href="../patterns.css" />
+  <link rel="stylesheet" href="../site.css" />
+
+  <!-- v4.0 新元件 CSS -->
+  <link rel="stylesheet" href="../assets/css/components/accordion.css" />
+  <link rel="stylesheet" href="../assets/css/components/h-carousel.css" />
+  <link rel="stylesheet" href="../assets/css/components/sticky-scroll.css" />
+  <link rel="stylesheet" href="../assets/css/components/segmented-tab.css" />
+  <link rel="stylesheet" href="../assets/css/components/bottom-drawer.css" />
+  <link rel="stylesheet" href="../assets/css/components/marquee-ticker.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Demo 頁專用樣式 — 不影響正式頁面 */
+    .demo-page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-5);
+    }
+    .demo-page h1 {
+      font-family: var(--ff-serif), "Noto Serif TC", serif;
+      font-style: italic;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-3);
+    }
+    .demo-page > p {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: var(--space-9);
+    }
+    .demo-section {
+      margin-bottom: var(--space-9);
+      padding-bottom: var(--space-8);
+      border-bottom: 0.5px solid var(--color-hairline);
+    }
+    .demo-section h2 {
+      font-family: var(--ff-serif), "Noto Serif TC", serif;
+      font-style: italic;
+      font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-3);
+    }
+    .demo-section .demo-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: var(--space-2);
+      display: block;
+    }
+    .demo-section .demo-desc {
+      font-family: var(--ff-serif), "Noto Serif TC", serif;
+      color: var(--color-ink-muted);
+      margin: 0 0 var(--space-6);
+      line-height: 1.85;
+      max-width: 64ch;
+    }
+    .demo-card {
+      background: var(--color-paper-warm);
+      border: 0.5px solid var(--color-hairline);
+      padding: var(--space-5);
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-serif);
+      font-style: italic;
+      color: var(--color-ink-muted);
+      font-size: 1.05rem;
+    }
+    .demo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .demo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-4) var(--space-5);
+      border-bottom: 0.5px solid var(--color-hairline);
+      background: var(--color-paper);
+    }
+    .demo-header h6 {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      margin: 0;
+    }
+  </style>
+</head>
+<body class="tx-paper">
+
+  <!-- ============ Demo 頁簡易 header（不沿用正式 navbar，避免 sticky 干擾） ============ -->
+  <header class="demo-header">
+    <h6>v4.0 Components Demo</h6>
+    <button class="drawer-trigger" aria-label="開啟選單">☰</button>
+  </header>
+
+  <!-- ============ BottomDrawer (手機 nav) ============ -->
+  <aside class="bottom-drawer" data-drawer hidden>
+    <button class="drawer-close" aria-label="關閉選單">×</button>
+    <nav>
+      <a href="../index.html">
+        <span>首頁</span><span class="en">Home</span>
+      </a>
+      <a href="../about.html">
+        <span>關於</span><span class="en">About</span>
+      </a>
+      <a href="../services/a-voir.html">
+        <span>À Voir 形象定位</span><span class="en">À Voir</span>
+      </a>
+      <a href="../services/b-room.html">
+        <span>B Room 妝髮造型</span><span class="en">B Room</span>
+      </a>
+      <a href="../services/c-photos.html">
+        <span>C Photos 形象影像</span><span class="en">C Photos</span>
+      </a>
+      <a href="../services/signature.html">
+        <span>商業視覺定位企劃</span><span class="en">Blueprint</span>
+      </a>
+      <a href="../portfolio.html">
+        <span>作品集</span><span class="en">Portfolio</span>
+      </a>
+      <a href="../contact.html">
+        <span>聯絡</span><span class="en">Contact</span>
+      </a>
+    </nav>
+    <div class="drawer-cta">
+      <a href="../booking.html" class="cta-primary">預約一對一形象諮詢</a>
+      <a href="https://lin.ee/rVFo0r2" target="_blank" rel="noopener" class="cta-secondary">LINE 諮詢</a>
+    </div>
+  </aside>
+
+  <!-- ============ 主內容 ============ -->
+  <main class="demo-page">
+    <h1>v4.0 共用元件</h1>
+    <p>— 6 components for site-wide form refactor —</p>
+
+    <!-- ============ 1. Accordion ============ -->
+    <section class="demo-section">
+      <span class="demo-label">01 / Accordion</span>
+      <h2>摺疊元件</h2>
+      <p class="demo-desc">原生 &lt;details&gt;/&lt;summary&gt;，預設首項展開。手機 + 桌機通用。可選 data-single-open 模式（同時只能展開一項）。</p>
+
+      <div class="accordion" data-accordion data-single-open>
+        <details class="accordion-item" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              克制 <span class="en">Restraint</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <p>不加上不屬於你的元素。形象不是裝飾，是減去多餘後的本貌。</p>
+          </div>
+        </details>
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              整合 <span class="en">Coherence</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <p>一個敘事，三種工藝。從衣著到妝髮、妝髮到光影，出自同一場談話。</p>
+          </div>
+        </details>
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-title">
+              長線 <span class="en">Longevity</span>
+            </span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="accordion-content">
+            <p>不為單次造型設計，為長期可用的形象資產而服務。每件作品都應禁得起時間。</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ 2. HorizontalCarousel ============ -->
+    <section class="demo-section">
+      <span class="demo-label">02 / HorizontalCarousel</span>
+      <h2>水平 scroll-snap 元件</h2>
+      <p class="demo-desc">手機 swipe / drag，桌機左右箭頭。3 秒後 hint 自動 fade。每 item 寬度 min(82%, 380px) 手機 / 3 等份桌機。</p>
+
+      <div class="h-carousel" data-carousel>
+        <div class="h-carousel-track">
+          <div class="h-carousel-item">
+            <div class="demo-card">
+              <img src="../assets/images/dsc03219-960.jpg" alt="情境 01" loading="lazy" />
+            </div>
+          </div>
+          <div class="h-carousel-item">
+            <div class="demo-card">
+              <img src="../assets/images/dsc03269-960.jpg" alt="情境 02" loading="lazy" />
+            </div>
+          </div>
+          <div class="h-carousel-item">
+            <div class="demo-card">
+              <img src="../assets/images/dsc03201-960.jpg" alt="情境 03" loading="lazy" />
+            </div>
+          </div>
+          <div class="h-carousel-item">
+            <div class="demo-card">
+              <img src="../assets/images/dsc03229-960.jpg" alt="情境 04" loading="lazy" />
+            </div>
+          </div>
+          <div class="h-carousel-item">
+            <div class="demo-card">
+              <img src="../assets/images/dsc03259-960.jpg" alt="情境 05" loading="lazy" />
+            </div>
+          </div>
+        </div>
+        <button class="h-carousel-nav h-carousel-nav--prev" aria-label="上一張">←</button>
+        <button class="h-carousel-nav h-carousel-nav--next" aria-label="下一張">→</button>
+        <div class="h-carousel-hint">— 左右滑動 / drag —</div>
+      </div>
+    </section>
+
+    <!-- ============ 3. StickyScroll ============ -->
+    <section class="demo-section">
+      <span class="demo-label">03 / StickyScroll</span>
+      <h2>左固定圖 + 右滾動敘事</h2>
+      <p class="demo-desc">桌機 ≥1024：左圖固定，右側 step 滾動逐段點亮金色 border。手機：純垂直堆疊，無 sticky。</p>
+
+      <section class="sticky-scroll" data-sticky-scroll>
+        <div class="sticky-scroll-media">
+          <picture>
+            <img src="../assets/images/dsc03269-960.jpg" alt="atelier 空間" loading="lazy" />
+          </picture>
+        </div>
+        <div class="sticky-scroll-content">
+          <div class="sticky-scroll-step" data-step="1">
+            <span class="sticky-scroll-num">01</span>
+            <h3>À Voir 形象定位</h3>
+            <p>從職業角色、個人氣質、身形比例與形象目標出發，建立一套長期可使用的個人視覺語言。</p>
+          </div>
+          <div class="sticky-scroll-step" data-step="2">
+            <span class="sticky-scroll-num">02</span>
+            <h3>B Room 妝髮造型</h3>
+            <p>鏡頭前的妝髮，承擔三件事：輪廓、氣質、角色感。乾淨、穩定、長時間都不違和的精準調校。</p>
+          </div>
+          <div class="sticky-scroll-step" data-step="3">
+            <span class="sticky-scroll-num">03</span>
+            <h3>C Photos 形象影像</h3>
+            <p>為長期使用設計的影像——一次拍攝，可沿用至官網、社群、簡報與媒體的品牌資產。</p>
+          </div>
+          <div class="sticky-scroll-step" data-step="4">
+            <span class="sticky-scroll-num">04</span>
+            <h3>Visual Positioning Blueprint</h3>
+            <p>整合三項服務的旗艦企劃，從深度訪談到應用建議書，建立可承載未來十年的視覺系統。</p>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============ 4. SegmentedTab ============ -->
+    <section class="demo-section">
+      <span class="demo-label">04 / SegmentedTab</span>
+      <h2>tab 切換元件</h2>
+      <p class="demo-desc">主動探索式切換，一次只顯示 1 個 panel。手機 tab 可橫向 scroll 避免擠不下。</p>
+
+      <div class="seg-tab" data-tab role="tablist" data-tab-group="demo-tabs">
+        <button role="tab" aria-selected="true" data-target="demo-panel-1">諮詢新客</button>
+        <button role="tab" aria-selected="false" data-target="demo-panel-2">Signature 詢問</button>
+        <button role="tab" aria-selected="false" data-target="demo-panel-3">現有客戶</button>
+      </div>
+
+      <div id="demo-panel-1" role="tabpanel" data-tab-group="demo-tabs">
+        <p style="font-family: var(--font-mono); font-size: 0.88rem; color: var(--color-ink-muted); line-height: 1.85; white-space: pre-wrap;">您好，我想諮詢 CHUN.EN 的形象服務。
+
+目前職業角色：[請簡述]
+希望解決：[請簡述需求]
+預計時程：[本月／本季／未定]</p>
+      </div>
+
+      <div id="demo-panel-2" role="tabpanel" data-tab-group="demo-tabs" hidden>
+        <p style="font-family: var(--font-mono); font-size: 0.88rem; color: var(--color-ink-muted); line-height: 1.85; white-space: pre-wrap;">您好，我對 Visual Positioning Blueprint（商業視覺定位企劃）有興趣。
+
+目前職業角色：[請簡述]
+應用場景：[官網／社群／簡報／媒體]
+希望了解：方案內容與時程</p>
+      </div>
+
+      <div id="demo-panel-3" role="tabpanel" data-tab-group="demo-tabs" hidden>
+        <p style="font-family: var(--font-mono); font-size: 0.88rem; color: var(--color-ink-muted); line-height: 1.85; white-space: pre-wrap;">您好，我是現有客戶。
+
+本次需求：[請簡述]
+希望時段：[具體日期或範圍]</p>
+      </div>
+    </section>
+
+    <!-- ============ 5. MarqueeTicker ============ -->
+    <section class="demo-section">
+      <span class="demo-label">05 / MarqueeTicker</span>
+      <h2>緩動橫條元件</h2>
+      <p class="demo-desc">純 CSS 動畫，無 JS。30 秒一輪 seamless loop。hover 暫停。reduce-motion 自動關閉動畫。</p>
+
+      <div class="marquee-ticker" data-marquee>
+        <div class="marquee-track">
+          <span>客戶 A · Tech Founder</span>
+          <span>客戶 B · 律師事務所合夥人</span>
+          <span>客戶 C · 醫美診所院長</span>
+          <span>客戶 D · 品牌策略顧問</span>
+          <span>客戶 E · 講師／自媒體</span>
+          <!-- seamless loop 需要 ×2 -->
+          <span aria-hidden="true">客戶 A · Tech Founder</span>
+          <span aria-hidden="true">客戶 B · 律師事務所合夥人</span>
+          <span aria-hidden="true">客戶 C · 醫美診所院長</span>
+          <span aria-hidden="true">客戶 D · 品牌策略顧問</span>
+          <span aria-hidden="true">客戶 E · 講師／自媒體</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6. BottomDrawer (手機限定，測試方式：縮窗 ≤768 + 點漢堡) ============ -->
+    <section class="demo-section">
+      <span class="demo-label">06 / BottomDrawer</span>
+      <h2>手機 nav drawer</h2>
+      <p class="demo-desc">手機 ≤768：頁面右上漢堡 ☰ 啟動，drawer 從底部滑入。桌機 ≥768：trigger 與 drawer 都自動隱藏，不影響桌機 navbar。</p>
+      <p class="demo-desc"><strong>測試方式</strong>：把瀏覽器視窗縮到 ≤768 寬度，點右上角 ☰ 漢堡按鈕。Drawer 從底部滑入，含完整 nav + CTA。ESC 鍵或點選任何 link 自動關閉。</p>
+    </section>
+
+  </main>
+
+  <!-- ============ v4.0 components JS ============ -->
+  <script src="../assets/js/components/accordion.js" defer></script>
+  <script src="../assets/js/components/h-carousel.js" defer></script>
+  <script src="../assets/js/components/sticky-scroll.js" defer></script>
+  <script src="../assets/js/components/segmented-tab.js" defer></script>
+  <script src="../assets/js/components/bottom-drawer.js" defer></script>
+  <script src="../assets/js/components/marquee-ticker.js" defer></script>
+</body>
+</html>
