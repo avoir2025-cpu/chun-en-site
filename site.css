@@ -441,36 +441,6 @@ h1, h2, h3,
 .cards-grid-4 { grid-template-columns: repeat(4, 1fr); }
 .cards-grid-2 { grid-template-columns: repeat(2, 1fr); }
 
-/* === 服務項目卡（services 頁 6 個 + index 三大子品牌） === */
-.service-item {
-  padding: var(--space-7) var(--space-6);
-  background: var(--color-cream);
-  border: 0.5px solid var(--color-hairline);
-  height: 100%;
-  transition: border-color var(--duration-slow) var(--ease-silk);
-}
-.service-item:hover { border-color: var(--color-gold); }
-.service-item .num {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-widest);
-  color: var(--color-gold);
-  text-transform: uppercase;
-}
-.service-item h4 {
-  font-family: var(--font-display);
-  font-weight: var(--fw-light);
-  font-size: var(--fs-xl);
-  margin: var(--space-3) 0 var(--space-4);
-}
-.service-item p {
-  font-family: var(--font-serif);
-  font-size: var(--fs-md);
-  color: var(--color-ink-soft);
-  line-height: 1.85;
-  margin: 0;
-}
-
 /* === 服務承諾 4 卡（index § 1.7） === */
 .commitment-grid {
   display: grid;
@@ -511,153 +481,6 @@ h1, h2, h3,
   color: var(--color-ink-soft);
   line-height: 1.85;
   margin: 0;
-}
-
-/* === 情境卡（index § 1.9） === */
-.scenario-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);  /* 4 卡 → 桌機 2×2 grid */
-  gap: var(--space-5);
-}
-@media (max-width: 768px) {
-  .scenario-grid {
-    grid-template-columns: 1fr;  /* 手機單欄 */
-  }
-}
-.scenario-card {
-  background: var(--color-cream);
-  border: 0.5px solid var(--color-hairline);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: border-color var(--duration-slow) var(--ease-silk);
-  height: 100%;
-}
-.scenario-card:hover { border-color: var(--color-gold); }
-.scenario-photo {
-  aspect-ratio: 4 / 3;
-  position: relative;
-  overflow: hidden;
-}
-.scenario-photo img {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
-  transition: transform var(--duration-slowest) var(--ease-silk);
-}
-.scenario-card:hover .scenario-photo img { transform: scale(1.04); }
-.scenario-photo::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(26,22,17,0.05) 40%, rgba(26,22,17,0.55) 100%);
-}
-.scenario-photo .photo-label {
-  position: absolute;
-  bottom: var(--space-4); left: var(--space-5);
-  z-index: 2; color: var(--color-paper);
-  font-family: var(--font-sans);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-widest);
-  text-transform: uppercase;
-  display: flex; flex-direction: column; gap: 2px;
-}
-.scenario-photo .photo-label .cn {
-  font-family: var(--font-display);
-  font-style: italic;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  color: var(--color-paper);
-  font-size: var(--fs-md);
-}
-.scenario-photo .photo-label .en { color: var(--color-gold-light); }
-.scenario-content {
-  padding: var(--space-6) var(--space-5) var(--space-5);
-  display: flex; flex-direction: column;
-  flex: 1;
-}
-.scenario-content h4 {
-  font-family: var(--font-display);
-  font-weight: var(--fw-light);
-  font-size: var(--fs-xl);
-  margin: 0 0 var(--space-3);
-}
-.scenario-content .desc {
-  font-family: var(--font-serif);
-  font-size: var(--fs-base);
-  color: var(--color-ink-soft);
-  line-height: 1.85;
-  margin: 0 0 var(--space-5);
-}
-.scenario-content .combo {
-  padding: var(--space-4) 0;
-  border-top: 0.5px solid var(--color-hairline-soft);
-  margin-top: auto;
-}
-.scenario-content .combo .combo-label {
-  font-family: var(--font-sans);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-widest);
-  text-transform: uppercase;
-  color: var(--color-gold);
-  display: block;
-  margin-bottom: var(--space-2);
-}
-.scenario-content .combo .combo-text {
-  font-family: var(--font-serif);
-  font-size: var(--fs-base);
-  color: var(--color-ink);
-  line-height: 1.6;
-}
-.scenario-cta {
-  padding: var(--space-4) var(--space-5);
-  border-top: 0.5px solid var(--color-hairline-soft);
-}
-
-/* === 拍攝主題卡（c-photos § 5.3） === */
-.theme-card {
-  padding: var(--space-7) var(--space-6);
-  background: var(--color-cream);
-  border: 0.5px solid var(--color-hairline);
-  height: 100%;
-  transition: border-color var(--duration-slow) var(--ease-silk);
-}
-.theme-card:hover { border-color: var(--color-gold); }
-.theme-card .num {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: var(--fw-thin);
-  color: var(--color-gold);
-  font-size: var(--fs-3xl);
-  line-height: 1;
-}
-.theme-card h4 {
-  font-family: var(--font-display);
-  font-weight: var(--fw-light);
-  font-size: var(--fs-xl);
-  margin: var(--space-5) 0 var(--space-2);
-}
-.theme-card .en {
-  font-family: var(--font-sans);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-widest);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  display: block;
-  margin-bottom: var(--space-4);
-}
-.theme-card p {
-  font-family: var(--font-serif);
-  font-size: var(--fs-md);
-  color: var(--color-ink-soft);
-  line-height: 1.85;
-  margin: 0 0 var(--space-5);
-}
-.theme-card .meta {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-widest);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  padding-top: var(--space-5);
-  border-top: 0.5px solid var(--color-hairline-soft);
 }
 
 /* === 聯絡管道卡（contact § 8.2） === */
@@ -750,53 +573,6 @@ h1, h2, h3,
   color: var(--color-hairline);
   margin: 0;
   line-height: 1.7;
-}
-
-/* === 三大主張卡（about § 2.5） === */
-.principles-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-5);
-}
-.principle-card {
-  padding: var(--space-7) var(--space-6);
-  background: var(--color-cream);
-  border: 0.5px solid var(--color-hairline);
-  height: 100%;
-  text-align: center;
-  transition: border-color var(--duration-slow) var(--ease-silk);
-}
-.principle-card:hover { border-color: var(--color-gold); }
-.principle-card .num {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: var(--fw-thin);
-  color: var(--color-gold);
-  font-size: var(--fs-3xl);
-  line-height: 1;
-  display: block;
-}
-.principle-card h4 {
-  font-family: var(--font-display);
-  font-weight: var(--fw-light);
-  font-size: var(--fs-xl);
-  margin: var(--space-4) 0 var(--space-1);
-}
-.principle-card .en {
-  font-family: var(--font-sans);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-widest);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  display: block;
-  margin-bottom: var(--space-4);
-}
-.principle-card p {
-  font-family: var(--font-serif);
-  font-size: var(--fs-base);
-  color: var(--color-ink-soft);
-  line-height: 1.85;
-  margin: 0;
 }
 
 /* === 主理人卡（about § 2.6） === */
@@ -1609,10 +1385,8 @@ h1, h2, h3,
     gap: var(--space-7) var(--space-5) !important;
   }
 
-  /* Service item / theme card 3 卡 → 2 卡 */
-  .scenario-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  /* 3 卡 → 2 卡 */
   .info-grid { grid-template-columns: repeat(2, 1fr) !important; }
-  .principles-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .commitment-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
@@ -1660,9 +1434,6 @@ h1, h2, h3,
 
   /* Info grid 3 欄 → 1 欄 */
   .info-grid { grid-template-columns: 1fr !important; }
-
-  /* Scenario grid 3 → 1 */
-  .scenario-grid { grid-template-columns: 1fr !important; }
 
   /* Studio grid 2x2 → 2 欄但高度自適應 */
   .studio-grid {
@@ -2001,12 +1772,6 @@ h1, h2, h3,
     grid-template-columns: 1fr !important;
   }
 
-  /* === Principles grid 3 → 1 === */
-  .principles-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-
   /* === Social grid 2 → 1 === */
   .social-grid {
     grid-template-columns: 1fr !important;
@@ -2052,9 +1817,7 @@ h1, h2, h3,
 
 @media (max-width: 600px) {
 
-  /* Service item / theme / commitment / scenario 卡 padding 縮小 */
-  .service-item,
-  .theme-card,
+  /* Commitment / info / flow 卡 padding 縮小 */
   .commitment-card,
   .info-card,
   .flow-step {
@@ -3179,9 +2942,8 @@ html {
     gap: var(--space-5);
   }
 
-  /* Commitment grid / scenario-grid 維持 3 欄但 gap 收緊 */
-  .commitment-grid,
-  .scenario-grid {
+  /* Commitment grid 維持 3 欄但 gap 收緊 */
+  .commitment-grid {
     gap: var(--space-4) !important;
   }
 }
@@ -3628,7 +3390,7 @@ a.btn-ghost {
 a, button, .btn,
 .btn-primary, .btn-gold, .btn-ghost, .btn-outline,
 .navbar-cta, .mnav-cta,
-.scenario-card, .commitment-card,
+.commitment-card,
 .lookbook-item, .masonry-item,
 .image-plate, .image-plate-frame img,
 input, textarea, select {
@@ -3636,7 +3398,6 @@ input, textarea, select {
 }
 
 /* hover 不要 transform 突兀，改用顏色／陰影漸變 */
-.scenario-card:hover,
 .commitment-card:hover {
   transform: none !important;
   background-color: var(--color-paper-warm);
@@ -3960,8 +3721,7 @@ input, textarea, select {
 .booking-cta .btn-gold:hover {
   opacity: 0.85;
 }
-/* Scenarios 結尾按鈕（class="btn btn-gold"）同樣統一 */
-.scenario-grid + div .btn-gold,
+/* Scenarios 結尾按鈕（section text-center 內 btn-gold）統一 */
 section .text-center .btn-gold:not(.featured-quote *) {
   background: var(--color-ink) !important;
   border-color: var(--color-ink) !important;
@@ -4244,32 +4004,7 @@ section .text-center .btn-gold:not(.featured-quote *) {
   }
 }
 
-/* 範本卡片本體優化 */
-.booking-hero ~ section .service-item {
-  padding: var(--space-5) var(--space-5);
-}
-
-/* 標題 4 字（一般諮詢／旗艦企劃／熟客回訪）強制單行 */
-.booking-hero ~ section .service-item h4 {
-  font-size: clamp(1.1rem, 1.4vw, 1.35rem) !important;
-  white-space: nowrap;
-  letter-spacing: 0.05em;
-}
-
-/* num 編號（A/B/C）尺寸收小 */
-.booking-hero ~ section .service-item .num {
-  font-size: 0.85rem !important;
-  letter-spacing: 0.2em;
-}
-
-/* 範本文字（mono）字級縮、行高鬆、允許 wrap 但不要每個 token 一行 */
-.booking-hero ~ section .service-item p[style*="font-mono"],
-.booking-hero ~ section .service-item p[style*="font-family: var(--font-mono)"] {
-  font-size: 0.78rem !important;     /* 從 0.88rem 縮 */
-  line-height: 1.7 !important;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-}
+/* 範本卡片優化已搬到 .message-template（v4.0 訊息範本元件） */
 
 /* ============================================================
    ▌Core Philosophy + By Appointment — 字級收斂
@@ -4445,21 +4180,6 @@ section.section .font-display.italic[style*="clamp"] {
    ▌Blueprint CTA — 改為主按鈕 + 下方居中 secondary 排版
    ▌2026.05.19 — 用戶反饋「了解商業視覺定位企劃 → 排版要在中間 往下移一點」
    ============================================================ */
-.blueprint-cta-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;       /* 左對齊主按鈕（呼應 editorial-spread 左側文字塊） */
-  gap: var(--space-5);
-}
-.blueprint-cta-stack .cta-primary {
-  align-self: flex-start;
-}
-.blueprint-cta-stack .blueprint-cta-secondary {
-  align-self: flex-start;
-  margin-left: 0.5rem;            /* 跟主按鈕視覺對齊 */
-  margin-top: 0;
-}
-
 /* ============================================================
    ▌Elfsight Google Reviews — 隱藏 Write-a-Review 按鈕 v1
    ▌2026.05.19 — v2.0 § 2.1
