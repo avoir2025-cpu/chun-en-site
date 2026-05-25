@@ -1,0 +1,105 @@
+/* ============================================================
+   v4.0 HorizontalCarousel — 水平 scroll-snap 元件
+   ============================================================
+   API:
+     <div class="h-carousel" data-carousel>
+       <div class="h-carousel-track">
+         <div class="h-carousel-item">...</div>
+         ...
+       </div>
+       <button class="h-carousel-nav h-carousel-nav--prev">←</button>
+       <button class="h-carousel-nav h-carousel-nav--next">→</button>
+       <div class="h-carousel-hint">— 左右滑動 —</div>
+     </div>
+   ============================================================ */
+
+.h-carousel {
+  position: relative;
+  margin: 0 calc(-1 * var(--space-5));
+}
+
+.h-carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: var(--space-5);
+  padding: 0 var(--space-5);
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+.h-carousel-track::-webkit-scrollbar { display: none; }
+
+.h-carousel-item {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: min(82%, 380px);
+}
+
+.h-carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(245, 241, 232, 0.92);
+  border: 0.5px solid var(--color-hairline);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-ink);
+  z-index: 2;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  padding: 0;
+}
+
+.h-carousel-nav:hover {
+  background: var(--color-paper);
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.h-carousel-nav[data-disabled="true"] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.h-carousel-nav--prev { left: var(--space-3); }
+.h-carousel-nav--next { right: var(--space-3); }
+
+.h-carousel-hint {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--color-ink-muted);
+  text-transform: uppercase;
+  margin-top: var(--space-4);
+  opacity: 1;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.h-carousel-hint.is-hidden {
+  opacity: 0;
+}
+
+/* 桌機 ≥768：顯示左右箭頭，item 寬度依容器分 3 等份 */
+@media (min-width: 768px) {
+  .h-carousel-nav { display: inline-flex; }
+  .h-carousel-item {
+    width: calc((100% - var(--space-5) * 2) / 3);
+  }
+  .h-carousel-hint { display: none; }
+}
+
+/* 桌機 ≥1200：4 卡並排（如果有 4 個 item） */
+@media (min-width: 1200px) {
+  .h-carousel[data-cols-desktop="4"] .h-carousel-item {
+    width: calc((100% - var(--space-5) * 3) / 4);
+  }
+}

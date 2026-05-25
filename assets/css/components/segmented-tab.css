@@ -1,0 +1,80 @@
+/* ============================================================
+   v4.0 SegmentedTab — tab 切換元件
+   ============================================================
+   API:
+     <div class="seg-tab" data-tab role="tablist" [data-tab-group="X"]>
+       <button role="tab" aria-selected="true" data-target="panel-1">...</button>
+       <button role="tab" data-target="panel-2">...</button>
+     </div>
+     <div id="panel-1" role="tabpanel" [data-tab-group="X"]>...</div>
+     <div id="panel-2" role="tabpanel" hidden [data-tab-group="X"]>...</div>
+   ============================================================ */
+
+.seg-tab {
+  display: flex;
+  border-bottom: 0.5px solid var(--color-hairline);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.seg-tab::-webkit-scrollbar { display: none; }
+
+.seg-tab button {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-weight: var(--fw-light);
+  font-size: 1rem;
+  color: var(--color-ink-muted);
+  transition:
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-bottom-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  scroll-snap-align: start;
+  margin-bottom: -0.5px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.seg-tab button:hover { color: var(--color-ink); }
+
+.seg-tab button[aria-selected="true"] {
+  color: var(--color-gold);
+  border-bottom-color: var(--color-gold);
+}
+
+.seg-tab button:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 4px;
+}
+
+[role="tabpanel"][hidden] { display: none; }
+
+[role="tabpanel"]:not([hidden]) {
+  animation: seg-tab-fade-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes seg-tab-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .seg-tab {
+    margin-left: calc(-1 * var(--space-5));
+    margin-right: calc(-1 * var(--space-5));
+    padding: 0 var(--space-5);
+  }
+  .seg-tab button {
+    padding: var(--space-3) var(--space-3);
+    font-size: 0.95rem;
+  }
+}
