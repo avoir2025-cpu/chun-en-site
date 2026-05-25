@@ -1,0 +1,125 @@
+/* ============================================================
+   v4.0 StickyScroll — 左固定圖 + 右滾動敘事 元件
+   ============================================================
+   API:
+     <section class="sticky-scroll" data-sticky-scroll>
+       <div class="sticky-scroll-media"><img ... /></div>
+       <div class="sticky-scroll-content">
+         <div class="sticky-scroll-step" data-step="1">
+           <span class="sticky-scroll-num">01</span>
+           <h3>...</h3>
+           <p>...</p>
+         </div>
+         ...
+       </div>
+     </section>
+   ============================================================ */
+
+.sticky-scroll {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-7);
+  position: relative;
+}
+
+/* === 媒體（圖／影片） === */
+.sticky-scroll-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.sticky-scroll-media picture,
+.sticky-scroll-media img {
+  width: 100%;
+  display: block;
+}
+.sticky-scroll-media img {
+  height: auto;
+  object-fit: cover;
+}
+
+/* === 敘事 === */
+.sticky-scroll-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+.sticky-scroll-step {
+  opacity: 0.45;
+  border-left: 2px solid var(--color-hairline);
+  padding-left: var(--space-5);
+  transition:
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-left-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sticky-scroll-step.is-active {
+  opacity: 1;
+  border-left-color: var(--color-gold);
+}
+
+.sticky-scroll-num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  color: var(--color-gold);
+  margin-bottom: var(--space-3);
+}
+
+.sticky-scroll-step h3 {
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-style: italic;
+  font-weight: var(--fw-light);
+  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+  color: var(--color-ink);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.sticky-scroll-step p {
+  margin-top: var(--space-3);
+  font-family: var(--ff-serif), "Noto Serif TC", serif;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--color-ink-muted);
+}
+
+/* === 桌機 ≥1024：左固定 + 右滾動 === */
+@media (min-width: 1024px) {
+  .sticky-scroll {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-9);
+    align-items: start;
+  }
+  .sticky-scroll-media {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    height: calc(100vh - 192px);
+    max-height: 640px;
+    overflow: hidden;
+  }
+  .sticky-scroll-media img {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* === 手機 <768：純垂直堆疊，無 sticky === */
+@media (max-width: 767px) {
+  .sticky-scroll-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-bottom: var(--space-4);
+  }
+  .sticky-scroll-media img {
+    height: 100%;
+    object-fit: cover;
+  }
+  .sticky-scroll-content {
+    gap: var(--space-6);
+  }
+}
