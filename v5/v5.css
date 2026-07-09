@@ -232,11 +232,19 @@ a { color: inherit; text-decoration: none; }
   z-index: 99;
   background: rgba(20, 16, 11, 0.97);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2.2rem;
+  gap: clamp(1.1rem, 3.2vh, 2.2rem);
+  /* 內容超過螢幕時可捲動，並讓上下留出 nav / home indicator 空間 */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding:
+    calc(max(env(safe-area-inset-top), 1rem) + 72px)
+    1.5rem
+    max(env(safe-area-inset-bottom), 2rem);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s var(--ease-out);
@@ -245,20 +253,22 @@ a { color: inherit; text-decoration: none; }
 .mnav a {
   font-family: var(--serif-tc);
   font-weight: 300;
-  font-size: 1.6rem;
+  font-size: clamp(1.25rem, 4.8vw, 1.6rem);
   letter-spacing: 0.3em;
   color: var(--paper);
+  text-align: center;
+  flex-shrink: 0;
 }
 .mnav a:active { color: var(--gold-light); }
 .mnav .mnav-en {
   font-family: var(--serif-en);
   font-style: italic;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   letter-spacing: 0.4em;
   color: var(--gold);
   display: block;
   text-align: center;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.25rem;
 }
 body.mnav-lock { overflow: hidden; }
 
