@@ -1,0 +1,432 @@
+/* ============================================================
+   CHUN.EN v5 — 子頁共用元件（載於 v5.css 之後）
+   ============================================================ */
+
+/* ============ 子頁 Hero（比首頁矮） ============ */
+.page-hero {
+  position: relative;
+  min-height: 72svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+.page-hero .hero-media { position: absolute; inset: 0; z-index: -2; }
+.page-hero .hero-media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(0.58) saturate(0.92);
+}
+.page-hero::after {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg,
+    rgba(20,16,11,0.5) 0%,
+    rgba(20,16,11,0.1) 40%,
+    rgba(20,16,11,0.9) 100%);
+}
+.page-hero .hero-inner { padding-bottom: clamp(2.5rem, 6vh, 5rem); }
+.page-hero h1 {
+  font-weight: 300;
+  font-size: clamp(2.2rem, 6vw, 4.8rem);
+  line-height: 1.25;
+  letter-spacing: 0.03em;
+}
+.page-hero h1 em { font-style: normal; color: var(--gold-light); }
+.page-hero .hero-en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+  letter-spacing: 0.16em;
+  color: var(--paper-dim);
+  margin-top: 1.2rem;
+}
+.page-hero .hero-line {
+  margin-top: 1.5rem;
+  color: var(--paper-dim);
+  font-size: clamp(0.92rem, 1.3vw, 1.05rem);
+  line-height: 2.05;
+  max-width: 34em;
+}
+
+/* ============ 服務項目清單（2 欄編號） ============ */
+.svc-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--hairline);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+.svc-item {
+  background: var(--ink);
+  padding: clamp(1.8rem, 3vw, 2.6rem) clamp(1.4rem, 2.4vw, 2.2rem);
+  transition: background 0.7s var(--ease-out);
+}
+.svc-item:hover { background: var(--ink-soft); }
+.svc-item .num {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+}
+.svc-item h3 {
+  margin-top: 0.9rem;
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+}
+.svc-item p {
+  margin-top: 0.8rem;
+  font-size: 0.88rem;
+  line-height: 1.95;
+  color: var(--paper-dim);
+}
+
+/* ============ 流程（垂直） ============ */
+.steps {
+  border-top: 1px solid var(--hairline);
+}
+.step {
+  display: grid;
+  grid-template-columns: clamp(64px, 8vw, 110px) 1fr;
+  gap: clamp(1.2rem, 3vw, 3rem);
+  padding: clamp(1.8rem, 3.4vw, 2.8rem) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.step .n {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  color: var(--gold);
+  line-height: 1;
+}
+.step h3 {
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+}
+.step h3 .en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 0.78rem;
+  letter-spacing: 0.24em;
+  color: var(--gold);
+  margin-left: 1em;
+}
+.step p {
+  margin-top: 0.7rem;
+  font-size: 0.9rem;
+  line-height: 2;
+  color: var(--paper-dim);
+  max-width: 44em;
+}
+
+/* ============ Investment ============ */
+.invest {
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  padding: clamp(3rem, 7vh, 5rem) 0;
+}
+.invest-simple {
+  font-family: var(--serif-tc);
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--paper);
+  max-width: 30em;
+}
+.price-list {
+  list-style: none;
+  max-width: 620px;
+}
+.price-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px dotted var(--hairline);
+  font-size: 0.95rem;
+}
+.price-list .price {
+  font-family: var(--serif-en);
+  font-style: italic;
+  color: var(--gold-light);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+}
+.tier {
+  background: var(--ink);
+  padding: clamp(2rem, 3.4vw, 3rem) clamp(1.4rem, 2.4vw, 2.2rem);
+  text-align: center;
+  position: relative;
+  transition: background 0.7s var(--ease-out);
+}
+.tier:hover { background: var(--ink-soft); }
+.tier.featured { background: var(--ink-soft); }
+.tier .badge {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  padding: 0.35rem 1.1rem;
+  white-space: nowrap;
+}
+.tier h3 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+}
+.tier .price {
+  margin-top: 1.2rem;
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  color: var(--gold-light);
+}
+.tier p {
+  margin-top: 1.2rem;
+  font-size: 0.85rem;
+  line-height: 1.95;
+  color: var(--paper-dim);
+}
+.invest-note {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+/* ============ FAQ ============ */
+.faq { border-top: 1px solid var(--hairline); }
+.faq details { border-bottom: 1px solid var(--hairline); }
+.faq summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  font-size: clamp(0.98rem, 1.4vw, 1.1rem);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  transition: color 0.4s;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary:hover { color: var(--gold-light); }
+.faq summary .mark {
+  font-family: var(--serif-en);
+  color: var(--gold);
+  font-size: 1.3rem;
+  transition: transform 0.4s var(--ease-out);
+  flex-shrink: 0;
+}
+.faq details[open] summary .mark { transform: rotate(45deg); }
+.faq .a {
+  padding: 0 0 1.6rem;
+  font-size: 0.9rem;
+  line-height: 2.05;
+  color: var(--paper-dim);
+  max-width: 46em;
+}
+
+/* ============ 時程表 ============ */
+.lt-table {
+  width: 100%;
+  border-collapse: collapse;
+  max-width: 720px;
+}
+.lt-table th {
+  text-align: left;
+  font-family: var(--serif-en);
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 400;
+  padding: 0 0 1.1rem;
+  border-bottom: 1px solid var(--hairline);
+}
+.lt-table th:last-child, .lt-table td:last-child { text-align: right; }
+.lt-table td {
+  padding: 1.05rem 0;
+  border-bottom: 1px dotted var(--hairline);
+  font-size: 0.92rem;
+  color: var(--paper-dim);
+}
+.lt-table .days {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--gold-light);
+}
+.lt-note {
+  margin-top: 1.6rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  line-height: 2;
+}
+
+/* ============ Booking LINE ============ */
+.line-panel {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+  border: 1px solid var(--hairline);
+  padding: clamp(2rem, 4vw, 3.6rem);
+  background: var(--ink-soft);
+}
+.line-panel .qr {
+  width: clamp(140px, 18vw, 200px);
+  aspect-ratio: 1;
+  background: var(--paper);
+  padding: 12px;
+}
+.line-panel .qr img { width: 100%; height: 100%; }
+.line-panel h3 {
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+.line-panel p {
+  margin-top: 1rem;
+  font-size: 0.92rem;
+  line-height: 2;
+  color: var(--paper-dim);
+  max-width: 36em;
+}
+.line-panel .cta { margin-top: 1.6rem; }
+
+/* 訊息範本 */
+.tpl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+}
+.tpl {
+  background: var(--ink);
+  padding: clamp(1.6rem, 2.6vw, 2.4rem);
+}
+.tpl .tag {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+}
+.tpl h3 {
+  margin-top: 0.8rem;
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+}
+.tpl pre {
+  margin-top: 1.2rem;
+  font-family: var(--serif-tc);
+  font-size: 0.84rem;
+  line-height: 2;
+  color: var(--paper-dim);
+  white-space: pre-wrap;
+  border-left: 1px solid var(--gold);
+  padding-left: 1.1rem;
+}
+
+/* 須知 */
+.notice-v {
+  list-style: none;
+  max-width: 680px;
+  border-top: 1px solid var(--hairline);
+}
+.notice-v li {
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 0.92rem;
+  line-height: 2;
+  color: var(--paper-dim);
+  display: flex;
+  gap: 1.2rem;
+}
+.notice-v li::before {
+  content: "—";
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.notice-v strong { color: var(--paper); font-weight: 400; }
+
+/* ============ 客戶評論（Elfsight 淺色 inset） ============ */
+.voices-panel {
+  background: var(--paper);
+  padding: clamp(1.5rem, 3vw, 3rem);
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+}
+
+/* ============ 聯絡管道 ============ */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+}
+.contact-card {
+  background: var(--ink);
+  padding: clamp(2rem, 3.4vw, 3rem) clamp(1.5rem, 2.4vw, 2.2rem);
+  transition: background 0.7s var(--ease-out);
+}
+.contact-card:hover { background: var(--ink-soft); }
+.contact-card .n {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--gold);
+}
+.contact-card h3 {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+}
+.contact-card p {
+  margin-top: 0.9rem;
+  font-size: 0.88rem;
+  line-height: 2;
+  color: var(--paper-dim);
+}
+.contact-card .cta-line { display: inline-block; margin-top: 1.4rem; }
+.map-embed {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  aspect-ratio: 21 / 9;
+  filter: grayscale(0.85) contrast(1.05) brightness(0.9);
+  border: 1px solid var(--hairline);
+}
+.map-embed iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+/* ============ 手機 ============ */
+@media (max-width: 860px) {
+  .svc-list { grid-template-columns: 1fr; }
+  .tiers { grid-template-columns: 1fr; }
+  .tier.featured { order: -1; }
+  .tpl-grid { grid-template-columns: 1fr; }
+  .line-panel { grid-template-columns: 1fr; }
+  .line-panel .qr { margin: 0 auto; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .map-embed { aspect-ratio: 4 / 3; }
+  .page-hero { min-height: 62svh; }
+}
