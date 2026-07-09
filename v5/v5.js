@@ -55,9 +55,31 @@
     if (e.key === 'Escape') closeMenu();
   });
 
-  /* ===== Hero 影片微視差 ===== */
-  var heroVideo = document.querySelector('.hero-media');
-  if (heroVideo && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+  /* ===== Hero 影片 =====
+     iOS 低耗電模式會封鎖 autoplay（只顯示 poster）。
+     偵測播放失敗 → 首次觸碰/捲動時嘗試補播，讓使用者「打開就會動」。 */
+  var heroVideoEl = document.querySelector('.hero-media video');
+  if (heroVideoEl) {
+    var tryPlay = function () {
+      var p = heroVideoEl.play();
+      if (p && p.catch) { p.catch(function () {}); }
+    };
+    tryPlay();
+    // autoplay 被擋時，第一次互動補播
+    var kickstart = function () {
+      if (heroVideoEl.paused) tryPlay();
+      window.removeEventListener('touchstart', kickstart);
+      window.removeEventListener('scroll', kickstart);
+      window.removeEventListener('click', kickstart);
+    };
+    window.addEventListener('touchstart', kickstart, { passive: true, once: false });
+    window.addEventListener('scroll', kickstart, { passive: true, once: false });
+    window.addEventListener('click', kickstart, { once: false });
+  }
+
+  /* ===== Hero 微視差 ===== */
+  var heroMedia = document.querySelector('.hero-media');
+  if (heroMedia && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
     var ticking = false;
     window.addEventListener('scroll', function () {
       if (ticking) return;
@@ -65,7 +87,7 @@
       requestAnimationFrame(function () {
         var y = window.scrollY;
         if (y < window.innerHeight) {
-          heroVideo.style.transform = 'translateY(' + (y * 0.18) + 'px)';
+          heroMedia.style.transform = 'translateY(' + (y * 0.18) + 'px)';
         }
         ticking = false;
       });
