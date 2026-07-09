@@ -14,7 +14,7 @@
 
   /* ========== 追蹤工具設定 ==========
      TODO: 開通後把下面兩個 ID 換成正式值 */
-  var GA_ID = 'G-XXXXXXXXXX';          // Google Analytics 4 Measurement ID
+  var GA_ID = 'G-SDGX47Z79R';          // Google Analytics 4 Measurement ID
   var LINKEDIN_PARTNER_ID = '';         // LinkedIn Insight Tag Partner ID（投放前填入）
 
   function loadTrackers() {
