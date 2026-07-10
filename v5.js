@@ -93,4 +93,48 @@
       });
     }, { passive: true });
   }
+
+  /* ===== GA4 轉換事件（gtag 存在時才送，consent-gated） ===== */
+  function track(name, params) {
+    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+  }
+
+  /* 點擊委派：LINE / Email / 申請入口 */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (href.indexOf('lin.ee') > -1) {
+      track('click_line', { link_location: location.pathname });
+    } else if (href.indexOf('mailto:') === 0) {
+      track('click_email', { link_location: location.pathname });
+    } else if (href.indexOf('apply.html') > -1) {
+      track('click_apply_entry', { link_location: location.pathname });
+    }
+  }, { passive: true });
+
+  /* 申請表單：首次輸入 → start_application */
+  var applyForm = document.getElementById('applyForm');
+  if (applyForm) {
+    var started = false;
+    applyForm.addEventListener('focusin', function () {
+      if (started) return;
+      started = true;
+      track('start_application');
+    });
+  }
+
+  /* 方案/報價區進入視野 → view_pricing（一次） */
+  var pricingEl = document.querySelector('#plans, .invest, .tiers');
+  if (pricingEl && 'IntersectionObserver' in window) {
+    var pio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          track('view_pricing', { page: location.pathname });
+          pio.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    pio.observe(pricingEl);
+  }
 })();
