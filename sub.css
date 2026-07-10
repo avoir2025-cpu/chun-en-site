@@ -798,3 +798,98 @@
   line-height: 1.9;
   color: #6B5D4F;
 }
+
+/* ============================================================
+   拍板修正 2026-07-10：回歸全深色（v5 初版路線 A）
+   ============================================================ */
+
+/* sec-h2 深色全域版（原本只在 .light 內） */
+.sec-h2 {
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--paper);
+}
+.sec-h2 em { font-style: normal; color: var(--gold-light); }
+
+/* 方案階梯深色版 */
+.plan-ladder {
+  background: var(--hairline);
+  border-color: var(--hairline);
+}
+.plan {
+  background: var(--ink);
+}
+.plan:hover { background: var(--ink-soft); }
+.plan.featured {
+  background: var(--ink-soft);
+  box-shadow: inset 0 0 0 1px var(--gold);
+}
+.plan-badge { background: var(--gold); color: var(--ink); }
+.plan-tier { color: var(--gold); }
+.plan h3 { color: var(--paper); }
+.plan h3 .en { color: var(--gold); }
+.plan .fit { color: var(--gold-light); }
+.plan p:not(.fit) { color: var(--paper-dim); }
+.plan .cta-line { color: var(--paper-dim); border-color: var(--hairline); }
+.plan .cta-line:hover { color: var(--gold-light); border-color: var(--gold); }
+
+/* 申請表單深色版 */
+.apply-form label { color: var(--paper); }
+.apply-form label .opt { color: var(--muted-bright); }
+.apply-form input[type="text"],
+.apply-form input[type="url"],
+.apply-form input[type="email"],
+.apply-form select,
+.apply-form textarea {
+  background: var(--ink-soft);
+  border-color: var(--hairline);
+  color: var(--paper);
+}
+.apply-form input:focus,
+.apply-form select:focus,
+.apply-form textarea:focus { border-color: var(--gold); }
+.apply-form .radio-row label {
+  background: var(--ink-soft);
+  border-color: var(--hairline);
+  color: var(--paper-dim);
+}
+.apply-form .radio-row input { accent-color: var(--gold); }
+.apply-form .radio-row label:has(input:checked) {
+  border-color: var(--gold);
+  background: rgba(168, 138, 92, 0.12);
+  color: var(--paper);
+}
+.apply-submit {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+.apply-submit:hover { background: var(--gold-light); border-color: var(--gold-light); }
+.apply-note { color: var(--muted-bright); }
+.apply-note a { color: var(--gold-light) !important; }
+
+/* voices-panel 維持 paper 亮底（Elfsight 元件需要），深色頁中是刻意的 inset */
+.voices-fallback { color: #6B5D4F; }
+
+/* ============ 浮動 LINE 按鈕（v4 回歸，深色站適配） ============ */
+.float-line {
+  position: fixed;
+  right: max(env(safe-area-inset-right), 20px);
+  bottom: max(env(safe-area-inset-bottom), 20px);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #06C755;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 8500;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+}
+.float-line:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 32px rgba(6, 199, 85, 0.35);
+}
+.float-line svg { width: 30px; height: 30px; display: block; }
