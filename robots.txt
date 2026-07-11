@@ -1,8 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /_RESPONSIVE_AUDIT.md
-Disallow: /_ASSETS_NEEDED.md
-Disallow: /CHUN_EN_Website_Brief.md
-Disallow: /_COPY_AUDIT*.md
+Disallow: /v5/
+Disallow: /services/
+Disallow: /dev/
 
-Sitemap: https://avoir2025-cpu.github.io/chun-en-site/sitemap.xml
+Sitemap: https://chunen.tw/sitemap.xml
