@@ -1,0 +1,30 @@
+name: 同步 B.room 價目表
+
+on:
+  schedule:
+    - cron: "0 22 * * *" # 每日台灣時間 06:00
+  workflow_dispatch: {} # 也可在 GitHub Actions 頁面手動觸發，立即生效
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 從 Google Sheets 同步價目
+        run: python3 tools/sync_broom_prices.py
+
+      - name: 有變動則提交
+        run: |
+          if git diff --quiet b-room.html; then
+            echo "價目無變動"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add b-room.html
+          git commit -m "自動同步 B.room 價目（Google Sheets 產品主檔）"
+          git push

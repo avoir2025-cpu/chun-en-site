@@ -43,3 +43,8 @@ build/
 .netlify/
 .vercel/
 .tmp-video-frames/
+
+# 素材投放區：只進 git 結構，不進原始大圖
+素材投放區/**/*.jpg
+素材投放區/**/*.jpeg
+素材投放區/**/*.png
