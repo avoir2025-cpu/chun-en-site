@@ -893,3 +893,161 @@
   box-shadow: 0 10px 32px rgba(6, 199, 85, 0.35);
 }
 .float-line svg { width: 30px; height: 30px; display: block; }
+
+/* ============================================================
+   V2 第一波 2026-07-12：導覽下拉、五問入口、Signature V2.1
+   ============================================================ */
+
+/* ---- 桌機「專業服務」下拉 ---- */
+.nav-drop { position: relative; }
+.nav-drop > a .caret {
+  display: inline-block;
+  margin-left: 0.35em;
+  font-size: 0.6em;
+  transform: translateY(-0.15em);
+  transition: transform 0.3s;
+}
+.nav-drop:hover > a .caret,
+.nav-drop:focus-within > a .caret { transform: translateY(-0.05em) rotate(180deg); }
+.drop-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  min-width: 250px;
+  background: rgba(20, 16, 11, 0.97);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--hairline);
+  padding: 0.5rem 0;
+  list-style: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s, transform 0.25s, visibility 0.25s;
+  z-index: 9100;
+}
+.drop-menu::before { /* hover 橋接區，避免游標移動時關閉 */
+  content: "";
+  position: absolute;
+  top: -12px; left: 0; right: 0; height: 12px;
+}
+.nav-drop:hover .drop-menu,
+.nav-drop:focus-within .drop-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+.drop-menu li a {
+  display: block;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: var(--paper-dim);
+  transition: color 0.25s, background 0.25s;
+}
+.drop-menu li a:hover { color: var(--gold-light); background: rgba(168, 138, 92, 0.08); }
+.drop-menu li a .b {
+  display: block;
+  font-family: var(--serif-en);
+  font-size: 0.95rem;
+  color: var(--paper);
+  margin-bottom: 0.15rem;
+}
+.drop-menu li a:hover .b { color: var(--gold-light); }
+
+/* ---- 手機選單「專業服務」手風琴 ---- */
+.mnav-acc { width: 100%; text-align: center; }
+.mnav-acc summary {
+  list-style: none;
+  cursor: pointer;
+  display: block;
+}
+.mnav-acc summary::-webkit-details-marker { display: none; }
+.mnav-acc summary::after {
+  content: "＋";
+  margin-left: 0.5em;
+  color: var(--gold);
+  font-size: 0.8em;
+}
+.mnav-acc[open] summary::after { content: "－"; }
+.mnav-acc .sub {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.4vh, 0.9rem);
+  padding: clamp(0.5rem, 1.4vh, 0.9rem) 0 0.2rem;
+}
+.mnav-acc .sub a { font-size: 0.85em; opacity: 0.85; }
+
+/* ---- 首頁五問入口（客戶購買服務樹） ---- */
+.pathfinder { display: grid; gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: clamp(2.5rem, 6vh, 4rem); }
+.path {
+  background: var(--ink);
+  padding: clamp(1.4rem, 3vh, 2rem) clamp(1.4rem, 3vw, 2.2rem);
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  transition: background 0.35s;
+}
+.path:hover { background: var(--ink-soft); }
+.path .pn {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--gold);
+  flex: 0 0 2.2rem;
+}
+.path .pq {
+  flex: 1;
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  font-weight: 300;
+  color: var(--paper);
+  line-height: 1.7;
+}
+.path .pq small { display: block; font-family: var(--sans-tc); font-size: 0.8rem; color: var(--muted-bright); margin-top: 0.3rem; font-weight: 300; }
+.path .pa { flex: 0 0 auto; }
+@media (max-width: 720px) {
+  .path { flex-wrap: wrap; }
+  .path .pa { flex-basis: 100%; padding-left: 3.2rem; }
+}
+
+/* ---- Signature V2.1 區塊 ---- */
+.sig-quote {
+  border-left: 2px solid var(--gold);
+  padding: 0.4rem 0 0.4rem clamp(1.2rem, 3vw, 2rem);
+  margin-top: clamp(2rem, 4vh, 3rem);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-weight: 300;
+  line-height: 2;
+  color: var(--gold-light);
+  max-width: 34em;
+}
+.scope-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: clamp(2rem, 5vh, 3rem); }
+@media (max-width: 860px) { .scope-grid { grid-template-columns: 1fr; } }
+.scope { background: var(--ink); padding: clamp(1.6rem, 3.5vh, 2.4rem); }
+.scope h3 { font-size: 1.02rem; font-weight: 400; letter-spacing: 0.1em; margin-bottom: 1.2rem; }
+.scope.inc h3 { color: var(--gold-light); }
+.scope.opt h3 { color: var(--paper); }
+.scope.exc h3 { color: var(--muted-bright); }
+.scope ul { list-style: none; }
+.scope li {
+  font-family: var(--sans-tc);
+  font-size: 0.88rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--paper-dim);
+  padding: 0.35rem 0 0.35rem 1.3rem;
+  position: relative;
+}
+.scope.inc li::before { content: "✓"; position: absolute; left: 0; color: var(--gold); font-size: 0.8rem; }
+.scope.opt li::before { content: "＋"; position: absolute; left: 0; color: var(--paper-dim); font-size: 0.8rem; }
+.scope.exc li::before { content: "—"; position: absolute; left: 0; color: var(--muted); font-size: 0.8rem; }
+.scope.exc li { color: var(--muted-bright); }
+.sig-note {
+  margin-top: clamp(2rem, 4vh, 3rem);
+  padding: clamp(1.2rem, 2.5vh, 1.8rem) clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid var(--hairline);
+  font-family: var(--sans-tc);
+  font-size: 0.84rem;
+  font-weight: 300;
+  line-height: 2;
+  color: var(--muted-bright);
+}
