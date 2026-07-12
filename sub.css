@@ -1051,3 +1051,13 @@
   line-height: 2;
   color: var(--muted-bright);
 }
+
+/* ---- 靜態評論（Cookie 未同意時的 fallback，同意後由 Elfsight 覆蓋） ---- */
+.tsm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: #E4DCCD; text-align: left; }
+@media (max-width: 720px) { .tsm-grid { grid-template-columns: 1fr; } }
+.tsm { background: #FBF8F1; padding: clamp(1.4rem, 3vh, 2rem); }
+.tsm p { font-family: var(--sans-tc); font-size: 0.9rem; font-weight: 300; line-height: 2; color: #4A4238; }
+.tsm p::before { content: "\201C"; font-family: var(--serif-en); font-size: 1.6rem; color: #A88A5C; margin-right: 0.2rem; }
+.tsm cite { display: block; margin-top: 0.9rem; font-style: normal; font-size: 0.8rem; letter-spacing: 0.06em; color: #8A6D3F; }
+.tsm cite .stars { color: #C9A96A; letter-spacing: 0.15em; margin-right: 0.5em; }
+.tsm-note { grid-column: 1 / -1; background: #FBF8F1; padding: 1rem 1.6rem; font-family: var(--sans-tc); font-size: 0.78rem; font-weight: 300; color: #9A8D7B; }
