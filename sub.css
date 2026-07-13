@@ -1083,3 +1083,15 @@ h1, h2, h3, .big, .lead, .hero-line { line-break: strict; }
 /* 標題重點詞（em）與指定詞組不被拆行 */
 h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .nb { white-space: nowrap; }
+
+/* ============================================================
+   作品裁切修正 2026-07-13：直式照片保留頭部
+   root 不放大(避免多裁)、object-position 偏上(頭優先)、hover 才 zoom-in
+   ============================================================ */
+.work img {
+  object-position: center 15%;
+  transform: scale(1.0);
+}
+.work:hover img {
+  transform: scale(1.045);
+}
