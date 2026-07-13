@@ -1061,3 +1061,25 @@
 .tsm cite { display: block; margin-top: 0.9rem; font-style: normal; font-size: 0.8rem; letter-spacing: 0.06em; color: #8A6D3F; }
 .tsm cite .stars { color: #C9A96A; letter-spacing: 0.15em; margin-right: 0.5em; }
 .tsm-note { grid-column: 1 / -1; background: #FBF8F1; padding: 1rem 1.6rem; font-family: var(--sans-tc); font-size: 0.78rem; font-weight: 300; color: #9A8D7B; }
+
+/* ============================================================
+   中文斷行優化 2026-07-13：改掉瀏覽器預設的貪婪斷行
+   balance＝標題各行長度均衡、斷在標點而非詞中間
+   pretty＝內文避免最後一行只剩孤字
+   ============================================================ */
+h1, h2, h3,
+.sec-h2, .big,
+.final h2, .page-hero h1, .hero h1,
+.hero-en, .en-sub, .en-it {
+  text-wrap: balance;
+}
+.lead, .hero-line, .hero-sub, .hero-audience,
+.works-note, .invest-note, .sig-quote, p {
+  text-wrap: pretty;
+}
+/* CJK 標點不落在行首、避免詞被拆 */
+h1, h2, h3, .big, .lead, .hero-line { line-break: strict; }
+
+/* 標題重點詞（em）與指定詞組不被拆行 */
+h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
+.nb { white-space: nowrap; }
