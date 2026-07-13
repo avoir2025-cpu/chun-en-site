@@ -25,8 +25,8 @@ Get-Magick
 # ---- 作品集：檔名必須是 01~12 ----
 Get-ChildItem $worksIn -File | Where-Object { $exts -contains $_.Extension.ToLower() } | ForEach-Object {
     $n = $_.BaseName
-    if ($n -notmatch '^(0[1-9]|1[0-2])$') {
-        Write-Host "[略過] 作品集\$($_.Name)：檔名必須是 01~12（例如 03.jpg）" -ForegroundColor Yellow
+    if ($n -notmatch '^(0[1-9]|1[0-4])$') {
+        Write-Host "[略過] 作品集\$($_.Name)：檔名必須是 01~14（例如 03.jpg）" -ForegroundColor Yellow
         return
     }
     Write-Host "[作品] $($_.Name) → works/$n-*"
