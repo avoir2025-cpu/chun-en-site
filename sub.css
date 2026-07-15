@@ -1095,3 +1095,33 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .work:hover img {
   transform: scale(1.045);
 }
+
+/* ============================================================
+   觀點 Journal 部落格 2026-07-14
+   ============================================================ */
+.journal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: clamp(2.5rem, 6vh, 4rem); }
+@media (max-width: 720px) { .journal-grid { grid-template-columns: 1fr; } }
+.jcard { background: var(--ink); display: flex; flex-direction: column; text-decoration: none; transition: background 0.4s; }
+.jcard:hover { background: var(--ink-soft); }
+.jcard.feat { grid-column: 1 / -1; }
+.jcard-media { aspect-ratio: 16/9; overflow: hidden; }
+.jcard.feat .jcard-media { aspect-ratio: 21/9; }
+.jcard-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transition: transform 1.2s var(--ease-out); }
+.jcard:hover .jcard-media img { transform: scale(1.04); }
+.jcard-body { padding: clamp(1.4rem, 3vw, 2.2rem); }
+.jcard-cat { font-family: var(--serif-en); font-size: 0.66rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
+.jcard h3 { font-size: clamp(1.15rem, 2.2vw, 1.6rem); font-weight: 300; line-height: 1.5; color: var(--paper); margin: 0.8rem 0; }
+.jcard.feat h3 { font-size: clamp(1.4rem, 3vw, 2.2rem); }
+.jcard p { font-family: var(--sans-tc); font-size: 0.88rem; font-weight: 300; line-height: 1.9; color: var(--paper-dim); }
+.jcard-meta { margin-top: 1rem; font-size: 0.75rem; letter-spacing: 0.1em; color: var(--muted); }
+
+/* 文章內文排版 */
+.article-wrap { max-width: 720px; margin: 0 auto; }
+.article-body { font-family: var(--sans-tc); font-weight: 300; }
+.article-body p { font-size: 1.02rem; line-height: 2.1; color: var(--paper-dim); margin-bottom: 1.6rem; text-wrap: pretty; }
+.article-body h2 { font-family: var(--serif-tc); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 400; color: var(--paper); margin: 3rem 0 1.2rem; line-height: 1.5; }
+.article-body h2 em { font-style: normal; color: var(--gold-light); }
+.article-body blockquote { border-left: 2px solid var(--gold); padding: 0.4rem 0 0.4rem clamp(1.2rem, 3vw, 2rem); margin: 2.2rem 0; font-family: var(--serif-tc); font-size: 1.2rem; line-height: 1.9; color: var(--gold-light); }
+.article-body strong { color: var(--paper); font-weight: 500; }
+.article-lead { font-family: var(--serif-tc); font-size: clamp(1.1rem, 2.4vw, 1.5rem); font-weight: 300; line-height: 1.9; color: var(--paper); margin-bottom: 2.5rem; }
+.article-meta { font-size: 0.78rem; letter-spacing: 0.14em; color: var(--muted); margin-top: 1.4rem; }
