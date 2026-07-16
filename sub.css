@@ -1253,7 +1253,6 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   article .wrap.article-wrap { padding-bottom: 3.5rem; }
 }
 
-/* 文章結尾溫和 CTA 2026-07-16：去按鈕化，浮動 LINE 為主要聯繫路徑 */
-.soft-cta { margin-top: 2.4rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.92rem; line-height: 2; color: var(--muted-bright); }
-.soft-cta a { color: var(--gold-light); text-decoration: none; border-bottom: 1px solid rgba(203, 164, 92, 0.35); transition: border-color 0.3s; }
-.soft-cta a:hover { border-color: var(--gold-light); }
+/* 相關閱讀連結箭頭 2026-07-16：明確可點擊 */
+.related a::after { content: "92"; margin-left: 0.55em; color: var(--gold); opacity: 0.65; font-family: var(--serif-en); transition: opacity 0.3s, margin-left 0.3s; }
+.related a:hover::after { opacity: 1; margin-left: 0.8em; }
