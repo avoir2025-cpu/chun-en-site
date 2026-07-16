@@ -48,3 +48,7 @@ build/
 素材投放區/**/*.jpg
 素材投放區/**/*.jpeg
 素材投放區/**/*.png
+
+# ---------- Lead magnet 草稿（審核通過走 LINE 發送，不上官網 repo）----------
+對客素材/*.pdf
+對客素材/lead_magnet_*

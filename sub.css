@@ -1224,3 +1224,13 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   .jrow-media { aspect-ratio: 16/9; }
   .jrow h3 { margin-top: 0.5rem; }
 }
+
+/* 文章相關閱讀＋內文表格 2026-07-16 */
+.related { margin-top: clamp(2.5rem, 6vh, 4rem); padding-top: 1.6rem; border-top: 1px solid var(--hairline); }
+.related-t { font-family: var(--serif-en); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.9rem; }
+.related a { display: block; font-family: var(--serif-tc); font-size: 1.02rem; line-height: 1.7; color: var(--paper-dim); text-decoration: none; padding: 0.45rem 0; transition: color 0.3s; }
+.related a:hover { color: var(--gold-light); }
+.article-body table { width: 100%; border-collapse: collapse; margin: 1.8rem 0 2.2rem; font-family: var(--sans-tc); font-size: 0.92rem; font-weight: 400; }
+.article-body th { text-align: left; font-weight: 500; color: var(--gold); font-size: 0.82rem; letter-spacing: 0.08em; padding: 0.6rem 0.8rem 0.6rem 0; border-bottom: 1px solid var(--gold); }
+.article-body td { color: var(--paper-dim); line-height: 1.8; padding: 0.75rem 0.8rem 0.75rem 0; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+@media (max-width: 600px) { .article-body table { font-size: 0.85rem; } }
