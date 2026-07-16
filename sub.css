@@ -1254,5 +1254,5 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 }
 
 /* 相關閱讀連結箭頭 2026-07-16：明確可點擊 */
-.related a::after { content: "92"; margin-left: 0.55em; color: var(--gold); opacity: 0.65; font-family: var(--serif-en); transition: opacity 0.3s, margin-left 0.3s; }
+.related a::after { content: "→"; margin-left: 0.55em; color: var(--gold); opacity: 0.65; font-family: var(--serif-en); transition: opacity 0.3s, margin-left 0.3s; }
 .related a:hover::after { opacity: 1; margin-left: 0.8em; }
