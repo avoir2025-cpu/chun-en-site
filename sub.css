@@ -1129,3 +1129,51 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 /* scope 兩欄版（刪除不包含欄後） */
 .scope-grid.two { grid-template-columns: repeat(2, 1fr); }
 @media (max-width: 860px) { .scope-grid.two { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   Journal 文章排版優化 2026-07-15：易讀性
+   字重 300→400、行寬收窄、段落與小標層次強化
+   ============================================================ */
+.article-wrap { max-width: 660px; }
+.article-body { font-weight: 400; }
+.article-body p {
+  font-size: 1.05rem;
+  line-height: 2.15;
+  color: #CFC5B6;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+.article-body h2 {
+  margin: 3.6rem 0 1.4rem;
+  padding-top: 2.2rem;
+  border-top: 1px solid var(--hairline);
+}
+.article-body h2::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 2px;
+  background: var(--gold);
+  margin-bottom: 1.1rem;
+}
+.article-body blockquote {
+  font-size: 1.25rem;
+  line-height: 2;
+  margin: 2.6rem 0;
+  padding: 1.2rem 0 1.2rem clamp(1.4rem, 3vw, 2.2rem);
+  background: rgba(168, 138, 92, 0.06);
+  border-left: 2px solid var(--gold);
+}
+.article-body strong { color: #F0EADF; }
+.article-lead {
+  font-size: clamp(1.12rem, 2.2vw, 1.35rem);
+  line-height: 2.05;
+  color: #E8E0D3;
+  padding-bottom: 2.2rem;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 2.6rem;
+}
+@media (max-width: 600px) {
+  .article-body p { font-size: 1.02rem; line-height: 2.05; }
+  .article-body blockquote { font-size: 1.12rem; }
+}
