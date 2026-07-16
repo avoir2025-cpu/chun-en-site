@@ -743,7 +743,8 @@ body.mnav-lock { overflow: hidden; }
 }
 .footer-links {
   display: flex;
-  gap: 1.8rem;
+  flex-wrap: wrap;
+  gap: 1rem 1.8rem;
   font-size: 0.78rem;
   letter-spacing: 0.2em;
   color: var(--paper-dim);
@@ -792,4 +793,13 @@ body.mnav-lock { overflow: hidden; }
   .founder-text { grid-column: 1 / -1; }
 
   .atelier-media { aspect-ratio: 4 / 3; }
+}
+
+/* ============ 手機（≤640px）2026-07-17：作品區單欄化＋eyebrow 縮短 ============ */
+@media (max-width: 640px) {
+  .works-grid { grid-template-columns: 1fr; row-gap: 2rem; }
+  .work:nth-child(n) { grid-column: 1 / -1; aspect-ratio: 3 / 4; margin-top: 0; }
+
+  .hero-eyebrow { letter-spacing: 0.34em; }
+  .hero-eyebrow .eb-mid { display: none; }
 }

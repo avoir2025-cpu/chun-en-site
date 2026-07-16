@@ -1083,6 +1083,7 @@ h1, h2, h3, .big, .lead, .hero-line { line-break: strict; }
 /* 標題重點詞（em）與指定詞組不被拆行 */
 h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .nb { white-space: nowrap; }
+@media (max-width: 360px) { .nb { white-space: normal; } } /* 極小屏防溢出 2026-07-17 */
 
 /* ============================================================
    作品裁切修正 2026-07-13：直式照片保留頭部
