@@ -1263,6 +1263,18 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .article-fig.crop45 img { aspect-ratio: 4/5; object-fit: cover; object-position: center 30%; }
 .article-fig figcaption { margin-top: 0.75rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.8rem; letter-spacing: 0.08em; color: var(--muted-bright); }
 
+/* 文章署名卡 2026-07-17：雙軌制——方法論/觀點=Zoey 具名卡，指南型=編輯團隊一行 */
+.author-card { display: flex; gap: 1.3rem; align-items: flex-start; margin-top: clamp(3rem, 7vh, 4.5rem); padding-top: 2rem; border-top: 1px solid rgba(201, 169, 110, 0.22); }
+.author-card picture { flex-shrink: 0; }
+.author-card img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; object-position: center 25%; filter: brightness(0.95); }
+.author-card .ac-name { font-family: var(--serif-tc); font-size: 1.05rem; font-weight: 400; letter-spacing: 0.08em; color: var(--paper); }
+.author-card .ac-name em { font-family: var(--serif-en); font-style: italic; font-weight: 500; color: var(--gold-light); margin-left: 0.4em; }
+.author-card .ac-name a { color: inherit; text-decoration: none; }
+.author-card .ac-name a:hover em { color: var(--gold); }
+.author-card .ac-role { margin-top: 0.25rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.78rem; letter-spacing: 0.14em; color: var(--muted-bright); }
+.author-card .ac-bio { margin-top: 0.7rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.88rem; line-height: 1.9; letter-spacing: 0.04em; color: var(--paper-dim); max-width: 36em; }
+.editorial-credit { margin-top: clamp(3rem, 7vh, 4.5rem); padding-top: 2rem; border-top: 1px solid rgba(201, 169, 110, 0.22); font-family: var(--sans-tc); font-weight: 300; font-size: 0.8rem; letter-spacing: 0.14em; color: var(--muted-bright); }
+
 /* About 創辦人照 Zoey 2026-07-16：2:3 原圖進 3:4 框，焦點上移保住頭頂 */
 .founder-media img { object-position: center 30%; }
 
