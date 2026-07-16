@@ -1125,3 +1125,7 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .article-body strong { color: var(--paper); font-weight: 500; }
 .article-lead { font-family: var(--serif-tc); font-size: clamp(1.1rem, 2.4vw, 1.5rem); font-weight: 300; line-height: 1.9; color: var(--paper); margin-bottom: 2.5rem; }
 .article-meta { font-size: 0.78rem; letter-spacing: 0.14em; color: var(--muted); margin-top: 1.4rem; }
+
+/* scope 兩欄版（刪除不包含欄後） */
+.scope-grid.two { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 860px) { .scope-grid.two { grid-template-columns: 1fr; } }
