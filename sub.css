@@ -1234,3 +1234,21 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .article-body th { text-align: left; font-weight: 500; color: var(--gold); font-size: 0.82rem; letter-spacing: 0.08em; padding: 0.6rem 0.8rem 0.6rem 0; border-bottom: 1px solid var(--gold); }
 .article-body td { color: var(--paper-dim); line-height: 1.8; padding: 0.75rem 0.8rem 0.75rem 0; border-bottom: 1px solid var(--hairline); vertical-align: top; }
 @media (max-width: 600px) { .article-body table { font-size: 0.85rem; } }
+
+/* P0 排版小包 2026-07-16：H1 斷行/大圖拉寬/字級/本文重點/表格橫滑 */
+.article-wrap h1 { text-wrap: balance; }
+@media (max-width: 640px) { .article-wrap h1 br { display: none; } }
+.article-wrap > .jcard-media { width: min(940px, calc(100vw - 48px)); margin-left: calc((100% - min(940px, calc(100vw - 48px))) / 2); }
+.jcard-cat { font-size: 0.75rem; }
+.related-t { font-size: 0.75rem; }
+.keypoints { background: rgba(255,255,255,0.03); border-top: 1px solid var(--gold); border-bottom: 1px solid var(--hairline); padding: 1.4rem 1.6rem 1.5rem; margin-bottom: clamp(2rem, 5vh, 3rem); }
+.keypoints .kp-t { font-family: var(--serif-en); font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+.keypoints ul { list-style: none; margin: 0; padding: 0; }
+.keypoints li { font-family: var(--sans-tc); font-weight: 400; font-size: 0.95rem; line-height: 1.95; color: var(--paper-dim); padding-left: 1.1em; position: relative; }
+.keypoints li::before { content: "·"; color: var(--gold); position: absolute; left: 0.2em; }
+.tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tbl-scroll table { min-width: 480px; }
+@media (max-width: 640px) {
+  .hero-eyebrow { font-size: 0.75rem; }
+  article .wrap.article-wrap { padding-bottom: 3.5rem; }
+}
