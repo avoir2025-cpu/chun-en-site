@@ -1281,6 +1281,8 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .article-diagram { margin: 2.6rem 0; border: 1px solid rgba(201, 169, 110, 0.2); border-radius: 2px; padding: clamp(1.4rem, 3.2vw, 2rem) clamp(1.2rem, 3vw, 1.8rem); background: rgba(201, 169, 110, 0.03); }
 .article-diagram svg { display: block; width: 100%; height: auto; }
 .article-diagram figcaption { margin-top: 1.1rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.8rem; letter-spacing: 0.06em; line-height: 1.7; color: var(--muted-bright); }
+/* 桌面版破格加寬，示意圖文字才夠大 2026-07-20 */
+@media (min-width: 760px) { .article-diagram { width: min(900px, calc(100vw - 40px)); margin-left: 50%; transform: translateX(-50%); } }
 
 /* About 創辦人照 Zoey 2026-07-16：2:3 原圖進 3:4 框，焦點上移保住頭頂 */
 .founder-media img { object-position: center 30%; }
