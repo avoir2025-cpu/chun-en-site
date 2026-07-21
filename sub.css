@@ -1284,6 +1284,32 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 /* 桌面版破格加寬，示意圖文字才夠大 2026-07-20 */
 @media (min-width: 760px) { .article-diagram { width: min(900px, calc(100vw - 40px)); margin-left: 50%; transform: translateX(-50%); } }
 
+/* 觀點清單：項目間留空、字重與內文一致 2026-07-21 */
+.article-body ul li { font-weight: 300; }
+.article-body ul li + li { margin-top: 0.7em; }
+
+/* 手機版示意圖：SVG 縮太小，改為左右滑動卡片 2026-07-21 */
+.diagram-cards, .dc-lead, .dc-takeaway { display: none; }
+@media (max-width: 720px) {
+  .article-diagram svg { display: none; }
+  .dc-lead { display: block; margin: 0 0 1rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.82rem; letter-spacing: 0.08em; text-align: center; color: var(--muted-bright); }
+  .diagram-cards { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 6px; scrollbar-width: none; }
+  .diagram-cards::-webkit-scrollbar { display: none; }
+  .diagram-cards .dc { flex: 0 0 76%; scroll-snap-align: center; border: 1px solid rgba(201, 169, 110, 0.4); border-radius: 3px; padding: 1.4rem 1.1rem 1.2rem; background: rgba(201, 169, 110, 0.05); text-align: center; }
+  .dc .dc-step { margin: 0 0 0.5rem; font-family: var(--serif-en); font-style: italic; font-size: 0.9rem; color: var(--muted); }
+  .dc h4 { margin: 0 0 0.35rem; font-family: var(--serif-tc); font-weight: 400; font-size: 1.3rem; letter-spacing: 0.08em; color: var(--paper); }
+  .dc .dc-role { margin: 0 0 0.9rem; font-family: var(--sans-tc); font-weight: 400; font-size: 0.95rem; color: var(--gold-light); }
+  .dc .dc-label { margin: 0 0 0.15rem; font-family: var(--sans-tc); font-weight: 400; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--muted); }
+  .dc .dc-item { margin: 0; font-family: var(--sans-tc); font-weight: 300; font-size: 0.92rem; line-height: 2; color: var(--paper-dim); }
+  .dc .dc-add { color: var(--gold-light); }
+  .dc hr { border: 0; border-top: 1px solid rgba(245, 241, 232, 0.14); margin: 0.7rem 1.2rem; }
+  .dc .dc-brand { margin: 0.9rem 0 0; font-family: var(--serif-en); font-style: italic; font-size: 1rem; color: var(--gold); }
+  .dc-takeaway { display: block; margin: 1.1rem 0 0; font-family: var(--serif-tc); font-weight: 300; font-size: 0.98rem; text-align: center; color: var(--paper-dim); }
+  .dc-takeaway em { font-style: normal; color: var(--gold-light); }
+  /* journal 列表縮圖：三角色卡的臉偏上，手機 16:9 裁切下移對焦 */
+  .jrow-media img.face-right { object-position: 65% 32%; }
+}
+
 /* About 創辦人照 Zoey 2026-07-16：2:3 原圖進 3:4 框，焦點上移保住頭頂 */
 .founder-media img { object-position: center 30%; }
 
