@@ -589,8 +589,31 @@ body.mnav-lock { overflow: hidden; }
   letter-spacing: 0.34em;
   text-transform: uppercase;
   color: var(--muted);
+  display: block;
+}
+.work .cap-meta {
   display: flex;
   justify-content: space-between;
+}
+/* 情境標：主段=職業身分；em=影像定位註記（僅風格偏離商務的作品掛） */
+.work .cap-role {
+  display: block;
+  margin-top: 0.5rem;
+  font-family: var(--serif-tc);
+  font-weight: 300;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: none;
+  color: var(--paper-dim);
+}
+.work .cap-role em {
+  font-style: normal;
+  font-size: 0.76rem;
+  color: var(--gold-light);
+  opacity: 0.9;
+}
+@media (max-width: 640px) {
+  .work .cap-role { font-size: 0.76rem; letter-spacing: 0.06em; }
 }
 /* Editorial 排列節奏 */
 .work:nth-child(6n+1) { grid-column: 1 / 6;  aspect-ratio: 3/4; }
@@ -602,6 +625,8 @@ body.mnav-lock { overflow: hidden; }
 .work { display: flex; flex-direction: column; }
 .work .imgbox { overflow: hidden; flex: 1; }
 .work .imgbox img { height: 100%; }
+/* 手動大版位（蓋掉 nth 節奏；手機版由 640 內規則接手） */
+.work.work-lg { grid-column: 7 / 13; aspect-ratio: 4/5; }
 
 /* ============ CH05 BLUEPRINT ============ */
 .blueprint {
