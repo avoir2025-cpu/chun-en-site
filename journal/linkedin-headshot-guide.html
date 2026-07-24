@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+TC:wght@200;300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../v5.css?v=202607170400" />
-  <link rel="stylesheet" href="../sub.css?v=202607230100" />
+  <link rel="stylesheet" href="../sub.css?v=202607240100" />
 </head>
 <body>
 
@@ -98,24 +98,28 @@
 
         <h2>規格<em>速查表</em></h2>
         <div class="tbl-scroll">
-        <table>
+        <table class="spec-table">
           <thead><tr><th>項目</th><th>建議規格</th><th>為什麼</th></tr></thead>
           <tbody>
-            <tr><td>上傳尺寸</td><td>正方形，建議 800×800px 以上（官方建議 400×400、最小 200×200、上限 7680×4320／8MB）</td><td>系統一律存成 1:1；解析度不足在高解析螢幕上會糊</td></tr>
-            <tr><td>臉部占比</td><td>臉＋頭髮約占畫面 55–65%（胸口以上）</td><td>頭貼常以 3–5mm 小圓顯示，臉太小＝看不見你</td></tr>
-            <tr><td>視線與角度</td><td>眼神看鏡頭，身體可微側 15–30 度</td><td>視線接觸建立信任；微側比正面呆板少</td></tr>
-            <tr><td>背景</td><td>單純、與衣服有對比（淺灰/白/深色棚背景）</td><td>小尺寸下雜背景會吃掉你的輪廓</td></tr>
-            <tr><td>光線</td><td>柔光、臉部均勻、無重陰影</td><td>陰影在小圖裡會變成「黑塊」</td></tr>
-            <tr><td>服裝</td><td>與你目標職位對齊的上半身正裝/知性便裝</td><td>頭貼只看得到領口，領口就是你的著裝</td></tr>
-            <tr><td>表情</td><td>放鬆的微笑或沉穩的自信，依角色定位</td><td>親和型職位帶笑、權威型職位收斂</td></tr><tr><td>實際顯示</td><td>個人檔案頁約 200px，搜尋結果與留言僅約 56px</td><td>你被看見最多次的，是那個 56px 的小圓</td></tr>
+            <tr><td>上傳尺寸</td><td data-label="建議規格">正方形，建議 800×800px 以上（官方建議 400×400、最小 200×200、上限 7680×4320／8MB）</td><td data-label="為什麼">系統一律存成 1:1；解析度不足在高解析螢幕上會糊</td></tr>
+            <tr><td>臉部占比</td><td data-label="建議規格">臉＋頭髮約占畫面 55–65%（胸口以上）</td><td data-label="為什麼">頭貼常以 3–5mm 小圓顯示，臉太小＝看不見你</td></tr>
+            <tr><td>視線與角度</td><td data-label="建議規格">眼神看鏡頭，身體可微側 15–30 度</td><td data-label="為什麼">視線接觸建立信任；微側比正面呆板少</td></tr>
+            <tr><td>背景</td><td data-label="建議規格">單純、與衣服有對比（淺灰/白/深色棚背景）</td><td data-label="為什麼">小尺寸下雜背景會吃掉你的輪廓</td></tr>
+            <tr><td>光線</td><td data-label="建議規格">柔光、臉部均勻、無重陰影</td><td data-label="為什麼">陰影在小圖裡會變成「黑塊」</td></tr>
+            <tr><td>服裝</td><td data-label="建議規格">與你目標職位對齊的上半身正裝/知性便裝</td><td data-label="為什麼">頭貼只看得到領口，領口就是你的著裝</td></tr>
+            <tr><td>表情</td><td data-label="建議規格">放鬆的微笑或沉穩的自信，依角色定位</td><td data-label="為什麼">親和型職位帶笑、權威型職位收斂</td></tr>
+            <tr><td>實際顯示</td><td data-label="建議規格">個人檔案頁約 200px，搜尋結果與留言僅約 56px</td><td data-label="為什麼">你被看見最多次的，是那個 56px 的小圓</td></tr>
           </tbody>
         </table>
         </div>
         <blockquote>把你的頭貼縮到指甲大小看一眼，那才是世界實際看到的你。</blockquote>
 
         <figure class="article-diagram">
-          <img src="../assets/gallery/journal/linkedin-crop-demo-1400.jpg" alt="LinkedIn 頭貼從原圖、1:1 正方形裁切、圓形顯示到 56px 搜尋列表的完整流程，以特寫、半身、全身三種景別對照" loading="lazy" style="width:100%;height:auto;display:block;" />
-          <figcaption>LinkedIn 會把上傳的照片存成 1:1 正方形，再以圓形顯示，四角必定被裁掉。同一個人、同一場拍攝，只差在景別：走到搜尋列表那個 56px 的圓，特寫還看得見眼神，全身照就只剩一個剪影。（CHUN.EN 實際拍攝作品）</figcaption>
+          <div class="crop-demo-scroll">
+            <img class="crop-demo" src="../assets/gallery/journal/linkedin-crop-demo-1400.jpg" alt="LinkedIn 頭貼從原圖、1:1 正方形裁切、圓形顯示到 56px 搜尋列表的完整流程，以特寫、半身、全身三種景別對照" loading="lazy" />
+          </div>
+          <p class="scroll-hint">← 左右滑動看三種景別 →</p>
+          <figcaption>LinkedIn 會把上傳的照片存成 1:1 正方形，再以圓形顯示，四角必定被裁掉。三種景別走完同一條路：特寫縮到 56px 還看得見眼神，全身照就只剩一個剪影。（CHUN.EN 實際拍攝作品）</figcaption>
         </figure>
 
         <h2>五個最常見的<em>錯誤</em></h2>
@@ -127,6 +131,58 @@
 
         <h2>頭貼之外：LinkedIn 還有<em>一個常被浪費的版位</em></h2>
         <p>背景橫幅（Banner），那條 1584×396 的橫幅，多數人放著預設的藍灰色。它其實是頭貼的放大機會：可以放你的工作情境照、品牌標語或專業領域關鍵字。頭貼負責「這個人可信」，橫幅負責「這個人是做什麼的」。兩個一起經營，檔案的完成度立刻高一個檔次。這正是「一組照片、多個版位」的部署思維，完整邏輯見〈<a href="portrait-deployment-map.html">一組照片的部署地圖</a>〉。</p>
+
+        <figure class="article-diagram">
+          <p class="dc-lead">橫幅的三個區域（左右滑動）</p>
+          <div class="diagram-cards">
+            <div class="dc">
+              <h4>尺寸</h4>
+              <p class="dc-role">1584 × 396（4:1）</p>
+              <p class="dc-label">上傳前</p>
+              <p class="dc-item">先裁成 4:1，避免被自動裁切</p>
+            </div>
+            <div class="dc">
+              <h4>左下角</h4>
+              <p class="dc-role">頭貼會蓋住</p>
+              <p class="dc-label">這一區</p>
+              <p class="dc-item">留白，別放重點文字或人臉</p>
+            </div>
+            <div class="dc">
+              <h4>中央＋背景</h4>
+              <p class="dc-role">你是做什麼的</p>
+              <p class="dc-label">放這些</p>
+              <p class="dc-item dc-add">一句標語＋專業關鍵字</p>
+              <p class="dc-item dc-add">工作情境照或品牌色</p>
+            </div>
+          </div>
+          <p class="dc-takeaway">頭貼負責「<em>可信</em>」，橫幅負責「<em>你是做什麼的</em>」。</p>
+          <svg viewBox="0 0 820 430" role="img" xmlns="http://www.w3.org/2000/svg">
+            <title>LinkedIn 背景橫幅的版位規劃</title>
+            <desc>橫幅尺寸 1584×396（4:1）：左下角會被圓形頭貼蓋住須留白，中央放一句標語與專業關鍵字，整體背景放工作情境照或品牌色。</desc>
+            <text x="410" y="44" text-anchor="middle" font-family="'Noto Serif TC',serif" font-weight="300" font-size="24" fill="#CFC5B4">背景橫幅：<tspan fill="#C9A96E">1584 × 396</tspan>（4:1）的放大機會</text>
+            <!-- 尺寸標註 -->
+            <text x="410" y="82" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-weight="300" font-size="14" letter-spacing=".1em" fill="#8B7D6B">← 1584 px →</text>
+            <!-- 橫幅框 4:1 -->
+            <rect x="90" y="96" width="680" height="170" rx="3" fill="rgba(201,169,110,0.05)" stroke="#A88A5C" stroke-opacity="0.5"/>
+            <text x="72" y="187" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-weight="300" font-size="14" fill="#8B7D6B" transform="rotate(-90 72 187)">396 px</text>
+            <!-- 中央標語區 -->
+            <text x="430" y="165" text-anchor="middle" font-family="'Noto Serif TC',serif" font-weight="400" font-size="21" fill="#F5F1E8">一句話講清你是誰</text>
+            <text x="430" y="196" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-weight="300" font-size="15" fill="#C9A96E">標語 ＋ 專業領域關鍵字</text>
+            <text x="655" y="132" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-weight="300" font-size="13" fill="#8B7D6B">背景：工作情境照 / 品牌色</text>
+            <!-- 頭貼避開區（左下） -->
+            <rect x="104" y="196" width="150" height="70" rx="2" fill="none" stroke="rgba(245,241,232,0.28)" stroke-width="1" stroke-dasharray="4 4"/>
+            <!-- 圓形頭貼 疊在左下 -->
+            <circle cx="165" cy="266" r="48" fill="#14100B" stroke="#C9A96E" stroke-width="2"/>
+            <circle cx="165" cy="266" r="48" fill="rgba(201,169,110,0.12)"/>
+            <text x="165" y="272" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-weight="300" font-size="13" fill="#CFC5B4">頭貼</text>
+            <text x="290" y="252" text-anchor="start" font-family="'Noto Sans TC',sans-serif" font-weight="300" font-size="14" fill="#CFC5B4">頭貼會蓋住左下角</text>
+            <text x="290" y="274" text-anchor="start" font-family="'Noto Sans TC',sans-serif" font-weight="300" font-size="14" fill="#8B7D6B">這一區留白，別放重點</text>
+            <!-- takeaway -->
+            <text x="410" y="360" text-anchor="middle" font-family="'Noto Serif TC',serif" font-weight="300" font-size="20" fill="#CFC5B4">頭貼負責「<tspan fill="#C9A96E">可信</tspan>」，橫幅負責「<tspan fill="#C9A96E">你是做什麼的</tspan>」。</text>
+            <text x="410" y="396" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-weight="300" font-size="14.5" fill="#8B7D6B">兩個版位一起經營，檔案完成度立刻高一個檔次。</text>
+          </svg>
+          <figcaption>橫幅是被多數人浪費的版位：左下角預留給頭貼，中央放一句標語與專業關鍵字，背景放工作情境或品牌色。頭貼講「可信」，橫幅講「你是做什麼的」。</figcaption>
+        </figure>
         <p>如果你正要為 LinkedIn 拍一張真正合格的頭貼，連同官網、簡報等其他場景一次拍齊，從<a href="../c-photos.html">商業影像</a>與定位開始談，比單拍一顆頭省得多。</p>
 
         <h2>轉職與高階經理人：<em>被看見的時機，不是你決定的</em></h2>

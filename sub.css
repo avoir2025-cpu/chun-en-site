@@ -1324,6 +1324,24 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   .atelier-gallery::-webkit-scrollbar { display: none; }
 }
 
+/* 規格速查表：手機改堆疊卡片（橫向表格在窄螢幕擠不下）2026-07-24 */
+.crop-demo { width: 100%; height: auto; display: block; }
+.scroll-hint { display: none; }
+@media (max-width: 720px) {
+  .tbl-scroll .spec-table { min-width: 0; }
+  .spec-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .spec-table, .spec-table tbody, .spec-table tr, .spec-table td { display: block; width: 100%; }
+  .spec-table tr { border: 1px solid rgba(201, 169, 110, 0.28); border-radius: 3px; padding: 0.9rem 1rem; margin-bottom: 0.75rem; background: rgba(201, 169, 110, 0.04); }
+  .spec-table td { padding: 0.3rem 0; border: 0; line-height: 1.75; }
+  .spec-table td:first-child { font-family: var(--serif-tc); font-size: 1.1rem; font-weight: 400; color: var(--paper); border-bottom: 1px solid var(--hairline); padding-bottom: 0.5rem; margin-bottom: 0.45rem; }
+  .spec-table td[data-label]::before { content: attr(data-label); display: block; font-family: var(--sans-tc); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.1rem; }
+  /* crop-demo 密集圖：手機改橫向滑動，才看得清三種景別 */
+  .crop-demo-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .crop-demo-scroll::-webkit-scrollbar { display: none; }
+  .crop-demo { min-width: 680px; }
+  .scroll-hint { display: block; margin: 0.6rem 0 0; text-align: center; font-family: var(--sans-tc); font-weight: 300; font-size: 0.78rem; letter-spacing: 0.1em; color: var(--muted-bright); }
+}
+
 /* About 創辦人照 Zoey 2026-07-16：2:3 原圖進 3:4 框，焦點上移保住頭頂 */
 .founder-media img { object-position: center 30%; }
 
