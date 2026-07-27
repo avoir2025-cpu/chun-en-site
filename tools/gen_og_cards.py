@@ -197,14 +197,17 @@ def collect():
         if os.path.basename(p) == 'index.html':
             continue
         s = io.open(p, encoding='utf-8').read()
-        og = re.search(r'og:image" content="https://chunen\.tw/([^"?]+)', s)
+        # 一定要讀頁面主圖，不能讀 og:image——og:image 接上分享卡之後就會指向
+        # 這支自己的產出，再跑一次會拿卡片當素材，而且 1.9 的比例還會被下面的
+        # ratio 過濾掉，等於整支失效。
+        hero = re.search(r'<div class="jcard-media rv"[^>]*>\s*<img src="\.\./([^"?]+)', s)
         eb = re.search(r'hero-eyebrow rv">(.*?)</p>', s, re.S)
         h1 = re.search(r'<h1[^>]*>(.*?)</h1>', s, re.S)
-        if not (og and h1):
+        if not (hero and h1):
             continue
         t = re.sub(r'<br\s*/?>', '|', h1.group(1))
         t = re.sub(r'<[^>]*>', '', t).strip()
-        img = os.path.join(ROOT, og.group(1))
+        img = os.path.join(ROOT, hero.group(1))
         if not os.path.exists(img):
             continue
         w, h = Image.open(img).size
