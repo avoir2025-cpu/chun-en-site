@@ -187,8 +187,24 @@ def build_card(img_path, eyebrow, title, out_path):
     d.text((PAD_X, H - 62), 'chunen.tw', font=f_foot, fill=MUTED)
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    card.save(out_path, 'JPEG', quality=88, optimize=True, progressive=True)
+    # 把眉標與標題寫進 JPEG comment，prepublish_check 靠它判斷卡片有沒有過期
+    # （改標題卻忘了重產）。用 mtime 判斷不可靠，git checkout 會重設時間。
+    stamp = ('%s|%s' % (eyebrow, title)).encode('utf-8')
+    card.save(out_path, 'JPEG', quality=88, optimize=True,
+              progressive=True, comment=stamp)
     return out_path
+
+
+def card_stamp(path):
+    """讀回卡片內記錄的 (眉標, 標題)；讀不到回 None。"""
+    try:
+        c = Image.open(path).info.get('comment')
+        if not c:
+            return None
+        eyebrow, _, title = c.decode('utf-8').partition('|')
+        return eyebrow, title
+    except Exception:
+        return None
 
 
 def collect():

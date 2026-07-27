@@ -8,6 +8,12 @@
 
 輸出：終端報表 + docs/上架前體檢報告_最新.md
 排程來源：Desktop\\Claude\\CHUNEN_上架排程_v3.md 的表格（| 批 | 日期 | slug |）
+
+og 分享卡（2026-07-27 起列為必修項）
+    直幅主圖不能直接當 og:image，社群卡是 1.91:1，人臉會被裁掉。每篇都要有
+    assets/og/<slug>-og.jpg（1200x630），用 tools/gen_og_cards.py 產。
+    這裡會驗三件事：卡片存在、尺寸正確、卡片上的標題與眉標跟現在的 H1 一致
+    （改了標題忘記重產卡片會被抓出來），另外 twitter:image 要與 og:image 同一張。
 """
 import os
 import re
@@ -56,6 +62,41 @@ def load_schedule():
         if m:
             out.append((int(m.group(1)), m.group(2), m.group(3)))
     return out
+
+
+def _check_card(r, card_abs, s, cat):
+    """驗分享卡：尺寸要 1200x630，內容要跟現在的 H1／眉標一致。
+
+    卡片產生時會把「眉標|標題」寫進 JPEG comment（見 gen_og_cards.py），
+    所以改了標題卻忘了重產卡片，這裡就抓得到。用 mtime 判斷不可靠，
+    git checkout 會把時間重設。
+    """
+    try:
+        from PIL import Image
+        im = Image.open(card_abs)
+    except Exception as e:
+        r['issues'].append(f'og 分享卡讀不開：{e}')
+        return
+    if im.size != (1200, 630):
+        r['issues'].append('og 分享卡尺寸是 %dx%d，應為 1200x630' % im.size)
+
+    m = re.search(r'<h1[^>]*>(.*?)</h1>', s, re.S)
+    if not m:
+        return
+    now = re.sub(r'<[^>]*>', '', re.sub(r'<br\s*/?>', '|', m.group(1))).strip()
+    raw = im.info.get('comment')
+    if not raw:
+        r['warns'].append('og 分享卡沒有標題註記（舊版產的），建議重跑 gen_og_cards.py')
+        return
+    try:
+        baked_cat, _, baked_title = raw.decode('utf-8').partition('|')
+    except Exception:
+        return
+    if baked_title != now:
+        r['issues'].append('og 分享卡上的標題是舊的（卡片：%s），跑 python tools/gen_og_cards.py 重產'
+                           % baked_title.replace('|', ' / ')[:34])
+    elif cat and baked_cat != cat:
+        r['issues'].append('og 分享卡上的分類是舊的（卡片：%s，現在：%s）' % (baked_cat, cat))
 
 
 def check(slug):
@@ -110,10 +151,13 @@ def check(slug):
     # tools/gen_og_cards.py）；直接指向直幅主圖會被社群平台裁掉臉。
     og = re.search(r'og:image" content="([^"]+)"', s)
     if og:
-        card = f'assets/og/{slug}-og.jpg'
+        card_rel = f'assets/og/{slug}-og.jpg'
+        card_abs = os.path.join(ROOT, card_rel)
         if og.group(1).endswith(f'{slug}-og.jpg'):
-            if not os.path.exists(os.path.join(ROOT, card)):
-                r['issues'].append(f'og 分享卡不存在：{card}（跑 python tools/gen_og_cards.py）')
+            if not os.path.exists(card_abs):
+                r['issues'].append(f'og 分享卡不存在：{card_rel}（跑 python tools/gen_og_cards.py）')
+            else:
+                _check_card(r, card_abs, s, cat)
         elif hero and og.group(1).endswith(os.path.basename(hero.group(1))):
             w, h = 0, 0
             try:
@@ -122,10 +166,17 @@ def check(slug):
             except Exception:
                 pass
             if h and w / h < 1.7:
-                r['warns'].append('og:image 直接用直幅主圖，分享時會裁到臉；'
-                                  '跑 python tools/gen_og_cards.py 產專屬卡')
+                r['issues'].append('og:image 直接用直幅主圖，分享到 LinkedIn／FB 會裁掉臉；'
+                                   '跑 python tools/gen_og_cards.py 產專屬卡')
         else:
             r['warns'].append('og:image 既不是分享卡也不是主圖，請確認')
+    else:
+        r['issues'].append('沒有 og:image')
+
+    # twitter:image 要跟 og:image 一致，否則 X 上會是另一張
+    tw = re.search(r'twitter:image" content="([^"]+)"', s)
+    if og and tw and tw.group(1) != og.group(1):
+        r['issues'].append('twitter:image 與 og:image 不一致')
 
     # 署名一致性
     if '吳惇恩' in s and '/author/zoey-wu.html#zoey' not in s:
