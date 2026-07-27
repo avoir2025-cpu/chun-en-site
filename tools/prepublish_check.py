@@ -106,9 +106,26 @@ def check(slug):
     else:
         r['issues'].append('找不到主圖')
 
+    # og:image 正常情況是 assets/og/<slug>-og.jpg 的專屬分享卡（1200x630，見
+    # tools/gen_og_cards.py）；直接指向直幅主圖會被社群平台裁掉臉。
     og = re.search(r'og:image" content="([^"]+)"', s)
-    if og and hero and not og.group(1).endswith(os.path.basename(hero.group(1))):
-        r['warns'].append('og:image 與主圖不一致')
+    if og:
+        card = f'assets/og/{slug}-og.jpg'
+        if og.group(1).endswith(f'{slug}-og.jpg'):
+            if not os.path.exists(os.path.join(ROOT, card)):
+                r['issues'].append(f'og 分享卡不存在：{card}（跑 python tools/gen_og_cards.py）')
+        elif hero and og.group(1).endswith(os.path.basename(hero.group(1))):
+            w, h = 0, 0
+            try:
+                from PIL import Image
+                w, h = Image.open(os.path.join(ROOT, hero.group(1))).size
+            except Exception:
+                pass
+            if h and w / h < 1.7:
+                r['warns'].append('og:image 直接用直幅主圖，分享時會裁到臉；'
+                                  '跑 python tools/gen_og_cards.py 產專屬卡')
+        else:
+            r['warns'].append('og:image 既不是分享卡也不是主圖，請確認')
 
     # 署名一致性
     if '吳惇恩' in s and '/author/zoey-wu.html#zoey' not in s:
