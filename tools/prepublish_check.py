@@ -39,7 +39,7 @@ import glob
 import json
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SCHEDULE = r'C:\Users\3D-U\Desktop\Claude\CHUNEN_上架排程_v3.md'
+SCHEDULE = r'C:\Users\3D-U\Desktop\Claude\CHUNEN_上架排程_v4.md'
 REPORT = os.path.join(ROOT, 'docs', '上架前體檢報告_最新.md')
 SEO_TARGETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'seo_targets.json')
 
