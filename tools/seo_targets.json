@@ -1,0 +1,164 @@
+{
+  "_說明": "CHUN.EN 觀點文章 SEO 鎖定詞對照。聲量＝2026-07-28 以 Google 自動完成 API 實測 125 組詞的結果，高／中／低／零為相對強弱，不是絕對月搜尋量。重測方式見 docs/觀點文章SEO盤點_v1.xlsx「方法與限制」分頁。",
+  "_更新日": "2026-07-28",
+  "聲量": {
+    "ai 形象照": "高",
+    "linkedin 照片": "高",
+    "個人品牌": "高",
+    "個人色彩診斷": "高",
+    "台中妝髮": "高",
+    "台中形象照": "高",
+    "台中形象照費用": "低",
+    "台中霧眉": "高",
+    "商務穿搭": "中",
+    "專業形象照": "高",
+    "形象改造": "高",
+    "形象照妝髮": "低",
+    "形象照姿勢": "中",
+    "形象照費用": "中",
+    "形象顧問": "高",
+    "微胖穿搭": "高",
+    "房仲形象照": "低",
+    "拍形象照 注意事項": "低",
+    "拍形象照價格": "低",
+    "拍形象照穿什麼": "低",
+    "新娘妝髮": "中",
+    "活動妝髮": "低",
+    "第一印象": "高",
+    "老錢風": "高",
+    "臉型 髮型": "高",
+    "西裝穿搭": "高",
+    "視訊背景": "高",
+    "診所 形象": "中",
+    "醫師形象照": "高",
+    "面試穿搭": "高",
+    "音樂家 形象": "低",
+    "骨架分析": "高"
+  },
+  "鎖定詞": {
+    "why-prices-differ": [
+      "形象照費用",
+      "拍形象照價格"
+    ],
+    "taichung-portrait-guide": [
+      "台中形象照",
+      "台中形象照費用"
+    ],
+    "ai-portrait-honest-take": [
+      "ai 形象照"
+    ],
+    "image-consultant-vs-stylist": [
+      "形象顧問"
+    ],
+    "linkedin-headshot-guide": [
+      "linkedin 照片"
+    ],
+    "posing-guide-for-portraits": [
+      "形象照姿勢"
+    ],
+    "portrait-preparation-checklist": [
+      "拍形象照 注意事項"
+    ],
+    "wardrobe-for-portraits": [
+      "拍形象照穿什麼"
+    ],
+    "doctor-portrait-trust": [
+      "醫師形象照"
+    ],
+    "doctor-role-system": [
+      "醫師形象照"
+    ],
+    "clinic-image-consistency": [
+      "診所 形象"
+    ],
+    "personal-color-analysis-limits": [
+      "個人色彩診斷",
+      "骨架分析"
+    ],
+    "face-shape-neckline-hair": [
+      "臉型 髮型"
+    ],
+    "body-type-business-dressing": [
+      "微胖穿搭"
+    ],
+    "hair-makeup-service-guide": [
+      "台中妝髮"
+    ],
+    "quiet-luxury-professional": [
+      "老錢風"
+    ],
+    "realtor-personal-brand": [
+      "房仲形象照"
+    ],
+    "seasoned-professional-portrait": [
+      "專業形象照"
+    ],
+    "portrait-vs-personal-brand": [
+      "個人品牌"
+    ],
+    "brow-tattoo-guide": [
+      "台中霧眉"
+    ],
+    "bridal-makeup-guide": [
+      "新娘妝髮"
+    ],
+    "mens-grooming-checklist": [
+      "西裝穿搭"
+    ],
+    "occasion-color-guide": [
+      "面試穿搭"
+    ],
+    "beyond-filters-third-path": [
+      "形象改造"
+    ],
+    "why-your-photo-isnt-working": [
+      "個人品牌"
+    ],
+    "first-impression-research": [
+      "第一印象"
+    ],
+    "who-do-you-dress-for": [
+      "商務穿搭"
+    ],
+    "on-camera-presence": [
+      "視訊背景"
+    ],
+    "video-call-setup-guide": [
+      "視訊背景"
+    ],
+    "event-hair-makeup": [
+      "活動妝髮"
+    ],
+    "authenticity-premium": [
+      "ai 形象照"
+    ],
+    "musician-offstage-image": [
+      "音樂家 形象"
+    ],
+    "makeup-hair-for-portraits": [
+      "形象照妝髮"
+    ]
+  },
+  "轉換型_不設搜尋入口": [
+    "after-the-shoot",
+    "business-hair-makeup",
+    "does-everyone-need-a-portrait",
+    "executive-portrait-trust",
+    "executive-presence-explained",
+    "financial-advisor-portrait-trust",
+    "founder-portrait-fundraising",
+    "image-asset-or-expense",
+    "music-teacher-enrollment-image",
+    "natural-look-by-design",
+    "portrait-deployment-map",
+    "positioning-decides-portrait",
+    "speaker-trainer-portrait",
+    "wardrobe-audit-5-steps",
+    "when-to-update-your-portrait",
+    "which-version-of-you",
+    "women-leaders-image"
+  ],
+  "標題例外": {
+    "quiet-luxury-professional": "老錢風帶潮流感，與品牌沉穩調性不符；2026-07-28 決定標題維持「安靜的高級感：Quiet Luxury 對專業形象的啟示」，改把老錢風放 description 與小標。"
+  }
+}

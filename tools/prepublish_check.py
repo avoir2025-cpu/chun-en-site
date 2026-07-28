@@ -14,15 +14,48 @@ og 分享卡（2026-07-27 起列為必修項）
     assets/og/<slug>-og.jpg（1200x630），用 tools/gen_og_cards.py 產。
     這裡會驗三件事：卡片存在、尺寸正確、卡片上的標題與眉標跟現在的 H1 一致
     （改了標題忘記重產卡片會被抓出來），另外 twitter:image 要與 og:image 同一張。
+
+SEO 效益（2026-07-28 起列為必修項，見 docs/觀點文章SEO盤點_v1.xlsx）
+    起因：實測 125 組關鍵字後發現，原本 38 篇排程裡約 28 篇的鎖定詞
+    在 Google 完全沒有查詢紀錄。寫得再好，沒有人用那個詞搜尋就等於沒有入口。
+    市場用「問題」搜尋不用「身分」搜尋：姿勢、費用、推薦、地區、AI 有量；
+    高階主管、講師、理專、創辦人、商務妝髮這類身分詞是零。
+
+    四道檢查（對照表 tools/seo_targets.json）：
+    1. 鎖定詞要有實測聲量。零聲量的詞不該當搜尋入口，該篇請列進
+       seo_targets.json 的「轉換型_不設搜尋入口」，明講它靠內鏈與轉換工作。
+    2. 鎖定詞要出現在 title。詞在內文但不在標題，Google 不會認為這篇在談它。
+    3. FAQ 區塊與 FAQPage 結構化資料要齊備且題數一致。FAQ 在文章最底、
+       收合顯示，不影響閱讀動線，卻是「其他人也問」與 AI 摘要最優先抓取的來源。
+    4. FAQ 第一題要對得上鎖定詞，那是被摘要抓走的位置。
+
+    為什麼不改開場：開場答案句會與正文上方的「本文重點」重複，同一件事
+    隔兩行講兩次，反而傷閱讀。答案要放 FAQ，不要塞進敘事段落。
 """
 import os
 import re
 import sys
 import glob
+import json
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCHEDULE = r'C:\Users\3D-U\Desktop\Claude\CHUNEN_上架排程_v3.md'
 REPORT = os.path.join(ROOT, 'docs', '上架前體檢報告_最新.md')
+SEO_TARGETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'seo_targets.json')
+
+FAQ_MIN = 3          # 每篇至少三題，少於這個數量撐不起 FAQPage 的抓取價值
+WEAK_VOLUME = '零'   # seo_targets.json 裡代表「Google 沒有查詢紀錄」的標記
+
+
+def load_seo():
+    """讀鎖定詞對照表。檔案不在就回空表，讓 SEO 檢查靜默略過而不是整支掛掉。"""
+    try:
+        with open(SEO_TARGETS, encoding='utf-8') as f:
+            d = json.load(f)
+    except Exception:
+        return {}, {}, set(), {}
+    return (d.get('聲量', {}), d.get('鎖定詞', {}),
+            set(d.get('轉換型_不設搜尋入口', [])), d.get('標題例外', {}))
 
 # ── 語感地雷（來源：2026-07-20 語感體檢 + chinese-native-phrasing 規則）────
 CALQUE = [
@@ -235,6 +268,72 @@ def _scan_facts(r, body_text):
     r['facts'] = uniq
 
 
+def _check_seo(r, s, slug):
+    """SEO 效益四道檢查：FAQ、鎖定詞聲量、詞在不在 title、FAQ 首題對不對得上。"""
+    volumes, targets, conversion_only, title_exempt = load_seo()
+
+    # 1. FAQ 區塊與 FAQPage schema
+    n_details = s.count('<details><summary>')
+    faq_ld = re.search(r'<script type="application/ld\+json">\s*(\{.*?"@type":\s*"FAQPage".*?\})\s*</script>',
+                       s, re.S)
+    n_schema = 0
+    if faq_ld:
+        try:
+            n_schema = len(json.loads(faq_ld.group(1)).get('mainEntity', []))
+        except Exception:
+            r['issues'].append('FAQPage schema 不是合法 JSON，Google 會整段忽略')
+    if n_details < FAQ_MIN:
+        r['issues'].append(f'FAQ 只有 {n_details} 題（需 ≥{FAQ_MIN}）：'
+                           'FAQ 是「其他人也問」與 AI 摘要最主要的抓取來源，且不影響閱讀動線')
+    elif not faq_ld:
+        r['issues'].append('有 FAQ 區塊但缺 FAQPage 結構化資料，等於寫了不給 Google 讀')
+    elif n_schema != n_details:
+        r['issues'].append(f'FAQ 題數不一致：畫面 {n_details} 題、schema {n_schema} 題')
+
+    # 2-4. 鎖定詞相關
+    if slug in conversion_only:
+        r['info'].append('轉換型文章：不設搜尋入口，靠內鏈與轉換工作，故略過鎖定詞檢查')
+        return
+    kws = targets.get(slug)
+    if not kws:
+        r['warns'].append('tools/seo_targets.json 沒有這篇的鎖定詞：'
+                          '請補上有實測聲量的詞，或列進「轉換型_不設搜尋入口」')
+        return
+
+    title = re.search(r'<title>(.*?)</title>', s, re.S)
+    title = re.sub(r'<[^>]+>', '', title.group(1)).strip() if title else ''
+
+    def covers(text, kw):
+        """詞出現在文字裡就算。含空格的詞（臉型 髮型）是多字詞查詢，
+        Google 不要求連在一起，所以逐字拆開檢查而不是比整串。"""
+        t = text.lower()
+        return all(tok.lower() in t for tok in kw.split() if tok)
+
+    live = [k for k in kws if volumes.get(k, WEAK_VOLUME) != WEAK_VOLUME]
+    if not live:
+        r['issues'].append(f'鎖定詞 {"／".join(kws)} 實測零聲量：沒有人用這個詞搜尋，'
+                           '換一個有量的詞，或把這篇列進「轉換型_不設搜尋入口」')
+        return
+
+    if not any(covers(title, k) for k in live):
+        why = title_exempt.get(slug)
+        if why:
+            r['info'].append(f'鎖定詞刻意不進 title（{"／".join(live)}）：{why}')
+        else:
+            r['issues'].append(f'鎖定詞 {"／".join(live)} 沒有出現在 title：'
+                               '詞只在內文，Google 不會認為這篇在談它。'
+                               '改標題、換一個標題本來就有的詞，或列進「標題例外」並寫明理由')
+    r['info'].append('鎖定詞：' + '、'.join(f'{k}（{volumes.get(k, "未測")}）' for k in kws))
+
+    # FAQ 第一題是被摘要抓走的位置，要對得上主鎖定詞
+    first_q = re.search(r'<details><summary>(.*?)<span', s, re.S)
+    if first_q and live:
+        q = re.sub(r'<[^>]+>', '', first_q.group(1))
+        if not any(covers(q, k) for k in live):
+            r['warns'].append(f'FAQ 第一題沒有帶到鎖定詞（{"／".join(live)}）：'
+                              '那一題最可能被搜尋摘要抓走，建議直接寫成該搜尋詞的問句')
+
+
 def check(slug):
     path = os.path.join(ROOT, 'journal', slug + '.html')
     if not os.path.exists(path):
@@ -350,6 +449,9 @@ def check(slug):
     tw = re.search(r'twitter:image" content="([^"]+)"', s)
     if og and tw and tw.group(1) != og.group(1):
         r['issues'].append('twitter:image 與 og:image 不一致')
+
+    # SEO 效益
+    _check_seo(r, s, slug)
 
     # 署名一致性
     if '吳惇恩' in s and '/author/zoey-wu.html#zoey' not in s:

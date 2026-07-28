@@ -59,3 +59,7 @@ docs/
 
 # ---------- og 分享卡建置快取（字型與 haar xml，不進 repo）----------
 .og-build/
+
+# ---------- Python 快取 ----------
+__pycache__/
+*.pyc
