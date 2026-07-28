@@ -102,9 +102,6 @@
     "bridal-makeup-guide": [
       "新娘妝髮"
     ],
-    "mens-grooming-checklist": [
-      "西裝穿搭"
-    ],
     "occasion-color-guide": [
       "面試穿搭"
     ],
@@ -148,6 +145,7 @@
     "financial-advisor-portrait-trust",
     "founder-portrait-fundraising",
     "image-asset-or-expense",
+    "mens-grooming-checklist",
     "music-teacher-enrollment-image",
     "natural-look-by-design",
     "portrait-deployment-map",
@@ -160,5 +158,8 @@
   ],
   "標題例外": {
     "quiet-luxury-professional": "老錢風帶潮流感，與品牌沉穩調性不符；2026-07-28 決定標題維持「安靜的高級感：Quiet Luxury 對專業形象的啟示」，改把老錢風放 description 與小標。"
+  },
+  "_轉換型理由": {
+    "mens-grooming-checklist": "文章談髮眉鬍鞋的儀容自檢；西裝穿搭與內容不符，男士保養滿格但那是買保養品的意圖。實測沒有意圖相符的詞，改當轉換素材。"
   }
 }
