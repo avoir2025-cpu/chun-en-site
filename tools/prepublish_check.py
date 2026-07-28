@@ -274,14 +274,21 @@ def _check_seo(r, s, slug):
 
     # 1. FAQ 區塊與 FAQPage schema
     n_details = s.count('<details><summary>')
-    faq_ld = re.search(r'<script type="application/ld\+json">\s*(\{.*?"@type":\s*"FAQPage".*?\})\s*</script>',
-                       s, re.S)
-    n_schema = 0
-    if faq_ld:
+    # 一頁有三塊 ld+json（Article／FAQPage／Breadcrumb），要逐塊解析後才知道哪塊是
+    # FAQPage。早期版本用一條橫跨的正則去抓，會從 Article 那塊的左括號一路吃到
+    # FAQPage 的右括號，捕捉到的當然不是合法 JSON，38 篇全數誤報。
+    faq_ld, n_schema, bad_json = None, 0, False
+    for raw in re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S):
+        if '"FAQPage"' not in raw:
+            continue
         try:
-            n_schema = len(json.loads(faq_ld.group(1)).get('mainEntity', []))
+            n_schema = len(json.loads(raw).get('mainEntity', []))
+            faq_ld = raw
         except Exception:
-            r['issues'].append('FAQPage schema 不是合法 JSON，Google 會整段忽略')
+            bad_json = True
+        break
+    if bad_json:
+        r['issues'].append('FAQPage schema 不是合法 JSON，Google 會整段忽略')
     if n_details < FAQ_MIN:
         r['issues'].append(f'FAQ 只有 {n_details} 題（需 ≥{FAQ_MIN}）：'
                            'FAQ 是「其他人也問」與 AI 摘要最主要的抓取來源，且不影響閱讀動線')
