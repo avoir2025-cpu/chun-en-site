@@ -31,35 +31,71 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "CHUN.EN 形象美學",
-    "alternateName": ["CHUN.EN", "CHUNEN", "CHUN EN", "CHUN．EN 形象美學", "CHUN.EN 商業視覺定位顧問", "京珀彩妝有限公司"],
-    "description": "商業視覺定位顧問——從職業角色定位、服裝策略、妝髮設計到品牌影像，建立完整商業形象系統。",
-    "image": "https://chunen.tw/assets/img/hero-poster.jpg",
-    "url": "https://chunen.tw/",
-    "founder": {
-      "@type": "Person",
-      "@id": "https://chunen.tw/author/zoey-wu.html#zoey",
-      "name": "吳惇恩",
-      "alternateName": "Zoey Wu",
-      "jobTitle": "Founder & Brand Director",
-      "image": "https://chunen.tw/assets/images/zoey-author-640.jpg",
-      "url": "https://chunen.tw/author/zoey-wu.html"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "臺灣大道二段 300 號 A 棟 6F-1",
-      "addressLocality": "西區",
-      "addressRegion": "台中市",
-      "postalCode": "403",
-      "addressCountry": "TW"
-    },
-    "areaServed": { "@type": "City", "name": "Taichung" },
-    "priceRange": "$$$",
-    "sameAs": [
-      "https://instagram.com/chun_en321",
-      "https://lin.ee/rVFo0r2",
-      "https://maps.app.goo.gl/ey2JQd5JV9D5Xh4f8"
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://chunen.tw/#business",
+        "name": "CHUN.EN 形象美學",
+        "alternateName": ["CHUN.EN", "CHUNEN", "CHUN EN", "CHUN．EN 形象美學", "CHUN.EN 商業視覺定位顧問"],
+        "legalName": "京珀彩妝有限公司",
+        "taxID": "90283654",
+        "description": "商業視覺定位顧問。從職業角色定位、服裝策略、妝髮設計到品牌影像，建立完整商業形象系統。",
+        "image": "https://chunen.tw/assets/img/hero-poster.jpg",
+        "url": "https://chunen.tw/",
+        "founder": { "@id": "https://chunen.tw/author/zoey-wu.html#zoey" },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "臺灣大道二段 300 號 A 棟 6F-1",
+          "addressLocality": "西區",
+          "addressRegion": "台中市",
+          "postalCode": "403",
+          "addressCountry": "TW"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "24.1514",
+          "longitude": "120.6645"
+        },
+        "areaServed": [
+          { "@type": "City", "name": "臺中市" },
+          { "@type": "Country", "name": "臺灣" }
+        ],
+        "priceRange": "$$$",
+        "sameAs": [
+          "https://instagram.com/chun_en321",
+          "https://lin.ee/rVFo0r2",
+          "https://maps.app.goo.gl/ey2JQd5JV9D5Xh4f8"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "CHUN.EN 服務項目",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@id": "https://chunen.tw/signature.html#service" } },
+            { "@type": "Offer", "itemOffered": { "@id": "https://chunen.tw/a-voir.html#service" } },
+            { "@type": "Offer", "itemOffered": { "@id": "https://chunen.tw/b-room.html#service" } },
+            { "@type": "Offer", "itemOffered": { "@id": "https://chunen.tw/c-photos.html#service" } },
+            { "@type": "Offer", "itemOffered": { "@id": "https://chunen.tw/enterprise.html#service" } }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://chunen.tw/#website",
+        "url": "https://chunen.tw/",
+        "name": "CHUN.EN 形象美學",
+        "inLanguage": "zh-Hant-TW",
+        "publisher": { "@id": "https://chunen.tw/#business" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://chunen.tw/author/zoey-wu.html#zoey",
+        "name": "吳惇恩",
+        "alternateName": "Zoey Wu",
+        "jobTitle": "Founder & Brand Director",
+        "image": "https://chunen.tw/assets/images/zoey-author-640.jpg",
+        "url": "https://chunen.tw/author/zoey-wu.html",
+        "worksFor": { "@id": "https://chunen.tw/#business" }
+      }
     ]
   }
   </script>
