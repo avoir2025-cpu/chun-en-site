@@ -109,6 +109,13 @@ RETIRED = [
     ('200×200', 'LinkedIn 官方最小是 400×400，這是錯的'),
     ('定了一半', '沒有數據支撐'),
     ('把錢交給誰', '照片不決定客戶託付資產，改講「第一層理解」'),
+    ('決定照片的一半', '沒有依據的量化宣稱'),
+    ('真正決定成敗', '因果宣稱，改「影響最大的」'),
+    # 註：這條規則我訂錯過兩次。先鎖「地基」→ 三篇草稿的「信任的地基」誤報；
+    # 改鎖「裝潢」→ clinic-image-consistency 講診所實際室內裝潢，誤報 9 次。
+    # 兩個都是普通中文詞，退掉的是「地基／裝潢」這個分層框架，不是單字。
+    # 所以只鎖那個框架獨有的句子。教訓：別拿單篇語境訂全站規則。
+    ('地基歪了', '置頂文的兩層已改叫「角色／畫面」，不要再用地基／裝潢的分法'),
 ]
 # 以下兩組給 _check_periphery 用。這些字太常見，比對時略過。
 STOPWORDS = set('''
@@ -363,11 +370,18 @@ def check(slug):
             sample = text[max(0, hits[0].start() - 18):hits[0].start() + 22].replace('\n', ' ').strip()
             r['issues'].append(f'語感 ×{len(hits)}：{why}｜例：…{sample}…')
 
-    # 絕對因果詞：強宣稱擋上架，其餘列待確認提醒人看一眼
+    # 絕對因果詞：強宣稱擋上架，其餘列待確認提醒人看一眼。
+    # H1 與本文重點也要掃——2026-07-30 抓到置頂文 H1 寫著「決定了一張形象照的
+    # 成敗」，完全符合這裡的模式卻沒被抓到，因為 text 只涵蓋 article-body。
+    scan = text
+    for pat_extra in (r'<h1[^>]*>(.*?)</h1>', r'<div class="keypoints.*?</ul>'):
+        m2 = re.search(pat_extra, s, re.S)
+        if m2:
+            scan += '\n' + re.sub(r'<[^>]+>', '', m2.group(0))
     for pat, why, fatal in OVERCLAIM:
-        hits = list(re.finditer(pat, text))
+        hits = list(re.finditer(pat, scan))
         if hits:
-            sample = text[max(0, hits[0].start() - 16):hits[0].end() + 20].replace('\n', ' ').strip()
+            sample = scan[max(0, hits[0].start() - 16):hits[0].end() + 20].replace('\n', ' ').strip()
             msg = f'因果 ×{len(hits)}：{why}｜例：…{sample}…'
             (r['issues'] if fatal else r['warns']).append(msg)
 
