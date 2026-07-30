@@ -10,6 +10,8 @@
   align-items: flex-end;
   overflow: hidden;
   isolation: isolate;
+  /* 2026-07-30 破版修正：同 v5.css .hero，避免矮視窗時 hero-eyebrow 被固定導覽列蓋住 */
+  padding-top: calc(var(--nav-h) + 1.2rem);
 }
 .page-hero .hero-media { position: absolute; inset: 0; z-index: -2; }
 .page-hero .hero-media img {
