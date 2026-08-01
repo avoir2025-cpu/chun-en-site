@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1125" width="2000" height="1125">
+  <rect width="2000" height="1125" fill="#14100B"/>
+
+  <text x="1000" y="112" text-anchor="middle" font-family="Noto Serif TC" font-size="62" font-weight="300" fill="#E8E0D2">分工的分界：誰處理哪一種決策</text>
+  <text x="1000" y="164" text-anchor="middle" font-family="Noto Serif TC" font-size="26" font-weight="300" fill="#A88A5C">CHUN.EN 的分工判準，不是全產業唯一標準</text>
+  <line x1="905" y1="200" x2="1095" y2="200" stroke="#A88A5C" stroke-width="1.5"/>
+
+  <!-- 左：角色與策略的決策 -->
+  <rect x="150" y="258" width="830" height="392" fill="#1B1610" stroke="#4A3D2A" stroke-width="1.5" rx="2"/>
+  <text x="200" y="345" font-family="Noto Serif TC" font-size="44" font-weight="300" fill="#C9A96E">角色與策略的決策</text>
+  <text x="200" y="392" font-family="Noto Serif TC" font-size="24" font-weight="300" fill="#8A7C68">要往哪裡走</text>
+  <text x="200" y="472" font-family="Noto Serif TC" font-size="28" font-weight="300" fill="#D8D0C2">你目前代表什麼角色？</text>
+  <text x="200" y="530" font-family="Noto Serif TC" font-size="28" font-weight="300" fill="#D8D0C2">接下來需要被誰、如何理解？</text>
+  <text x="200" y="588" font-family="Noto Serif TC" font-size="28" font-weight="300" fill="#D8D0C2">這套形象最後會進入哪些場景？</text>
+
+  <!-- 右：視覺與製作的決策 -->
+  <rect x="1020" y="258" width="830" height="392" fill="#1B1610" stroke="#4A3D2A" stroke-width="1.5" rx="2"/>
+  <text x="1070" y="345" font-family="Noto Serif TC" font-size="44" font-weight="300" fill="#C9A96E">視覺與製作的決策</text>
+  <text x="1070" y="392" font-family="Noto Serif TC" font-size="24" font-weight="300" fill="#8A7C68">怎麼準確呈現</text>
+  <text x="1070" y="472" font-family="Noto Serif TC" font-size="28" font-weight="300" fill="#D8D0C2">如何透過色彩、服裝、妝髮、姿態</text>
+  <text x="1070" y="530" font-family="Noto Serif TC" font-size="28" font-weight="300" fill="#D8D0C2">與影像，把這個角色呈現出來？</text>
+  <text x="1070" y="588" font-family="Noto Serif TC" font-size="28" font-weight="300" fill="#D8D0C2">哪些選擇彼此加分，哪些互相打架？</text>
+
+  <!-- 下方：可能參與的專業 -->
+  <rect x="150" y="716" width="1700" height="196" fill="#191309" stroke="#3A3126" stroke-width="1.5" rx="2"/>
+  <text x="1000" y="778" text-anchor="middle" font-family="Noto Serif TC" font-size="24" font-weight="300" fill="#8A7C68">可能參與的專業</text>
+  <text x="365" y="842" text-anchor="middle" font-family="Noto Serif TC" font-size="34" font-weight="300" fill="#C9A96E">形象顧問</text>
+  <text x="788" y="842" text-anchor="middle" font-family="Noto Serif TC" font-size="34" font-weight="300" fill="#C9A96E">造型師</text>
+  <text x="1212" y="842" text-anchor="middle" font-family="Noto Serif TC" font-size="34" font-weight="300" fill="#C9A96E">個人色彩顧問</text>
+  <text x="1635" y="842" text-anchor="middle" font-family="Noto Serif TC" font-size="34" font-weight="300" fill="#C9A96E">攝影</text>
+  <line x1="576" y1="810" x2="576" y2="866" stroke="#3A3126" stroke-width="1.5"/>
+  <line x1="1000" y1="810" x2="1000" y2="866" stroke="#3A3126" stroke-width="1.5"/>
+  <line x1="1424" y1="810" x2="1424" y2="866" stroke="#3A3126" stroke-width="1.5"/>
+  <text x="1000" y="892" text-anchor="middle" font-family="Noto Serif TC" font-size="24" font-weight="300" fill="#8A7C68">同一位專業工作者，可能同時參與這兩類決策</text>
+
+  <text x="1000" y="1020" text-anchor="middle" font-family="Noto Serif TC" font-size="34" font-weight="300" fill="#C9BFAE">方向不清楚的時候，做得越完整，越可能放大原本的偏差</text>
+</svg>
