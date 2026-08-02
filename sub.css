@@ -963,6 +963,12 @@
   list-style: none;
   cursor: pointer;
   display: block;
+  /* 與 .mnav a 同級：summary 不是 <a>，吃不到選單字級，明寫對齊 */
+  font-family: var(--serif-tc);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 4.8vw, 1.6rem);
+  letter-spacing: 0.3em;
+  color: var(--paper);
 }
 .mnav-acc summary::-webkit-details-marker { display: none; }
 .mnav-acc summary::after {
