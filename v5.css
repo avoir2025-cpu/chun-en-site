@@ -85,7 +85,7 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--serif-en);
   /* 明寫字重：分節標記在部分頁面是 <h2>（h2 預設 bold 會走樣） */
   font-weight: 400;
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   letter-spacing: 0.42em;
   text-transform: uppercase;
   color: var(--gold-light);
