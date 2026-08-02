@@ -447,6 +447,9 @@ def check(slug):
     # 外圍（H1／重點）與內文脫節
     _check_periphery(r, s, text)
 
+    # H1 斷行
+    _check_h1_break(r, s)
+
 
     # 待查證的事實宣稱
     _scan_facts(r, text)
@@ -545,6 +548,59 @@ def check(slug):
 
     r['noindex'] = 'noindex' in s
     return r
+
+
+def _w1(c):
+    """單字行寬權重：CJK／全形＝1，ASCII 與空白約 0.45"""
+    return 1.0 if ord(c) > 0x2E7F or c in '（）「」，。？！：；、' else 0.45
+
+
+DESKTOP_CAP = 12.9    # article-wrap 660px ÷ H1 上限 51.2px
+MOBILE_CAP = 11.0     # 335px ÷ H1 下限 30.4px
+_PUNCT = '，、。？！：；」）…'
+
+
+def _check_h1_break(r, s):
+    """H1 斷行檢查（2026-08-02 user 指定列入審查項目，不再人工逐篇看）。
+
+    折行只該發生在作者決定的位置：<br>、nowrap 段邊界，或標點後。
+    做法＝依桌機行寬模擬瀏覽器的貪婪折行，抓兩種病：
+    ①折點落在句中（前一字不是標點）②折出 1-2 字的孤行尾。
+    行寬是估計值，字型實寬有 ±5% 誤差，此檢查列待確認不擋上架。
+    """
+    m = re.search(r'<h1[^>]*>(.*?)</h1>', s, re.S)
+    if not m:
+        return
+    for li, line in enumerate(re.split(r'<br\s*/?>', m.group(1)), 1):
+        segs = re.findall(r'<span style="white-space:\s*nowrap;?">(.*?)</span>', line, re.S)
+        seg_text = ''.join(re.sub(r'<[^>]+>', '', x) for x in segs)
+        line_text = re.sub(r'<[^>]+>', '', line).strip()
+        if not line_text:
+            continue
+        total = sum(_w1(c) for c in line_text)
+        if seg_text and sum(_w1(c) for c in seg_text) >= total - 0.5:
+            # 整行都是 nowrap 段：只驗段長不會撐爆手機
+            for x in segs:
+                t = re.sub(r'<[^>]+>', '', x)
+                if sum(_w1(c) for c in t) > MOBILE_CAP + 1:
+                    r['warns'].append(f'H1 nowrap 段「{t}」約 {sum(_w1(c) for c in t):.0f} 字，'
+                                      f'超過手機行寬 {MOBILE_CAP:.0f}，會橫向溢出')
+            continue
+        if total <= DESKTOP_CAP:
+            continue
+        # 模擬桌機貪婪折行，看折點落在哪
+        acc, folds = 0.0, []
+        for i, c in enumerate(line_text):
+            acc += _w1(c)
+            if acc > DESKTOP_CAP:
+                folds.append(i); acc = _w1(c)
+        tail = len(line_text) - (folds[-1] if folds else 0)
+        bad_fold = [line_text[max(0, i - 1)] for i in folds if line_text[i - 1] not in _PUNCT]
+        if bad_fold:
+            r['warns'].append(f'H1 斷行落在句中：第 {li} 行「{line_text[:16]}…」會折在'
+                              f'「{bad_fold[0]}」後（非標點）；語意段各包 white-space:nowrap 的 span 控制折點')
+        elif tail <= 2:
+            r['warns'].append(f'H1 孤行：第 {li} 行折行後行尾只剩 {tail} 字，調整斷句或 nowrap 分段')
 
 
 def check_published():
