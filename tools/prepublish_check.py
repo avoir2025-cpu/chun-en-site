@@ -328,6 +328,13 @@ def _check_seo(r, s, slug):
     elif n_schema != n_details:
         r['issues'].append(f'FAQ 題數不一致：畫面 {n_details} 題、schema {n_schema} 題')
 
+    # 零 CTA 鐵律：模組已清乾淨，但寫在內文裡的業配句掃不到（2026-08-02 漏網一篇）
+    for pat in ('我們最擅長', '歡迎與我們', '讓我們陪你', '交給我們', '預約諮詢',
+                '來找我們', '我們可以幫你', '我們能幫你'):
+        if pat in s:
+            r['issues'].append(f'文末／內文出現業配句「{pat}」：觀點文一律零 CTA，'
+                              '轉換靠浮動 LINE 按鈕與問句收尾')
+
     # 2-4. 鎖定詞相關
     if slug in conversion_only:
         r['info'].append('轉換型文章：不設搜尋入口，靠內鏈與轉換工作，故略過鎖定詞檢查')
