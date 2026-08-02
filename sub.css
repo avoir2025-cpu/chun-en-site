@@ -1413,6 +1413,11 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   .footer-meta { letter-spacing: 0.12em; }
 }
 
+/* 頁尾連結分流 2026-08-02：.fl-m 只給手機看（桌機頂端列已有同項目） */
+@media (min-width: 861px) {
+  .footer-links .fl-m { display: none; }
+}
+
 /* ============ 作者頁 2026-07-23 ============ */
 .author-hero {
   display: grid;
