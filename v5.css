@@ -38,7 +38,8 @@ body {
   background: var(--ink);
   color: var(--paper);
   font-family: var(--serif-tc);
-  font-weight: 300;
+  /* 字級規範 v2（2026-08-02）：內文基準 400，300 只留給 2rem 以上大標題 */
+  font-weight: 400;
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -82,13 +83,12 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 1.25rem;
   font-family: var(--serif-en);
-  /* 明寫 300：分節標記在部分頁面是 <h2>（h2 預設 bold 會走樣），
-     對原本的 <p> 是 no-op，body 本來就是 300 */
-  font-weight: 300;
-  font-size: 0.72rem;
+  /* 明寫字重：分節標記在部分頁面是 <h2>（h2 預設 bold 會走樣） */
+  font-weight: 400;
+  font-size: 0.78rem;
   letter-spacing: 0.42em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-light);
 }
 .chapter-tag::before {
   content: "";
@@ -101,7 +101,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--paper-dim);
   letter-spacing: 0.3em;
   font-family: var(--serif-tc);
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .display {
@@ -122,9 +122,9 @@ a { color: inherit; text-decoration: none; }
 
 .lead {
   color: var(--paper-dim);
-  font-size: clamp(0.95rem, 1.3vw, 1.1rem);
-  line-height: 2.1;
-  font-weight: 300;
+  font-size: clamp(1.05rem, 1.4vw, 1.15rem);
+  line-height: 2.05;
+  font-weight: 400;
   max-width: 34em;
 }
 
@@ -160,7 +160,7 @@ a { color: inherit; text-decoration: none; }
 .cta-line {
   font-size: 0.85rem;
   letter-spacing: 0.24em;
-  color: var(--muted);
+  color: var(--paper-dim);
   border-bottom: 1px solid var(--hairline);
   padding-bottom: 4px;
   transition: all 0.5s var(--ease-out);
@@ -256,7 +256,7 @@ a { color: inherit; text-decoration: none; }
 .mnav.open { opacity: 1; pointer-events: auto; }
 .mnav a {
   font-family: var(--serif-tc);
-  font-weight: 300;
+  font-weight: 400;
   font-size: clamp(1.25rem, 4.8vw, 1.6rem);
   letter-spacing: 0.3em;
   color: var(--paper);
@@ -267,9 +267,9 @@ a { color: inherit; text-decoration: none; }
 .mnav .mnav-en {
   font-family: var(--serif-en);
   font-style: italic;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.4em;
-  color: var(--gold);
+  color: var(--gold-light);
   display: block;
   text-align: center;
   margin-bottom: 0.25rem;
@@ -321,7 +321,7 @@ body.mnav-lock { overflow: hidden; }
 }
 .hero-eyebrow {
   font-family: var(--serif-en);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.5em;
   text-transform: uppercase;
   color: var(--gold-light);
@@ -361,10 +361,10 @@ body.mnav-lock { overflow: hidden; }
   bottom: clamp(3rem, 7vh, 6rem);
   writing-mode: vertical-rl;
   font-family: var(--serif-en);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   letter-spacing: 0.5em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--gold-light);
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -409,7 +409,7 @@ body.mnav-lock { overflow: hidden; }
 .manifesto p.big {
   font-size: clamp(1.55rem, 3.6vw, 3rem);
   line-height: 1.6;
-  font-weight: 300;
+  font-weight: 400;
   max-width: 22em;
   margin: 0 auto;
 }
@@ -419,10 +419,10 @@ body.mnav-lock { overflow: hidden; }
   margin-top: 2.8rem;
   font-family: var(--serif-en);
   font-style: normal;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.5em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-light);
 }
 
 /* ============ CH02 JOURNEY ============ */
@@ -476,11 +476,11 @@ body.mnav-lock { overflow: hidden; }
   font-style: italic;
   font-size: 0.8rem;
   letter-spacing: 0.22em;
-  color: var(--gold);
+  color: var(--gold-light);
 }
 .journey-step p {
   margin-top: 1.3rem;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   line-height: 2;
   color: var(--paper-dim);
 }
@@ -520,7 +520,7 @@ body.mnav-lock { overflow: hidden; }
   font-style: italic;
   font-size: 0.8rem;
   letter-spacing: 0.3em;
-  color: var(--gold);
+  color: var(--gold-light);
 }
 .studio-text h3 {
   margin-top: 1.2rem;
@@ -537,7 +537,7 @@ body.mnav-lock { overflow: hidden; }
   font-size: 1.1rem;
   letter-spacing: 0.5em;
   color: var(--gold-light);
-  font-weight: 300;
+  font-weight: 400;
 }
 .studio-text p {
   margin-top: 1.6rem;
@@ -566,7 +566,7 @@ body.mnav-lock { overflow: hidden; }
 .works-note {
   font-size: 0.8rem;
   letter-spacing: 0.2em;
-  color: var(--muted);
+  color: var(--paper-dim);
   max-width: 22em;
   line-height: 2;
 }
@@ -595,10 +595,10 @@ body.mnav-lock { overflow: hidden; }
 .work figcaption {
   margin-top: 0.9rem;
   font-family: var(--serif-en);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   letter-spacing: 0.34em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--paper-dim);
   display: block;
 }
 .work .cap-meta {
@@ -610,7 +610,7 @@ body.mnav-lock { overflow: hidden; }
   display: block;
   margin-top: 0.5rem;
   font-family: var(--serif-tc);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 0.85rem;
   letter-spacing: 0.12em;
   text-transform: none;
@@ -618,12 +618,12 @@ body.mnav-lock { overflow: hidden; }
 }
 .work .cap-role em {
   font-style: normal;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   color: var(--gold-light);
   opacity: 0.9;
 }
 @media (max-width: 640px) {
-  .work .cap-role { font-size: 0.76rem; letter-spacing: 0.06em; }
+  .work .cap-role { font-size: 0.8rem; letter-spacing: 0.06em; }
 }
 /* Editorial 排列節奏 */
 .work:nth-child(6n+1) { grid-column: 1 / 6;  aspect-ratio: 3/4; }
@@ -658,7 +658,7 @@ body.mnav-lock { overflow: hidden; }
 .blueprint h2 .en-it {
   display: block;
   font-size: clamp(1rem, 2vw, 1.5rem);
-  color: var(--gold);
+  color: var(--gold-light);
   letter-spacing: 0.2em;
   margin-top: 1rem;
 }
@@ -745,7 +745,7 @@ body.mnav-lock { overflow: hidden; }
   font-style: italic;
   font-size: clamp(0.85rem, 1.3vw, 1.05rem);
   letter-spacing: 0.2em;
-  color: var(--muted);
+  color: var(--paper-dim);
 }
 .final .hero-ctas {
   justify-content: center;
@@ -771,10 +771,10 @@ body.mnav-lock { overflow: hidden; }
 }
 .footer-meta {
   font-family: var(--serif-en);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--gold-light);
 }
 .footer-links {
   display: flex;

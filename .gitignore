@@ -63,3 +63,4 @@ docs/
 # ---------- Python 快取 ----------
 __pycache__/
 *.pyc
+_docs/

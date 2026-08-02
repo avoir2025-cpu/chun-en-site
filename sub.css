@@ -46,7 +46,7 @@
 .page-hero .hero-line {
   margin-top: 1.5rem;
   color: var(--paper-dim);
-  font-size: clamp(0.92rem, 1.3vw, 1.05rem);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
   line-height: 2.05;
   max-width: 34em;
 }
@@ -71,7 +71,7 @@
   font-style: italic;
   font-size: 0.8rem;
   letter-spacing: 0.3em;
-  color: var(--gold);
+  color: var(--gold-light);
 }
 .svc-item h3 {
   margin-top: 0.9rem;
@@ -81,7 +81,7 @@
 }
 .svc-item p {
   margin-top: 0.8rem;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   line-height: 1.95;
   color: var(--paper-dim);
 }
@@ -114,12 +114,12 @@
   font-style: italic;
   font-size: 0.78rem;
   letter-spacing: 0.24em;
-  color: var(--gold);
+  color: var(--gold-light);
   margin-left: 1em;
 }
 .step p {
   margin-top: 0.7rem;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   line-height: 2;
   color: var(--paper-dim);
   max-width: 44em;
@@ -134,7 +134,7 @@
 .invest-simple {
   font-family: var(--serif-tc);
   font-size: clamp(1.15rem, 2vw, 1.5rem);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.9;
   color: var(--paper);
   max-width: 30em;
@@ -181,7 +181,7 @@
   transform: translate(-50%, -50%);
   background: var(--gold);
   color: var(--ink);
-  font-size: 0.62rem;
+  font-size: 0.78rem;
   letter-spacing: 0.28em;
   padding: 0.35rem 1.1rem;
   white-space: nowrap;
@@ -208,7 +208,7 @@
   margin-top: 2rem;
   font-size: 0.8rem;
   letter-spacing: 0.12em;
-  color: var(--muted);
+  color: var(--paper-dim);
 }
 
 /* ============ FAQ ============ */
@@ -223,7 +223,7 @@
   gap: 1.5rem;
   padding: 1.5rem 0;
   font-size: clamp(0.98rem, 1.4vw, 1.1rem);
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: 0.06em;
   transition: color 0.4s;
 }
@@ -239,7 +239,7 @@
 .faq details[open] summary .mark { transform: rotate(45deg); }
 .faq .a {
   padding: 0 0 1.6rem;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   line-height: 2.05;
   color: var(--paper-dim);
   max-width: 46em;
@@ -254,10 +254,10 @@
 .lt-table th {
   text-align: left;
   font-family: var(--serif-en);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-light);
   font-weight: 400;
   padding: 0 0 1.1rem;
   border-bottom: 1px solid var(--hairline);
@@ -279,7 +279,7 @@
   margin-top: 1.6rem;
   font-size: 0.82rem;
   letter-spacing: 0.08em;
-  color: var(--muted);
+  color: var(--paper-dim);
   line-height: 2;
 }
 
@@ -302,7 +302,7 @@
 .line-panel .qr img { width: 100%; height: 100%; }
 .line-panel h3 {
   font-size: clamp(1.2rem, 2vw, 1.6rem);
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: 0.1em;
 }
 .line-panel p {
@@ -331,7 +331,7 @@
   font-style: italic;
   font-size: 0.8rem;
   letter-spacing: 0.3em;
-  color: var(--gold);
+  color: var(--gold-light);
 }
 .tpl h3 {
   margin-top: 0.8rem;
@@ -407,7 +407,7 @@
 }
 .contact-card p {
   margin-top: 0.9rem;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   line-height: 2;
   color: var(--paper-dim);
 }
@@ -515,19 +515,20 @@
 /* ============ 可讀性與對比修正（檢視 §12.7） ============ */
 :root {
   --sans-tc: 'Noto Sans TC', 'PingFang TC', sans-serif;
-  --muted-bright: #A79A88;   /* 原 #8B7D6B 對比不足，提亮 */
+  /* 字級規範 v2（2026-08-02）：次要文字不再降色，直接對齊 paper-dim */
+  --muted-bright: var(--paper-dim);
 }
 /* 長文正文改無襯線、放大 */
 .lead, .step p, .svc-item p, .faq .a, .notice-v li,
 .tpl pre, .contact-card p, .atelier-addr, .legal p, .legal li,
 .tier p, .lt-note, .invest-note, .consent-text {
   font-family: var(--sans-tc);
-  font-weight: 300;
+  font-weight: 400;
 }
-.lead { font-size: clamp(1rem, 1.35vw, 1.12rem); }
-.work figcaption { font-size: 0.78rem; letter-spacing: 0.24em; color: var(--muted-bright); }
-.footer-meta { color: var(--muted-bright); }
-.hero-scroll { color: var(--muted-bright); }
+.lead { font-size: clamp(1.05rem, 1.4vw, 1.15rem); }
+.work figcaption { font-size: 0.78rem; letter-spacing: 0.24em; color: var(--paper-dim); }
+.footer-meta { color: var(--gold-light); }
+.hero-scroll { color: var(--gold-light); }
 /* 按鈕/UI 無襯線 */
 .cta, .cta-line, .consent-btn, .nav-links a, .plan .cta-line {
   font-family: var(--sans-tc);
@@ -574,7 +575,7 @@
 .hero-audience {
   margin-top: 1.2rem;
   font-family: var(--sans-tc);
-  font-weight: 300;
+  font-weight: 400;
   font-size: clamp(0.82rem, 1.2vw, 0.95rem);
   letter-spacing: 0.22em;
   color: var(--gold-light);
@@ -591,7 +592,7 @@
 }
 .deliver-list span {
   font-family: var(--sans-tc);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 0.9rem;
   line-height: 1.8;
   color: var(--paper-dim);
@@ -613,7 +614,7 @@
 .founder-roles {
   margin-top: 0.9rem;
   font-family: var(--sans-tc);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 0.9rem;
   letter-spacing: 0.14em;
   color: var(--gold-light);
@@ -650,7 +651,7 @@
   background: #8A6D3F;
   color: var(--paper);
   font-family: var(--sans-tc);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   letter-spacing: 0.28em;
   padding: 0.3rem 1rem;
   white-space: nowrap;
@@ -674,7 +675,7 @@
   display: block;
   font-family: var(--serif-en);
   font-style: italic;
-  font-size: 0.74rem;
+  font-size: 0.78rem;
   font-weight: 400;
   letter-spacing: 0.16em;
   color: #8A6D3F;
@@ -690,8 +691,8 @@
 .plan p:not(.fit) {
   margin-top: 0.7rem;
   font-family: var(--sans-tc);
-  font-weight: 300;
-  font-size: 0.86rem;
+  font-weight: 400;
+  font-size: 0.9rem;
   line-height: 1.9;
   color: #4A4036;
   flex: 1;
@@ -708,7 +709,7 @@
 /* ============ 評論 fallback ============ */
 .voices-fallback {
   font-family: var(--sans-tc);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 0.9rem;
   line-height: 2;
   color: #6B5D4F;
@@ -732,7 +733,7 @@
 }
 .apply-form label .opt {
   color: #8A8073;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   margin-left: 0.6em;
 }
 .apply-form input[type="text"],
@@ -795,7 +796,7 @@
 .apply-note {
   margin-top: 1.4rem;
   font-family: var(--sans-tc);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 0.8rem;
   line-height: 1.9;
   color: #6B5D4F;
@@ -1000,11 +1001,11 @@
 .path .pq {
   flex: 1;
   font-size: clamp(0.95rem, 1.6vw, 1.1rem);
-  font-weight: 300;
+  font-weight: 400;
   color: var(--paper);
   line-height: 1.7;
 }
-.path .pq small { display: block; font-family: var(--sans-tc); font-size: 0.8rem; color: var(--muted-bright); margin-top: 0.3rem; font-weight: 300; }
+.path .pq small { display: block; font-family: var(--sans-tc); font-size: 0.8rem; color: var(--muted-bright); margin-top: 0.3rem; font-weight: 400; }
 .path .pa { flex: 0 0 auto; }
 @media (max-width: 720px) {
   .path { flex-wrap: wrap; }
@@ -1017,7 +1018,7 @@
   padding: 0.4rem 0 0.4rem clamp(1.2rem, 3vw, 2rem);
   margin-top: clamp(2rem, 4vh, 3rem);
   font-size: clamp(1.05rem, 2vw, 1.3rem);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 2;
   color: var(--gold-light);
   max-width: 34em;
@@ -1032,8 +1033,8 @@
 .scope ul { list-style: none; }
 .scope li {
   font-family: var(--sans-tc);
-  font-size: 0.88rem;
-  font-weight: 300;
+  font-size: 0.9rem;
+  font-weight: 400;
   line-height: 1.8;
   color: var(--paper-dim);
   padding: 0.35rem 0 0.35rem 1.3rem;
@@ -1049,7 +1050,7 @@
   border: 1px solid var(--hairline);
   font-family: var(--sans-tc);
   font-size: 0.84rem;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 2;
   color: var(--muted-bright);
 }
@@ -1058,11 +1059,11 @@
 .tsm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: #E4DCCD; text-align: left; }
 @media (max-width: 720px) { .tsm-grid { grid-template-columns: 1fr; } }
 .tsm { background: #FBF8F1; padding: clamp(1.4rem, 3vh, 2rem); }
-.tsm p { font-family: var(--sans-tc); font-size: 0.9rem; font-weight: 300; line-height: 2; color: #4A4238; }
+.tsm p { font-family: var(--sans-tc); font-size: 0.9rem; font-weight: 400; line-height: 2; color: #4A4238; }
 .tsm p::before { content: "\201C"; font-family: var(--serif-en); font-size: 1.6rem; color: #A88A5C; margin-right: 0.2rem; }
 .tsm cite { display: block; margin-top: 0.9rem; font-style: normal; font-size: 0.8rem; letter-spacing: 0.06em; color: #8A6D3F; }
 .tsm cite .stars { color: #C9A96A; letter-spacing: 0.15em; margin-right: 0.5em; }
-.tsm-note { grid-column: 1 / -1; background: #FBF8F1; padding: 1rem 1.6rem; font-family: var(--sans-tc); font-size: 0.78rem; font-weight: 300; color: #9A8D7B; }
+.tsm-note { grid-column: 1 / -1; background: #FBF8F1; padding: 1rem 1.6rem; font-family: var(--sans-tc); font-size: 0.78rem; font-weight: 400; color: #9A8D7B; }
 
 /* ============================================================
    中文斷行優化 2026-07-13：改掉瀏覽器預設的貪婪斷行
@@ -1112,11 +1113,11 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .jcard-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transition: transform 1.2s var(--ease-out); }
 .jcard:hover .jcard-media img { transform: scale(1.04); }
 .jcard-body { padding: clamp(1.4rem, 3vw, 2.2rem); }
-.jcard-cat { font-family: var(--serif-en); font-size: 0.66rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
-.jcard h3 { font-size: clamp(1.15rem, 2.2vw, 1.6rem); font-weight: 300; line-height: 1.5; color: var(--paper); margin: 0.8rem 0; }
+.jcard-cat { font-family: var(--serif-en); font-size: 0.78rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); }
+.jcard h3 { font-size: clamp(1.15rem, 2.2vw, 1.6rem); font-weight: 400; line-height: 1.5; color: var(--paper); margin: 0.8rem 0; }
 .jcard.feat h3 { font-size: clamp(1.4rem, 3vw, 2.2rem); }
-.jcard p { font-family: var(--sans-tc); font-size: 0.88rem; font-weight: 300; line-height: 1.9; color: var(--paper-dim); }
-.jcard-meta { margin-top: 1rem; font-size: 0.75rem; letter-spacing: 0.1em; color: var(--muted); }
+.jcard p { font-family: var(--sans-tc); font-size: 0.9rem; font-weight: 400; line-height: 1.9; color: var(--paper-dim); }
+.jcard-meta { margin-top: 1rem; font-size: 0.78rem; letter-spacing: 0.1em; color: var(--paper-dim); }
 
 /* 文章內文排版 */
 .article-wrap { max-width: 720px; margin: 0 auto; }
@@ -1126,8 +1127,8 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .article-body h2 em { font-style: normal; color: var(--gold-light); }
 .article-body blockquote { border-left: 2px solid var(--gold); padding: 0.4rem 0 0.4rem clamp(1.2rem, 3vw, 2rem); margin: 2.2rem 0; font-family: var(--serif-tc); font-size: 1.2rem; line-height: 1.9; color: var(--gold-light); }
 .article-body strong { color: var(--paper); font-weight: 500; }
-.article-lead { font-family: var(--serif-tc); font-size: clamp(1.1rem, 2.4vw, 1.5rem); font-weight: 300; line-height: 1.9; color: var(--paper); margin-bottom: 2.5rem; }
-.article-meta { font-size: 0.78rem; letter-spacing: 0.14em; color: var(--muted); margin-top: 1.4rem; }
+.article-lead { font-family: var(--serif-tc); font-size: clamp(1.1rem, 2.4vw, 1.5rem); font-weight: 400; line-height: 1.9; color: var(--paper); margin-bottom: 2.5rem; }
+.article-meta { font-size: 0.78rem; letter-spacing: 0.14em; color: var(--paper-dim); margin-top: 1.4rem; }
 
 /* scope 兩欄版（刪除不包含欄後） */
 .scope-grid.two { grid-template-columns: repeat(2, 1fr); }
@@ -1219,7 +1220,7 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   margin-top: clamp(2rem, 5vh, 3rem);
   font-size: 0.82rem;
   letter-spacing: 0.16em;
-  color: var(--muted);
+  color: var(--paper-dim);
   text-align: center;
 }
 @media (max-width: 680px) {
@@ -1230,11 +1231,11 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 
 /* 文章相關閱讀＋內文表格 2026-07-16 */
 .related { margin-top: clamp(2.5rem, 6vh, 4rem); padding-top: 1.6rem; border-top: 1px solid var(--hairline); }
-.related-t { font-family: var(--serif-en); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.9rem; }
+.related-t { font-family: var(--serif-en); font-size: 0.78rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 0.9rem; }
 .related a { display: block; font-family: var(--serif-tc); font-size: 1.02rem; line-height: 1.7; color: var(--paper-dim); text-decoration: none; padding: 0.45rem 0; transition: color 0.3s; }
 .related a:hover { color: var(--gold-light); }
 .article-body table { width: 100%; border-collapse: collapse; margin: 1.8rem 0 2.2rem; font-family: var(--sans-tc); font-size: 0.92rem; font-weight: 400; }
-.article-body th { text-align: left; font-weight: 500; color: var(--gold); font-size: 0.82rem; letter-spacing: 0.08em; padding: 0.6rem 0.8rem 0.6rem 0; border-bottom: 1px solid var(--gold); }
+.article-body th { text-align: left; font-weight: 500; color: var(--gold-light); font-size: 0.82rem; letter-spacing: 0.08em; padding: 0.6rem 0.8rem 0.6rem 0; border-bottom: 1px solid var(--gold); }
 .article-body td { color: var(--paper-dim); line-height: 1.8; padding: 0.75rem 0.8rem 0.75rem 0; border-bottom: 1px solid var(--hairline); vertical-align: top; }
 @media (max-width: 600px) { .article-body table { font-size: 0.85rem; } }
 
@@ -1242,17 +1243,17 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .article-wrap h1 { text-wrap: balance; }
 @media (max-width: 640px) { .article-wrap h1 br { display: none; } }
 .article-wrap > .jcard-media { width: min(940px, calc(100vw - 48px)); margin-left: calc((100% - min(940px, calc(100vw - 48px))) / 2); }
-.jcard-cat { font-size: 0.75rem; }
-.related-t { font-size: 0.75rem; }
+.jcard-cat { font-size: 0.78rem; }
+.related-t { font-size: 0.78rem; }
 .keypoints { background: rgba(255,255,255,0.03); border-top: 1px solid var(--gold); border-bottom: 1px solid var(--hairline); padding: 1.4rem 1.6rem 1.5rem; margin-bottom: clamp(2rem, 5vh, 3rem); }
-.keypoints .kp-t { font-family: var(--serif-en); font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+.keypoints .kp-t { font-family: var(--serif-en); font-size: 0.78rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 0.8rem; }
 .keypoints ul { list-style: none; margin: 0; padding: 0; }
 .keypoints li { font-family: var(--sans-tc); font-weight: 400; font-size: 0.95rem; line-height: 1.95; color: var(--paper-dim); padding-left: 1.1em; position: relative; }
 .keypoints li::before { content: "·"; color: var(--gold); position: absolute; left: 0.2em; }
 .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .tbl-scroll table { min-width: 480px; }
 @media (max-width: 640px) {
-  .hero-eyebrow { font-size: 0.75rem; }
+  .hero-eyebrow { font-size: 0.78rem; }
   article .wrap.article-wrap { padding-bottom: 3.5rem; }
 }
 
@@ -1264,7 +1265,7 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .article-fig { margin: 2.4rem 0; }
 .article-fig img { width: 100%; height: auto; display: block; }
 .article-fig.crop45 img { aspect-ratio: 4/5; object-fit: cover; object-position: center 30%; }
-.article-fig figcaption { margin-top: 0.75rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.8rem; letter-spacing: 0.08em; color: var(--muted-bright); }
+.article-fig figcaption { margin-top: 0.75rem; font-family: var(--sans-tc); font-weight: 400; font-size: 0.8rem; letter-spacing: 0.08em; color: var(--muted-bright); }
 
 /* 文章署名卡 2026-07-17：雙軌制——方法論/觀點=Zoey 具名卡，指南型=編輯團隊一行 */
 .author-card { display: flex; gap: 1.3rem; align-items: flex-start; margin-top: clamp(3rem, 7vh, 4.5rem); padding-top: 2rem; border-top: 1px solid rgba(201, 169, 110, 0.22); }
@@ -1274,39 +1275,39 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .author-card .ac-name em { font-family: var(--serif-en); font-style: italic; font-weight: 500; color: var(--gold-light); margin-left: 0.4em; }
 .author-card .ac-name a { color: inherit; text-decoration: none; }
 .author-card .ac-name a:hover em { color: var(--gold); }
-.author-card .ac-role { margin-top: 0.25rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.78rem; letter-spacing: 0.14em; color: var(--muted-bright); }
-.author-card .ac-bio { margin-top: 0.7rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.88rem; line-height: 1.9; letter-spacing: 0.04em; color: var(--paper-dim); max-width: 36em; }
-.editorial-credit { margin-top: clamp(3rem, 7vh, 4.5rem); padding-top: 2rem; border-top: 1px solid rgba(201, 169, 110, 0.22); font-family: var(--sans-tc); font-weight: 300; font-size: 0.8rem; letter-spacing: 0.14em; color: var(--muted-bright); }
+.author-card .ac-role { margin-top: 0.25rem; font-family: var(--sans-tc); font-weight: 400; font-size: 0.78rem; letter-spacing: 0.14em; color: var(--muted-bright); }
+.author-card .ac-bio { margin-top: 0.7rem; font-family: var(--sans-tc); font-weight: 400; font-size: 0.88rem; line-height: 1.9; letter-spacing: 0.04em; color: var(--paper-dim); max-width: 36em; }
+.editorial-credit { margin-top: clamp(3rem, 7vh, 4.5rem); padding-top: 2rem; border-top: 1px solid rgba(201, 169, 110, 0.22); font-family: var(--sans-tc); font-weight: 400; font-size: 0.8rem; letter-spacing: 0.14em; color: var(--muted-bright); }
 
 
 /* 觀點內文示意圖 2026-07-20：向量圖解，深色卡＋金框，補強實拍暫代圖 */
 .article-diagram { margin: 2.6rem 0; border: 1px solid rgba(201, 169, 110, 0.2); border-radius: 2px; padding: clamp(1.4rem, 3.2vw, 2rem) clamp(1.2rem, 3vw, 1.8rem); background: rgba(201, 169, 110, 0.03); }
 .article-diagram svg { display: block; width: 100%; height: auto; }
-.article-diagram figcaption { margin-top: 1.1rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.8rem; letter-spacing: 0.06em; line-height: 1.7; color: var(--muted-bright); }
+.article-diagram figcaption { margin-top: 1.1rem; font-family: var(--sans-tc); font-weight: 400; font-size: 0.8rem; letter-spacing: 0.06em; line-height: 1.7; color: var(--muted-bright); }
 /* 桌面版破格加寬，示意圖文字才夠大 2026-07-20 */
 @media (min-width: 760px) { .article-diagram { width: min(900px, calc(100vw - 40px)); margin-left: 50%; transform: translateX(-50%); } }
 
 /* 觀點清單：項目間留空、字重與內文一致 2026-07-21 */
-.article-body ul li { font-weight: 300; }
+.article-body ul li { font-weight: 400; }
 .article-body ul li + li { margin-top: 0.7em; }
 
 /* 手機版示意圖：SVG 縮太小，改為左右滑動卡片 2026-07-21 */
 .diagram-cards, .dc-lead, .dc-takeaway { display: none; }
 @media (max-width: 720px) {
   .article-diagram svg { display: none; }
-  .dc-lead { display: block; margin: 0 0 1rem; font-family: var(--sans-tc); font-weight: 300; font-size: 0.82rem; letter-spacing: 0.08em; text-align: center; color: var(--muted-bright); }
+  .dc-lead { display: block; margin: 0 0 1rem; font-family: var(--sans-tc); font-weight: 400; font-size: 0.82rem; letter-spacing: 0.08em; text-align: center; color: var(--muted-bright); }
   .diagram-cards { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 6px; scrollbar-width: none; }
   .diagram-cards::-webkit-scrollbar { display: none; }
   .diagram-cards .dc { flex: 0 0 76%; scroll-snap-align: center; border: 1px solid rgba(201, 169, 110, 0.4); border-radius: 3px; padding: 1.4rem 1.1rem 1.2rem; background: rgba(201, 169, 110, 0.05); text-align: center; }
-  .dc .dc-step { margin: 0 0 0.5rem; font-family: var(--serif-en); font-style: italic; font-size: 0.9rem; color: var(--muted); }
+  .dc .dc-step { margin: 0 0 0.5rem; font-family: var(--serif-en); font-style: italic; font-size: 0.9rem; color: var(--paper-dim); }
   .dc h4 { margin: 0 0 0.35rem; font-family: var(--serif-tc); font-weight: 400; font-size: 1.3rem; letter-spacing: 0.08em; color: var(--paper); }
   .dc .dc-role { margin: 0 0 0.9rem; font-family: var(--sans-tc); font-weight: 400; font-size: 0.95rem; color: var(--gold-light); }
-  .dc .dc-label { margin: 0 0 0.15rem; font-family: var(--sans-tc); font-weight: 400; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--muted); }
-  .dc .dc-item { margin: 0; font-family: var(--sans-tc); font-weight: 300; font-size: 0.92rem; line-height: 2; color: var(--paper-dim); }
+  .dc .dc-label { margin: 0 0 0.15rem; font-family: var(--sans-tc); font-weight: 400; font-size: 0.78rem; letter-spacing: 0.08em; color: var(--paper-dim); }
+  .dc .dc-item { margin: 0; font-family: var(--sans-tc); font-weight: 400; font-size: 0.92rem; line-height: 2; color: var(--paper-dim); }
   .dc .dc-add { color: var(--gold-light); }
   .dc hr { border: 0; border-top: 1px solid rgba(245, 241, 232, 0.14); margin: 0.7rem 1.2rem; }
-  .dc .dc-brand { margin: 0.9rem 0 0; font-family: var(--serif-en); font-style: italic; font-size: 1rem; color: var(--gold); }
-  .dc-takeaway { display: block; margin: 1.1rem 0 0; font-family: var(--serif-tc); font-weight: 300; font-size: 0.98rem; text-align: center; color: var(--paper-dim); }
+  .dc .dc-brand { margin: 0.9rem 0 0; font-family: var(--serif-en); font-style: italic; font-size: 1rem; color: var(--gold-light); }
+  .dc-takeaway { display: block; margin: 1.1rem 0 0; font-family: var(--serif-tc); font-weight: 400; font-size: 0.98rem; text-align: center; color: var(--paper-dim); }
   .dc-takeaway em { font-style: normal; color: var(--gold-light); }
   /* journal 列表縮圖：三角色卡的臉偏上，手機 16:9 裁切下移對焦 */
   .jrow-media img.face-right { object-position: 65% 32%; }
@@ -1316,7 +1317,7 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .atelier-gallery { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: rgba(201, 169, 110, 0.35) transparent; }
 .atelier-gallery .ag-item { flex: 0 0 82%; scroll-snap-align: center; }
 .atelier-gallery img { width: 100%; aspect-ratio: 3/2; object-fit: cover; display: block; }
-.ag-hint { margin: 0.75rem 0 0; font-family: var(--sans-tc); font-weight: 300; font-size: 0.78rem; letter-spacing: 0.08em; text-align: center; color: var(--muted-bright); }
+.ag-hint { margin: 0.75rem 0 0; font-family: var(--sans-tc); font-weight: 400; font-size: 0.78rem; letter-spacing: 0.08em; text-align: center; color: var(--muted-bright); }
 @media (min-width: 760px) {
   .atelier-gallery-wrap { width: min(900px, calc(100vw - 40px)); margin-left: 50%; transform: translateX(-50%); }
   .atelier-gallery .ag-item { flex-basis: 62%; }
@@ -1336,12 +1337,12 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   .spec-table tr { border: 1px solid rgba(201, 169, 110, 0.28); border-radius: 3px; padding: 0.9rem 1rem; margin-bottom: 0.75rem; background: rgba(201, 169, 110, 0.04); }
   .spec-table td { padding: 0.3rem 0; border: 0; line-height: 1.75; }
   .spec-table td:first-child { font-family: var(--serif-tc); font-size: 1.1rem; font-weight: 400; color: var(--paper); border-bottom: 1px solid var(--hairline); padding-bottom: 0.5rem; margin-bottom: 0.45rem; }
-  .spec-table td[data-label]::before { content: attr(data-label); display: block; font-family: var(--sans-tc); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.1rem; }
+  .spec-table td[data-label]::before { content: attr(data-label); display: block; font-family: var(--sans-tc); font-size: 0.78rem; letter-spacing: 0.08em; color: var(--gold-light); margin-bottom: 0.1rem; }
   /* crop-demo 密集圖：手機改橫向滑動，才看得清三種景別 */
   .crop-demo-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .crop-demo-scroll::-webkit-scrollbar { display: none; }
   .crop-demo { min-width: 680px; }
-  .scroll-hint { display: block; margin: 0.6rem 0 0; text-align: center; font-family: var(--sans-tc); font-weight: 300; font-size: 0.78rem; letter-spacing: 0.1em; color: var(--muted-bright); }
+  .scroll-hint { display: block; margin: 0.6rem 0 0; text-align: center; font-family: var(--sans-tc); font-weight: 400; font-size: 0.78rem; letter-spacing: 0.1em; color: var(--muted-bright); }
 }
 
 /* About 創辦人照 Zoey 2026-07-16：2:3 原圖進 3:4 框，焦點上移保住頭頂 */
@@ -1350,7 +1351,7 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 /* About 工作現場 2026-07-16 */
 .worksite-media { margin: clamp(2.2rem, 5vh, 3.4rem) 0 0; }
 .worksite-media img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; filter: brightness(0.92); }
-.worksite-media figcaption { margin-top: 1.15rem; max-width: 34em; font-family: var(--serif-tc); font-weight: 300; font-size: clamp(0.95rem, 1.6vw, 1.08rem); line-height: 1.95; letter-spacing: 0.04em; color: var(--paper-dim); }
+.worksite-media figcaption { margin-top: 1.15rem; max-width: 34em; font-family: var(--serif-tc); font-weight: 400; font-size: clamp(0.95rem, 1.6vw, 1.08rem); line-height: 1.95; letter-spacing: 0.04em; color: var(--paper-dim); }
 
 
 /* ============ About 資歷 Credentials 2026-07-23 ============ */
@@ -1372,9 +1373,9 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   display: block;
   font-family: var(--serif-en);
   font-style: italic;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.22em;
-  color: var(--gold);
+  color: var(--gold-light);
   margin-top: 0.45rem;
 }
 .cred-group ul { list-style: none; margin: 0; padding: 0; }
@@ -1436,7 +1437,7 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 }
 .author-links a {
   font-family: var(--sans-tc);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   color: var(--gold-light);
