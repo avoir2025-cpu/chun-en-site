@@ -1294,7 +1294,7 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 @media (min-width: 760px) { .article-diagram { width: min(900px, calc(100vw - 40px)); margin-left: 50%; transform: translateX(-50%); } }
 
 /* 觀點清單：項目間留空、字重與內文一致 2026-07-21 */
-.article-body ul li { font-weight: 400; }
+.article-body ul li { font-weight: 400; color: #CFC5B6; font-size: 1.05rem; line-height: 2.15; letter-spacing: 0.02em; }
 .article-body ul li + li { margin-top: 0.7em; }
 
 /* 手機版示意圖：SVG 縮太小，改為左右滑動卡片 2026-07-21 */
