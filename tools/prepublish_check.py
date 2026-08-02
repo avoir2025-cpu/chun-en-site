@@ -510,6 +510,15 @@ def check(slug):
     if '吳惇恩' in s and '/author/zoey-wu.html#zoey' not in s:
         r['issues'].append('Zoey 署名但 schema @id 未指向作者頁')
 
+    # 署名單軌（2026-08-02 定案）：全站已收斂為 Zoey 署名卡；
+    # 「文｜CHUN.EN 編輯團隊」是 07/17 雙軌制的殘留，兩者同時出現＝一篇文章兩個作者。
+    has_credit = 'editorial-credit' in s
+    has_card = 'class="author-card' in s
+    if has_credit and has_card:
+        r['issues'].append('署名重複：「文｜CHUN.EN 編輯團隊」與 Zoey 署名卡同時存在，刪掉編輯團隊那行')
+    elif not has_card:
+        r['issues'].append('沒有 Zoey 署名卡（全站署名已收斂單軌，每篇都要有）')
+
     # 字數
     r['chars'] = len(re.sub(r'\s', '', full_text))
     if r['chars'] < 1200:
@@ -526,6 +535,36 @@ def check(slug):
 
     r['noindex'] = 'noindex' in s
     return r
+
+
+def check_published():
+    """反向檢查：已公開（無 noindex）的文章必須同時掛在專欄列表頁與 sitemap。
+
+    上架 SOP 是四步手動操作（移 noindex／掛列表卡／入 sitemap／跑 sync_author_page），
+    少做任何一步都產生「以為上架了、其實沒人找得到」的孤兒頁——列表頁是全站唯一
+    從主選單直達的 journal hub，少掛卡等於這篇拿不到任何內鏈權重；新網域信任期
+    只靠 sitemap 的頁，大概率停在「已檢索－尚未建立索引」。
+    """
+    problems = []
+    idx = open(os.path.join(ROOT, 'journal', 'index.html'), encoding='utf-8').read()
+    smap = open(os.path.join(ROOT, 'sitemap.xml'), encoding='utf-8').read()
+    author = open(os.path.join(ROOT, 'author', 'zoey-wu.html'), encoding='utf-8').read()
+    for p in sorted(glob.glob(os.path.join(ROOT, 'journal', '*.html'))):
+        b = os.path.basename(p)
+        if b == 'index.html':
+            continue
+        s = open(p, encoding='utf-8').read()
+        if 'name="robots"' in s:      # 草稿不在此檢查範圍
+            continue
+        slug = b[:-5]
+        if 'href="%s"' % b not in idx:
+            problems.append('%s：已公開但專欄列表頁沒有掛卡（孤兒頁，讀者無入口）' % slug)
+        if 'journal/%s' % b not in smap:
+            problems.append('%s：已公開但不在 sitemap.xml' % slug)
+        if any(i in s for i in ('/author/zoey-wu.html#zoey', '/about.html#zoey')) \
+                and 'journal/%s' % b not in author:
+            problems.append('%s：Zoey 署名已公開，但作者頁著作列表沒有（跑 python tools/sync_author_page.py）' % slug)
+    return problems
 
 
 def main():
@@ -562,6 +601,16 @@ def main():
         if not r['issues'] and not r['warns']:
             lines.append('- ✅ 全數通過')
         lines.append('')
+    # ── 已公開文章完整性（每次必跑，不分掃描範圍）─────────────
+    pub = check_published()
+    lines.append('## 已公開文章完整性')
+    lines.append('')
+    if pub:
+        for x in pub:
+            lines.append(f'- ❌ {x}'); total_i += 1
+    else:
+        lines.append('- ✅ 已公開文章全數掛在列表頁＋sitemap＋作者頁')
+    lines.append('')
     lines.append(f'---\n**合計：{total_i} 項必修、{total_w} 項待確認**')
     lines.append('')
 
