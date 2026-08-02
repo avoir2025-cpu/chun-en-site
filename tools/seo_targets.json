@@ -129,9 +129,6 @@
     "event-hair-makeup": [
       "活動妝髮"
     ],
-    "authenticity-premium": [
-      "ai 形象照"
-    ],
     "musician-offstage-image": [
       "音樂家 形象"
     ],
@@ -166,13 +163,15 @@
     "wardrobe-audit-5-steps",
     "when-to-update-your-portrait",
     "which-version-of-you",
-    "women-leaders-image"
+    "women-leaders-image",
+    "authenticity-premium"
   ],
   "標題例外": {
     "quiet-luxury-professional": "老錢風帶潮流感，與品牌沉穩調性不符；2026-07-28 決定標題維持「安靜的高級感：Quiet Luxury 對專業形象的啟示」，改把老錢風放 description 與小標。"
   },
   "_轉換型理由": {
-    "mens-grooming-checklist": "文章談髮眉鬍鞋的儀容自檢；西裝穿搭與內容不符，男士保養滿格但那是買保養品的意圖。實測沒有意圖相符的詞，改當轉換素材。"
+    "mens-grooming-checklist": "文章談髮眉鬍鞋的儀容自檢；西裝穿搭與內容不符，男士保養滿格但那是買保養品的意圖。實測沒有意圖相符的詞，改當轉換素材。",
+    "authenticity-premium": "2026-08-02：原本與已公開的 ai-portrait-honest-take 同鎖「ai 形象照」，兩頁互搶同一個查詢。改寫後這篇談的是「觀看習慣從先接受轉為先懷疑」與跨接觸點一致，沒有意圖相符的搜尋詞（「真實溢價」不是台灣人會搜的字），故列為轉換型，靠 ai-portrait 的內鏈接流量。"
   },
   "_鎖定詞理由": {
     "what-is-an-image-consultant": "2026-08-02：原本鎖「形象顧問」＋「形象管理」，與已公開的 image-consultant-vs-stylist 撞同一個詞，而後者目前是「形象顧問」第一頁第一名。決定不換馬：舊文繼續守「形象顧問」，本篇改鎖「形象管理」（實測聲量同為高，且無第二篇在鎖）。本篇仍會以 title／H1 的「形象顧問是什麼」吃長尾。"
