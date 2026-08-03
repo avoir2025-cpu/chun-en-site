@@ -21,6 +21,45 @@
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+TC:wght@200;300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="v5.css?v=202608021800" />
   <link rel="stylesheet" href="sub.css?v=202608022330" />
+  <style>
+    /* FAQ 分類跳轉列（僅本頁） */
+    html { scroll-behavior: smooth; }
+    .faq-cats {
+      position: sticky;
+      top: var(--navh, 64px);
+      z-index: 90;
+      background: rgba(20, 16, 11, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(168, 138, 92, 0.14);
+      border-bottom: 1px solid rgba(168, 138, 92, 0.14);
+    }
+    .faq-cats .row {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.7rem clamp(1.25rem, 4vw, 3rem);
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .faq-cats .row::-webkit-scrollbar { display: none; }
+    .faq-cats a {
+      flex: 0 0 auto;
+      font-family: var(--sans-tc);
+      font-weight: 400;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      color: var(--paper-dim);
+      border: 1px solid rgba(168, 138, 92, 0.28);
+      border-radius: 999px;
+      padding: 0.42rem 1.05rem;
+      white-space: nowrap;
+      transition: color 0.4s, border-color 0.4s, background 0.4s;
+    }
+    .faq-cats a:hover { color: var(--gold-light); border-color: rgba(168, 138, 92, 0.6); }
+    .faq-cats a.on { color: var(--ink); background: var(--gold-light); border-color: var(--gold-light); }
+    section[id^="faq-"] { scroll-margin-top: calc(var(--navh, 64px) + 4.4rem); }
+  </style>
 </head>
 <body>
 
@@ -68,8 +107,21 @@
     </div>
   </header>
 
+  <!-- 分類跳轉列 -->
+  <nav class="faq-cats" aria-label="FAQ 分類">
+    <div class="row">
+      <a href="#faq-services">服務理解</a>
+      <a href="#faq-audience">適合對象</a>
+      <a href="#faq-pricing">價格與付款</a>
+      <a href="#faq-booking">預約與時程</a>
+      <a href="#faq-shootday">拍攝當天</a>
+      <a href="#faq-delivery">交付與後續</a>
+      <a href="#faq-location">地點與停車</a>
+    </div>
+  </nav>
+
   <!-- A 服務理解 -->
-  <section class="chapter" style="padding-top: clamp(2.5rem, 6vh, 4rem);">
+  <section class="chapter" id="faq-services" style="padding-top: clamp(2.5rem, 6vh, 4rem);">
     <div class="wrap">
       <h2 class="chapter-tag rv">Services<span class="cn">服務理解</span></h2>
       <div class="faq rv rv-d1" style="margin-top: clamp(1.6rem, 4vh, 2.5rem); max-width: 820px;">
@@ -83,7 +135,7 @@
   </section>
 
   <!-- B 適合對象 -->
-  <section class="chapter" style="padding-top: 0;">
+  <section class="chapter" id="faq-audience" style="padding-top: 0;">
     <div class="wrap">
       <h2 class="chapter-tag rv">For Whom<span class="cn">適合對象</span></h2>
       <div class="faq rv rv-d1" style="margin-top: clamp(1.6rem, 4vh, 2.5rem); max-width: 820px;">
@@ -95,7 +147,7 @@
   </section>
 
   <!-- C 價格與付款 -->
-  <section class="chapter" style="padding-top: 0;">
+  <section class="chapter" id="faq-pricing" style="padding-top: 0;">
     <div class="wrap">
       <h2 class="chapter-tag rv">Investment<span class="cn">價格與付款</span></h2>
       <div class="faq rv rv-d1" style="margin-top: clamp(1.6rem, 4vh, 2.5rem); max-width: 820px;">
@@ -107,7 +159,7 @@
   </section>
 
   <!-- D 預約與時程 -->
-  <section class="chapter" style="padding-top: 0;">
+  <section class="chapter" id="faq-booking" style="padding-top: 0;">
     <div class="wrap">
       <h2 class="chapter-tag rv">Booking<span class="cn">預約與時程</span></h2>
       <div class="faq rv rv-d1" style="margin-top: clamp(1.6rem, 4vh, 2.5rem); max-width: 820px;">
@@ -119,7 +171,7 @@
   </section>
 
   <!-- E 拍攝當天 -->
-  <section class="chapter" style="padding-top: 0;">
+  <section class="chapter" id="faq-shootday" style="padding-top: 0;">
     <div class="wrap">
       <h2 class="chapter-tag rv">Shoot Day<span class="cn">拍攝當天</span></h2>
       <div class="faq rv rv-d1" style="margin-top: clamp(1.6rem, 4vh, 2.5rem); max-width: 820px;">
@@ -132,7 +184,7 @@
   </section>
 
   <!-- F 交付與後續 -->
-  <section class="chapter" style="padding-top: 0;">
+  <section class="chapter" id="faq-delivery" style="padding-top: 0;">
     <div class="wrap">
       <h2 class="chapter-tag rv">Delivery<span class="cn">交付與後續</span></h2>
       <div class="faq rv rv-d1" style="margin-top: clamp(1.6rem, 4vh, 2.5rem); max-width: 820px;">
@@ -144,7 +196,7 @@
   </section>
 
   <!-- G 地點 -->
-  <section class="chapter" style="padding-top: 0;">
+  <section class="chapter" id="faq-location" style="padding-top: 0;">
     <div class="wrap">
       <h2 class="chapter-tag rv">Location<span class="cn">地點與停車</span></h2>
       <div class="faq rv rv-d1" style="margin-top: clamp(1.6rem, 4vh, 2.5rem); max-width: 820px;">
@@ -213,6 +265,41 @@
 
   <script src="v5.js?v=202607150900" defer></script>
   <script src="consent.js?v=202607150900" defer></script>
+
+  <script>
+  (function () {
+    var nav = document.getElementById('nav');
+    function setNavH() {
+      if (nav) document.documentElement.style.setProperty('--navh', nav.offsetHeight + 'px');
+    }
+    setNavH();
+    window.addEventListener('resize', setNavH);
+    window.addEventListener('load', setNavH);
+
+    var links = document.querySelectorAll('.faq-cats a');
+    var map = {};
+    links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+
+    function setActive(id) {
+      links.forEach(function (a) { a.classList.remove('on'); });
+      var a = map[id];
+      if (a) {
+        a.classList.add('on');
+        a.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+      }
+    }
+
+    if ('IntersectionObserver' in window) {
+      var current = null;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { current = e.target.id; setActive(current); }
+        });
+      }, { rootMargin: '-35% 0px -55% 0px' });
+      document.querySelectorAll('section[id^="faq-"]').forEach(function (s) { io.observe(s); });
+    }
+  })();
+  </script>
 
   <script type="application/ld+json">
   {
