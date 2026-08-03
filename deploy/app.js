@@ -310,7 +310,7 @@ function resetTransform(asset) {
 function zoomAt(asset, newZoom, fx, fy) {
   const s = currentSlot();
   const before = layout(asset, s);
-  newZoom = clamp(newZoom, 1, 3);
+  newZoom = clamp(newZoom, 1, 4);
   const ratio = newZoom / asset.transform.zoom;
   const ox = fx - (fx - before.ox) * ratio;
   const oy = fy - (fy - before.oy) * ratio;
@@ -395,8 +395,11 @@ function renderCrop() {
   const asset = currentAsset();
 
   $('cropTitle').textContent = `${platformSpec().display_name}　${s.display_name}`;
-  $('slotProgress').textContent = state.queue.length > 1 ? `第 ${state.cursor + 1} / ${state.queue.length} 個版位` : '';
-  $('canvasFrame').style.aspectRatio = `${s.output.width} / ${s.output.height}`;
+  renderSlotTabs();
+  const frame = $('canvasFrame');
+  frame.style.aspectRatio = `${s.output.width} / ${s.output.height}`;
+  // 高版位（頭像 1:1）在桌面會撐爆螢幕：高度封頂 60vh，寬度照比例縮
+  frame.style.width = `min(100%, calc(60vh * ${(s.output.width / s.output.height).toFixed(4)}))`;
 
   const img = $('sourceImg');
   if (asset) {
@@ -416,10 +419,34 @@ function renderCrop() {
     $('controls').hidden = true;
   }
 
+  // 下一步按鈕：不是最後一個版位就標明接下來編輯什麼
+  $('btnToNext').textContent = state.cursor < state.queue.length - 1
+    ? `下一步：編輯${slotSpec(state.queue[state.cursor + 1]).display_name}`
+    : '前往舞台預覽';
+
   renderGuides(s);
   renderGuideToggles(s);
   renderPanelStatic(s);
   refreshReadouts(s, asset);
+}
+
+/* 版位切換籤：完整部署時可在大頭照／橫幅之間來回編輯 */
+function renderSlotTabs() {
+  const box = $('slotTabs');
+  box.innerHTML = '';
+  if (state.queue.length < 2) return;
+  state.queue.forEach((slotId, i) => {
+    const s = slotSpec(slotId);
+    const b = el('button', 'stab' + (i === state.cursor ? ' on' : ''));
+    b.appendChild(el('span', null, '編輯' + s.display_name));
+    if (state.assets[slotId]) b.appendChild(el('i', 'ok', '✓'));
+    b.addEventListener('click', () => {
+      if (i === state.cursor) return;
+      state.cursor = i;
+      renderCrop();
+    });
+    box.appendChild(b);
+  });
 }
 
 function renderGuides(s) {
@@ -520,8 +547,8 @@ function judge(effW, s) {
   const need = s.output.width;
   if (effW >= t.good) return { tone: st.good.tone, label: st.good.label, msg: `裁切後有效寬度 ${effW}px，足以支撐 ${need}px 的輸出，平台縮圖後仍然清楚。` };
   if (effW >= t.acceptable) return { tone: st.acceptable.tone, label: st.acceptable.label, msg: `裁切後只保留 ${effW}px，此版位建議至少 ${need}px。手機可接受，桌面可能略糊。請減少放大比例，或更換原始檔。` };
-  if (effW >= t.poor) return { tone: st.poor.tone, label: st.poor.label, msg: `裁切後只保留 ${effW}px，低於此版位建議的 ${need}px。請減少放大比例，或改用雲端交付的原始檔，不要用聊天室存下來的壓縮版本。` };
-  return { tone: st.unusable.tone, label: st.unusable.label, msg: `裁切後只保留 ${effW}px，低於最低需求 ${s.minimum_effective.width}px。放大比例過高或原始檔不足，這樣輸出會糊。` };
+  if (effW >= t.poor) return { tone: st.poor.tone, label: st.poor.label, msg: `裁切後只保留 ${effW}px，低於此版位建議的 ${need}px。請減少放大比例，或更換解析度更高的原始檔。` };
+  return { tone: st.unusable.tone, label: st.unusable.label, msg: `裁切後只保留 ${effW}px，低於最低需求 ${s.minimum_effective.width}px。請減少放大比例，或更換原始檔。` };
 }
 
 function setStatus(tone, label, msg) {
@@ -907,7 +934,7 @@ function readmeText() {
     lines.push('');
   });
   lines.push('── 上傳說明 ──');
-  lines.push('1. 一律上傳這裡輸出的檔案，不要再經過通訊軟體轉傳（會被二次壓縮）。');
+  lines.push('1. 請直接上傳本次輸出的檔案，畫質最完整。');
   lines.push('2. 平台會自行縮圖，上傳大圖畫質最好。');
   lines.push('3. 各平台規格會不定期改版，若顯示與預期不同，請回到模擬器確認最新規格版本。');
   lines.push('');

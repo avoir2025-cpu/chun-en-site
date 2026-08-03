@@ -168,13 +168,23 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
   max-width: 1400px; margin: 0 auto; padding: 0 1.5rem;
   display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 2.2rem; align-items: start;
 }
-.crop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; }
+.crop-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; flex-wrap: wrap; }
 .crop-head h2 { font-size: 1.6rem; }
-.slot-progress { font-size: 1rem; color: var(--muted); letter-spacing: 0.06em; }
+
+.slot-tabs { display: flex; border: 1px solid var(--hairline); }
+.stab {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.5rem 1.2rem; background: none; border: 0; cursor: pointer;
+  color: var(--muted); font-size: 1rem; letter-spacing: 0.04em;
+}
+.stab + .stab { border-left: 1px solid var(--hairline); }
+.stab.on { background: var(--gold); color: var(--ink); }
+.stab .ok { font-style: normal; font-size: 0.85rem; color: var(--ok); }
+.stab.on .ok { color: var(--ink); }
 
 .canvas-shell { background: #0D0A07; border: 1px solid var(--hairline); padding: 1.6rem; }
 .canvas-frame {
-  position: relative; width: 100%; background: #000; overflow: hidden;
+  position: relative; width: 100%; margin: 0 auto; background: #000; overflow: hidden;
   touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none;
 }
 .canvas-frame.grabbing { cursor: grabbing; }

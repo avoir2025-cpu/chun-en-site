@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="app.css?v=202608031830" />
+  <link rel="stylesheet" href="app.css?v=202608032000" />
 </head>
 <body>
 
@@ -67,7 +67,7 @@
       <div class="crop-main">
         <div class="crop-head">
           <h2 id="cropTitle">版位</h2>
-          <span class="slot-progress" id="slotProgress"></span>
+          <div class="slot-tabs" id="slotTabs"></div>
         </div>
 
         <div class="canvas-shell" id="canvasShell">
@@ -84,7 +84,7 @@
                 <div class="dz-icon">＋</div>
                 <p class="dz-main">拖曳照片到這裡，或點擊選擇</p>
                 <p class="dz-sub">JPG／PNG／WebP／HEIC　單檔上限 40MB</p>
-                <p class="dz-hint">請使用雲端交付的原始檔。從聊天室存下來的照片已被壓縮，畫質救不回來。</p>
+                <p class="dz-hint">建議使用雲端交付的原始檔，畫質最完整。</p>
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@
         <div class="controls" id="controls" hidden>
           <div class="ctrl-zoom">
             <label for="zoom">縮放</label>
-            <input type="range" id="zoom" min="100" max="300" value="100" step="1" disabled />
+            <input type="range" id="zoom" min="100" max="400" value="100" step="1" disabled />
             <span class="zoom-val" id="zoomVal">100%</span>
           </div>
           <div class="ctrl-btns">
@@ -212,6 +212,6 @@
 <input type="file" id="filePicker" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" hidden />
 
 <script src="/consent.js?v=202607150900" defer></script>
-<script src="app.js?v=202608031830" defer></script>
+<script src="app.js?v=202608032000" defer></script>
 </body>
 </html>
