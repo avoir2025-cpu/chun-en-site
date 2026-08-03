@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="app.css?v=202608032230" />
+  <link rel="stylesheet" href="app.css?v=202608040900" />
 </head>
 <body>
 
@@ -126,26 +126,27 @@
           </div>
         </div>
 
-        <div class="pnl-block">
-          <h3>版位用途</h3>
-          <p id="pnlPurpose" class="pnl-text"></p>
-        </div>
-
-        <div class="pnl-block">
-          <h3>選片建議</h3>
-          <ul class="pnl-list good" id="pnlGood"></ul>
-          <ul class="pnl-list avoid" id="pnlAvoid"></ul>
-        </div>
-
-        <div class="pnl-block">
-          <h3>顧問提示</h3>
-          <ul class="pnl-list advice" id="pnlAdvice"></ul>
-        </div>
-
+        <!-- 操作放在說明之前，不必捲到底才找得到下一步 -->
         <div class="pnl-actions">
           <button class="btn btn-ghost" id="btnBackPick">返回版位</button>
           <button class="btn btn-gold" id="btnToNext" disabled>下一步</button>
         </div>
+
+        <details class="pnl-acc" open>
+          <summary>版位用途</summary>
+          <p id="pnlPurpose" class="pnl-text"></p>
+        </details>
+
+        <details class="pnl-acc">
+          <summary>選片建議</summary>
+          <ul class="pnl-list good" id="pnlGood"></ul>
+          <ul class="pnl-list avoid" id="pnlAvoid"></ul>
+        </details>
+
+        <details class="pnl-acc">
+          <summary>顧問提示</summary>
+          <ul class="pnl-list advice" id="pnlAdvice"></ul>
+        </details>
       </aside>
     </div>
   </section>
@@ -174,10 +175,8 @@
 
       <div class="stage-note" id="stageNote"></div>
 
-      <div class="stage-actions">
-        <button class="btn btn-ghost" id="btnBackCrop">返回調整</button>
-        <button class="btn btn-gold" id="btnToExport">前往下載</button>
-      </div>
+      <!-- 每個版位各一顆返回鍵，由 JS 依實際版位產生 -->
+      <div class="stage-actions" id="stageActions"></div>
     </div>
   </section>
 
@@ -213,6 +212,6 @@
 <input type="file" id="filePicker" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" hidden />
 
 <script src="/consent.js?v=202607150900" defer></script>
-<script src="app.js?v=202608032230" defer></script>
+<script src="app.js?v=202608040900" defer></script>
 </body>
 </html>

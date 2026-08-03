@@ -433,23 +433,42 @@ function renderCrop() {
   refreshReadouts(s, asset);
 }
 
-/* 版位切換籤：完整部署時可在大頭照／橫幅之間來回編輯 */
+/* 版位切換籤：在版位之間來回編輯；沒選到的版位就地補選，不用退回上一頁 */
 function renderSlotTabs() {
   const box = $('slotTabs');
   box.innerHTML = '';
-  if (state.queue.length < 2) return;
-  state.queue.forEach((slotId, i) => {
-    const s = slotSpec(slotId);
-    const b = el('button', 'stab' + (i === state.cursor ? ' on' : ''));
-    b.appendChild(el('span', null, '編輯' + s.display_name));
-    if (state.assets[slotId]) b.appendChild(el('i', 'ok', '✓'));
+  const all = platformSpec().slots.filter((s) => s.is_active);
+  if (all.length < 2) return;
+
+  all.forEach((s) => {
+    const idx = state.queue.indexOf(s.slot);
+    const inQueue = idx >= 0;
+    const b = el('button', 'stab' + (inQueue ? (idx === state.cursor ? ' on' : '') : ' add'));
+    b.appendChild(el('span', null, (inQueue ? '編輯' : '＋ 加入') + s.display_name));
+    if (inQueue && state.assets[s.slot]) b.appendChild(el('i', 'ok', '✓'));
+    b.title = inQueue ? '' : `把${s.display_name}一起加進這次部署`;
     b.addEventListener('click', () => {
-      if (i === state.cursor) return;
-      state.cursor = i;
+      if (inQueue) {
+        if (idx === state.cursor) return;
+        state.cursor = idx;
+      } else {
+        addSlotToQueue(s.slot);
+      }
       renderCrop();
     });
     box.appendChild(b);
   });
+}
+
+/* 中途補選版位：照規格順序插入，並把 mode 對回去（檔名與 ZIP 都吃 queue） */
+function addSlotToQueue(slotId) {
+  const order = platformSpec().slots.map((s) => s.slot);
+  state.queue = [...state.queue, slotId].sort((a, b) => order.indexOf(a) - order.indexOf(b));
+  state.cursor = state.queue.indexOf(slotId);
+  const m = platformSpec().modes.find(
+    (m) => m.slots.length === state.queue.length && m.slots.every((s) => state.queue.includes(s)));
+  if (m) state.mode = m.id;
+  track('deploy_slot_add', { platform: state.platform, slot: slotId });
 }
 
 function renderGuides(s) {
@@ -793,6 +812,7 @@ function renderStage() {
   const views = state.compare ? ['desktop', 'mobile'] : [state.stageView];
   views.forEach((v) => area.appendChild(mockProfile(cfg, v)));
   $('stageNote').textContent = cfg.disclaimer;
+  renderStageActions();
   state.queue.forEach((slot) => { const a = state.assets[slot]; if (a) a.dirty = false; });
   track('deploy_stage_view', { platform: state.platform, view: state.stageView, compare: state.compare });
 }
@@ -841,8 +861,20 @@ function mockProfile(cfg, view) {
   return wrapEl;
 }
 
-$('btnBackCrop').addEventListener('click', () => { state.cursor = 0; go('crop'); });
-$('btnToExport').addEventListener('click', () => go('export'));
+/* 每個版位各給一顆返回鍵：從舞台看出問題，直接跳回那一張 */
+function renderStageActions() {
+  const box = $('stageActions');
+  box.innerHTML = '';
+  state.queue.forEach((slotId, i) => {
+    const s = slotSpec(slotId);
+    const b = el('button', 'btn btn-ghost', `返回編輯${s.display_name}`);
+    b.addEventListener('click', () => { state.cursor = i; go('crop'); });
+    box.appendChild(b);
+  });
+  const next = el('button', 'btn btn-gold', '前往下載');
+  next.addEventListener('click', () => go('export'));
+  box.appendChild(next);
+}
 
 /* ================= §9 輸出引擎 ================= */
 function exportSlotBlob(slotId) {

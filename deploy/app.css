@@ -185,6 +185,8 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
 .stab.on { background: var(--gold); color: var(--ink); }
 .stab .ok { font-style: normal; font-size: 0.85rem; color: var(--ok); }
 .stab.on .ok { color: var(--ink); }
+.stab.add { color: var(--gold); }
+.stab.add:hover { background: rgba(168, 138, 92, 0.14); }
 
 .canvas-shell { background: #0D0A07; border: 1px solid var(--hairline); padding: 1.6rem; }
 .canvas-frame {
@@ -278,8 +280,29 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
 .mini .box.circle { border-radius: 50%; }
 .mini .cap { font-size: 0.85rem; color: var(--muted); margin-top: 0.35rem; font-family: var(--serif-en); }
 
-.pnl-actions { display: flex; gap: 0.7rem; margin-top: 1.8rem; padding-top: 1.6rem; border-top: 1px solid var(--hairline); }
+.pnl-actions { display: flex; gap: 0.7rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--hairline); }
 .pnl-actions .btn { flex: 1; }
+
+/* 說明類區塊改成可收合，預設只留「版位用途」展開 */
+.pnl-acc { border-top: 1px solid var(--hairline); }
+.pnl-acc:first-of-type { margin-top: 1.5rem; }
+.pnl-acc > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 0.8rem;
+  padding: 0.85rem 0;
+  font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--gold);
+}
+.pnl-acc > summary::-webkit-details-marker { display: none; }
+.pnl-acc > summary::after {
+  content: '＋'; font-weight: 400; font-size: 1.1rem; color: var(--muted); flex: none;
+  transition: transform 0.25s var(--ease-out);
+}
+.pnl-acc[open] > summary::after { content: '－'; }
+.pnl-acc > summary:hover { color: var(--gold-light); }
+.pnl-acc > *:not(summary) { padding-bottom: 1rem; }
+.pnl-acc .pnl-text { margin-top: 0; }
+.pnl-acc .pnl-list { margin-top: 0; }
+.pnl-acc .pnl-list + .pnl-list { margin-top: 0.5rem; }
 
 /* ============ 按鈕 ============ */
 .btn {
@@ -338,7 +361,7 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
 .mock-cap { text-align: center; font-size: 0.9rem; color: var(--muted); margin-top: 0.7rem; font-family: var(--serif-en); letter-spacing: 0.1em; }
 
 .stage-note { margin-top: 1.6rem; font-size: 1rem; color: var(--muted); text-align: center; }
-.stage-actions { display: flex; gap: 0.8rem; justify-content: center; margin-top: 2.4rem; }
+.stage-actions { display: flex; gap: 0.8rem; justify-content: center; margin-top: 2.4rem; flex-wrap: wrap; }
 
 /* ============ 下載 ============ */
 .file-list { list-style: none; margin: 2rem 0; }

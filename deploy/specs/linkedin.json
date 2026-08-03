@@ -5,7 +5,16 @@
   "version": "2026-08-03",
   "is_active": true,
 
+  "_modes_note": "順序即畫面順序，建議項放第一個。",
   "modes": [
+    {
+      "id": "full",
+      "display_name": "頭像＋橫幅完整部署",
+      "subtitle": "Full Deployment",
+      "slots": ["avatar", "banner"],
+      "recommended": true,
+      "summary": "兩張一起判斷。頭像會壓在橫幅左下角，只裁單張看不出實際效果。"
+    },
     {
       "id": "avatar_only",
       "display_name": "個人大頭照",
@@ -19,14 +28,6 @@
       "subtitle": "Background Banner",
       "slots": ["banner"],
       "summary": "只處理頭圖。決定別人點進你的頁面時，第一眼看到的空間感。"
-    },
-    {
-      "id": "full",
-      "display_name": "頭像＋橫幅完整部署",
-      "subtitle": "Full Deployment",
-      "slots": ["avatar", "banner"],
-      "recommended": true,
-      "summary": "兩張一起判斷。頭像會壓在橫幅左下角，只裁單張看不出實際效果。"
     }
   ],
 
