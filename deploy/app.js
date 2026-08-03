@@ -38,7 +38,8 @@ const safeName = (s) => (s || '').trim().replace(/[\\/:*?"<>|\s]+/g, '_').slice(
 const fillTemplate = (tpl, fallback, name) =>
   tpl.replace('{name}', safeName(name) || fallback).replace('{date}', todayStamp());
 
-const MAX_FILE_BYTES = 40 * 1024 * 1024;
+const MAX_FILE_MB = 80;   // 交付原始檔常見 40–50MB，留足空間
+const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024;
 const MAX_WORK_PIXELS = 16.5e6;   // iOS Safari canvas 面積上限，超過先降採樣成工作圖
 const ACCEPT_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
 const HEIC_LIB = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';
@@ -180,8 +181,10 @@ function slotCard(s) {
 function diagramFor(s) {
   const W = s.output.width, H = s.output.height;
   const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': `${s.display_name} 版位示意` });
-  const fs = Math.round(Math.min(W, H) * 0.055);
-  svg.appendChild(svgEl('rect', { x: 0, y: 0, width: W, height: H, fill: '#0D0A07', stroke: 'rgba(245,241,232,0.16)', 'stroke-width': 2 }));
+  const sk = Math.max(2, W / 220);
+  const fs = Math.round(Math.max(Math.min(W, H) * 0.055, W * 0.032));
+  const dash = `${(sk * 5).toFixed(0)} ${(sk * 4).toFixed(0)}`;
+  svg.appendChild(svgEl('rect', { x: 0, y: 0, width: W, height: H, fill: '#0D0A07', stroke: 'rgba(245,241,232,0.16)', 'stroke-width': sk * 0.8 }));
 
   if (s.display_shape === 'circle') {
     const g = s.guides.find((x) => x.id === 'circle_mask');
@@ -190,25 +193,25 @@ function diagramFor(s) {
         d: `M0,0 H${W} V${H} H0 Z M${g.geometry.cx},${g.geometry.cy - g.geometry.r} a${g.geometry.r},${g.geometry.r} 0 1,0 0.01,0 Z`,
         fill: 'rgba(180,101,90,0.28)', 'fill-rule': 'evenodd'
       }));
-      svg.appendChild(svgEl('circle', { cx: g.geometry.cx, cy: g.geometry.cy, r: g.geometry.r, fill: 'none', stroke: '#A88A5C', 'stroke-width': 3 }));
+      svg.appendChild(svgEl('circle', { cx: g.geometry.cx, cy: g.geometry.cy, r: g.geometry.r, fill: 'none', stroke: '#A88A5C', 'stroke-width': sk }));
     }
     const sub = s.guides.find((x) => x.id === 'subject_zone');
-    if (sub) svg.appendChild(svgEl('circle', { cx: sub.geometry.cx, cy: sub.geometry.cy, r: sub.geometry.r, fill: 'none', stroke: '#7FA37A', 'stroke-width': 2, 'stroke-dasharray': '14 12' }));
+    if (sub) svg.appendChild(svgEl('circle', { cx: sub.geometry.cx, cy: sub.geometry.cy, r: sub.geometry.r, fill: 'none', stroke: '#7FA37A', 'stroke-width': sk * 0.8, 'stroke-dasharray': dash }));
   } else {
     if (s.mobile_crop) {
       const m = s.mobile_crop;
       svg.appendChild(svgEl('rect', { x: 0, y: 0, width: m.x, height: H, fill: 'rgba(20,16,11,0.72)' }));
       svg.appendChild(svgEl('rect', { x: m.x + m.width, y: 0, width: W - m.x - m.width, height: H, fill: 'rgba(20,16,11,0.72)' }));
-      svg.appendChild(svgEl('rect', { x: m.x, y: 1, width: m.width, height: H - 2, fill: 'none', stroke: '#C9A96E', 'stroke-width': 2, 'stroke-dasharray': '12 10' }));
+      svg.appendChild(svgEl('rect', { x: m.x, y: 1, width: m.width, height: H - 2, fill: 'none', stroke: '#C9A96E', 'stroke-width': sk * 0.8, 'stroke-dasharray': dash }));
     }
     if (s.avatar_overlap) {
       const a = s.avatar_overlap;
-      svg.appendChild(svgEl('rect', { x: a.x, y: a.y, width: a.width, height: a.height, fill: 'rgba(180,101,90,0.3)', stroke: '#B4655A', 'stroke-width': 2 }));
+      svg.appendChild(svgEl('rect', { x: a.x, y: a.y, width: a.width, height: a.height, fill: 'rgba(180,101,90,0.3)', stroke: '#B4655A', 'stroke-width': sk * 0.8 }));
       svg.appendChild(svgText(a.x + a.width / 2, a.y + a.height / 2 + fs * 0.35, '頭像遮擋', fs, '#E0A79C'));
     }
     if (s.safe_zone && s.safe_zone.shape === 'rect') {
       const z = s.safe_zone;
-      svg.appendChild(svgEl('rect', { x: z.x, y: z.y, width: z.width, height: z.height, fill: 'rgba(127,163,122,0.14)', stroke: '#7FA37A', 'stroke-width': 2, 'stroke-dasharray': '12 10' }));
+      svg.appendChild(svgEl('rect', { x: z.x, y: z.y, width: z.width, height: z.height, fill: 'rgba(127,163,122,0.16)', stroke: '#7FA37A', 'stroke-width': sk * 0.8, 'stroke-dasharray': dash }));
       svg.appendChild(svgText(z.x + z.width / 2, z.y + z.height / 2 + fs * 0.35, '安全區', fs, '#A8C3A3'));
     }
   }
@@ -398,8 +401,8 @@ function renderCrop() {
   renderSlotTabs();
   const frame = $('canvasFrame');
   frame.style.aspectRatio = `${s.output.width} / ${s.output.height}`;
-  // 高版位（頭像 1:1）在桌面會撐爆螢幕：高度封頂 60vh，寬度照比例縮
-  frame.style.width = `min(100%, calc(60vh * ${(s.output.width / s.output.height).toFixed(4)}))`;
+  // 高版位（頭像 1:1）會撐爆螢幕：高度封頂 --frame-cap（桌面 60vh、手機 42vh），寬度照比例縮
+  frame.style.width = `min(100%, calc(var(--frame-cap, 60vh) * ${(s.output.width / s.output.height).toFixed(4)}))`;
 
   const img = $('sourceImg');
   if (asset) {
@@ -454,7 +457,10 @@ function renderGuides(s) {
   svg.setAttribute('viewBox', `0 0 ${s.output.width} ${s.output.height}`);
   svg.innerHTML = '';
   const W = s.output.width, H = s.output.height;
-  const fs = Math.round(Math.min(W, H) * 0.045);
+  // 線寬與字級以 viewBox 寬度換算：橫幅 1584 寬在手機縮到兩成，固定線寬會細到看不見
+  const sk = Math.max(2.5, W / 200);
+  const fs = Math.round(Math.max(Math.min(W, H) * 0.045, W * 0.03));
+  const dash = `${(sk * 5).toFixed(0)} ${(sk * 4).toFixed(0)}`;
   const TONE = { danger: '#B4655A', warn: '#C9A96E', safe: '#7FA37A', info: '#8B7D6B' };
 
   s.guides.forEach((g) => {
@@ -466,25 +472,25 @@ function renderGuides(s) {
         d: `M0,0 H${W} V${H} H0 Z M${geo.cx},${geo.cy - geo.r} a${geo.r},${geo.r} 0 1,0 0.01,0 Z`,
         fill: 'rgba(20,16,11,0.66)', 'fill-rule': 'evenodd'
       }));
-      svg.appendChild(svgEl('circle', { cx: geo.cx, cy: geo.cy, r: geo.r, fill: 'none', stroke: '#A88A5C', 'stroke-width': 3 }));
+      svg.appendChild(svgEl('circle', { cx: geo.cx, cy: geo.cy, r: geo.r, fill: 'none', stroke: '#A88A5C', 'stroke-width': sk * 1.1 }));
     } else if (g.kind === 'circle') {
-      svg.appendChild(svgEl('circle', { cx: geo.cx, cy: geo.cy, r: geo.r, fill: 'none', stroke: col, 'stroke-width': 2.5, 'stroke-dasharray': '16 12' }));
+      svg.appendChild(svgEl('circle', { cx: geo.cx, cy: geo.cy, r: geo.r, fill: 'none', stroke: col, 'stroke-width': sk, 'stroke-dasharray': dash }));
     } else if (g.kind === 'rect') {
       svg.appendChild(svgEl('rect', {
         x: geo.x, y: geo.y, width: geo.width, height: geo.height,
-        fill: g.tone === 'danger' ? 'rgba(180,101,90,0.26)' : 'rgba(127,163,122,0.12)',
-        stroke: col, 'stroke-width': 2.5,
-        'stroke-dasharray': g.tone === 'safe' ? '16 12' : 'none'
+        fill: g.tone === 'danger' ? 'rgba(180,101,90,0.28)' : 'rgba(127,163,122,0.16)',
+        stroke: col, 'stroke-width': sk,
+        'stroke-dasharray': g.tone === 'safe' ? dash : 'none'
       }));
       svg.appendChild(svgText(geo.x + geo.width / 2, geo.y + geo.height / 2 + fs * 0.35, g.label, fs, col));
     } else if (g.kind === 'outside_rect') {
-      svg.appendChild(svgEl('rect', { x: 0, y: 0, width: geo.x, height: H, fill: 'rgba(20,16,11,0.7)' }));
-      svg.appendChild(svgEl('rect', { x: geo.x + geo.width, y: 0, width: W - geo.x - geo.width, height: H, fill: 'rgba(20,16,11,0.7)' }));
-      svg.appendChild(svgEl('rect', { x: geo.x + 1, y: 1, width: geo.width - 2, height: H - 2, fill: 'none', stroke: col, 'stroke-width': 2, 'stroke-dasharray': '14 10' }));
+      svg.appendChild(svgEl('rect', { x: 0, y: 0, width: geo.x, height: H, fill: 'rgba(20,16,11,0.72)' }));
+      svg.appendChild(svgEl('rect', { x: geo.x + geo.width, y: 0, width: W - geo.x - geo.width, height: H, fill: 'rgba(20,16,11,0.72)' }));
+      svg.appendChild(svgEl('rect', { x: geo.x + 1, y: 1, width: geo.width - 2, height: H - 2, fill: 'none', stroke: col, 'stroke-width': sk * 0.85, 'stroke-dasharray': dash }));
       svg.appendChild(svgText(geo.x / 2, H / 2, '手機裁掉', Math.round(fs * 0.8), col));
     } else if (g.kind === 'crosshair') {
-      svg.appendChild(svgEl('line', { x1: geo.cx, y1: 0, x2: geo.cx, y2: H, stroke: col, 'stroke-width': 1.5, 'stroke-dasharray': '8 10' }));
-      svg.appendChild(svgEl('line', { x1: 0, y1: geo.cy, x2: W, y2: geo.cy, stroke: col, 'stroke-width': 1.5, 'stroke-dasharray': '8 10' }));
+      svg.appendChild(svgEl('line', { x1: geo.cx, y1: 0, x2: geo.cx, y2: H, stroke: col, 'stroke-width': sk * 0.55, 'stroke-dasharray': dash }));
+      svg.appendChild(svgEl('line', { x1: 0, y1: geo.cy, x2: W, y2: geo.cy, stroke: col, 'stroke-width': sk * 0.55, 'stroke-dasharray': dash }));
     }
   });
 }
@@ -566,8 +572,11 @@ function buildMiniPreviews(s) {
   miniCanvases = [];
   const circle = s.display_shape === 'circle';
   const sizes = circle ? (platformSpec().stage.small_preview_sizes || [96, 48, 32]) : [240];
+  // 手機縮小顯示尺寸（標註維持平台實際 px）
+  const scale = window.matchMedia('(max-width: 640px)').matches ? 0.72 : 1;
 
-  sizes.forEach((w) => {
+  sizes.forEach((px) => {
+    const w = Math.round(px * scale);
     const h = circle ? w : Math.round(w * s.output.height / s.output.width);
     const m = el('div', 'mini');
     const cv = document.createElement('canvas');
@@ -576,7 +585,7 @@ function buildMiniPreviews(s) {
     cv.width = w * dpr; cv.height = h * dpr;
     cv.style.width = w + 'px'; cv.style.height = h + 'px';
     m.appendChild(cv);
-    m.appendChild(el('div', 'cap', circle ? `${w}px` : '橫幅'));
+    m.appendChild(el('div', 'cap', circle ? `${px}px` : '橫幅'));
     box.appendChild(m);
     miniCanvases.push(cv);
   });
@@ -612,7 +621,7 @@ async function handleFile(file) {
   const isHeic = /\.(heic|heif)$/i.test(file.name) || /heic|heif/i.test(file.type);
 
   if (file.size > MAX_FILE_BYTES) {
-    setStatus('danger', '檔案過大', `單檔上限 40MB，這個檔案 ${(file.size / 1048576).toFixed(1)}MB。請提供壓縮前的原始檔或稍小的版本。`);
+    setStatus('danger', '檔案過大', `單檔上限 ${MAX_FILE_MB}MB，這個檔案 ${(file.size / 1048576).toFixed(1)}MB。請改用稍小的版本。`);
     return;
   }
   if (!isHeic && file.type && !ACCEPT_TYPES.includes(file.type)) {
@@ -1130,6 +1139,27 @@ $('btnDlZip').addEventListener('click', async (e) => {
 });
 
 /* ================= §11 啟動 ================= */
+/* 成品預覽＋解析度檢查：桌面放右欄頂端，手機移到裁切框正下方（同一畫面內看得到） */
+const liveMQ = window.matchMedia('(max-width: 1080px)');
+function placeLiveWrap() {
+  const lw = $('liveWrap');
+  if (liveMQ.matches) {
+    $('controls').after(lw);
+    lw.classList.add('inline');
+  } else {
+    document.querySelector('.crop-panel').prepend(lw);
+    lw.classList.remove('inline');
+  }
+  // 跨過斷點時重建成品預覽（顯示尺寸隨版型縮放）
+  if (state.screen === 'crop' && state.queue.length) {
+    const s = currentSlot();
+    buildMiniPreviews(s);
+    drawMiniPreviews(s, currentAsset());
+  }
+}
+liveMQ.addEventListener('change', placeLiveWrap);
+window.addEventListener('resize', placeLiveWrap);   // 部分環境 matchMedia change 不觸發，resize 兜底
+
 window.addEventListener('beforeunload', (e) => {
   if (Object.keys(state.assets).length && state.screen !== 'pick') {
     e.preventDefault();
@@ -1145,6 +1175,7 @@ window.addEventListener('beforeunload', (e) => {
       el('p', 'engine-todo', '規格檔載入失敗。請以本機伺服器開啟（file:// 無法讀取 JSON），或確認 specs/ 目錄已部署。'));
     return;
   }
+  placeLiveWrap();
   renderPicker();
   go('pick');
   track('deploy_open', { platform: state.platform });

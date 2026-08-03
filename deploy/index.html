@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="app.css?v=202608032000" />
+  <link rel="stylesheet" href="app.css?v=202608032100" />
 </head>
 <body>
 
@@ -39,7 +39,7 @@
   <section class="screen" id="screen-pick">
     <div class="wrap">
       <p class="eyebrow">C.photos<span class="sep">·</span>Deploy</p>
-      <h1>在下載之前，<em>先看它上線之後</em></h1>
+      <h1>在下載之前，<em>先看它上線的樣子</em></h1>
       <p class="lede">拍攝完成不是影像服務的終點；被正確使用，才是影像價值真正開始的地方。這裡不是裁圖工具，是部署判斷：確認照片進入真實商務場景後，是否仍然準確傳達你的角色與專業。</p>
 
       <div class="privacy-note">
@@ -83,7 +83,7 @@
               <div class="dz-inner">
                 <div class="dz-icon">＋</div>
                 <p class="dz-main">拖曳照片到這裡，或點擊選擇</p>
-                <p class="dz-sub">JPG／PNG／WebP／HEIC　單檔上限 40MB</p>
+                <p class="dz-sub">JPG／PNG／WebP／HEIC　單檔上限 80MB</p>
                 <p class="dz-hint">建議使用雲端交付的原始檔，畫質最完整。</p>
               </div>
             </div>
@@ -107,8 +107,25 @@
         <p class="engine-todo">直接拖曳照片調整位置；滾輪或雙指縮放，也可拉下方滑桿。右側的有效像素會隨著調整即時重算。</p>
       </div>
 
-      <!-- 右：判斷面板 -->
+      <!-- 右：判斷面板（成品預覽＋解析度檢查在桌面置頂；手機由 JS 移到裁切框正下方） -->
       <aside class="crop-panel">
+        <div class="live-wrap" id="liveWrap">
+          <div class="pnl-block">
+            <h3>成品預覽</h3>
+            <div class="mini-previews" id="miniPreviews"></div>
+          </div>
+          <div class="pnl-block">
+            <h3>解析度檢查</h3>
+            <div class="res-rows">
+              <div class="res-row"><span>原始圖片</span><b id="resSource">－</b></div>
+              <div class="res-row"><span>裁切後有效</span><b id="resEffective">－</b></div>
+              <div class="res-row"><span>輸出尺寸</span><b id="resOutput">－</b></div>
+            </div>
+            <div class="status-chip" id="statusChip" data-tone="idle">尚未上傳照片</div>
+            <p class="status-msg" id="statusMsg">上傳後立即判斷這張照片是否撐得起這個版位。</p>
+          </div>
+        </div>
+
         <div class="pnl-block">
           <h3>版位用途</h3>
           <p id="pnlPurpose" class="pnl-text"></p>
@@ -118,22 +135,6 @@
           <h3>選片建議</h3>
           <ul class="pnl-list good" id="pnlGood"></ul>
           <ul class="pnl-list avoid" id="pnlAvoid"></ul>
-        </div>
-
-        <div class="pnl-block">
-          <h3>解析度檢查</h3>
-          <div class="res-rows">
-            <div class="res-row"><span>原始圖片</span><b id="resSource">－</b></div>
-            <div class="res-row"><span>裁切後有效</span><b id="resEffective">－</b></div>
-            <div class="res-row"><span>輸出尺寸</span><b id="resOutput">－</b></div>
-          </div>
-          <div class="status-chip" id="statusChip" data-tone="idle">尚未上傳照片</div>
-          <p class="status-msg" id="statusMsg">上傳後立即判斷這張照片是否撐得起這個版位。</p>
-        </div>
-
-        <div class="pnl-block">
-          <h3>成品預覽</h3>
-          <div class="mini-previews" id="miniPreviews"></div>
         </div>
 
         <div class="pnl-block">
@@ -212,6 +213,6 @@
 <input type="file" id="filePicker" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" hidden />
 
 <script src="/consent.js?v=202607150900" defer></script>
-<script src="app.js?v=202608032000" defer></script>
+<script src="app.js?v=202608032100" defer></script>
 </body>
 </html>
