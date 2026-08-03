@@ -1,0 +1,44 @@
+{
+  "_doc": "CHUN.EN 影像部署模擬器｜平台規格索引。改規格＝改本目錄下的 JSON 再 push，不改程式邏輯。",
+  "bundle_version": "2026-08-03",
+  "coordinate_unit": "output_px",
+  "_coordinate_note": "所有 safe_zone / avatar_overlap / mobile_crop / desktop_crop / guides 的座標，一律以該版位 output.width × output.height 的像素為基準，原點在左上角。程式端自行換算成畫面比例。",
+  "source": "CHUN.EN 形象照平台應用指南 v2.0（規格查證日 2026/08/03）",
+  "source_file": "Desktop\\Claude\\CHUN.EN_顧問文件\\形象照平台應用指南_v2.docx",
+  "platforms": [
+    {
+      "id": "linkedin",
+      "display_name": "LinkedIn",
+      "display_name_en": "LinkedIn",
+      "file": "linkedin.json",
+      "phase": "P0",
+      "is_active": true,
+      "tagline": "商務身分的第一落點。頭像與橫幅是同一組視覺，要一起判斷。"
+    },
+    {
+      "id": "line",
+      "display_name": "LINE",
+      "display_name_en": "LINE",
+      "file": "line.json",
+      "phase": "P1",
+      "is_active": false,
+      "tagline": "即將開放"
+    },
+    {
+      "id": "facebook",
+      "display_name": "Facebook",
+      "display_name_en": "Facebook",
+      "file": "facebook.json",
+      "phase": "P1",
+      "is_active": false,
+      "tagline": "即將開放"
+    }
+  ],
+  "resolution_status": {
+    "_doc": "解析度四級狀態的顯示定義。門檻值寫在各版位的 resolution_tiers。",
+    "good": { "label": "適合使用", "tone": "ok" },
+    "acceptable": { "label": "可用，但不建議再放大", "tone": "warn" },
+    "poor": { "label": "建議更換原始檔", "tone": "alert" },
+    "unusable": { "label": "不適合此版位", "tone": "danger" }
+  }
+}

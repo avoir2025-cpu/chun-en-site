@@ -3,5 +3,6 @@ Allow: /
 Disallow: /v5/
 Disallow: /services/
 Disallow: /dev/
+Disallow: /deploy/
 
 Sitemap: https://chunen.tw/sitemap.xml

@@ -1,0 +1,261 @@
+{
+  "_doc": "LinkedIn 版位規格。數值來源：形象照平台應用指南 v2.0（2026/08/03 查證）。",
+  "platform": "linkedin",
+  "display_name": "LinkedIn",
+  "version": "2026-08-03",
+  "is_active": true,
+
+  "modes": [
+    {
+      "id": "avatar_only",
+      "display_name": "個人大頭照",
+      "subtitle": "Profile Photo",
+      "slots": ["avatar"],
+      "summary": "只處理頭像。搜尋結果、訊息列表、留言列都是這一張。"
+    },
+    {
+      "id": "banner_only",
+      "display_name": "個人橫幅",
+      "subtitle": "Background Banner",
+      "slots": ["banner"],
+      "summary": "只處理頭圖。決定別人點進你的頁面時，第一眼看到的空間感。"
+    },
+    {
+      "id": "full",
+      "display_name": "頭像＋橫幅完整部署",
+      "subtitle": "Full Deployment",
+      "slots": ["avatar", "banner"],
+      "recommended": true,
+      "summary": "兩張一起判斷。頭像會壓在橫幅左下角，只裁單張看不出實際效果。"
+    }
+  ],
+
+  "slots": [
+    {
+      "platform": "linkedin",
+      "slot": "avatar",
+      "display_name": "個人大頭照",
+      "display_name_en": "Profile Photo",
+      "is_active": true,
+      "version": "2026-08-03",
+
+      "output": {
+        "width": 800,
+        "height": 800,
+        "aspect_ratio": "1:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 400, "height": 400 },
+      "resolution_tiers": { "good": 800, "acceptable": 600, "poor": 400 },
+      "_tiers_note": "以裁切後有效寬度（px）判定：≥800 適合／≥600 可用不建議放大／≥400 建議更換原始檔／<400 不適合。LinkedIn 官方最低 400×400，輸出給 800 讓平台自己縮。",
+
+      "display_shape": "circle",
+      "desktop_crop": { "x": 0, "y": 0, "width": 800, "height": 800 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 800, "height": 800 },
+      "safe_zone": { "shape": "circle", "cx": 400, "cy": 400, "r": 400 },
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "circle_mask",
+          "kind": "circle_mask",
+          "tone": "danger",
+          "label": "圓形外的四角會被切掉",
+          "geometry": { "cx": 400, "cy": 400, "r": 400 },
+          "default_on": true
+        },
+        {
+          "id": "subject_zone",
+          "kind": "circle",
+          "tone": "safe",
+          "label": "建議五官落在此圈內",
+          "geometry": { "cx": 400, "cy": 368, "r": 296 },
+          "description": "頭頂與雙肩四周各留 15–20% 空間，縮到 48px 仍能辨識。",
+          "default_on": true
+        },
+        {
+          "id": "center_cross",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "圓心",
+          "geometry": { "cx": 400, "cy": 400 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": {
+        "anchor": "center",
+        "eye_line_ratio": 0.38,
+        "_note": "眼睛約落在畫面高度 38% 處，頭頂留白 15–20%。"
+      },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "搜尋結果、訊息列表、留言、動態牆都用這一張。實際顯示常縮到 48–72px，是別人辨識你的唯一線索。",
+        "good_for": [
+          "頭肩照或胸上照",
+          "眼神清楚、視線朝向鏡頭",
+          "背景乾淨、不與服裝爭焦點",
+          "縮到很小仍能辨識五官"
+        ],
+        "avoid": [
+          "全身照、人物在畫面裡太小",
+          "大面積道具或手勢遮住臉",
+          "團體照裁切出來的單人",
+          "背景複雜或與服裝同色調"
+        ],
+        "subject_position": "臉置中，頭頂留 15–20% 空間",
+        "has_overlap": false,
+        "shot_type": "頭肩／胸上",
+        "diagram": "avatar"
+      },
+
+      "advice": [
+        "人物在畫面中太小，縮到 48px 後五官會糊掉。",
+        "頭頂留白過多，會讓臉在圓形裡顯得偏下。",
+        "肩線裁得太緊，畫面會有壓迫感。",
+        "背景與服裝對比不足，人物輪廓會糊成一片。",
+        "人物偏離圓心，圓形裁切後會歪一邊。"
+      ],
+      "_advice_note": "P0 為靜態顧問提示（人工判讀對照用）；自動偵測主體位置屬 P3。",
+
+      "naming": { "template": "{name}_LinkedIn_Profile_{date}", "fallback_name": "CHUN_EN" }
+    },
+
+    {
+      "platform": "linkedin",
+      "slot": "banner",
+      "display_name": "個人橫幅",
+      "display_name_en": "Background Banner",
+      "is_active": true,
+      "version": "2026-08-03",
+
+      "output": {
+        "width": 1584,
+        "height": 396,
+        "aspect_ratio": "4:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 1000, "height": 250 },
+      "resolution_tiers": { "good": 1584, "acceptable": 1200, "poor": 1000 },
+      "_tiers_note": "以裁切後有效寬度（px）判定：≥1584 適合／≥1200 可用不建議放大／≥1000 建議更換原始檔／<1000 不適合。",
+
+      "display_shape": "rect",
+      "desktop_crop": { "x": 0, "y": 0, "width": 1584, "height": 396 },
+      "mobile_crop": { "x": 238, "y": 0, "width": 1108, "height": 396 },
+      "_mobile_crop_note": "手機版左右各裁約 15%（1584×0.15≈238），實際可視寬約 1108px。",
+
+      "safe_zone": { "shape": "rect", "x": 600, "y": 48, "width": 746, "height": 300 },
+      "_safe_zone_note": "手機可視範圍（x 238–1346）與頭像遮擋區（x 0–568）的交集之外，再各留邊界。標語、頭銜、關鍵主體只放這裡才全裝置安全。",
+
+      "avatar_overlap": { "shape": "rect", "x": 0, "y": 132, "width": 568, "height": 264 },
+      "_avatar_overlap_note": "橫幅左下角約 568×264 會被大頭像蓋住，不放文字或重點。",
+
+      "guides": [
+        {
+          "id": "avatar_overlap",
+          "kind": "rect",
+          "tone": "danger",
+          "label": "頭像遮擋區",
+          "geometry": { "x": 0, "y": 132, "width": 568, "height": 264 },
+          "description": "這塊會被你的大頭像蓋住，任何重點放這裡等於沒放。",
+          "default_on": true
+        },
+        {
+          "id": "mobile_crop",
+          "kind": "outside_rect",
+          "tone": "warn",
+          "label": "手機裁切區",
+          "geometry": { "x": 238, "y": 0, "width": 1108, "height": 396 },
+          "description": "手機版左右各裁掉約 15%，深色遮罩內的內容在手機上看不到。",
+          "default_on": true
+        },
+        {
+          "id": "safe_zone",
+          "kind": "rect",
+          "tone": "safe",
+          "label": "全裝置安全區",
+          "geometry": { "x": 600, "y": 48, "width": 746, "height": 300 },
+          "description": "主體與文字放這裡，桌機與手機都完整看得到，也不會被頭像壓到。",
+          "default_on": true
+        }
+      ],
+
+      "recommended_subject_position": {
+        "anchor": "center-right",
+        "_note": "主體放中央偏右，離左緣至少 300px，避開頭像遮擋。"
+      },
+      "recommended_text_position": {
+        "anchor": "center-right",
+        "min_left_px": 300
+      },
+
+      "card": {
+        "purpose": "點進你的頁面第一眼看到的橫向空間。決定整張個人頁的氣質與空間感，也是唯一可以放品牌訊息的版位。",
+        "good_for": [
+          "橫式構圖、右側或中央有留白",
+          "空間、材質、環境照",
+          "半身人物但不與頭像重複",
+          "低對比、不搶頭像焦點的畫面"
+        ],
+        "avoid": [
+          "重點主體落在左下角（會被頭像蓋住）",
+          "把整張人物照直接壓成 4:1",
+          "關鍵文字貼近左右邊界",
+          "與頭像同一組畫面、視覺重複"
+        ],
+        "subject_position": "中央偏右，離左緣至少 300px",
+        "has_overlap": true,
+        "shot_type": "橫式環境／空間／半身留白",
+        "diagram": "banner"
+      },
+
+      "advice": [
+        "主體落入左下的頭像遮擋區，實際會被大頭像蓋住。",
+        "關鍵內容貼近左右邊界，手機版會被裁掉。",
+        "橫幅與頭像用了同一組畫面，兩張視覺互相競爭。",
+        "圖片解析度可輸出，但構圖比例不適合 4:1 這種極寬版位。",
+        "整體太亮或太滿，會壓過頭像與姓名區的可讀性。"
+      ],
+      "_advice_note": "P0 為靜態顧問提示；自動偵測主體是否落入遮擋區屬 P3。",
+
+      "naming": { "template": "{name}_LinkedIn_Banner_{date}", "fallback_name": "CHUN_EN" }
+    }
+  ],
+
+  "stage": {
+    "_doc": "舞台預覽的示意版面參數。刻意不使用平台 logo 與真實 UI 截圖，只保留版位關係。",
+    "disclaimer": "此畫面為版位模擬。實際平台介面可能因裝置、帳號類型與平台版本略有差異。",
+    "desktop": {
+      "banner_aspect": "4:1",
+      "avatar_diameter_ratio": 0.135,
+      "avatar_left_ratio": 0.021,
+      "avatar_overlap_ratio": 0.6,
+      "_note": "比例皆相對於舞台卡片寬度；avatar_overlap_ratio＝頭像有多少比例壓在橫幅上。"
+    },
+    "mobile": {
+      "banner_visible_ratio": 0.7,
+      "avatar_diameter_ratio": 0.24,
+      "avatar_left_ratio": 0.05,
+      "avatar_overlap_ratio": 0.5
+    },
+    "placeholder": {
+      "name": "您的姓名",
+      "headline": "職稱｜公司或個人品牌",
+      "meta": "台中市｜500+ 位人脈"
+    },
+    "small_preview_sizes": [96, 48, 32],
+    "_small_preview_note": "頭像辨識度檢視：模擬動態牆、留言列、訊息列表的實際顯示尺寸。"
+  },
+
+  "export": {
+    "preview_naming": { "template": "{name}_LinkedIn_Preview_{date}", "fallback_name": "CHUN_EN" },
+    "zip_naming": { "template": "{name}_LinkedIn_Deploy_{date}", "fallback_name": "CHUN_EN" },
+    "readme_included": true,
+    "record_spec_version": true
+  }
+}

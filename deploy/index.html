@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>影像部署模擬器｜CHUN.EN Visual OS</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="在下載之前，先確認這張影像進入真實商務場景後，是否仍然準確傳達你的角色與專業。" />
+  <meta name="theme-color" content="#14100B" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="app.css?v=202608031700" />
+</head>
+<body>
+
+<header class="topbar">
+  <a class="topbar-brand" href="/">CHUN.EN</a>
+  <div class="topbar-title">
+    <span class="en">Visual OS｜Deploy</span>
+    <span class="tc">定格・影像部署模擬器</span>
+  </div>
+  <a class="topbar-exit" href="/c-photos.html">離開</a>
+</header>
+
+<!-- ===== 步驟指示 ===== -->
+<nav class="stepper" id="stepper" hidden>
+  <button class="step" data-goto="pick"><i>1</i><span>選擇版位</span></button>
+  <button class="step" data-goto="crop"><i>2</i><span>裁切判斷</span></button>
+  <button class="step" data-goto="stage"><i>3</i><span>舞台預覽</span></button>
+  <button class="step" data-goto="export"><i>4</i><span>下載</span></button>
+</nav>
+
+<main id="app">
+
+  <!-- ============ 畫面 1：版位選擇 ============ -->
+  <section class="screen" id="screen-pick">
+    <div class="wrap">
+      <p class="eyebrow">C.photos<span class="sep">·</span>Deploy</p>
+      <h1>在下載之前，<em>先看它上線之後</em></h1>
+      <p class="lede">拍攝完成不是影像服務的終點；被正確使用，才是影像價值真正開始的地方。這裡不是裁圖工具，是部署判斷：確認照片進入真實商務場景後，是否仍然準確傳達你的角色與專業。</p>
+
+      <div class="privacy-note">
+        <span class="dot"></span>
+        照片將在您的裝置中完成處理，不會上傳或保留。關閉頁面即清除。
+      </div>
+
+      <h2 class="sect-h">選擇平台</h2>
+      <div class="platform-row" id="platformRow"><!-- JS 由 specs/index.json 產生 --></div>
+
+      <h2 class="sect-h">選擇版位</h2>
+      <div class="mode-grid" id="modeGrid"><!-- JS 由平台規格 modes 產生 --></div>
+
+      <div class="slot-cards" id="slotCards"><!-- JS 由平台規格 slots 產生版位卡 --></div>
+
+      <p class="spec-stamp" id="specStamp"></p>
+    </div>
+  </section>
+
+  <!-- ============ 畫面 2：裁切判斷 ============ -->
+  <section class="screen" id="screen-crop" hidden>
+    <div class="crop-layout">
+
+      <!-- 左：影像＋裁切框＋疊層 -->
+      <div class="crop-main">
+        <div class="crop-head">
+          <h2 id="cropTitle">版位</h2>
+          <span class="slot-progress" id="slotProgress"></span>
+        </div>
+
+        <div class="canvas-shell" id="canvasShell">
+          <div class="canvas-frame" id="canvasFrame">
+            <!-- 影像層（裁切引擎接手處） -->
+            <div class="canvas-image" id="canvasImage">
+              <img id="sourceImg" alt="" hidden />
+            </div>
+            <!-- 疊層：由規格 guides 產生 -->
+            <svg class="canvas-guides" id="canvasGuides" preserveAspectRatio="none"></svg>
+            <!-- 未上傳時的投放區 -->
+            <div class="dropzone" id="dropzone">
+              <div class="dz-inner">
+                <div class="dz-icon">＋</div>
+                <p class="dz-main">拖曳照片到這裡，或點擊選擇</p>
+                <p class="dz-sub">JPG／PNG／WebP／HEIC　單檔上限 40MB</p>
+                <p class="dz-hint">請使用雲端交付的原始檔。從聊天室存下來的照片已被壓縮，畫質救不回來。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 控制列（裁切引擎接手處） -->
+        <div class="controls" id="controls" hidden>
+          <div class="ctrl-zoom">
+            <label for="zoom">縮放</label>
+            <input type="range" id="zoom" min="100" max="300" value="100" step="1" disabled />
+            <span class="zoom-val" id="zoomVal">100%</span>
+          </div>
+          <div class="ctrl-btns">
+            <button class="btn btn-ghost" id="btnReset" disabled>重設</button>
+            <button class="btn btn-ghost" id="btnReplace">更換照片</button>
+          </div>
+        </div>
+
+        <div class="guide-toggles" id="guideToggles"><!-- JS 由 guides 產生開關 --></div>
+        <p class="engine-todo">裁切引擎（拖拉／縮放／有效像素運算／Canvas 輸出）為下一階段實作，目前影像以完整置入顯示。</p>
+      </div>
+
+      <!-- 右：判斷面板 -->
+      <aside class="crop-panel">
+        <div class="pnl-block">
+          <h3>版位用途</h3>
+          <p id="pnlPurpose" class="pnl-text"></p>
+        </div>
+
+        <div class="pnl-block">
+          <h3>選片建議</h3>
+          <ul class="pnl-list good" id="pnlGood"></ul>
+          <ul class="pnl-list avoid" id="pnlAvoid"></ul>
+        </div>
+
+        <div class="pnl-block">
+          <h3>解析度檢查</h3>
+          <div class="res-rows">
+            <div class="res-row"><span>原始圖片</span><b id="resSource">－</b></div>
+            <div class="res-row"><span>裁切後有效</span><b id="resEffective">－</b></div>
+            <div class="res-row"><span>輸出尺寸</span><b id="resOutput">－</b></div>
+          </div>
+          <div class="status-chip" id="statusChip" data-tone="idle">尚未上傳照片</div>
+          <p class="status-msg" id="statusMsg">上傳後立即判斷這張照片是否撐得起這個版位。</p>
+        </div>
+
+        <div class="pnl-block">
+          <h3>成品預覽</h3>
+          <div class="mini-previews" id="miniPreviews"></div>
+        </div>
+
+        <div class="pnl-block">
+          <h3>顧問提示</h3>
+          <ul class="pnl-list advice" id="pnlAdvice"></ul>
+        </div>
+
+        <div class="pnl-actions">
+          <button class="btn btn-ghost" id="btnBackPick">返回版位</button>
+          <button class="btn btn-gold" id="btnToNext" disabled>下一步</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ 畫面 3：舞台預覽 ============ -->
+  <section class="screen" id="screen-stage" hidden>
+    <div class="wrap">
+      <div class="stage-head">
+        <div>
+          <h2>舞台預覽</h2>
+          <p class="lede sm">這是正式下載前的必要步驟。單看裁切結果看不出頭像壓在橫幅上的實際效果。</p>
+        </div>
+        <div class="stage-switch" role="tablist">
+          <button class="sw on" data-view="desktop" role="tab">桌面</button>
+          <button class="sw" data-view="mobile" role="tab">手機</button>
+        </div>
+      </div>
+
+      <div class="stage-fields">
+        <label>姓名 <input type="text" id="fieldName" placeholder="選填，用於檔名與模擬顯示" maxlength="20" /></label>
+        <label>職稱 <input type="text" id="fieldHeadline" placeholder="職稱｜公司或個人品牌" maxlength="40" /></label>
+        <label class="chk"><input type="checkbox" id="chkCompare" /> A／B 比較</label>
+      </div>
+
+      <div class="stage-area" id="stageArea"><!-- JS 依 stage 參數繪製示意版面 --></div>
+
+      <div class="stage-note" id="stageNote"></div>
+
+      <div class="stage-actions">
+        <button class="btn btn-ghost" id="btnBackCrop">返回調整</button>
+        <button class="btn btn-gold" id="btnToExport">前往下載</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 畫面 4：下載 ============ -->
+  <section class="screen" id="screen-export" hidden>
+    <div class="wrap narrow">
+      <h2>下載</h2>
+      <p class="lede sm">檔名自動生成，不需手動命名。輸出時一併記錄規格版本。</p>
+
+      <ul class="file-list" id="fileList"></ul>
+
+      <div class="export-actions">
+        <button class="btn btn-ghost" id="btnDlAll" disabled>全部下載</button>
+        <button class="btn btn-gold" id="btnDlZip" disabled>下載 ZIP（含舞台預覽與使用建議）</button>
+      </div>
+
+      <p class="engine-todo">輸出引擎（Canvas 匯出／預覽圖／ZIP 打包）為下一階段實作。</p>
+
+      <div class="next-steps">
+        <h3>下一步應用</h3>
+        <p>其他平台版位（LINE／Facebook）陸續開放。若需要由顧問協助選片與配置，可回到客戶中心提出。</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p id="footSpec"></p>
+  <p>© 2026 CHUN.EN 形象美學</p>
+</footer>
+
+<input type="file" id="filePicker" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" hidden />
+
+<script src="/consent.js?v=202607150900" defer></script>
+<script src="app.js?v=202608031700" defer></script>
+</body>
+</html>
