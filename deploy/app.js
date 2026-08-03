@@ -4,9 +4,10 @@
    ------------------------------------------------------------
    本檔分區：
      §1 工具         §2 規格載入      §3 狀態
-     §4 路由／步驟   §5 版位選擇畫面  §6 裁切畫面（疊層由規格 JSON 驅動）
-     §7 舞台畫面     §8 下載畫面      §9 啟動
-   裁切引擎（拖拉／縮放／Canvas 輸出）在 §6 標示 [ENGINE] 處接手。
+     §4 路由／步驟   §5 版位選擇      §6 裁切引擎（拖拉／縮放／有效像素）
+     §7 裁切畫面     §8 舞台畫面      §9 輸出引擎（Canvas／預覽圖／ZIP）
+     §10 下載畫面    §11 啟動
+   疊層座標、尺寸、門檻、文案一律來自 specs/*.json，不寫死在程式。
    ============================================================ */
 
 /* ================= §1 工具 ================= */
@@ -23,6 +24,7 @@ const svgEl = (tag, attrs) => {
   for (const k in attrs) n.setAttribute(k, attrs[k]);
   return n;
 };
+const clamp = (v, lo, hi) => (lo > hi ? (lo + hi) / 2 : Math.min(hi, Math.max(lo, v)));
 
 const track = (name, params) => {
   if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
@@ -32,13 +34,12 @@ const todayStamp = () => {
   const d = new Date();
   return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
 };
-
 const safeName = (s) => (s || '').trim().replace(/[\\/:*?"<>|\s]+/g, '_').slice(0, 20);
-
 const fillTemplate = (tpl, fallback, name) =>
   tpl.replace('{name}', safeName(name) || fallback).replace('{date}', todayStamp());
 
 const MAX_FILE_BYTES = 40 * 1024 * 1024;
+const MAX_WORK_PIXELS = 16.5e6;   // iOS Safari canvas 面積上限，超過先降採樣成工作圖
 const ACCEPT_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
 const HEIC_LIB = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';
 
@@ -52,29 +53,26 @@ async function loadSpecs() {
     SPECS.platforms[p.id] = await fetch(`specs/${p.file}`).then((r) => r.json());
   }
 }
-
 const platformSpec = () => SPECS.platforms[state.platform];
 const slotSpec = (slotId) => platformSpec().slots.find((s) => s.slot === slotId);
-const modeSpec = () => platformSpec().modes.find((m) => m.id === state.mode);
 
 /* ================= §3 狀態 ================= */
 const state = {
   screen: 'pick',
   platform: 'linkedin',
   mode: null,
-  queue: [],        // 本次要處理的版位順序，例：['avatar','banner']
-  cursor: 0,        // queue 索引
-  assets: {},       // slot -> { file, url, naturalW, naturalH, transform }
-  guidesOn: {},     // guideId -> bool
+  queue: [],
+  cursor: 0,
+  assets: {},       // slot -> { img, url, naturalW/H, workW/H, downsampled, transform:{zoom,nx,ny} }
+  guidesOn: {},
   stageView: 'desktop',
   compare: false,
   name: '',
   headline: ''
 };
-
 const currentSlotId = () => state.queue[state.cursor];
 const currentAsset = () => state.assets[currentSlotId()];
-const allSlotsReady = () => state.queue.every((s) => state.assets[s]);
+const allSlotsReady = () => state.queue.length > 0 && state.queue.every((s) => state.assets[s]);
 
 /* ================= §4 路由／步驟 ================= */
 const SCREENS = ['pick', 'crop', 'stage', 'export'];
@@ -100,16 +98,12 @@ function renderStepper() {
     btn.classList.toggle('done', i < now);
   });
 }
-
 document.querySelectorAll('.step').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    if (btn.classList.contains('done')) go(btn.dataset.goto);
-  });
+  btn.addEventListener('click', () => { if (btn.classList.contains('done')) go(btn.dataset.goto); });
 });
 
 /* ================= §5 版位選擇畫面 ================= */
 function renderPicker() {
-  // --- 平台列 ---
   const row = $('platformRow');
   row.innerHTML = '';
   SPECS.index.platforms.forEach((p) => {
@@ -118,17 +112,12 @@ function renderPicker() {
     b.appendChild(el('span', 'ph', p.is_active ? p.phase : '即將開放'));
     b.disabled = !p.is_active;
     b.title = p.tagline || '';
-    b.addEventListener('click', () => {
-      state.platform = p.id;
-      state.mode = null;
-      renderPicker();
-    });
+    b.addEventListener('click', () => { state.platform = p.id; state.mode = null; renderPicker(); });
     row.appendChild(b);
   });
 
   const spec = platformSpec();
 
-  // --- 版位模式 ---
   const grid = $('modeGrid');
   grid.innerHTML = '';
   spec.modes.forEach((m) => {
@@ -148,7 +137,6 @@ function renderPicker() {
     grid.appendChild(b);
   });
 
-  // --- 版位卡 ---
   const cards = $('slotCards');
   cards.innerHTML = '';
   spec.slots.filter((s) => s.is_active).forEach((s) => cards.appendChild(slotCard(s)));
@@ -160,7 +148,6 @@ function renderPicker() {
 
 function slotCard(s) {
   const c = el('div', 'slot-card');
-
   const dia = el('div', 'sc-dia');
   dia.appendChild(diagramFor(s));
   c.appendChild(dia);
@@ -175,13 +162,11 @@ function slotCard(s) {
   c.appendChild(el('p', 'sc-purpose', s.card.purpose));
 
   const meta = el('div', 'sc-meta');
-  const rows = [
-    ['建議照片', s.card.shot_type],
-    ['主體位置', s.card.subject_position],
-    ['頭像遮擋', s.card.has_overlap ? '有，左下角約 568×264' : '無'],
-    ['顯示形狀', s.display_shape === 'circle' ? '圓形（四角會被切掉）' : '矩形']
-  ];
-  rows.forEach(([k, v]) => {
+  [['建議照片', s.card.shot_type],
+   ['主體位置', s.card.subject_position],
+   ['頭像遮擋', s.card.has_overlap ? '有，左下角約 568×264' : '無'],
+   ['顯示形狀', s.display_shape === 'circle' ? '圓形（四角會被切掉）' : '矩形']
+  ].forEach(([k, v]) => {
     const d = el('div');
     d.appendChild(el('span', null, k));
     d.appendChild(el('p', null, v));
@@ -192,12 +177,10 @@ function slotCard(s) {
   return c;
 }
 
-/* 版位示意圖：由規格座標直接畫，不另外備圖檔 */
 function diagramFor(s) {
   const W = s.output.width, H = s.output.height;
   const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': `${s.display_name} 版位示意` });
   const fs = Math.round(Math.min(W, H) * 0.055);
-
   svg.appendChild(svgEl('rect', { x: 0, y: 0, width: W, height: H, fill: '#0D0A07', stroke: 'rgba(245,241,232,0.16)', 'stroke-width': 2 }));
 
   if (s.display_shape === 'circle') {
@@ -207,16 +190,10 @@ function diagramFor(s) {
         d: `M0,0 H${W} V${H} H0 Z M${g.geometry.cx},${g.geometry.cy - g.geometry.r} a${g.geometry.r},${g.geometry.r} 0 1,0 0.01,0 Z`,
         fill: 'rgba(180,101,90,0.28)', 'fill-rule': 'evenodd'
       }));
-      svg.appendChild(svgEl('circle', {
-        cx: g.geometry.cx, cy: g.geometry.cy, r: g.geometry.r,
-        fill: 'none', stroke: '#A88A5C', 'stroke-width': 3
-      }));
+      svg.appendChild(svgEl('circle', { cx: g.geometry.cx, cy: g.geometry.cy, r: g.geometry.r, fill: 'none', stroke: '#A88A5C', 'stroke-width': 3 }));
     }
     const sub = s.guides.find((x) => x.id === 'subject_zone');
-    if (sub) svg.appendChild(svgEl('circle', {
-      cx: sub.geometry.cx, cy: sub.geometry.cy, r: sub.geometry.r,
-      fill: 'none', stroke: '#7FA37A', 'stroke-width': 2, 'stroke-dasharray': '14 12'
-    }));
+    if (sub) svg.appendChild(svgEl('circle', { cx: sub.geometry.cx, cy: sub.geometry.cy, r: sub.geometry.r, fill: 'none', stroke: '#7FA37A', 'stroke-width': 2, 'stroke-dasharray': '14 12' }));
   } else {
     if (s.mobile_crop) {
       const m = s.mobile_crop;
@@ -227,44 +204,211 @@ function diagramFor(s) {
     if (s.avatar_overlap) {
       const a = s.avatar_overlap;
       svg.appendChild(svgEl('rect', { x: a.x, y: a.y, width: a.width, height: a.height, fill: 'rgba(180,101,90,0.3)', stroke: '#B4655A', 'stroke-width': 2 }));
-      svg.appendChild(text(a.x + a.width / 2, a.y + a.height / 2 + fs * 0.35, '頭像遮擋', fs, '#E0A79C'));
+      svg.appendChild(svgText(a.x + a.width / 2, a.y + a.height / 2 + fs * 0.35, '頭像遮擋', fs, '#E0A79C'));
     }
     if (s.safe_zone && s.safe_zone.shape === 'rect') {
       const z = s.safe_zone;
       svg.appendChild(svgEl('rect', { x: z.x, y: z.y, width: z.width, height: z.height, fill: 'rgba(127,163,122,0.14)', stroke: '#7FA37A', 'stroke-width': 2, 'stroke-dasharray': '12 10' }));
-      svg.appendChild(text(z.x + z.width / 2, z.y + z.height / 2 + fs * 0.35, '安全區', fs, '#A8C3A3'));
+      svg.appendChild(svgText(z.x + z.width / 2, z.y + z.height / 2 + fs * 0.35, '安全區', fs, '#A8C3A3'));
     }
   }
   return svg;
 }
 
-function text(x, y, str, size, fill) {
+function svgText(x, y, str, size, fill) {
   const t = svgEl('text', { x, y, 'text-anchor': 'middle', 'font-size': size, fill, 'font-family': 'Noto Sans TC, sans-serif', 'letter-spacing': '2' });
   t.textContent = str;
   return t;
 }
 
-/* ================= §6 裁切畫面 ================= */
+/* ================= §6 裁切引擎 =================
+   模型：
+     baseScale = cover 所需縮放（zoom=1 時影像剛好填滿裁切框）
+     zoom      ≥1，使用者放大倍率
+     nx, ny    影像左上角相對裁切框的位移，以裁切框寬高為單位（-1 ~ 0 之間）
+   位移一律正規化，視窗縮放後不會跑掉。
+   ------------------------------------------------------------ */
+function frameSize() {
+  const r = $('canvasFrame').getBoundingClientRect();
+  return { w: r.width, h: r.height };
+}
+
+function baseScale(asset, s) {
+  const f = frameSize();
+  return Math.max(f.w / asset.workW, f.h / asset.workH);
+}
+
+/* 依目前 transform 算出影像在裁切框中的顯示幾何（px） */
+function layout(asset, s) {
+  const f = frameSize();
+  const sc = baseScale(asset, s) * asset.transform.zoom;
+  const dw = asset.workW * sc, dh = asset.workH * sc;
+  let ox = asset.transform.nx * f.w;
+  let oy = asset.transform.ny * f.h;
+  ox = clamp(ox, f.w - dw, 0);
+  oy = clamp(oy, f.h - dh, 0);
+  return { f, sc, dw, dh, ox, oy };
+}
+
+/* 目前取樣到的原圖區域（工作圖像素）。
+   只用 transform 推導、不依賴畫面尺寸，確保預覽與輸出取到完全相同的區域。 */
+function cropRect(asset, s) {
+  const target = s.output.width / s.output.height;
+  const iw = asset.workW, ih = asset.workH;
+  const coverW = Math.min(iw, ih * target);          // zoom=1 時取樣寬度
+  const sw = coverW / asset.transform.zoom;
+  const sh = sw / target;
+  return {
+    sx: clamp(-asset.transform.nx * sw, 0, iw - sw),
+    sy: clamp(-asset.transform.ny * sh, 0, ih - sh),
+    sw, sh
+  };
+}
+
+function setTransform(asset, patch) {
+  Object.assign(asset.transform, patch);
+  const L = layout(asset, currentSlot());
+  asset.transform.nx = L.ox / L.f.w;
+  asset.transform.ny = L.oy / L.f.h;
+  asset.dirty = true;
+}
+
+const currentSlot = () => slotSpec(currentSlotId());
+
+function applyTransform() {
+  const asset = currentAsset();
+  if (!asset) return;
+  const s = currentSlot();
+  const L = layout(asset, s);
+  const img = $('sourceImg');
+  img.style.width = L.dw + 'px';
+  img.style.height = L.dh + 'px';
+  img.style.left = L.ox + 'px';
+  img.style.top = L.oy + 'px';
+  refreshReadouts(s, asset);
+}
+
+let rafPending = false;
+function scheduleApply() {
+  if (rafPending) return;
+  rafPending = true;
+  requestAnimationFrame(() => { rafPending = false; applyTransform(); });
+}
+
+/* ---- 置中重設 ---- */
+function resetTransform(asset) {
+  asset.transform = { zoom: 1, nx: 0, ny: 0 };
+  const s = currentSlot();
+  const f = frameSize();
+  const sc = baseScale(asset, s);
+  asset.transform.nx = (f.w - asset.workW * sc) / 2 / f.w;
+  asset.transform.ny = (f.h - asset.workH * sc) / 2 / f.h;
+  asset.dirty = true;
+}
+
+/* ---- 以焦點縮放 ---- */
+function zoomAt(asset, newZoom, fx, fy) {
+  const s = currentSlot();
+  const before = layout(asset, s);
+  newZoom = clamp(newZoom, 1, 3);
+  const ratio = newZoom / asset.transform.zoom;
+  const ox = fx - (fx - before.ox) * ratio;
+  const oy = fy - (fy - before.oy) * ratio;
+  asset.transform.zoom = newZoom;
+  asset.transform.nx = ox / before.f.w;
+  asset.transform.ny = oy / before.f.h;
+  setTransform(asset, {});
+  $('zoom').value = Math.round(newZoom * 100);
+  $('zoomVal').textContent = Math.round(newZoom * 100) + '%';
+}
+
+/* ---- 指標互動：拖拉＋雙指縮放 ---- */
+const pointers = new Map();
+let dragStart = null;
+let pinchStart = null;
+
+const frameEl = $('canvasFrame');
+
+frameEl.addEventListener('pointerdown', (e) => {
+  const asset = currentAsset();
+  if (!asset) return;
+  frameEl.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  const L = layout(asset, currentSlot());
+  if (pointers.size === 1) {
+    dragStart = { x: e.clientX, y: e.clientY, ox: L.ox, oy: L.oy };
+    frameEl.classList.add('grabbing');
+  } else if (pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    pinchStart = { dist: Math.hypot(a.x - b.x, a.y - b.y), zoom: asset.transform.zoom };
+    dragStart = null;
+  }
+});
+
+frameEl.addEventListener('pointermove', (e) => {
+  const asset = currentAsset();
+  if (!asset || !pointers.has(e.pointerId)) return;
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+  if (pointers.size === 2 && pinchStart) {
+    const [a, b] = [...pointers.values()];
+    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+    const r = frameEl.getBoundingClientRect();
+    zoomAt(asset, pinchStart.zoom * (dist / pinchStart.dist),
+      (a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top);
+    scheduleApply();
+    return;
+  }
+  if (dragStart) {
+    const f = frameSize();
+    setTransform(asset, {
+      nx: (dragStart.ox + (e.clientX - dragStart.x)) / f.w,
+      ny: (dragStart.oy + (e.clientY - dragStart.y)) / f.h
+    });
+    scheduleApply();
+  }
+});
+
+/* 只認 up/cancel：已 setPointerCapture，指標移出框外仍會收到 pointerup；
+   若連 pointerleave 也結束拖曳，捕捉當下就可能被誤判為放開。 */
+['pointerup', 'pointercancel'].forEach((ev) =>
+  frameEl.addEventListener(ev, (e) => {
+    pointers.delete(e.pointerId);
+    if (pointers.size < 2) pinchStart = null;
+    if (pointers.size === 0) { dragStart = null; frameEl.classList.remove('grabbing'); }
+  }));
+
+frameEl.addEventListener('wheel', (e) => {
+  const asset = currentAsset();
+  if (!asset) return;
+  e.preventDefault();
+  const r = frameEl.getBoundingClientRect();
+  zoomAt(asset, asset.transform.zoom * (e.deltaY > 0 ? 0.94 : 1.06), e.clientX - r.left, e.clientY - r.top);
+  scheduleApply();
+}, { passive: false });
+
+new ResizeObserver(() => { if (state.screen === 'crop') scheduleApply(); }).observe(frameEl);
+
+/* ================= §7 裁切畫面 ================= */
 function renderCrop() {
-  const s = slotSpec(currentSlotId());
+  const s = currentSlot();
   const asset = currentAsset();
 
   $('cropTitle').textContent = `${platformSpec().display_name}　${s.display_name}`;
-  $('slotProgress').textContent = state.queue.length > 1
-    ? `第 ${state.cursor + 1} / ${state.queue.length} 個版位`
-    : '';
+  $('slotProgress').textContent = state.queue.length > 1 ? `第 ${state.cursor + 1} / ${state.queue.length} 個版位` : '';
+  $('canvasFrame').style.aspectRatio = `${s.output.width} / ${s.output.height}`;
 
-  // 裁切框比例＝輸出比例
-  const frame = $('canvasFrame');
-  frame.style.aspectRatio = `${s.output.width} / ${s.output.height}`;
-
-  // 影像
   const img = $('sourceImg');
   if (asset) {
     img.src = asset.url;
     img.hidden = false;
     $('dropzone').hidden = true;
     $('controls').hidden = false;
+    $('zoom').disabled = false;
+    $('btnReset').disabled = false;
+    $('zoom').value = Math.round(asset.transform.zoom * 100);
+    $('zoomVal').textContent = Math.round(asset.transform.zoom * 100) + '%';
+    applyTransform();
   } else {
     img.removeAttribute('src');
     img.hidden = true;
@@ -274,10 +418,10 @@ function renderCrop() {
 
   renderGuides(s);
   renderGuideToggles(s);
-  renderPanel(s, asset);
+  renderPanelStatic(s);
+  refreshReadouts(s, asset);
 }
 
-/* ---- 疊層：完全由規格 JSON 的 guides 驅動 ---- */
 function renderGuides(s) {
   const svg = $('canvasGuides');
   svg.setAttribute('viewBox', `0 0 ${s.output.width} ${s.output.height}`);
@@ -290,7 +434,6 @@ function renderGuides(s) {
     if (state.guidesOn[g.id] === false) return;
     const col = TONE[g.tone] || TONE.info;
     const geo = g.geometry;
-
     if (g.kind === 'circle_mask') {
       svg.appendChild(svgEl('path', {
         d: `M0,0 H${W} V${H} H0 Z M${geo.cx},${geo.cy - geo.r} a${geo.r},${geo.r} 0 1,0 0.01,0 Z`,
@@ -306,12 +449,12 @@ function renderGuides(s) {
         stroke: col, 'stroke-width': 2.5,
         'stroke-dasharray': g.tone === 'safe' ? '16 12' : 'none'
       }));
-      svg.appendChild(text(geo.x + geo.width / 2, geo.y + geo.height / 2 + fs * 0.35, g.label, fs, col));
+      svg.appendChild(svgText(geo.x + geo.width / 2, geo.y + geo.height / 2 + fs * 0.35, g.label, fs, col));
     } else if (g.kind === 'outside_rect') {
       svg.appendChild(svgEl('rect', { x: 0, y: 0, width: geo.x, height: H, fill: 'rgba(20,16,11,0.7)' }));
       svg.appendChild(svgEl('rect', { x: geo.x + geo.width, y: 0, width: W - geo.x - geo.width, height: H, fill: 'rgba(20,16,11,0.7)' }));
       svg.appendChild(svgEl('rect', { x: geo.x + 1, y: 1, width: geo.width - 2, height: H - 2, fill: 'none', stroke: col, 'stroke-width': 2, 'stroke-dasharray': '14 10' }));
-      svg.appendChild(text(geo.x / 2, H / 2, '手機裁掉', Math.round(fs * 0.8), col));
+      svg.appendChild(svgText(geo.x / 2, H / 2, '手機裁掉', Math.round(fs * 0.8), col));
     } else if (g.kind === 'crosshair') {
       svg.appendChild(svgEl('line', { x1: geo.cx, y1: 0, x2: geo.cx, y2: H, stroke: col, 'stroke-width': 1.5, 'stroke-dasharray': '8 10' }));
       svg.appendChild(svgEl('line', { x1: 0, y1: geo.cy, x2: W, y2: geo.cy, stroke: col, 'stroke-width': 1.5, 'stroke-dasharray': '8 10' }));
@@ -324,8 +467,7 @@ function renderGuideToggles(s) {
   box.innerHTML = '';
   s.guides.forEach((g) => {
     if (state.guidesOn[g.id] === undefined) state.guidesOn[g.id] = g.default_on !== false;
-    const on = state.guidesOn[g.id];
-    const b = el('button', 'gt' + (on ? ' on' : ''));
+    const b = el('button', 'gt' + (state.guidesOn[g.id] ? ' on' : ''));
     b.dataset.tone = g.tone;
     b.title = g.description || '';
     b.appendChild(el('span', 'sw-dot'));
@@ -339,63 +481,47 @@ function renderGuideToggles(s) {
   });
 }
 
-/* ---- 右側判斷面板 ---- */
-function renderPanel(s, asset) {
+function renderPanelStatic(s) {
   $('pnlPurpose').textContent = s.card.purpose;
-
   const good = $('pnlGood'); good.innerHTML = '';
   s.card.good_for.forEach((t) => good.appendChild(el('li', null, t)));
   const avoid = $('pnlAvoid'); avoid.innerHTML = '';
   s.card.avoid.forEach((t) => avoid.appendChild(el('li', null, t)));
   const adv = $('pnlAdvice'); adv.innerHTML = '';
   s.advice.forEach((t) => adv.appendChild(el('li', null, t)));
-
   $('resOutput').textContent = `${s.output.width} × ${s.output.height}`;
+  buildMiniPreviews(s);
+}
 
+/* ---- 隨拖拉即時更新的讀數與預覽 ---- */
+function refreshReadouts(s, asset) {
   if (!asset) {
     $('resSource').textContent = '－';
     $('resEffective').textContent = '－';
     setStatus('idle', '尚未上傳照片', '上傳後立即判斷這張照片是否撐得起這個版位。');
-    renderMiniPreviews(s, null);
     $('btnToNext').disabled = true;
+    drawMiniPreviews(s, null);
     return;
   }
-
-  $('resSource').textContent = `${asset.naturalW} × ${asset.naturalH}`;
-  const eff = effectiveCrop(asset, s);
-  $('resEffective').textContent = `${eff.w} × ${eff.h}`;
-
-  const r = judge(eff.w, s);
+  $('resSource').textContent = `${asset.naturalW} × ${asset.naturalH}` + (asset.downsampled ? '（已降採樣處理）' : '');
+  const c = cropRect(asset, s);
+  const effW = Math.round(c.sw * asset.srcRatio);
+  const effH = Math.round(c.sh * asset.srcRatio);
+  $('resEffective').textContent = `${effW} × ${effH}`;
+  const r = judge(effW, s);
   setStatus(r.tone, r.label, r.msg);
-  renderMiniPreviews(s, asset);
   $('btnToNext').disabled = false;
-}
-
-/* [ENGINE] 目前為預設裁切狀態：影像 cover 置中填滿裁切框（縮放 100%、無位移）。
-   裁切引擎接手後，這裡改為依 transform（位移／縮放）計算實際取樣區域。 */
-function effectiveCrop(asset, s) {
-  const target = s.output.width / s.output.height;
-  const src = asset.naturalW / asset.naturalH;
-  let w, h;
-  if (src > target) { h = asset.naturalH; w = Math.round(h * target); }
-  else { w = asset.naturalW; h = Math.round(w / target); }
-  return { w, h };
+  drawMiniPreviews(s, asset);
 }
 
 function judge(effW, s) {
   const t = s.resolution_tiers;
   const st = SPECS.index.resolution_status;
   const need = s.output.width;
-  if (effW >= t.good) {
-    return { tone: st.good.tone, label: st.good.label, msg: `裁切後有效寬度 ${effW}px，足以支撐 ${need}px 的輸出，平台縮圖後仍然清楚。` };
-  }
-  if (effW >= t.acceptable) {
-    return { tone: st.acceptable.tone, label: st.acceptable.label, msg: `裁切後只保留 ${effW}px，此版位建議至少 ${need}px。手機可接受，桌面可能略糊。請減少放大比例，或更換原始檔。` };
-  }
-  if (effW >= t.poor) {
-    return { tone: st.poor.tone, label: st.poor.label, msg: `裁切後只保留 ${effW}px，低於此版位建議的 ${need}px。建議改用雲端交付的原始檔，不要用聊天室存下來的壓縮版本。` };
-  }
-  return { tone: st.unusable.tone, label: st.unusable.label, msg: `裁切後只保留 ${effW}px，低於最低需求 ${s.minimum_effective.width}px。這張照片不適合此版位，請更換原始檔。` };
+  if (effW >= t.good) return { tone: st.good.tone, label: st.good.label, msg: `裁切後有效寬度 ${effW}px，足以支撐 ${need}px 的輸出，平台縮圖後仍然清楚。` };
+  if (effW >= t.acceptable) return { tone: st.acceptable.tone, label: st.acceptable.label, msg: `裁切後只保留 ${effW}px，此版位建議至少 ${need}px。手機可接受，桌面可能略糊。請減少放大比例，或更換原始檔。` };
+  if (effW >= t.poor) return { tone: st.poor.tone, label: st.poor.label, msg: `裁切後只保留 ${effW}px，低於此版位建議的 ${need}px。請減少放大比例，或改用雲端交付的原始檔，不要用聊天室存下來的壓縮版本。` };
+  return { tone: st.unusable.tone, label: st.unusable.label, msg: `裁切後只保留 ${effW}px，低於最低需求 ${s.minimum_effective.width}px。放大比例過高或原始檔不足，這樣輸出會糊。` };
 }
 
 function setStatus(tone, label, msg) {
@@ -405,36 +531,40 @@ function setStatus(tone, label, msg) {
   $('statusMsg').textContent = msg;
 }
 
-function renderMiniPreviews(s, asset) {
+/* ---- 即時成品預覽（canvas，畫的是真正的裁切結果） ---- */
+let miniCanvases = [];
+function buildMiniPreviews(s) {
   const box = $('miniPreviews');
   box.innerHTML = '';
-  const sizes = s.display_shape === 'circle'
-    ? (platformSpec().stage.small_preview_sizes || [96, 48, 32])
-    : [[220, null]];
+  miniCanvases = [];
+  const circle = s.display_shape === 'circle';
+  const sizes = circle ? (platformSpec().stage.small_preview_sizes || [96, 48, 32]) : [240];
 
-  const mk = (w, h, circle, cap) => {
+  sizes.forEach((w) => {
+    const h = circle ? w : Math.round(w * s.output.height / s.output.width);
     const m = el('div', 'mini');
-    const b = el('div', 'box' + (circle ? ' circle' : ''));
-    b.style.width = w + 'px';
-    b.style.height = (h || Math.round(w * s.output.height / s.output.width)) + 'px';
-    if (asset) {
-      const i = el('img');
-      i.src = asset.url;
-      i.alt = '';
-      b.appendChild(i);
-    } else {
-      b.appendChild(el('div', 'empty'));
-    }
-    m.appendChild(b);
-    m.appendChild(el('div', 'cap', cap));
+    const cv = document.createElement('canvas');
+    cv.className = 'box' + (circle ? ' circle' : '');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    m.appendChild(cv);
+    m.appendChild(el('div', 'cap', circle ? `${w}px` : '橫幅'));
     box.appendChild(m);
-  };
+    miniCanvases.push(cv);
+  });
+}
 
-  if (s.display_shape === 'circle') {
-    sizes.forEach((px) => mk(px, px, true, `${px}px`));
-  } else {
-    mk(220, null, false, '橫幅');
-  }
+function drawMiniPreviews(s, asset) {
+  miniCanvases.forEach((cv) => {
+    const ctx = cv.getContext('2d');
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.fillStyle = '#0D0A07';
+    ctx.fillRect(0, 0, cv.width, cv.height);
+    if (!asset) return;
+    const c = cropRect(asset, s);
+    ctx.drawImage(asset.img, c.sx, c.sy, c.sw, c.sh, 0, 0, cv.width, cv.height);
+  });
 }
 
 /* ---- 上傳 ---- */
@@ -443,20 +573,15 @@ const filePicker = $('filePicker');
 
 dropzone.addEventListener('click', () => filePicker.click());
 $('btnReplace').addEventListener('click', () => filePicker.click());
-['dragenter', 'dragover'].forEach((ev) =>
-  dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.add('drag'); }));
-['dragleave', 'drop'].forEach((ev) =>
-  dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.remove('drag'); }));
-dropzone.addEventListener('drop', (e) => {
-  if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
-});
+['dragenter', 'dragover'].forEach((ev) => dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.add('drag'); }));
+['dragleave', 'drop'].forEach((ev) => dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.remove('drag'); }));
+dropzone.addEventListener('drop', (e) => { if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
 filePicker.addEventListener('change', (e) => {
   if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
   filePicker.value = '';
 });
 
 async function handleFile(file) {
-  const s = slotSpec(currentSlotId());
   const isHeic = /\.(heic|heif)$/i.test(file.name) || /heic|heif/i.test(file.type);
 
   if (file.size > MAX_FILE_BYTES) {
@@ -471,43 +596,65 @@ async function handleFile(file) {
   let blob = file;
   if (isHeic && !(await canDecode(file))) {
     setStatus('warn', 'HEIC 轉檔中', '這台裝置的瀏覽器無法直接讀取 HEIC，正在本機轉檔，請稍候。');
-    try {
-      blob = await convertHeic(file);
-    } catch (err) {
+    try { blob = await convertHeic(file); }
+    catch (err) {
       setStatus('danger', 'HEIC 轉檔失敗', '請在 iPhone 相簿選擇「編輯後拷貝」輸出 JPG，或改用雲端交付的原始 JPG 檔。');
       return;
     }
   }
 
-  const url = URL.createObjectURL(blob);
-  const img = new Image();
-  img.onload = () => {
-    const slot = currentSlotId();
-    if (state.assets[slot]) URL.revokeObjectURL(state.assets[slot].url);
-    state.assets[slot] = {
-      file, blob, url,
-      naturalW: img.naturalWidth,
-      naturalH: img.naturalHeight,
-      transform: { scale: 1, x: 0, y: 0 }   // [ENGINE] 裁切引擎的位移／縮放狀態
-    };
-    track('deploy_upload', { platform: state.platform, slot, w: img.naturalWidth, h: img.naturalHeight });
-    renderCrop();
-  };
-  img.onerror = () => {
-    URL.revokeObjectURL(url);
+  let img;
+  try { img = await decodeImage(blob); }
+  catch (err) {
     setStatus('danger', '圖片無法讀取', '檔案可能已損壞或不是有效的影像。請更換檔案再試一次。');
+    return;
+  }
+
+  const slot = currentSlotId();
+  const prev = state.assets[slot];
+  if (prev && prev.url) URL.revokeObjectURL(prev.url);
+
+  // 超大圖降採樣成工作圖（避免 iOS canvas 面積上限）；原始尺寸照實顯示
+  const natW = img.naturalWidth, natH = img.naturalHeight;
+  let work = img, workW = natW, workH = natH, downsampled = false;
+  if (natW * natH > MAX_WORK_PIXELS) {
+    const k = Math.sqrt(MAX_WORK_PIXELS / (natW * natH));
+    workW = Math.round(natW * k); workH = Math.round(natH * k);
+    const cv = document.createElement('canvas');
+    cv.width = workW; cv.height = workH;
+    cv.getContext('2d').drawImage(img, 0, 0, workW, workH);
+    work = cv;
+    downsampled = true;
+  }
+
+  state.assets[slot] = {
+    img: work,
+    url: URL.createObjectURL(blob),
+    naturalW: natW, naturalH: natH,
+    workW, workH,
+    srcRatio: natW / workW,     // 工作圖像素 → 原始像素的換算
+    downsampled,
+    transform: { zoom: 1, nx: 0, ny: 0 },
+    dirty: true
   };
-  img.src = url;
+
+  track('deploy_upload', { platform: state.platform, slot, w: natW, h: natH });
+  renderCrop();
+  resetTransform(state.assets[slot]);   // 置中；同步做，不等 rAF（分頁在背景時 rAF 不會觸發）
+  applyTransform();
 }
 
-function canDecode(file) {
-  return new Promise((resolve) => {
-    const url = URL.createObjectURL(file);
+function decodeImage(blob) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(blob);
     const im = new Image();
-    im.onload = () => { URL.revokeObjectURL(url); resolve(true); };
-    im.onerror = () => { URL.revokeObjectURL(url); resolve(false); };
+    im.onload = () => { res(im); };
+    im.onerror = () => { URL.revokeObjectURL(url); rej(new Error('decode')); };
     im.src = url;
   });
+}
+function canDecode(file) {
+  return decodeImage(file).then(() => true).catch(() => false);
 }
 
 let heicLoading = null;
@@ -517,13 +664,11 @@ function loadHeicLib() {
   heicLoading = new Promise((res, rej) => {
     const sc = document.createElement('script');
     sc.src = HEIC_LIB;
-    sc.onload = res;
-    sc.onerror = rej;
+    sc.onload = res; sc.onerror = rej;
     document.head.appendChild(sc);
   });
   return heicLoading;
 }
-
 async function convertHeic(file) {
   await loadHeicLib();
   const out = await window.heic2any({ blob: file, toType: 'image/jpeg', quality: 0.95 });
@@ -533,7 +678,14 @@ async function convertHeic(file) {
 /* ---- 裁切頁按鈕 ---- */
 $('btnBackPick').addEventListener('click', () => go('pick'));
 $('btnToNext').addEventListener('click', () => {
-  track('deploy_crop_done', { platform: state.platform, slot: currentSlotId() });
+  const asset = currentAsset();
+  const s = currentSlot();
+  const c = cropRect(asset, s);
+  track('deploy_crop_done', {
+    platform: state.platform, slot: currentSlotId(),
+    zoom: Math.round(asset.transform.zoom * 100),
+    effective_w: Math.round(c.sw * asset.srcRatio)
+  });
   if (state.cursor < state.queue.length - 1) {
     state.cursor++;
     renderCrop();
@@ -545,16 +697,20 @@ $('btnToNext').addEventListener('click', () => {
 $('btnReset').addEventListener('click', () => {
   const a = currentAsset();
   if (!a) return;
-  a.transform = { scale: 1, x: 0, y: 0 };   // [ENGINE]
+  resetTransform(a);
   $('zoom').value = 100;
   $('zoomVal').textContent = '100%';
-  renderCrop();
+  applyTransform();
 });
 $('zoom').addEventListener('input', (e) => {
-  $('zoomVal').textContent = e.target.value + '%';   // [ENGINE]
+  const a = currentAsset();
+  if (!a) return;
+  const f = frameSize();
+  zoomAt(a, Number(e.target.value) / 100, f.w / 2, f.h / 2);
+  scheduleApply();
 });
 
-/* ================= §7 舞台畫面 ================= */
+/* ================= §8 舞台畫面 ================= */
 document.querySelectorAll('.sw').forEach((b) => {
   b.addEventListener('click', () => {
     document.querySelectorAll('.sw').forEach((x) => x.classList.remove('on'));
@@ -567,52 +723,73 @@ $('fieldName').addEventListener('input', (e) => { state.name = e.target.value; r
 $('fieldHeadline').addEventListener('input', (e) => { state.headline = e.target.value; renderStage(); });
 $('chkCompare').addEventListener('change', (e) => { state.compare = e.target.checked; renderStage(); });
 
+/* 舞台與下載都用真正的裁切結果，不是原圖 */
+function croppedDataURL(slotId, maxW) {
+  const asset = state.assets[slotId];
+  if (!asset) return null;
+  const s = slotSpec(slotId);
+  const key = 'preview_' + maxW;
+  if (!asset.dirty && asset[key]) return asset[key];
+  const w = Math.min(maxW, s.output.width);
+  const h = Math.round(w * s.output.height / s.output.width);
+  asset[key] = renderCropCanvas(slotId, w, h).toDataURL('image/jpeg', 0.9);
+  return asset[key];
+}
+
+function renderCropCanvas(slotId, w, h) {
+  const asset = state.assets[slotId];
+  const s = slotSpec(slotId);
+  const cv = document.createElement('canvas');
+  cv.width = w; cv.height = h;
+  const ctx = cv.getContext('2d');
+  ctx.imageSmoothingQuality = 'high';
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, w, h);
+  const c = cropRect(asset, s);
+  ctx.drawImage(asset.img, c.sx, c.sy, c.sw, c.sh, 0, 0, w, h);
+  return cv;
+}
+
 function renderStage() {
   const cfg = platformSpec().stage;
   const area = $('stageArea');
   area.innerHTML = '';
-
   const views = state.compare ? ['desktop', 'mobile'] : [state.stageView];
   views.forEach((v) => area.appendChild(mockProfile(cfg, v)));
-
   $('stageNote').textContent = cfg.disclaimer;
+  state.queue.forEach((slot) => { const a = state.assets[slot]; if (a) a.dirty = false; });
   track('deploy_stage_view', { platform: state.platform, view: state.stageView, compare: state.compare });
 }
 
 function mockProfile(cfg, view) {
   const c = cfg[view];
   const bannerSpec = slotSpec('banner');
-  const avatarAsset = state.assets.avatar;
-  const bannerAsset = state.assets.banner;
+  const avatarUrl = croppedDataURL('avatar', 400);
+  const bannerUrl = croppedDataURL('banner', 1200);
 
   const wrapEl = el('div', 'mock-wrap');
   const card = el('div', 'mock' + (view === 'mobile' ? ' phone' : ''));
 
-  // 橫幅
   const band = el('div', 'mock-banner');
   band.style.aspectRatio = view === 'mobile'
     ? `${Math.round(bannerSpec.output.width * c.banner_visible_ratio)} / ${bannerSpec.output.height}`
     : `${bannerSpec.output.width} / ${bannerSpec.output.height}`;
-  if (bannerAsset) {
-    const i = el('img'); i.src = bannerAsset.url; i.alt = ''; band.appendChild(i);
+  if (bannerUrl) {
+    const i = el('img'); i.src = bannerUrl; i.alt = ''; band.appendChild(i);
   } else {
     band.appendChild(el('div', 'ph-fill', '尚未設定橫幅'));
   }
 
-  // 頭像：寬度取卡片寬度的比例；用 translateY（相對自身高度）控制壓在橫幅上的比例
   const av = el('div', 'mock-avatar');
   av.style.width = (c.avatar_diameter_ratio * 100) + '%';
   av.style.aspectRatio = '1 / 1';
   av.style.left = (c.avatar_left_ratio * 100) + '%';
   av.style.top = '100%';
   av.style.transform = `translateY(${-c.avatar_overlap_ratio * 100}%)`;
-  if (avatarAsset) {
-    const i = el('img'); i.src = avatarAsset.url; i.alt = ''; av.appendChild(i);
-  }
+  if (avatarUrl) { const i = el('img'); i.src = avatarUrl; i.alt = ''; av.appendChild(i); }
   band.appendChild(av);
   card.appendChild(band);
 
-  // 資訊區：padding-top 的百分比是相對容器寬度，正好等於頭像露在橫幅下方的那一段
   const body = el('div', 'mock-body');
   body.style.paddingTop = `calc(${(c.avatar_diameter_ratio * (1 - c.avatar_overlap_ratio) * 100).toFixed(2)}% + 0.8rem)`;
   body.appendChild(el('div', 'mock-name', state.name.trim() || cfg.placeholder.name));
@@ -631,7 +808,199 @@ function mockProfile(cfg, view) {
 $('btnBackCrop').addEventListener('click', () => { state.cursor = 0; go('crop'); });
 $('btnToExport').addEventListener('click', () => go('export'));
 
-/* ================= §8 下載畫面 ================= */
+/* ================= §9 輸出引擎 ================= */
+function exportSlotBlob(slotId) {
+  const s = slotSpec(slotId);
+  const cv = renderCropCanvas(slotId, s.output.width, s.output.height);
+  return new Promise((res) => cv.toBlob(res, s.output.file_format, s.output.quality));
+}
+
+/* 舞台預覽圖：把桌面版位關係畫成一張可交付的圖 */
+async function exportStageBlob() {
+  const cfg = platformSpec().stage;
+  const c = cfg.desktop;
+  const bSpec = slotSpec('banner');
+  const W = 1600;
+  const bandH = Math.round(W * bSpec.output.height / bSpec.output.width);
+  const avD = Math.round(W * c.avatar_diameter_ratio);
+  const avL = Math.round(W * c.avatar_left_ratio);
+  const below = Math.round(avD * (1 - c.avatar_overlap_ratio));
+  const bodyH = below + 190;
+  const H = bandH + bodyH;
+
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#1C1710';
+  ctx.fillRect(0, 0, W, H);
+
+  if (state.assets.banner) {
+    const bc = renderCropCanvas('banner', W, bandH);
+    ctx.drawImage(bc, 0, 0);
+  } else {
+    ctx.fillStyle = '#0D0A07';
+    ctx.fillRect(0, 0, W, bandH);
+  }
+
+  if (state.assets.avatar) {
+    const ac = renderCropCanvas('avatar', avD, avD);
+    const cx = avL + avD / 2;
+    const cy = bandH - avD * c.avatar_overlap_ratio + avD / 2;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, avD / 2 + 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#1C1710';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx, cy, avD / 2, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(ac, avL, cy - avD / 2, avD, avD);
+    ctx.restore();
+  }
+
+  try { await document.fonts.ready; } catch (e) { /* 字型未就緒不影響輸出 */ }
+  const baseY = bandH + below + 56;
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = '#F5F1E8';
+  ctx.font = '400 42px "Noto Serif TC", serif';
+  ctx.fillText(state.name.trim() || cfg.placeholder.name, avL, baseY);
+  ctx.fillStyle = '#CFC5B4';
+  ctx.font = '400 24px "Noto Serif TC", serif';
+  ctx.fillText(state.headline.trim() || cfg.placeholder.headline, avL, baseY + 44);
+  ctx.fillStyle = '#8B7D6B';
+  ctx.font = '400 19px "Noto Sans TC", sans-serif';
+  ctx.fillText(cfg.disclaimer, avL, H - 26);
+
+  return new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.92));
+}
+
+function readmeText() {
+  const spec = platformSpec();
+  const lines = [];
+  lines.push('CHUN.EN 影像部署模擬器｜輸出說明');
+  lines.push('');
+  lines.push(`平台：${spec.display_name}`);
+  lines.push(`規格版本：${spec.version}（規格組 ${SPECS.index.bundle_version}）`);
+  lines.push(`輸出日期：${todayStamp()}`);
+  lines.push(`資料來源：${SPECS.index.source}`);
+  lines.push('');
+  lines.push('── 檔案 ──');
+  state.queue.forEach((slotId) => {
+    const s = slotSpec(slotId);
+    const a = state.assets[slotId];
+    const c = a ? cropRect(a, s) : null;
+    lines.push(`${fillTemplate(s.naming.template, s.naming.fallback_name, state.name)}.${s.output.extension}`);
+    lines.push(`  版位：${s.display_name}　輸出：${s.output.width}×${s.output.height}（${s.output.aspect_ratio}）`);
+    if (c) lines.push(`  裁切後有效像素：${Math.round(c.sw * a.srcRatio)}×${Math.round(c.sh * a.srcRatio)}（原始檔 ${a.naturalW}×${a.naturalH}）`);
+    lines.push('');
+  });
+  lines.push(`${fillTemplate(spec.export.preview_naming.template, spec.export.preview_naming.fallback_name, state.name)}.jpg`);
+  lines.push('  舞台預覽圖（版位模擬，非平台實際截圖）');
+  lines.push('');
+  lines.push('── 使用建議 ──');
+  state.queue.forEach((slotId) => {
+    const s = slotSpec(slotId);
+    lines.push(`【${s.display_name}】`);
+    lines.push(`用途：${s.card.purpose}`);
+    lines.push(`主體位置：${s.card.subject_position}`);
+    s.advice.forEach((t) => lines.push(`・${t}`));
+    lines.push('');
+  });
+  lines.push('── 上傳說明 ──');
+  lines.push('1. 一律上傳這裡輸出的檔案，不要再經過通訊軟體轉傳（會被二次壓縮）。');
+  lines.push('2. 平台會自行縮圖，上傳大圖畫質最好。');
+  lines.push('3. 各平台規格會不定期改版，若顯示與預期不同，請回到模擬器確認最新規格版本。');
+  lines.push('');
+  lines.push(spec.stage.disclaimer);
+  lines.push('');
+  lines.push('© 2026 CHUN.EN 形象美學');
+  return lines.join('\r\n');
+}
+
+function saveBlob(blob, filename) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+
+/* ---- 極簡 ZIP（store，不壓縮）：JPG 本來就壓過了，省一個外部相依 ---- */
+const CRC_TABLE = (() => {
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1;
+    t[n] = c >>> 0;
+  }
+  return t;
+})();
+function crc32(u8) {
+  let c = 0xFFFFFFFF;
+  for (let i = 0; i < u8.length; i++) c = CRC_TABLE[(c ^ u8[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+function dosTime(d) {
+  return ((d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() / 2)) & 0xFFFF;
+}
+function dosDate(d) {
+  return (((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate()) & 0xFFFF;
+}
+function buildZip(entries) {
+  const enc = new TextEncoder();
+  const now = new Date();
+  const t = dosTime(now), dt = dosDate(now);
+  const chunks = [];
+  const central = [];
+  let offset = 0;
+
+  entries.forEach((e) => {
+    const name = enc.encode(e.name);
+    const crc = crc32(e.data);
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true);
+    lh.setUint16(4, 20, true);
+    lh.setUint16(6, 0x0800, true);      // UTF-8 檔名
+    lh.setUint16(8, 0, true);           // store
+    lh.setUint16(10, t, true);
+    lh.setUint16(12, dt, true);
+    lh.setUint32(14, crc, true);
+    lh.setUint32(18, e.data.length, true);
+    lh.setUint32(22, e.data.length, true);
+    lh.setUint16(26, name.length, true);
+    lh.setUint16(28, 0, true);
+    chunks.push(new Uint8Array(lh.buffer), name, e.data);
+
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true);
+    ch.setUint16(4, 20, true);
+    ch.setUint16(6, 20, true);
+    ch.setUint16(8, 0x0800, true);
+    ch.setUint16(10, 0, true);
+    ch.setUint16(12, t, true);
+    ch.setUint16(14, dt, true);
+    ch.setUint32(16, crc, true);
+    ch.setUint32(20, e.data.length, true);
+    ch.setUint32(24, e.data.length, true);
+    ch.setUint16(28, name.length, true);
+    ch.setUint32(42, offset, true);
+    central.push(new Uint8Array(ch.buffer), name);
+    offset += 30 + name.length + e.data.length;
+  });
+
+  const centralSize = central.reduce((n, c) => n + c.length, 0);
+  const eo = new DataView(new ArrayBuffer(22));
+  eo.setUint32(0, 0x06054b50, true);
+  eo.setUint16(8, entries.length, true);
+  eo.setUint16(10, entries.length, true);
+  eo.setUint32(12, centralSize, true);
+  eo.setUint32(16, offset, true);
+  return new Blob([...chunks, ...central, new Uint8Array(eo.buffer)], { type: 'application/zip' });
+}
+
+/* ================= §10 下載畫面 ================= */
 function renderExport() {
   const spec = platformSpec();
   const list = $('fileList');
@@ -639,30 +1008,101 @@ function renderExport() {
 
   state.queue.forEach((slotId) => {
     const s = slotSpec(slotId);
+    const a = state.assets[slotId];
+    const fname = fillTemplate(s.naming.template, s.naming.fallback_name, state.name) + '.' + s.output.extension;
     const li = el('li');
     const left = el('div');
-    left.appendChild(el('div', 'fn', fillTemplate(s.naming.template, s.naming.fallback_name, state.name) + '.' + s.output.extension));
-    left.appendChild(el('div', 'fm', `${s.output.width} × ${s.output.height}　規格版本 ${s.version}`));
+    left.appendChild(el('div', 'fn', fname));
+    const c = a ? cropRect(a, s) : null;
+    left.appendChild(el('div', 'fm',
+      `${s.output.width} × ${s.output.height}　規格版本 ${s.version}` +
+      (c ? `　有效像素 ${Math.round(c.sw * a.srcRatio)}px` : '')));
     li.appendChild(left);
-    li.appendChild(el('span', 'fm', state.assets[slotId] ? '已就緒' : '未上傳'));
+    if (a) {
+      const b = el('button', 'btn btn-ghost sm', '下載');
+      b.addEventListener('click', async () => {
+        b.disabled = true; b.textContent = '輸出中';
+        saveBlob(await exportSlotBlob(slotId), fname);
+        b.disabled = false; b.textContent = '下載';
+        track('deploy_download', { platform: state.platform, slot: slotId, kind: 'single' });
+      });
+      li.appendChild(b);
+    } else {
+      li.appendChild(el('span', 'fm', '未上傳'));
+    }
     list.appendChild(li);
   });
 
+  const pname = fillTemplate(spec.export.preview_naming.template, spec.export.preview_naming.fallback_name, state.name) + '.jpg';
   const li = el('li');
   const left = el('div');
-  left.appendChild(el('div', 'fn', fillTemplate(spec.export.preview_naming.template, spec.export.preview_naming.fallback_name, state.name) + '.jpg'));
-  left.appendChild(el('div', 'fm', '舞台預覽圖'));
+  left.appendChild(el('div', 'fn', pname));
+  left.appendChild(el('div', 'fm', '舞台預覽圖（版位模擬）'));
   li.appendChild(left);
-  li.appendChild(el('span', 'fm', '待輸出引擎'));
+  const pb = el('button', 'btn btn-ghost sm', '下載');
+  pb.disabled = !allSlotsReady();
+  pb.addEventListener('click', async () => {
+    pb.disabled = true; pb.textContent = '輸出中';
+    saveBlob(await exportStageBlob(), pname);
+    pb.disabled = false; pb.textContent = '下載';
+    track('deploy_download', { platform: state.platform, kind: 'preview' });
+  });
+  li.appendChild(pb);
   list.appendChild(li);
 
   const ready = allSlotsReady();
-  $('btnDlAll').disabled = true;   // [ENGINE] 輸出引擎接手後開啟
-  $('btnDlZip').disabled = true;
+  $('btnDlAll').disabled = !ready;
+  $('btnDlZip').disabled = !ready;
   if (ready) track('deploy_export_view', { platform: state.platform, mode: state.mode });
 }
 
-/* ================= §9 啟動 ================= */
+$('btnDlAll').addEventListener('click', async (e) => {
+  const b = e.currentTarget;
+  b.disabled = true; b.textContent = '輸出中';
+  for (const slotId of state.queue) {
+    const s = slotSpec(slotId);
+    saveBlob(await exportSlotBlob(slotId),
+      fillTemplate(s.naming.template, s.naming.fallback_name, state.name) + '.' + s.output.extension);
+    await new Promise((r) => setTimeout(r, 300));
+  }
+  const spec = platformSpec();
+  saveBlob(await exportStageBlob(),
+    fillTemplate(spec.export.preview_naming.template, spec.export.preview_naming.fallback_name, state.name) + '.jpg');
+  b.disabled = false; b.textContent = '全部下載';
+  track('deploy_download', { platform: state.platform, kind: 'all' });
+});
+
+$('btnDlZip').addEventListener('click', async (e) => {
+  const b = e.currentTarget;
+  b.disabled = true; b.textContent = '打包中';
+  try {
+    const spec = platformSpec();
+    const entries = [];
+    for (const slotId of state.queue) {
+      const s = slotSpec(slotId);
+      const blob = await exportSlotBlob(slotId);
+      entries.push({
+        name: fillTemplate(s.naming.template, s.naming.fallback_name, state.name) + '.' + s.output.extension,
+        data: new Uint8Array(await blob.arrayBuffer())
+      });
+    }
+    const pv = await exportStageBlob();
+    entries.push({
+      name: fillTemplate(spec.export.preview_naming.template, spec.export.preview_naming.fallback_name, state.name) + '.jpg',
+      data: new Uint8Array(await pv.arrayBuffer())
+    });
+    entries.push({ name: '使用說明與規格版本.txt', data: new TextEncoder().encode('﻿' + readmeText()) });
+
+    saveBlob(buildZip(entries),
+      fillTemplate(spec.export.zip_naming.template, spec.export.zip_naming.fallback_name, state.name) + '.zip');
+    track('deploy_download', { platform: state.platform, kind: 'zip', mode: state.mode });
+  } catch (err) {
+    alert('打包失敗，請改用「全部下載」逐檔取得。');
+  }
+  b.disabled = false; b.textContent = '下載 ZIP（含舞台預覽與使用建議）';
+});
+
+/* ================= §11 啟動 ================= */
 window.addEventListener('beforeunload', (e) => {
   if (Object.keys(state.assets).length && state.screen !== 'pick') {
     e.preventDefault();

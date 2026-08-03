@@ -173,10 +173,14 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
 .slot-progress { font-size: 1rem; color: var(--muted); letter-spacing: 0.06em; }
 
 .canvas-shell { background: #0D0A07; border: 1px solid var(--hairline); padding: 1.6rem; }
-.canvas-frame { position: relative; width: 100%; background: #000; overflow: hidden; }
-.canvas-image { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-/* [ENGINE] 預設裁切狀態＝cover 置中。裁切引擎接手後改為 transform 控制。 */
-.canvas-image img { width: 100%; height: 100%; object-fit: cover; }
+.canvas-frame {
+  position: relative; width: 100%; background: #000; overflow: hidden;
+  touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none;
+}
+.canvas-frame.grabbing { cursor: grabbing; }
+.canvas-image { position: absolute; inset: 0; overflow: hidden; }
+/* 位置與尺寸由裁切引擎逐格寫入（layout()） */
+.canvas-image img { position: absolute; max-width: none; -webkit-user-drag: none; }
 .canvas-guides { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
 .dropzone { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(20,16,11,0.6); }
@@ -243,11 +247,9 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
 
 .mini-previews { display: flex; align-items: flex-end; gap: 1rem; margin-top: 0.9rem; flex-wrap: wrap; }
 .mini { text-align: center; }
-.mini .box { background: #000; border: 1px solid var(--hairline); overflow: hidden; }
+.mini .box { display: block; background: #000; border: 1px solid var(--hairline); }
 .mini .box.circle { border-radius: 50%; }
-.mini .box img { width: 100%; height: 100%; object-fit: cover; }
 .mini .cap { font-size: 0.85rem; color: var(--muted); margin-top: 0.35rem; font-family: var(--serif-en); }
-.mini .empty { width: 100%; height: 100%; }
 
 .pnl-actions { display: flex; gap: 0.7rem; margin-top: 1.8rem; padding-top: 1.6rem; border-top: 1px solid var(--hairline); }
 .pnl-actions .btn { flex: 1; }
@@ -262,6 +264,7 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
 .btn-gold { background: var(--gold); border-color: var(--gold); color: var(--ink); }
 .btn-gold:hover:not([disabled]) { background: var(--gold-light); border-color: var(--gold-light); color: var(--ink); }
 .btn[disabled] { opacity: 0.35; cursor: not-allowed; }
+.btn.sm { padding: 0.35rem 1.1rem; font-size: 0.95rem; flex: none; }
 
 /* ============ 舞台 ============ */
 .stage-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }

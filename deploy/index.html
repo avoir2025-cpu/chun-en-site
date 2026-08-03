@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="app.css?v=202608031700" />
+  <link rel="stylesheet" href="app.css?v=202608031830" />
 </head>
 <body>
 
@@ -104,7 +104,7 @@
         </div>
 
         <div class="guide-toggles" id="guideToggles"><!-- JS 由 guides 產生開關 --></div>
-        <p class="engine-todo">裁切引擎（拖拉／縮放／有效像素運算／Canvas 輸出）為下一階段實作，目前影像以完整置入顯示。</p>
+        <p class="engine-todo">直接拖曳照片調整位置；滾輪或雙指縮放，也可拉下方滑桿。右側的有效像素會隨著調整即時重算。</p>
       </div>
 
       <!-- 右：判斷面板 -->
@@ -193,7 +193,7 @@
         <button class="btn btn-gold" id="btnDlZip" disabled>下載 ZIP（含舞台預覽與使用建議）</button>
       </div>
 
-      <p class="engine-todo">輸出引擎（Canvas 匯出／預覽圖／ZIP 打包）為下一階段實作。</p>
+      <p class="engine-todo">全部輸出都在您的裝置上完成，不經過任何伺服器。ZIP 內另含使用說明與規格版本紀錄。</p>
 
       <div class="next-steps">
         <h3>下一步應用</h3>
@@ -212,6 +212,6 @@
 <input type="file" id="filePicker" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" hidden />
 
 <script src="/consent.js?v=202607150900" defer></script>
-<script src="app.js?v=202608031700" defer></script>
+<script src="app.js?v=202608031830" defer></script>
 </body>
 </html>
