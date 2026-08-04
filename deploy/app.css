@@ -543,6 +543,12 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
   .stage-fields input[type=text] { min-width: 100%; }
   .stage-fields label { width: 100%; }
 
+  /* 八個平台鈕在 375px 會折成四行、吃掉近三分之一屏。縮間距與內距壓成三行。
+     刻意不改成下拉選單：這排平台本身就是「多平台部署」的證據，收進下拉等於把賣點藏起來，
+     而且會少掉一層資訊（tagline）。真正佔位的是上方品牌區，不是這排。 */
+  .platform-row { gap: 0.5rem; }
+  .plat { padding: 0.55rem 1rem; font-size: 0.95rem; }
+
   /* 裁切頁緊湊化：目標＝裁切框＋成品預覽同一屏 */
   #screen-crop { padding: 1.1rem 0 3rem; }
   .crop-head { margin-bottom: 0.7rem; }

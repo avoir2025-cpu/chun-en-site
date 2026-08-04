@@ -92,6 +92,10 @@ async function loadSpecs() {
     if (!p.is_active) continue;
     SPECS.platforms[p.id] = await fetch(`specs/${p.file}${ASSET_V}`).then((r) => r.json());
   }
+  /* 預設選取＝index.json 的第一個平台。排序是依使用頻率調整的，
+     預設值跟著排序走，改順序時不必再回頭改程式裡的初始值。 */
+  const first = SPECS.index.platforms.find((p) => p.is_active);
+  if (first) state.platform = first.id;
 }
 const platformSpec = () => SPECS.platforms[state.platform];
 const slotSpec = (slotId) => platformSpec().slots.find((s) => s.slot === slotId);
@@ -149,7 +153,7 @@ function renderPicker() {
   row.innerHTML = '';
   SPECS.index.platforms.forEach((p) => {
     const b = el('button', 'plat' + (p.id === state.platform ? ' on' : ''));
-    b.appendChild(el('span', null, p.display_name));
+    b.appendChild(el('span', null, p.short_name || p.display_name));   /* 手機省寬度，其餘畫面一律 display_name */
     if (!p.is_active) b.appendChild(el('span', 'ph', '即將開放'));
     b.disabled = !p.is_active;
     b.title = p.tagline || '';

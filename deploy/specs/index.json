@@ -5,16 +5,8 @@
   "_coordinate_note": "所有 safe_zone / avatar_overlap / mobile_crop / desktop_crop / guides 的座標，一律以該版位 output.width × output.height 的像素為基準，原點在左上角。程式端自行換算成畫面比例。",
   "source": "CHUN.EN 形象照平台應用指南 v2.0（規格查證日 2026/08/03）",
   "source_file": "Desktop\\Claude\\CHUN.EN_顧問文件\\形象照平台應用指南_v2.docx",
+  "_platform_order_note": "陣列順序＝畫面上平台鈕的顯示順序，依 CHUN.EN 客層的預期使用頻率排（不是上線批次、也不是字母序）。目前為 2026/08/04 的判斷值：頭像組一次涵蓋六平台放第一、LinkedIn 是商務主場、LINE 台灣人人有、履歷照對求職客層最急。GA4 的「部署平台」維度累積資料後，用實際使用率重排本陣列即可，不必動程式。short_name 只用在平台鈕（手機省寬度），其餘畫面一律用 display_name。",
   "platforms": [
-    {
-      "id": "linkedin",
-      "display_name": "LinkedIn",
-      "display_name_en": "LinkedIn",
-      "file": "linkedin.json",
-      "phase": "P0",
-      "is_active": true,
-      "tagline": "商務身分的第一落點。頭像與橫幅是同一組視覺，要一起判斷。"
-    },
     {
       "id": "avatars",
       "display_name": "商務頭像組",
@@ -25,13 +17,13 @@
       "tagline": "一次裁切，勾選部署到 LinkedIn／FB／視訊會議／Google 商家。"
     },
     {
-      "id": "jobbank",
-      "display_name": "人力銀行履歷",
-      "display_name_en": "Job Bank",
-      "file": "jobbank.json",
-      "phase": "P1",
+      "id": "linkedin",
+      "display_name": "LinkedIn",
+      "display_name_en": "LinkedIn",
+      "file": "linkedin.json",
+      "phase": "P0",
       "is_active": true,
-      "tagline": "104 與 1111 的履歷照比例不同，要分開裁。"
+      "tagline": "商務身分的第一落點。頭像與橫幅是同一組視覺，要一起判斷。"
     },
     {
       "id": "line",
@@ -41,6 +33,16 @@
       "phase": "P1",
       "is_active": true,
       "tagline": "個人檔案背景是頭像的舞台，中央會被頭像與姓名蓋住。（VOOM 台灣退場，不做）"
+    },
+    {
+      "id": "jobbank",
+      "display_name": "人力銀行履歷",
+      "short_name": "人力銀行",
+      "display_name_en": "Job Bank",
+      "file": "jobbank.json",
+      "phase": "P1",
+      "is_active": true,
+      "tagline": "104 與 1111 的履歷照比例不同，要分開裁。"
     },
     {
       "id": "facebook",
@@ -61,6 +63,16 @@
       "tagline": "貼文是 4:5，九宮格縮圖卻是 3:4——同一張照片會再被裁一次。"
     },
     {
+      "id": "gbp",
+      "display_name": "Google 商家檔案",
+      "short_name": "Google 商家",
+      "display_name_en": "Google Business Profile",
+      "file": "gbp.json",
+      "phase": "P2",
+      "is_active": true,
+      "tagline": "封面沒有官方比例，而且 Google 不保證顯示你設定的那張。"
+    },
+    {
       "id": "youtube",
       "display_name": "YouTube",
       "display_name_en": "YouTube",
@@ -68,15 +80,6 @@
       "phase": "P2",
       "is_active": true,
       "tagline": "上傳 2560×1440，手機只看得到正中央 18%。全平台裁最兇的版位。"
-    },
-    {
-      "id": "gbp",
-      "display_name": "Google 商家檔案",
-      "display_name_en": "Google Business Profile",
-      "file": "gbp.json",
-      "phase": "P2",
-      "is_active": true,
-      "tagline": "封面沒有官方比例，而且 Google 不保證顯示你設定的那張。"
     }
   ],
   "resolution_status": {
