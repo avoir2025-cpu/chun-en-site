@@ -1,5 +1,5 @@
 {
-  "_doc": "LINE 版位規格。個人檔案背景是直式 9:16 全屏，頭像與姓名疊在中央帶（保守估計值）；VOOM 貼文 1:1。",
+  "_doc": "LINE 版位規格。個人檔案背景是直式 9:16 全屏，頭像與姓名疊在中央帶（保守估計值）。VOOM 台灣退場，版位已停用（is_active:false 留檔備查，程式對停用版位不建立新輸出）。",
   "platform": "line",
   "display_name": "LINE",
   "version": "2026-08-04",
@@ -8,7 +8,7 @@
   "_sources": [
     "頭像 640×640、JPG/PNG、3MB 內、圓形顯示：形象照平台應用指南 v2.0（2026/08/03 查證）",
     "個人檔案背景（2026/08/04 查證，第二手多來源一致）：系統基準 720×1280（9:16）、建議上傳 1080×1920；「最上部から名前の下まで」約 720×920（換算 1080 座標≈1380）；頭像置中偏中央、姓名與狀態訊息疊在背景上",
-    "VOOM 貼文 1200×1200、10MB 內；多圖版型會變橫式（3 張 1080×540、4 張 1080×720）：指南 v2.0 第 06 節",
+    "VOOM：台灣市場退場（2026/08/04 依 user 資訊停用），版位規格留檔不再輸出",
     "⚠️ 中央遮擋帶精確座標各來源說法不一，本檔採保守估計並以示意呈現"
   ],
 
@@ -28,13 +28,6 @@
       "subtitle": "Profile Background",
       "slots": ["background"],
       "summary": "只處理背景。直式 9:16 全屏，中央會被頭像與姓名蓋住。"
-    },
-    {
-      "id": "voom",
-      "display_name": "VOOM 貼文",
-      "subtitle": "VOOM Post",
-      "slots": ["voom"],
-      "summary": "方形貼文首圖。多圖時版型會變橫式，主體置中最穩。"
     }
   ],
 
@@ -165,12 +158,13 @@
           "default_on": true
         },
         {
-          "id": "avatar_spot",
-          "kind": "circle",
+          "id": "avatar_live",
+          "kind": "avatar_live",
           "tone": "warn",
-          "label": "頭像位置（示意）",
+          "label": "頭像實際疊加",
           "geometry": { "cx": 540, "cy": 1030, "r": 150 },
-          "description": "圓形頭像大約落在這裡（保守估計）。",
+          "show_name": true,
+          "description": "把你裁好的頭像與姓名直接疊上來，邊裁背景邊看真實效果。頭像還沒裁時顯示虛線示意圈。",
           "default_on": true
         },
         {
@@ -226,7 +220,8 @@
       "slot": "voom",
       "display_name": "VOOM 貼文",
       "display_name_en": "VOOM Post",
-      "is_active": true,
+      "is_active": false,
+      "_inactive_reason": "VOOM 台灣退場（2026/08/04 停用）。規格留檔備查，停用版位不建立新輸出。",
       "version": "2026-08-04",
 
       "output": {
@@ -298,7 +293,7 @@
   ],
 
   "stage": {
-    "_doc": "line_profile 模板：手機直式個人檔案（背景全屏＋頭像姓名疊中央）；佇列含 VOOM 時並排貼文卡。",
+    "_doc": "line_profile 模板：手機直式個人檔案（背景全屏＋頭像姓名疊中央）。程式仍支援 VOOM 貼文卡，版位重新啟用即恢復。",
     "template": "line_profile",
     "disclaimer": "此畫面為版位模擬，頭像與姓名位置為保守估計。實際平台介面可能因裝置與平台版本略有差異。",
     "avatar_cy_ratio": 0.54,
