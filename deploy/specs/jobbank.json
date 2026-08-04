@@ -221,6 +221,7 @@
   "stage": {
     "_doc": "履歷卡模板：把照片放進履歷版面看整體，並附平台實際顯示尺寸的 1:1 檢視。",
     "template": "resume_card",
+    "intro": "履歷照會縮得很小，而且和姓名、學經歷並排出現。請確認放進履歷版面後，人物比例與精神狀態仍然到位。",
     "disclaimer": "此畫面為版位模擬。實際平台介面可能因裝置、版型與平台改版略有差異。",
     "desktop": { "photo_width_ratio": 0.26 },
     "mobile": { "photo_width_ratio": 0.34 },

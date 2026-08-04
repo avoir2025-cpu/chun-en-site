@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="app.css?v=202608050100" />
+  <link rel="stylesheet" href="app.css?v=202608051400" />
 </head>
 <body>
 
@@ -27,10 +27,10 @@
 
 <!-- ===== 步驟指示 ===== -->
 <nav class="stepper" id="stepper" hidden>
-  <button class="step" data-goto="pick"><i>1</i><span>選擇版位</span></button>
-  <button class="step" data-goto="crop"><i>2</i><span>裁切判斷</span></button>
-  <button class="step" data-goto="stage"><i>3</i><span>效果預覽</span></button>
-  <button class="step" data-goto="export"><i>4</i><span>下載</span></button>
+  <button class="step" data-goto="pick"><i>1</i><span>平台與版位</span></button>
+  <button class="step" data-goto="crop"><i>2</i><span>調整照片</span></button>
+  <button class="step" data-goto="stage"><i>3</i><span>檢視效果</span></button>
+  <button class="step" data-goto="export"><i>4</i><span>下載檔案</span></button>
 </nav>
 
 <main id="app">
@@ -157,7 +157,7 @@
       <div class="stage-head">
         <div>
           <h2>實際效果預覽</h2>
-          <p class="lede sm">這是正式下載前的必要步驟。單看裁切結果看不出頭像壓在橫幅上的實際效果。</p>
+          <p class="lede sm" id="stageIntro">這是正式下載前的必要步驟。單看裁切框，看不出照片進入平台版面後的實際樣子。</p>
         </div>
         <div class="stage-switch" id="stageSwitch" role="tablist">
           <button class="sw on" data-view="desktop" role="tab">桌面</button>
@@ -189,15 +189,15 @@
       <ul class="file-list" id="fileList"></ul>
 
       <div class="export-actions">
-        <button class="btn btn-ghost" id="btnDlAll" disabled>全部下載</button>
-        <button class="btn btn-gold" id="btnDlZip" disabled>下載 ZIP（含效果預覽圖與使用建議）</button>
+        <button class="btn btn-ghost" id="btnDlAll" disabled>分別下載各張圖片</button>
+        <button class="btn btn-gold" id="btnDlZip" disabled>下載完整部署包 ZIP</button>
       </div>
 
-      <p class="engine-todo">全部輸出都在您的裝置上完成，不經過任何伺服器。ZIP 內另含使用說明與規格版本紀錄。</p>
+      <p class="engine-todo">「分別下載」會逐一存下上方清單裡的每張圖片；「完整部署包」是一個壓縮檔，除了同樣的圖片，另含效果預覽圖、使用說明與規格版本紀錄。全部輸出都在您的裝置上完成，不經過任何伺服器。</p>
 
       <div class="next-steps">
         <h3>下一步應用</h3>
-        <p>其他平台版位（LINE／Facebook）陸續開放。若需要由顧問協助選片與配置，可回到客戶中心提出。</p>
+        <p>各平台的版位規格會隨介面改版調整，本工具也會跟著更新。若需要由顧問協助選片與配置，可回到客戶中心提出。</p>
       </div>
     </div>
   </section>
@@ -212,6 +212,6 @@
 <input type="file" id="filePicker" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" hidden />
 
 <script src="/consent.js?v=202607150900" defer></script>
-<script src="app.js?v=202608050100" defer></script>
+<script src="app.js?v=202608051400" defer></script>
 </body>
 </html>

@@ -234,6 +234,7 @@
   "stage": {
     "_doc": "沿用 profile_header 模板。比例為示意值，不仿真平台 UI。",
     "template": "profile_header",
+    "intro": "Facebook 的頭像會壓在封面左下角，手機還會再裁掉封面兩側。請在完整版面裡確認重要內容沒有被切掉或蓋住。",
     "disclaimer": "此畫面為版位模擬。實際平台介面可能因裝置、帳號類型（個人／粉專）與平台版本略有差異。",
     "desktop": {
       "banner_aspect": "2.7:1",

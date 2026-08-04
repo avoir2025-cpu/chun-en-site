@@ -295,6 +295,7 @@
   "stage": {
     "_doc": "line_profile 模板：手機直式個人檔案（背景全屏＋頭像姓名疊中央）。程式仍支援 VOOM 貼文卡，版位重新啟用即恢復。",
     "template": "line_profile",
+    "intro": "LINE 的個人檔案是直式全屏，頭像與名稱會壓在背景中央偏上。請確認背景的重要內容沒有被這一區遮住。",
     "disclaimer": "此畫面為版位模擬，頭像與姓名位置為保守估計。實際平台介面可能因裝置與平台版本略有差異。",
     "avatar_cy_ratio": 0.54,
     "_avatar_position_note": "頭像位置與大小的唯一真相＝background 版位 guides 裡 avatar_live 的座標；裁切疊層、效果預覽、預覽圖輸出三處共用。avatar_cy_ratio 僅為 guide 不存在時的備援。",

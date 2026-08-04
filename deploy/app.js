@@ -922,6 +922,10 @@ function renderStage() {
   $('compareLabel').hidden = single;
   const views = single ? ['desktop'] : (state.compare ? ['desktop', 'mobile'] : [state.stageView]);
   views.forEach((v) => area.appendChild(draw(cfg, v)));
+  /* 預覽說明依平台而異（頭像疊橫幅、履歷小圖、九宮格…要看的東西不一樣），
+     文案放各平台 JSON 的 stage.intro，別再寫死在 HTML。沒寫時用通用句。 */
+  $('stageIntro').textContent = cfg.intro
+    || '這是正式下載前的必要步驟。單看裁切框，看不出照片進入平台版面後的實際樣子。';
   $('stageNote').textContent = cfg.disclaimer;
   renderStageActions();
   state.queue.forEach((slot) => { const a = state.assets[slot]; if (a) a.dirty = false; });
@@ -2066,7 +2070,7 @@ $('btnDlAll').addEventListener('click', async (e) => {
   }
   saveBlob(await exportStageBlob(),
     fillTemplate(spec.export.preview_naming.template, spec.export.preview_naming.fallback_name, state.name) + '.jpg');
-  b.disabled = false; b.textContent = '全部下載';
+  b.disabled = false; b.textContent = '分別下載各張圖片';
   track('deploy_download', { platform: state.platform, kind: 'all' });
 });
 
@@ -2102,9 +2106,9 @@ $('btnDlZip').addEventListener('click', async (e) => {
       fillTemplate(spec.export.zip_naming.template, spec.export.zip_naming.fallback_name, state.name) + '.zip');
     track('deploy_download', { platform: state.platform, kind: 'zip', mode: state.mode });
   } catch (err) {
-    alert('打包失敗，請改用「全部下載」逐檔取得。');
+    alert('打包失敗，請改用「分別下載各張圖片」逐檔取得。');
   }
-  b.disabled = false; b.textContent = '下載 ZIP（含效果預覽圖與使用建議）';
+  b.disabled = false; b.textContent = '下載完整部署包 ZIP';
 });
 
 /* ================= §11 啟動 ================= */
