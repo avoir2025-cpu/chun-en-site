@@ -16,6 +16,15 @@
       "tagline": "商務身分的第一落點。頭像與橫幅是同一組視覺，要一起判斷。"
     },
     {
+      "id": "avatars",
+      "display_name": "商務頭像組",
+      "display_name_en": "Business Avatars",
+      "file": "avatars.json",
+      "phase": "P1",
+      "is_active": true,
+      "tagline": "一次裁切，勾選部署到 LinkedIn／FB／視訊會議／Google 商家。"
+    },
+    {
       "id": "jobbank",
       "display_name": "人力銀行履歷",
       "display_name_en": "Job Bank",

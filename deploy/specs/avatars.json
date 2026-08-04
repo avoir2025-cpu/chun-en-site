@@ -1,0 +1,200 @@
+{
+  "_doc": "商務頭像組：小尺寸圓形顯示、同一個專業受眾的平台共用一組裁切，下載時逐平台勾選。IG 與 LINE 個人帳號受眾不同，預設不勾並提示。",
+  "platform": "avatars",
+  "display_name": "商務頭像組",
+  "display_name_en": "Business Avatars",
+  "version": "2026-08-04",
+  "is_active": true,
+
+  "_sources": [
+    "LinkedIn 頭像 400×400 以上／圓形：形象照平台應用指南 v2.0（2026/08/03 查證）",
+    "Facebook 頭像：官方說明中心「建議最佳品質 320×320」、全版面圓形顯示（2026/08/04 查證，第一手）",
+    "視訊會議：Zoom 建議 400×400、Teams 648×648、Meet 800×800 以上，指南 v2.0 第 08 節；800 正方一張通用",
+    "Google 商家標誌 720×720 顯示時圓形：指南 v2.0 第 07 節",
+    "Instagram 頭像儲存為 320×320、建議上傳 720×720 以上：指南 v2.0 第 05 節",
+    "LINE 頭像 640×640、3MB 內、圓形：指南 v2.0 第 06 節"
+  ],
+
+  "modes": [
+    {
+      "id": "business",
+      "display_name": "一次裁切，部署到多個平台",
+      "subtitle": "One Crop, Many Platforms",
+      "slots": ["avatar"],
+      "recommended": true,
+      "summary": "這些平台都是小尺寸圓形顯示、同一個專業受眾，共用一組裁切。下載時再勾選要哪幾個平台。"
+    }
+  ],
+
+  "slots": [
+    {
+      "platform": "avatars",
+      "slot": "avatar",
+      "display_name": "商務頭像",
+      "display_name_en": "Business Avatar",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 800,
+        "height": 800,
+        "aspect_ratio": "1:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 400, "height": 400 },
+      "resolution_tiers": { "good": 800, "acceptable": 600, "poor": 400 },
+      "_tiers_note": "以最大的目標尺寸 800px 為基準；達標則所有勾選平台都夠用。",
+
+      "display_shape": "circle",
+      "desktop_crop": { "x": 0, "y": 0, "width": 800, "height": 800 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 800, "height": 800 },
+      "safe_zone": { "shape": "circle", "cx": 400, "cy": 400, "r": 400 },
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "circle_mask",
+          "kind": "circle_mask",
+          "tone": "danger",
+          "label": "圓形外的四角會被切掉",
+          "geometry": { "cx": 400, "cy": 400, "r": 400 },
+          "default_on": true
+        },
+        {
+          "id": "subject_zone",
+          "kind": "circle",
+          "tone": "safe",
+          "label": "建議五官落在此圈內",
+          "geometry": { "cx": 400, "cy": 368, "r": 296 },
+          "description": "多數平台會縮到 32–72px 顯示，臉要夠大、頭頂與雙肩留 15–20% 空間。",
+          "default_on": true
+        },
+        {
+          "id": "center_cross",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "圓心",
+          "geometry": { "cx": 400, "cy": 400 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": {
+        "anchor": "center",
+        "eye_line_ratio": 0.38
+      },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "一張正方形頭肩照走遍所有商務平台：LinkedIn、Facebook、視訊會議、Google 商家。這些版位全是小尺寸圓形顯示，受眾也都是專業場合。",
+        "good_for": [
+          "頭肩照或胸上照，臉佔比明顯",
+          "眼神清楚、視線朝向鏡頭",
+          "背景乾淨、與深淺底色都相容",
+          "縮到 32px 仍能辨識五官"
+        ],
+        "avoid": [
+          "全身照、人物過小",
+          "大面積道具或手勢遮臉",
+          "團體照裁出來的單人",
+          "背景與服裝同色調"
+        ],
+        "subject_position": "臉置中，頭頂留 15–20% 空間",
+        "has_overlap": false,
+        "shot_type": "頭肩／胸上（正方形）",
+        "diagram": "avatar"
+      },
+
+      "advice": [
+        "這組共用同一個裁切，所以構圖要以「最小顯示尺寸」為準：在 32px 還認得出來，其他平台就都沒問題。",
+        "人物偏離圓心，每個平台的圓形裁切都會歪。",
+        "背景與服裝對比不足，縮小後人物輪廓會糊成一片。",
+        "IG 與 LINE 個人帳號的受眾偏生活場合，想放不同的照片，回到首頁用另一張重跑一次即可。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀屬 P3。",
+
+      "naming": { "template": "{name}_Avatar_{date}", "fallback_name": "CHUN_EN" }
+    }
+  ],
+
+  "export_targets": [
+    {
+      "id": "linkedin",
+      "label": "LinkedIn",
+      "width": 800,
+      "display_px": 48,
+      "display_note": "動態與留言列約 48px",
+      "default_on": true,
+      "naming": { "template": "{name}_LinkedIn_Profile_{date}", "fallback_name": "CHUN_EN" }
+    },
+    {
+      "id": "facebook",
+      "label": "Facebook",
+      "width": 720,
+      "display_px": 40,
+      "display_note": "留言列約 40px",
+      "default_on": true,
+      "naming": { "template": "{name}_Facebook_Profile_{date}", "fallback_name": "CHUN_EN" }
+    },
+    {
+      "id": "meeting",
+      "label": "視訊會議（Zoom／Teams／Meet）",
+      "width": 800,
+      "display_px": 64,
+      "display_note": "會議畫面與 Outlook 信件約 32–64px",
+      "default_on": true,
+      "naming": { "template": "{name}_Meeting_Profile_{date}", "fallback_name": "CHUN_EN" }
+    },
+    {
+      "id": "gbp",
+      "label": "Google 商家標誌",
+      "width": 720,
+      "display_px": 72,
+      "display_note": "地圖與商家卡約 72px",
+      "default_on": true,
+      "naming": { "template": "{name}_GoogleBusiness_Logo_{date}", "fallback_name": "CHUN_EN" }
+    },
+    {
+      "id": "instagram",
+      "label": "Instagram／Threads",
+      "width": 720,
+      "display_px": 77,
+      "display_note": "個人頁約 77px",
+      "default_on": false,
+      "audience_note": "IG 受眾偏生活場合，若想與商務平台區隔，可用另一張照片單獨部署。",
+      "naming": { "template": "{name}_Instagram_Profile_{date}", "fallback_name": "CHUN_EN" }
+    },
+    {
+      "id": "line",
+      "label": "LINE 個人帳號",
+      "width": 640,
+      "display_px": 48,
+      "display_note": "聊天列表約 48px",
+      "default_on": false,
+      "audience_note": "LINE 是半私領域，很多人刻意與商務形象區隔；要不要用同一張，由你決定。",
+      "naming": { "template": "{name}_LINE_Profile_{date}", "fallback_name": "CHUN_EN" }
+    }
+  ],
+  "_display_px_note": "各平台顯示尺寸為常見約略值（示意用），實際依裝置與版面而異。",
+
+  "stage": {
+    "_doc": "頭像矩陣模板：同一張裁切在各平台的實際顯示尺寸下並排檢視。",
+    "template": "avatar_matrix",
+    "disclaimer": "此畫面為版位模擬，顯示尺寸為常見約略值。實際平台介面可能因裝置與平台版本略有差異。",
+    "placeholder": {
+      "name": "您的姓名",
+      "headline": "職稱｜公司或個人品牌",
+      "meta": ""
+    },
+    "small_preview_sizes": [96, 48, 32]
+  },
+
+  "export": {
+    "preview_naming": { "template": "{name}_商務頭像組_效果預覽_{date}", "fallback_name": "CHUN_EN" },
+    "zip_naming": { "template": "{name}_商務頭像組_{date}", "fallback_name": "CHUN_EN" },
+    "readme_included": true,
+    "record_spec_version": true
+  }
+}

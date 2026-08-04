@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="app.css?v=202608041200" />
+  <link rel="stylesheet" href="app.css?v=202608041500" />
 </head>
 <body>
 
@@ -159,7 +159,7 @@
           <h2>實際效果預覽</h2>
           <p class="lede sm">這是正式下載前的必要步驟。單看裁切結果看不出頭像壓在橫幅上的實際效果。</p>
         </div>
-        <div class="stage-switch" role="tablist">
+        <div class="stage-switch" id="stageSwitch" role="tablist">
           <button class="sw on" data-view="desktop" role="tab">桌面</button>
           <button class="sw" data-view="mobile" role="tab">手機</button>
         </div>
@@ -168,7 +168,7 @@
       <div class="stage-fields">
         <label>姓名 <input type="text" id="fieldName" placeholder="選填，用於檔名與模擬顯示" maxlength="20" /></label>
         <label>職稱 <input type="text" id="fieldHeadline" placeholder="職稱｜公司或個人品牌" maxlength="40" /></label>
-        <label class="chk"><input type="checkbox" id="chkCompare" /> A／B 比較</label>
+        <label class="chk" id="compareLabel"><input type="checkbox" id="chkCompare" /> A／B 比較</label>
       </div>
 
       <div class="stage-area" id="stageArea"><!-- JS 依 stage 參數繪製示意版面 --></div>
@@ -212,6 +212,6 @@
 <input type="file" id="filePicker" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" hidden />
 
 <script src="/consent.js?v=202607150900" defer></script>
-<script src="app.js?v=202608041200" defer></script>
+<script src="app.js?v=202608041500" defer></script>
 </body>
 </html>

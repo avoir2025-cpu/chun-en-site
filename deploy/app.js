@@ -74,6 +74,7 @@ const state = {
   cursor: 0,
   assets: {},       // slot -> { img, url, naturalW/H, workW/H, downsampled, transform:{zoom,nx,ny} }
   guidesOn: {},
+  exportChecked: {},   // '平台:target id' -> bool（商務頭像組的勾選狀態）
   stageView: 'desktop',
   compare: false,
   name: '',
@@ -833,15 +834,22 @@ function renderCropCanvas(slotId, w, h) {
    resume_card   ＝履歷版面＋平台實際顯示尺寸 1:1 檢視（人力銀行） */
 const STAGE_TEMPLATES = {
   profile_header: mockProfile,
-  resume_card: mockResumeCard
+  resume_card: mockResumeCard,
+  avatar_matrix: mockAvatarMatrix
 };
+/* 桌面／手機切換與 A/B 對這些模板沒有意義 */
+const SINGLE_VIEW_TEMPLATES = ['avatar_matrix'];
 
 function renderStage() {
   const cfg = platformSpec().stage;
   const area = $('stageArea');
   area.innerHTML = '';
-  const draw = STAGE_TEMPLATES[cfg.template || 'profile_header'] || mockProfile;
-  const views = state.compare ? ['desktop', 'mobile'] : [state.stageView];
+  const tpl = cfg.template || 'profile_header';
+  const draw = STAGE_TEMPLATES[tpl] || mockProfile;
+  const single = SINGLE_VIEW_TEMPLATES.includes(tpl);
+  $('stageSwitch').hidden = single;
+  $('compareLabel').hidden = single;
+  const views = single ? ['desktop'] : (state.compare ? ['desktop', 'mobile'] : [state.stageView]);
   views.forEach((v) => area.appendChild(draw(cfg, v)));
   $('stageNote').textContent = cfg.disclaimer;
   renderStageActions();
@@ -944,6 +952,29 @@ function mockResumeCard(cfg, view) {
   return wrapEl;
 }
 
+/* 頭像矩陣：同一張裁切在各平台常見顯示尺寸下並排檢視 */
+function mockAvatarMatrix(cfg) {
+  const url = croppedDataURL('avatar', 400);
+  const wrapEl = el('div', 'mock-wrap wide');
+  const card = el('div', 'mock matrix');
+
+  platformSpec().export_targets.forEach((t) => {
+    const tile = el('div', 'ax-tile' + (t.default_on ? '' : ' dim'));
+    const box = el('div', 'ax-circle');
+    box.style.width = t.display_px + 'px';
+    box.style.height = t.display_px + 'px';
+    if (url) { const i = el('img'); i.src = url; i.alt = ''; box.appendChild(i); }
+    tile.appendChild(box);
+    tile.appendChild(el('div', 'ax-label', t.label));
+    tile.appendChild(el('div', 'ax-note', t.display_note));
+    if (t.audience_note) tile.appendChild(el('div', 'ax-aud', t.audience_note));
+    card.appendChild(tile);
+  });
+
+  wrapEl.appendChild(card);
+  return wrapEl;
+}
+
 /* 每個版位各給一顆返回鍵：從舞台看出問題，直接跳回那一張 */
 function renderStageActions() {
   const box = $('stageActions');
@@ -969,8 +1000,60 @@ function exportSlotBlob(slotId) {
 /* 效果預覽圖：依平台模板合成一張可交付的圖 */
 async function exportStageBlob() {
   const cfg = platformSpec().stage;
-  if ((cfg.template || 'profile_header') === 'resume_card') return exportResumeCardBlob(cfg);
+  const tpl = cfg.template || 'profile_header';
+  if (tpl === 'resume_card') return exportResumeCardBlob(cfg);
+  if (tpl === 'avatar_matrix') return exportAvatarMatrixBlob(cfg);
   return exportProfileHeaderBlob(cfg);
+}
+
+async function exportAvatarMatrixBlob(cfg) {
+  const targets = platformSpec().export_targets;
+  const W = 1600, pad = 70, cell = Math.floor((W - pad * 2) / targets.length);
+  const H = 460;
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#1C1710';
+  ctx.fillRect(0, 0, W, H);
+
+  try { await document.fonts.ready; } catch (e) { /* 字型未就緒不影響輸出 */ }
+
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = '#F5F1E8';
+  ctx.font = '400 40px "Noto Serif TC", serif';
+  ctx.fillText(state.name.trim() || cfg.placeholder.name, pad, 88);
+  ctx.fillStyle = '#A88A5C';
+  ctx.font = '400 22px "Noto Sans TC", sans-serif';
+  ctx.fillText('商務頭像組｜各平台常見顯示尺寸', pad, 126);
+
+  targets.forEach((t, i) => {
+    const cx = pad + cell * i + cell / 2;
+    const cy = 240;
+    const r = t.display_px / 2 * 1.6;   // 輸出圖放大 1.6 倍以便閱讀，比例關係不變
+    if (state.assets.avatar) {
+      const ac = renderCropCanvas('avatar', Math.ceil(r * 2), Math.ceil(r * 2));
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.drawImage(ac, cx - r, cy - r, r * 2, r * 2);
+      ctx.restore();
+    }
+    ctx.fillStyle = '#CFC5B4';
+    ctx.font = '400 19px "Noto Sans TC", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(t.label.length > 10 ? t.label.slice(0, 9) + '…' : t.label, cx, 340);
+    ctx.fillStyle = '#8B7D6B';
+    ctx.font = '400 16px "Noto Sans TC", sans-serif';
+    ctx.fillText(t.display_note, cx, 368);
+    ctx.textAlign = 'left';
+  });
+
+  ctx.fillStyle = '#8B7D6B';
+  ctx.font = '400 18px "Noto Sans TC", sans-serif';
+  ctx.fillText(cfg.disclaimer, pad, H - 26);
+
+  return new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.92));
 }
 
 async function exportResumeCardBlob(cfg) {
@@ -1101,15 +1184,28 @@ function readmeText() {
   lines.push(`資料來源：${SPECS.index.source}`);
   lines.push('');
   lines.push('── 檔案 ──');
-  state.queue.forEach((slotId) => {
-    const s = slotSpec(slotId);
-    const a = state.assets[slotId];
+  if (spec.export_targets) {
+    const a = state.assets.avatar;
+    const s = slotSpec('avatar');
     const c = a ? cropRect(a, s) : null;
-    lines.push(`${fillTemplate(s.naming.template, s.naming.fallback_name, state.name)}.${s.output.extension}`);
-    lines.push(`  版位：${s.display_name}　輸出：${s.output.width}×${s.output.height}（${s.output.aspect_ratio}）`);
-    if (c) lines.push(`  裁切後有效像素：${Math.round(c.sw * a.srcRatio)}×${Math.round(c.sh * a.srcRatio)}（原始檔 ${a.naturalW}×${a.naturalH}）`);
+    checkedTargets().forEach((t) => {
+      lines.push(targetFilename(t));
+      lines.push(`  平台：${t.label}　輸出：${t.width}×${t.width}（1:1 圓形顯示）`);
+      lines.push('');
+    });
+    if (c) lines.push(`共用裁切：有效像素 ${Math.round(c.sw * a.srcRatio)}×${Math.round(c.sh * a.srcRatio)}（原始檔 ${a.naturalW}×${a.naturalH}）`);
     lines.push('');
-  });
+  } else {
+    state.queue.forEach((slotId) => {
+      const s = slotSpec(slotId);
+      const a = state.assets[slotId];
+      const c = a ? cropRect(a, s) : null;
+      lines.push(`${fillTemplate(s.naming.template, s.naming.fallback_name, state.name)}.${s.output.extension}`);
+      lines.push(`  版位：${s.display_name}　輸出：${s.output.width}×${s.output.height}（${s.output.aspect_ratio}）`);
+      if (c) lines.push(`  裁切後有效像素：${Math.round(c.sw * a.srcRatio)}×${Math.round(c.sh * a.srcRatio)}（原始檔 ${a.naturalW}×${a.naturalH}）`);
+      lines.push('');
+    });
+  }
   lines.push(`${fillTemplate(spec.export.preview_naming.template, spec.export.preview_naming.fallback_name, state.name)}.jpg`);
   lines.push('  效果預覽圖（版位模擬，非平台實際截圖）');
   lines.push('');
@@ -1217,10 +1313,91 @@ function buildZip(entries) {
 }
 
 /* ================= §10 下載畫面 ================= */
+
+/* 勾選狀態：依平台記住，第一次進來吃 JSON 的 default_on */
+function targetChecked(t) {
+  const key = state.platform + ':' + t.id;
+  if (state.exportChecked[key] === undefined) state.exportChecked[key] = t.default_on !== false;
+  return state.exportChecked[key];
+}
+const checkedTargets = () => (platformSpec().export_targets || []).filter(targetChecked);
+
+function targetFilename(t) {
+  return fillTemplate(t.naming.template, t.naming.fallback_name, state.name) + '.jpg';
+}
+function exportTargetBlob(t) {
+  const s = slotSpec('avatar');
+  const cv = renderCropCanvas('avatar', t.width, t.width);
+  return new Promise((res) => cv.toBlob(res, s.output.file_format, s.output.quality));
+}
+
+/* 勾選式下載清單（商務頭像組）：一組裁切、逐平台勾選 */
+function renderTargetExport(spec) {
+  const list = $('fileList');
+  const ready = allSlotsReady();
+
+  spec.export_targets.forEach((t) => {
+    const li = el('li', 'tgt');
+    const lab = el('label', 'tgt-check');
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = targetChecked(t);
+    cb.addEventListener('change', () => {
+      state.exportChecked[state.platform + ':' + t.id] = cb.checked;
+      renderExport();
+    });
+    lab.appendChild(cb);
+    const left = el('div');
+    left.appendChild(el('div', 'fn', targetFilename(t)));
+    left.appendChild(el('div', 'fm', `${t.label}　${t.width} × ${t.width}　${t.display_note}`));
+    if (t.audience_note) left.appendChild(el('div', 'fm aud', t.audience_note));
+    lab.appendChild(left);
+    li.appendChild(lab);
+
+    if (ready) {
+      const b = el('button', 'btn btn-ghost sm', '下載');
+      b.addEventListener('click', async () => {
+        b.disabled = true; b.textContent = '輸出中';
+        saveBlob(await exportTargetBlob(t), targetFilename(t));
+        b.disabled = false; b.textContent = '下載';
+        track('deploy_download', { platform: state.platform, target: t.id, kind: 'single' });
+      });
+      li.appendChild(b);
+    } else {
+      li.appendChild(el('span', 'fm', '未上傳'));
+    }
+    list.appendChild(li);
+  });
+
+  const pname = fillTemplate(spec.export.preview_naming.template, spec.export.preview_naming.fallback_name, state.name) + '.jpg';
+  const li = el('li');
+  const left = el('div');
+  left.appendChild(el('div', 'fn', pname));
+  left.appendChild(el('div', 'fm', '效果預覽圖（各平台顯示尺寸）'));
+  li.appendChild(left);
+  const pb = el('button', 'btn btn-ghost sm', '下載');
+  pb.disabled = !ready;
+  pb.addEventListener('click', async () => {
+    pb.disabled = true; pb.textContent = '輸出中';
+    saveBlob(await exportStageBlob(), pname);
+    pb.disabled = false; pb.textContent = '下載';
+    track('deploy_download', { platform: state.platform, kind: 'preview' });
+  });
+  li.appendChild(pb);
+  list.appendChild(li);
+
+  const any = ready && checkedTargets().length > 0;
+  $('btnDlAll').disabled = !any;
+  $('btnDlZip').disabled = !any;
+  if (ready) track('deploy_export_view', { platform: state.platform, mode: state.mode, targets: checkedTargets().length });
+}
+
 function renderExport() {
   const spec = platformSpec();
   const list = $('fileList');
   list.innerHTML = '';
+
+  if (spec.export_targets) { renderTargetExport(spec); return; }
 
   state.queue.forEach((slotId) => {
     const s = slotSpec(slotId);
@@ -1275,13 +1452,20 @@ function renderExport() {
 $('btnDlAll').addEventListener('click', async (e) => {
   const b = e.currentTarget;
   b.disabled = true; b.textContent = '輸出中';
-  for (const slotId of state.queue) {
-    const s = slotSpec(slotId);
-    saveBlob(await exportSlotBlob(slotId),
-      fillTemplate(s.naming.template, s.naming.fallback_name, state.name) + '.' + s.output.extension);
-    await new Promise((r) => setTimeout(r, 300));
-  }
   const spec = platformSpec();
+  if (spec.export_targets) {
+    for (const t of checkedTargets()) {
+      saveBlob(await exportTargetBlob(t), targetFilename(t));
+      await new Promise((r) => setTimeout(r, 300));
+    }
+  } else {
+    for (const slotId of state.queue) {
+      const s = slotSpec(slotId);
+      saveBlob(await exportSlotBlob(slotId),
+        fillTemplate(s.naming.template, s.naming.fallback_name, state.name) + '.' + s.output.extension);
+      await new Promise((r) => setTimeout(r, 300));
+    }
+  }
   saveBlob(await exportStageBlob(),
     fillTemplate(spec.export.preview_naming.template, spec.export.preview_naming.fallback_name, state.name) + '.jpg');
   b.disabled = false; b.textContent = '全部下載';
@@ -1294,13 +1478,20 @@ $('btnDlZip').addEventListener('click', async (e) => {
   try {
     const spec = platformSpec();
     const entries = [];
-    for (const slotId of state.queue) {
-      const s = slotSpec(slotId);
-      const blob = await exportSlotBlob(slotId);
-      entries.push({
-        name: fillTemplate(s.naming.template, s.naming.fallback_name, state.name) + '.' + s.output.extension,
-        data: new Uint8Array(await blob.arrayBuffer())
-      });
+    if (spec.export_targets) {
+      for (const t of checkedTargets()) {
+        const blob = await exportTargetBlob(t);
+        entries.push({ name: targetFilename(t), data: new Uint8Array(await blob.arrayBuffer()) });
+      }
+    } else {
+      for (const slotId of state.queue) {
+        const s = slotSpec(slotId);
+        const blob = await exportSlotBlob(slotId);
+        entries.push({
+          name: fillTemplate(s.naming.template, s.naming.fallback_name, state.name) + '.' + s.output.extension,
+          data: new Uint8Array(await blob.arrayBuffer())
+        });
+      }
     }
     const pv = await exportStageBlob();
     entries.push({
