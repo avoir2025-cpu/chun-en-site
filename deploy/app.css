@@ -157,10 +157,12 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
 }
 
 /* ============ 版位卡 ============ */
-.slot-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.6rem; margin-top: 2.4rem; }
+/* 卡片寬度封頂 460px：單卡平台（商務頭像組）不會撐滿整列變滿版 */
+.slot-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 460px)); gap: 1.6rem; margin-top: 2.4rem; }
 .slot-card { border: 1px solid var(--hairline); background: var(--ink-lift); padding: 1.6rem; }
 .slot-card .sc-dia { margin-bottom: 1.2rem; }
-.slot-card .sc-dia svg { width: 100%; height: auto; display: block; }
+/* 高度封頂：正方形與直式示意圖不再吃掉整張卡（letterbox 置中，比例不變） */
+.slot-card .sc-dia svg { width: 100%; height: auto; max-height: 200px; display: block; }
 .slot-card .sc-title { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; }
 .slot-card .sc-title b { font-size: 1.2rem; font-weight: 400; }
 .slot-card .sc-title span { font-family: var(--serif-en); font-size: 0.95rem; letter-spacing: 0.12em; color: var(--gold); }
