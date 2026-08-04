@@ -1,0 +1,245 @@
+{
+  "_doc": "台灣人力銀行履歷照規格。104 與 1111 的比例完全不同（正方 vs 直式 2 吋），不能共用同一張裁切。",
+  "platform": "jobbank",
+  "display_name": "人力銀行履歷",
+  "version": "2026-08-04",
+  "is_active": true,
+
+  "_sources": [
+    "1111：官方常見問題 https://www.1111.com.tw/QA/faq_answer?aq=14&qno=456 —「建議尺寸 220x280 pixel」「限PNG、JPG檔案」（2026/08/04 查證，第一手）",
+    "104：官方未公開明列像素規格；360×280 為坊間流傳值，經兩處以上第三方求職／影像專業指南交叉確認為 360×360 正方形（2026/08/04 查證，第二手，採保守值處理）",
+    "104 官方構圖建議（blog.104.com.tw，第一手）：「適合大小是裁切露出肩膀的上半照。若裁切高於肩膀臉會太大，放全身照則容易看不清楚。」"
+  ],
+
+  "_modes_note": "順序即畫面順序，建議項放第一個。",
+  "modes": [
+    {
+      "id": "both",
+      "display_name": "104＋1111 一次備齊",
+      "subtitle": "Both Platforms",
+      "slots": ["photo_104", "photo_1111"],
+      "recommended": true,
+      "summary": "兩家比例不同：104 是正方形，1111 是直式二吋。同一張原始檔要裁兩次，一起做才不會漏。"
+    },
+    {
+      "id": "only_104",
+      "display_name": "104 人力銀行",
+      "subtitle": "104 Job Bank",
+      "slots": ["photo_104"],
+      "summary": "只處理 104 履歷照。正方形，裁切後仍要能看清五官。"
+    },
+    {
+      "id": "only_1111",
+      "display_name": "1111 人力銀行",
+      "subtitle": "1111 Job Bank",
+      "slots": ["photo_1111"],
+      "summary": "只處理 1111 履歷照。直式二吋比例，構圖比正方形緊。"
+    }
+  ],
+
+  "slots": [
+    {
+      "platform": "jobbank",
+      "slot": "photo_104",
+      "display_name": "104 履歷照",
+      "display_name_en": "104 Resume Photo",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 800,
+        "height": 800,
+        "aspect_ratio": "1:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 360, "height": 360 },
+      "resolution_tiers": { "good": 720, "acceptable": 500, "poor": 360 },
+      "_tiers_note": "平台建議上傳 360×360；本工具輸出 800×800 讓平台自己縮，畫質最好。",
+
+      "display_shape": "square",
+      "desktop_crop": { "x": 0, "y": 0, "width": 800, "height": 800 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 800, "height": 800 },
+      "safe_zone": { "shape": "rect", "x": 56, "y": 56, "width": 688, "height": 688 },
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "circle_safe",
+          "kind": "circle",
+          "tone": "warn",
+          "label": "圓形顯示安全圈",
+          "geometry": { "cx": 400, "cy": 400, "r": 400 },
+          "description": "部分列表與 App 版面會把履歷照裁成圓形，四角可能被切掉。重點放圈內最保險。",
+          "default_on": true
+        },
+        {
+          "id": "subject_zone",
+          "kind": "circle",
+          "tone": "safe",
+          "label": "建議五官落在此圈內",
+          "geometry": { "cx": 400, "cy": 372, "r": 292 },
+          "description": "104 官方建議「裁切露出肩膀的上半照」：頭頂與雙肩留白，臉不要塞滿。",
+          "default_on": true
+        },
+        {
+          "id": "center_cross",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "中心線",
+          "geometry": { "cx": 400, "cy": 400 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": {
+        "anchor": "center",
+        "eye_line_ratio": 0.38,
+        "_note": "眼睛約落在畫面高度 38%，頭頂留白 15% 左右。"
+      },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "人資在應徵名單裡第一眼看到的就是這張。104 自己的調查說，履歷有沒有放合適的照片，面試機會差三倍。",
+        "good_for": [
+          "露出肩膀的上半身照（104 官方建議的構圖）",
+          "眼神清楚、表情自然不僵硬",
+          "素色或淺景深背景",
+          "服裝符合應徵產業的正式度"
+        ],
+        "avoid": [
+          "證件照式的僵硬正面照",
+          "臉塞滿整個畫面、頭頂被切",
+          "生活照、合照裁出來的單人",
+          "過度修圖到與本人不像"
+        ],
+        "subject_position": "臉置中，露出肩膀，頭頂留 15% 左右",
+        "has_overlap": false,
+        "shot_type": "頭肩／胸上（正方形）",
+        "diagram": "square_photo"
+      },
+
+      "advice": [
+        "裁得比肩膀高會讓臉過大，顯得壓迫。",
+        "人物太小則在應徵名單的縮圖裡看不清五官。",
+        "背景雜亂會讓人資的視線離開你的臉。",
+        "服裝正式度要對齊應徵的產業，不是越正式越好。",
+        "與本人差太多會在面試現場造成尷尬。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀構圖屬 P3。",
+
+      "naming": { "template": "{name}_104履歷照_{date}", "fallback_name": "CHUN_EN" }
+    },
+
+    {
+      "platform": "jobbank",
+      "slot": "photo_1111",
+      "display_name": "1111 履歷照",
+      "display_name_en": "1111 Resume Photo",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 660,
+        "height": 840,
+        "aspect_ratio": "11:14（近二吋）",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 220, "height": 280 },
+      "resolution_tiers": { "good": 660, "acceptable": 440, "poor": 220 },
+      "_tiers_note": "平台建議 220×280（官方 FAQ，限 PNG／JPG）；本工具輸出 3 倍的 660×840，同比例、畫質留餘裕。",
+
+      "display_shape": "rect",
+      "desktop_crop": { "x": 0, "y": 0, "width": 660, "height": 840 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 660, "height": 840 },
+      "safe_zone": { "shape": "rect", "x": 46, "y": 59, "width": 568, "height": 722 },
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "safe_zone",
+          "kind": "rect",
+          "tone": "safe",
+          "label": "安全範圍",
+          "geometry": { "x": 46, "y": 59, "width": 568, "height": 722 },
+          "description": "直式版位比正方形緊，四邊各留約 7% 的餘裕，避免頭頂或肩線貼邊。",
+          "default_on": true
+        },
+        {
+          "id": "center_cross",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "中心線",
+          "geometry": { "cx": 330, "cy": 420 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": {
+        "anchor": "center",
+        "eye_line_ratio": 0.36,
+        "_note": "直式構圖眼線再高一點，下方留胸線，接近二吋照的比例感。"
+      },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "1111 履歷上的照片欄位。比例是直式的近二吋，跟其他平台的正方形頭像不能共用同一張裁切。",
+        "good_for": [
+          "直式構圖的頭肩照",
+          "頭頂留白適中、下緣到胸線",
+          "素色背景",
+          "與 104 用同一次拍攝的原始檔，維持一致形象"
+        ],
+        "avoid": [
+          "拿正方形頭像硬塞進直式（兩側會空或臉被拉近）",
+          "全身照縮成一小格",
+          "背景搶過人物",
+          "解析度不足的舊照"
+        ],
+        "subject_position": "臉置中偏上，下緣到胸線",
+        "has_overlap": false,
+        "shot_type": "頭肩／胸上（直式二吋）",
+        "diagram": "portrait_photo"
+      },
+
+      "advice": [
+        "直式比例比正方形緊，人物要重新構圖，不要沿用正方形的裁切。",
+        "頭頂留白過多會讓臉在直式版位裡顯得偏下。",
+        "下緣切在脖子會不自然，切到胸線比較穩。",
+        "平台只收 PNG 與 JPG，本工具輸出 JPG 可直接上傳。",
+        "同一次拍攝的原始檔同時做 104 與 1111，形象才一致。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀構圖屬 P3。",
+
+      "naming": { "template": "{name}_1111履歷照_{date}", "fallback_name": "CHUN_EN" }
+    }
+  ],
+
+  "stage": {
+    "_doc": "履歷卡模板：把照片放進履歷版面看整體，並附平台實際顯示尺寸的 1:1 檢視。",
+    "template": "resume_card",
+    "disclaimer": "此畫面為版位模擬。實際平台介面可能因裝置、版型與平台改版略有差異。",
+    "desktop": { "photo_width_ratio": 0.26 },
+    "mobile": { "photo_width_ratio": 0.34 },
+    "placeholder": {
+      "name": "您的姓名",
+      "headline": "應徵職務｜產業",
+      "meta": "台中市｜5 年經驗｜可上班日：一個月內"
+    },
+    "actual_size": {
+      "photo_104": 360,
+      "photo_1111": 220
+    },
+    "_actual_size_note": "平台建議上傳尺寸的寬度（px），用來做 1:1 實際顯示檢視。"
+  },
+
+  "export": {
+    "preview_naming": { "template": "{name}_人力銀行履歷照_效果預覽_{date}", "fallback_name": "CHUN_EN" },
+    "zip_naming": { "template": "{name}_人力銀行履歷照_{date}", "fallback_name": "CHUN_EN" },
+    "readme_included": true,
+    "record_spec_version": true
+  }
+}

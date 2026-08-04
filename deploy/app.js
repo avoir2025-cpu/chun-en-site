@@ -47,11 +47,19 @@ const HEIC_LIB = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.
 /* ================= §2 規格載入 ================= */
 const SPECS = { index: null, platforms: {} };
 
+/* 規格檔跟著頁面版本一起換快取。少了這行，改規格 push 上去舊訪客還是讀到舊 JSON，
+   「改規格＝改檔案」這個設計就是假的。 */
+const ASSET_V = (() => {
+  const sc = document.querySelector('script[src*="app.js"]');
+  const m = sc && sc.getAttribute('src').match(/[?&]v=([^&]+)/);
+  return m ? '?v=' + m[1] : '';
+})();
+
 async function loadSpecs() {
-  SPECS.index = await fetch('specs/index.json').then((r) => r.json());
+  SPECS.index = await fetch('specs/index.json' + ASSET_V).then((r) => r.json());
   for (const p of SPECS.index.platforms) {
     if (!p.is_active) continue;
-    SPECS.platforms[p.id] = await fetch(`specs/${p.file}`).then((r) => r.json());
+    SPECS.platforms[p.id] = await fetch(`specs/${p.file}${ASSET_V}`).then((r) => r.json());
   }
 }
 const platformSpec = () => SPECS.platforms[state.platform];
@@ -162,10 +170,11 @@ function slotCard(s) {
     `${s.output.width} × ${s.output.height}　${s.output.aspect_ratio}　最低有效 ${s.minimum_effective.width}px`));
   c.appendChild(el('p', 'sc-purpose', s.card.purpose));
 
+  const ov = s.avatar_overlap;
   const meta = el('div', 'sc-meta');
   [['建議照片', s.card.shot_type],
    ['主體位置', s.card.subject_position],
-   ['頭像遮擋', s.card.has_overlap ? '有，左下角約 568×264' : '無'],
+   ['頭像遮擋', ov ? `有，左下角約 ${ov.width}×${ov.height}` : '無'],
    ['顯示形狀', s.display_shape === 'circle' ? '圓形（四角會被切掉）' : '矩形']
   ].forEach(([k, v]) => {
     const d = el('div');
@@ -185,6 +194,20 @@ function diagramFor(s) {
   const fs = Math.round(Math.max(Math.min(W, H) * 0.055, W * 0.032));
   const dash = `${(sk * 5).toFixed(0)} ${(sk * 4).toFixed(0)}`;
   svg.appendChild(svgEl('rect', { x: 0, y: 0, width: W, height: H, fill: '#0D0A07', stroke: 'rgba(245,241,232,0.16)', 'stroke-width': sk * 0.8 }));
+
+  // 沒有圓形遮罩、也沒有遮擋區的版位（履歷照）：直接畫 guides 裡的安全範圍
+  if (s.display_shape !== 'circle' && !s.avatar_overlap && !s.mobile_crop) {
+    s.guides.filter((g) => g.default_on !== false).forEach((g) => {
+      const col = g.tone === 'warn' ? '#C9A96E' : '#7FA37A';
+      if (g.kind === 'circle') {
+        svg.appendChild(svgEl('circle', { cx: g.geometry.cx, cy: g.geometry.cy, r: g.geometry.r, fill: 'none', stroke: col, 'stroke-width': sk * 0.8, 'stroke-dasharray': dash }));
+      } else if (g.kind === 'rect') {
+        svg.appendChild(svgEl('rect', { x: g.geometry.x, y: g.geometry.y, width: g.geometry.width, height: g.geometry.height, fill: 'rgba(127,163,122,0.14)', stroke: col, 'stroke-width': sk * 0.8, 'stroke-dasharray': dash }));
+      }
+    });
+    svg.appendChild(svgText(W / 2, H / 2 + fs * 0.35, '安全範圍', fs, '#A8C3A3'));
+    return svg;
+  }
 
   if (s.display_shape === 'circle') {
     const g = s.guides.find((x) => x.id === 'circle_mask');
@@ -604,7 +627,7 @@ function buildMiniPreviews(s) {
     cv.width = w * dpr; cv.height = h * dpr;
     cv.style.width = w + 'px'; cv.style.height = h + 'px';
     m.appendChild(cv);
-    m.appendChild(el('div', 'cap', circle ? `${px}px` : '橫幅'));
+    m.appendChild(el('div', 'cap', circle ? `${px}px` : s.display_name));
     box.appendChild(m);
     miniCanvases.push(cv);
   });
@@ -805,12 +828,21 @@ function renderCropCanvas(slotId, w, h) {
   return cv;
 }
 
+/* 效果預覽模板：由平台 JSON 的 stage.template 決定畫什麼版面。
+   profile_header＝封面＋壓在上面的圓形頭像（LinkedIn／Facebook）
+   resume_card   ＝履歷版面＋平台實際顯示尺寸 1:1 檢視（人力銀行） */
+const STAGE_TEMPLATES = {
+  profile_header: mockProfile,
+  resume_card: mockResumeCard
+};
+
 function renderStage() {
   const cfg = platformSpec().stage;
   const area = $('stageArea');
   area.innerHTML = '';
+  const draw = STAGE_TEMPLATES[cfg.template || 'profile_header'] || mockProfile;
   const views = state.compare ? ['desktop', 'mobile'] : [state.stageView];
-  views.forEach((v) => area.appendChild(mockProfile(cfg, v)));
+  views.forEach((v) => area.appendChild(draw(cfg, v)));
   $('stageNote').textContent = cfg.disclaimer;
   renderStageActions();
   state.queue.forEach((slot) => { const a = state.assets[slot]; if (a) a.dirty = false; });
@@ -861,6 +893,57 @@ function mockProfile(cfg, view) {
   return wrapEl;
 }
 
+/* 履歷卡：照片放進履歷版面，另附平台實際顯示尺寸的 1:1 檢視 */
+function mockResumeCard(cfg, view) {
+  const c = cfg[view] || cfg.desktop;
+  const wrapEl = el('div', 'mock-wrap');
+  const card = el('div', 'mock resume' + (view === 'mobile' ? ' phone' : ''));
+
+  state.queue.forEach((slotId) => {
+    const s = slotSpec(slotId);
+    const url = croppedDataURL(slotId, 600);
+
+    const row = el('div', 'res-card');
+
+    const photo = el('div', 'res-photo');
+    photo.style.width = (c.photo_width_ratio * 100) + '%';
+    photo.style.aspectRatio = `${s.output.width} / ${s.output.height}`;
+    if (url) { const i = el('img'); i.src = url; i.alt = ''; photo.appendChild(i); }
+    else photo.appendChild(el('div', 'ph-fill', '尚未設定'));
+    row.appendChild(photo);
+
+    const info = el('div', 'res-info');
+    info.appendChild(el('div', 'res-plat', s.display_name));
+    info.appendChild(el('div', 'mock-name', state.name.trim() || cfg.placeholder.name));
+    info.appendChild(el('div', 'mock-headline', state.headline.trim() || cfg.placeholder.headline));
+    info.appendChild(el('div', 'mock-meta', cfg.placeholder.meta));
+    const lines = el('div', 'res-lines');
+    [82, 96, 70].forEach((w) => { const l = el('span'); l.style.width = w + '%'; lines.appendChild(l); });
+    info.appendChild(lines);
+    row.appendChild(info);
+
+    card.appendChild(row);
+
+    // 平台實際顯示尺寸：1:1 檢視
+    const px = (cfg.actual_size || {})[slotId];
+    if (px && url) {
+      const act = el('div', 'res-actual');
+      const box = el('div', 'res-actual-box');
+      box.style.width = px + 'px';
+      box.style.height = Math.round(px * s.output.height / s.output.width) + 'px';
+      const i = el('img'); i.src = url; i.alt = ''; box.appendChild(i);
+      act.appendChild(box);
+      act.appendChild(el('div', 'cap',
+        `${s.display_name}　平台實際顯示尺寸 ${px}×${Math.round(px * s.output.height / s.output.width)}px`));
+      card.appendChild(act);
+    }
+  });
+
+  wrapEl.appendChild(card);
+  wrapEl.appendChild(el('div', 'mock-cap', view === 'desktop' ? 'Desktop' : 'Mobile'));
+  return wrapEl;
+}
+
 /* 每個版位各給一顆返回鍵：從舞台看出問題，直接跳回那一張 */
 function renderStageActions() {
   const box = $('stageActions');
@@ -883,9 +966,74 @@ function exportSlotBlob(slotId) {
   return new Promise((res) => cv.toBlob(res, s.output.file_format, s.output.quality));
 }
 
-/* 舞台預覽圖：把桌面版位關係畫成一張可交付的圖 */
+/* 效果預覽圖：依平台模板合成一張可交付的圖 */
 async function exportStageBlob() {
   const cfg = platformSpec().stage;
+  if ((cfg.template || 'profile_header') === 'resume_card') return exportResumeCardBlob(cfg);
+  return exportProfileHeaderBlob(cfg);
+}
+
+async function exportResumeCardBlob(cfg) {
+  const W = 1600;
+  const pad = 70;
+  const rowH = 460;
+  const H = pad * 2 + rowH * state.queue.length;
+
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#1C1710';
+  ctx.fillRect(0, 0, W, H);
+
+  try { await document.fonts.ready; } catch (e) { /* 字型未就緒不影響輸出 */ }
+
+  state.queue.forEach((slotId, i) => {
+    const s = slotSpec(slotId);
+    const top = pad + rowH * i;
+    const ph = rowH - 90;
+    const pw = Math.round(ph * s.output.width / s.output.height);
+
+    if (state.assets[slotId]) {
+      ctx.drawImage(renderCropCanvas(slotId, pw, ph), pad, top);
+    } else {
+      ctx.fillStyle = '#0D0A07';
+      ctx.fillRect(pad, top, pw, ph);
+    }
+
+    const tx = pad + pw + 60;
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#A88A5C';
+    ctx.font = '400 24px "Noto Sans TC", sans-serif';
+    ctx.fillText(`${s.display_name}　${s.output.width}×${s.output.height}`, tx, top + 40);
+    ctx.fillStyle = '#F5F1E8';
+    ctx.font = '400 44px "Noto Serif TC", serif';
+    ctx.fillText(state.name.trim() || cfg.placeholder.name, tx, top + 108);
+    ctx.fillStyle = '#CFC5B4';
+    ctx.font = '400 26px "Noto Serif TC", serif';
+    ctx.fillText(state.headline.trim() || cfg.placeholder.headline, tx, top + 156);
+    ctx.fillStyle = '#8B7D6B';
+    ctx.font = '400 21px "Noto Sans TC", sans-serif';
+    ctx.fillText(cfg.placeholder.meta, tx, top + 200);
+
+    // 平台實際顯示尺寸 1:1
+    const px = (cfg.actual_size || {})[slotId];
+    if (px && state.assets[slotId]) {
+      const ah = Math.round(px * s.output.height / s.output.width);
+      ctx.drawImage(renderCropCanvas(slotId, px, ah), tx, top + 240);
+      ctx.fillStyle = '#8B7D6B';
+      ctx.font = '400 19px "Noto Sans TC", sans-serif';
+      ctx.fillText(`平台實際顯示尺寸 ${px}×${ah}px`, tx + px + 20, top + 240 + ah / 2);
+    }
+  });
+
+  ctx.fillStyle = '#8B7D6B';
+  ctx.font = '400 19px "Noto Sans TC", sans-serif';
+  ctx.fillText(cfg.disclaimer, pad, H - 26);
+
+  return new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.92));
+}
+
+async function exportProfileHeaderBlob(cfg) {
   const c = cfg.desktop;
   const bSpec = slotSpec('banner');
   const W = 1600;

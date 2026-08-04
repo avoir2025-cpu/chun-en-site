@@ -16,6 +16,15 @@
       "tagline": "商務身分的第一落點。頭像與橫幅是同一組視覺，要一起判斷。"
     },
     {
+      "id": "jobbank",
+      "display_name": "人力銀行履歷",
+      "display_name_en": "Job Bank",
+      "file": "jobbank.json",
+      "phase": "P1",
+      "is_active": true,
+      "tagline": "104 與 1111 的履歷照比例不同，要分開裁。"
+    },
+    {
       "id": "line",
       "display_name": "LINE",
       "display_name_en": "LINE",
