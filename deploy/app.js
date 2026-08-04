@@ -26,9 +26,40 @@ const svgEl = (tag, attrs) => {
 };
 const clamp = (v, lo, hi) => (lo > hi ? (lo + hi) / 2 : Math.min(hi, Math.max(lo, v)));
 
-const track = (name, params) => {
-  if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
-};
+/* GA4 事件。consent.js 要等訪客按「接受」才載入 gtag，而 deploy_open 在
+   啟動當下就打了——直接送會整個漏掉（首次造訪的人本來就還沒同意）。
+   所以未同意前先留在記憶體佇列，等 gtag 出現再補送；選「僅必要」就永遠
+   不會出現，佇列原地作廢，不會有任何資料離開瀏覽器。 */
+const track = (() => {
+  const queue = [];
+  const MAX_QUEUE = 50;
+  const GIVE_UP_MS = 10 * 60 * 1000;   // 十分鐘還沒同意就別再輪詢
+  let timer = null;
+  let armedAt = 0;
+
+  const flush = () => {
+    if (typeof window.gtag !== 'function') return false;
+    while (queue.length) {
+      const ev = queue.shift();
+      window.gtag('event', ev[0], ev[1]);
+    }
+    return true;
+  };
+  const disarm = () => { clearInterval(timer); timer = null; };
+  const arm = () => {
+    if (timer) return;
+    armedAt = Date.now();
+    timer = setInterval(() => {
+      if (flush() || Date.now() - armedAt > GIVE_UP_MS) disarm();
+    }, 1000);
+  };
+
+  return (name, params) => {
+    queue.push([name, params || {}]);
+    if (queue.length > MAX_QUEUE) queue.shift();
+    if (!flush()) arm();
+  };
+})();
 
 const todayStamp = () => {
   const d = new Date();

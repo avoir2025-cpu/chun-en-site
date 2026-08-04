@@ -493,3 +493,79 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* ============================================================
+   Cookie 同意橫幅
+   ------------------------------------------------------------
+   /consent.js 是全站共用，但它的樣式住在 sub.css，而本頁只載 app.css。
+   少了這段，橫幅會以 position:static 掉到文件最底（實測 y≈12200px），
+   訪客根本看不到 → 永遠不會按「接受」→ gtag 不載入
+   → 所有 deploy_* 事件靜默丟失。改版時別把這段拿掉。
+   （與 sub.css 的定義維持一致，變數皆已在本檔 :root 定義）
+   ============================================================ */
+.consent-bar {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: 0;
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  flex-wrap: wrap;
+  padding:
+    1.1rem clamp(1.25rem, 4vw, 3rem)
+    max(env(safe-area-inset-bottom), 1.1rem);
+  background: rgba(20, 16, 11, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--hairline);
+  transform: translateY(100%);
+  opacity: 0;
+  transition:
+    transform 0.5s var(--ease-out),
+    opacity 0.5s var(--ease-out);
+}
+.consent-bar.show { transform: translateY(0); opacity: 1; }
+.consent-text {
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  line-height: 1.9;
+  color: var(--paper-dim);
+  margin: 0;
+}
+.consent-text a {
+  color: var(--gold-light);
+  border-bottom: 1px solid rgba(168, 138, 92, 0.4);
+  padding-bottom: 1px;
+  margin-left: 0.8em;
+  transition: border-color 0.4s;
+}
+.consent-text a:hover { border-color: var(--gold); }
+.consent-actions { display: flex; gap: 0.8rem; flex-shrink: 0; }
+.consent-btn {
+  font-family: var(--serif-tc);
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  padding: 0.6rem 1.6rem;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.5s var(--ease-out);
+}
+.consent-accept {
+  color: var(--ink);
+  background: var(--gold);
+  border: 1px solid var(--gold);
+}
+.consent-accept:hover { background: var(--gold-light); border-color: var(--gold-light); }
+.consent-necessary {
+  color: var(--paper-dim);
+  border: 1px solid var(--hairline);
+}
+.consent-necessary:hover { color: var(--paper); border-color: var(--paper-dim); }
+
+@media (max-width: 640px) {
+  .consent-bar { justify-content: flex-start; }
+  .consent-actions { width: 100%; }
+  .consent-btn { flex: 1; text-align: center; }
+}
