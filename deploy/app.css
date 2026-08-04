@@ -391,16 +391,19 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
 }
 .line-phone .line-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .line-phone .ph-fill { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.95rem; }
-.line-center {
-  position: absolute; left: 50%; transform: translate(-50%, -50%);
-  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
-  width: 100%; text-align: center; pointer-events: none;
-}
+/* 頭像中心釘在 guide 座標；姓名區另外定位在頭像下緣（尺寸與 top 由 JS 依 guide 換算） */
 .line-avatar {
-  width: 78px; height: 78px; border-radius: 50%; overflow: hidden;
+  position: absolute; left: 50%; transform: translate(-50%, -50%);
+  border-radius: 50%; overflow: hidden;
   border: 3px solid rgba(20, 16, 11, 0.55); background: #241D14;
+  pointer-events: none;
 }
 .line-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.line-meta {
+  position: absolute; left: 0; right: 0; text-align: center;
+  display: flex; flex-direction: column; gap: 0.25rem; align-items: center;
+  pointer-events: none;
+}
 .line-name { font-size: 1.05rem; color: var(--paper); text-shadow: 0 1px 8px rgba(0,0,0,0.7); }
 .line-status { font-size: 0.85rem; color: var(--paper-dim); text-shadow: 0 1px 8px rgba(0,0,0,0.7); max-width: 85%; }
 

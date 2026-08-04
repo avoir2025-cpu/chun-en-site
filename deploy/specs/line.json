@@ -297,6 +297,7 @@
     "template": "line_profile",
     "disclaimer": "此畫面為版位模擬，頭像與姓名位置為保守估計。實際平台介面可能因裝置與平台版本略有差異。",
     "avatar_cy_ratio": 0.54,
+    "_avatar_position_note": "頭像位置與大小的唯一真相＝background 版位 guides 裡 avatar_live 的座標；裁切疊層、效果預覽、預覽圖輸出三處共用。avatar_cy_ratio 僅為 guide 不存在時的備援。",
     "placeholder": {
       "name": "您的姓名",
       "headline": "狀態訊息｜例：形象影像・台中",

@@ -989,6 +989,15 @@ function mockResumeCard(cfg, view) {
   return wrapEl;
 }
 
+/* LINE 頭像的位置與大小只有一個真相：背景版位 guides 裡的 avatar_live 座標。
+   裁切疊層、效果預覽、預覽圖輸出三處都從這裡換算，才不會各畫各的。 */
+function lineAvatarGeo() {
+  const bg = slotSpec('background');
+  const g = bg && bg.guides.find((x) => x.kind === 'avatar_live');
+  if (g) return { cyr: g.geometry.cy / bg.output.height, rr: g.geometry.r / bg.output.width };
+  return { cyr: platformSpec().stage.avatar_cy_ratio || 0.54, rr: 0.139 };
+}
+
 /* LINE 個人檔案：9:16 背景全屏、頭像與姓名疊在中央帶；佇列含 VOOM 時並排貼文卡 */
 function mockLineProfile(cfg) {
   const wrapEl = el('div', 'mock-wrap wide');
@@ -1001,15 +1010,25 @@ function mockLineProfile(cfg) {
     if (bgUrl) { const i = el('img'); i.src = bgUrl; i.alt = ''; i.className = 'line-bg'; phone.appendChild(i); }
     else phone.appendChild(el('div', 'ph-fill', '尚未設定背景'));
 
-    const center = el('div', 'line-center');
-    center.style.top = (cfg.avatar_cy_ratio * 100) + '%';
+    const geo = lineAvatarGeo();
+    const PHONE_W = 280;
+    const avD = Math.round(PHONE_W * geo.rr * 2);
+
+    // 頭像中心精準釘在 guide 座標上（translate -50% 只對頭像自己）
     const av = el('div', 'line-avatar');
+    av.style.width = avD + 'px';
+    av.style.height = avD + 'px';
+    av.style.top = (geo.cyr * 100) + '%';
     const avUrl = state.queue.includes('avatar') ? croppedDataURL('avatar', 300) : null;
     if (avUrl) { const i = el('img'); i.src = avUrl; i.alt = ''; av.appendChild(i); }
-    center.appendChild(av);
-    center.appendChild(el('div', 'line-name', state.name.trim() || cfg.placeholder.name));
-    center.appendChild(el('div', 'line-status', state.headline.trim() || cfg.placeholder.headline));
-    phone.appendChild(center);
+    phone.appendChild(av);
+
+    // 姓名區另外定位在頭像下緣
+    const meta = el('div', 'line-meta');
+    meta.style.top = `calc(${geo.cyr * 100}% + ${Math.round(avD / 2) + 10}px)`;
+    meta.appendChild(el('div', 'line-name', state.name.trim() || cfg.placeholder.name));
+    meta.appendChild(el('div', 'line-status', state.headline.trim() || cfg.placeholder.headline));
+    phone.appendChild(meta);
 
     col.appendChild(phone);
     col.appendChild(el('div', 'mock-cap', '個人檔案'));
@@ -1125,10 +1144,11 @@ async function exportLineProfileBlob(cfg) {
       ctx.fillStyle = '#0D0A07';
       ctx.fillRect(x, pad, phoneW, phoneH);
     }
-    // 頭像＋姓名疊中央帶
+    // 頭像＋姓名疊中央帶（位置與大小同 guide 座標）
+    const geo = lineAvatarGeo();
     const cx = x + phoneW / 2;
-    const cy = pad + phoneH * cfg.avatar_cy_ratio;
-    const r = 78;
+    const cy = pad + phoneH * geo.cyr;
+    const r = Math.round(phoneW * geo.rr);
     ctx.save();
     ctx.beginPath(); ctx.arc(cx, cy, r + 5, 0, Math.PI * 2); ctx.fillStyle = 'rgba(20,16,11,0.55)'; ctx.fill();
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
