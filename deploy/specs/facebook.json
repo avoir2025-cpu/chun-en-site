@@ -1,0 +1,255 @@
+{
+  "_doc": "Facebook 版位規格。頭像與封面結構同 LinkedIn（profile_header 模板沿用）。",
+  "platform": "facebook",
+  "display_name": "Facebook",
+  "version": "2026-08-04",
+  "is_active": true,
+
+  "_sources": [
+    "官方說明中心（2026/08/04 查證，第一手）：大頭貼電腦顯示 176×176、手機 196×196、「建議最佳品質 320×320」；封面「載入最快為 851×315」、最低 400×150；大頭貼全版面圓形顯示",
+    "手機可視 640×360（第二手，多來源一致）：手機只顯示封面中央約 66% 寬度",
+    "頭像與封面左下角重疊約 40px：形象照平台應用指南 v2.0（2026/08/03 查證）"
+  ],
+
+  "_modes_note": "順序即畫面順序，建議項放第一個。",
+  "modes": [
+    {
+      "id": "full",
+      "display_name": "頭像＋封面完整部署",
+      "subtitle": "Full Deployment",
+      "slots": ["avatar", "banner"],
+      "recommended": true,
+      "summary": "兩張一起判斷。頭像會疊在封面左下角，手機還會裁掉兩側各 17%。"
+    },
+    {
+      "id": "avatar_only",
+      "display_name": "個人／粉專頭像",
+      "subtitle": "Profile Photo",
+      "slots": ["avatar"],
+      "summary": "只處理頭像。留言列、動態、訊息都是這一張，全版面圓形顯示。"
+    },
+    {
+      "id": "banner_only",
+      "display_name": "封面照片",
+      "subtitle": "Cover Photo",
+      "slots": ["banner"],
+      "summary": "只處理封面。手機裁掉的比例比 LinkedIn 更兇，重點必須置中。"
+    }
+  ],
+
+  "slots": [
+    {
+      "platform": "facebook",
+      "slot": "avatar",
+      "display_name": "個人／粉專頭像",
+      "display_name_en": "Profile Photo",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 720,
+        "height": 720,
+        "aspect_ratio": "1:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 320, "height": 320 },
+      "resolution_tiers": { "good": 720, "acceptable": 480, "poor": 320 },
+      "_tiers_note": "官方建議最佳品質 320×320；輸出 720 讓平台自己縮。",
+
+      "display_shape": "circle",
+      "desktop_crop": { "x": 0, "y": 0, "width": 720, "height": 720 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 720, "height": 720 },
+      "safe_zone": { "shape": "circle", "cx": 360, "cy": 360, "r": 360 },
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "circle_mask",
+          "kind": "circle_mask",
+          "tone": "danger",
+          "label": "圓形外的四角會被切掉",
+          "geometry": { "cx": 360, "cy": 360, "r": 360 },
+          "default_on": true
+        },
+        {
+          "id": "subject_zone",
+          "kind": "circle",
+          "tone": "safe",
+          "label": "建議五官落在此圈內",
+          "geometry": { "cx": 360, "cy": 331, "r": 266 },
+          "description": "留言列常縮到 40px，臉要夠大、頭頂與雙肩留 15–20% 空間。",
+          "default_on": true
+        },
+        {
+          "id": "center_cross",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "圓心",
+          "geometry": { "cx": 360, "cy": 360 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": { "anchor": "center", "eye_line_ratio": 0.38 },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "留言、動態、訊息、搜尋結果都用這一張，常縮到 40px 顯示。個人與粉專的規格相同，這一張兩邊通用。",
+        "good_for": [
+          "頭肩照或胸上照，臉佔比明顯",
+          "眼神清楚、視線朝向鏡頭",
+          "背景乾淨、深淺底色都相容",
+          "縮小後仍能辨識五官"
+        ],
+        "avoid": [
+          "全身照、人物過小",
+          "大面積道具或手勢遮臉",
+          "團體照裁出來的單人",
+          "背景與服裝同色調"
+        ],
+        "subject_position": "臉置中，頭頂留 15–20% 空間",
+        "has_overlap": false,
+        "shot_type": "頭肩／胸上",
+        "diagram": "avatar"
+      },
+
+      "advice": [
+        "人物在畫面中太小，縮到 40px 後五官會糊掉。",
+        "頭頂留白過多，臉在圓形裡會顯得偏下。",
+        "背景與服裝對比不足，人物輪廓會糊成一片。",
+        "人物偏離圓心，圓形裁切後會歪一邊。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀屬 P3。",
+
+      "naming": { "template": "{name}_Facebook_Profile_{date}", "fallback_name": "CHUN_EN" }
+    },
+
+    {
+      "platform": "facebook",
+      "slot": "banner",
+      "display_name": "封面照片",
+      "display_name_en": "Cover Photo",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 1702,
+        "height": 630,
+        "aspect_ratio": "2.7:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "_output_note": "官方最佳 851×315 的 2 倍，比例不變，畫質留餘裕。",
+      "minimum_effective": { "width": 851, "height": 315 },
+      "resolution_tiers": { "good": 1702, "acceptable": 1277, "poor": 851 },
+
+      "display_shape": "rect",
+      "desktop_crop": { "x": 0, "y": 0, "width": 1702, "height": 630 },
+      "mobile_crop": { "x": 291, "y": 0, "width": 1120, "height": 630 },
+      "_mobile_crop_note": "手機顯示 640×360（第二手）：以桌機 851 換算，手機只看得到中央約 66% 寬（1702×0.66≈1120）。",
+
+      "safe_zone": { "shape": "rect", "x": 560, "y": 48, "width": 780, "height": 440 },
+      "_safe_zone_note": "手機可視（x 291–1411）扣掉左下頭像與按鈕區再留邊界。",
+
+      "avatar_overlap": { "shape": "rect", "x": 36, "y": 440, "width": 470, "height": 190 },
+      "_avatar_overlap_note": "頭像與名稱／按鈕會佔據封面左下角；個人與粉專版型略有差異，此為保守示意值。",
+
+      "guides": [
+        {
+          "id": "avatar_overlap",
+          "kind": "rect",
+          "tone": "danger",
+          "label": "頭像遮擋區",
+          "geometry": { "x": 36, "y": 440, "width": 470, "height": 190 },
+          "description": "頭像與名稱會疊在封面左下角，重點放這裡等於沒放。",
+          "default_on": true
+        },
+        {
+          "id": "mobile_crop",
+          "kind": "outside_rect",
+          "tone": "warn",
+          "label": "手機裁切區",
+          "geometry": { "x": 291, "y": 0, "width": 1120, "height": 630 },
+          "description": "手機只顯示中央約 66% 寬，比 LinkedIn 裁得更兇。",
+          "default_on": true
+        },
+        {
+          "id": "safe_zone",
+          "kind": "rect",
+          "tone": "safe",
+          "label": "全裝置安全區",
+          "geometry": { "x": 560, "y": 48, "width": 780, "height": 440 },
+          "description": "主體與文字放這裡，桌機與手機都完整看得到。",
+          "default_on": true
+        }
+      ],
+
+      "recommended_subject_position": { "anchor": "center", "_note": "重點視覺置中，離左右邊界至少 300px。" },
+      "recommended_text_position": { "anchor": "center", "min_left_px": 560 },
+
+      "card": {
+        "purpose": "點進你的個人頁或粉專第一眼看到的橫向空間。官方建議 sRGB JPG、100KB 內最不失真；本工具輸出 2 倍尺寸讓平台自己縮。",
+        "good_for": [
+          "橫式構圖、重點置中",
+          "空間、材質、環境照",
+          "與頭像不重複的畫面",
+          "低對比、不搶頭像焦點"
+        ],
+        "avoid": [
+          "重點主體落在左下角（會被頭像蓋住）",
+          "關鍵內容貼近左右邊界（手機會裁掉）",
+          "把直式人物照硬壓成 2.7:1",
+          "與頭像同一組畫面、視覺重複"
+        ],
+        "subject_position": "置中，離左右邊界至少 300px",
+        "has_overlap": true,
+        "shot_type": "橫式環境／空間／留白",
+        "diagram": "banner"
+      },
+
+      "advice": [
+        "主體落入左下角，實際會被頭像與名稱蓋住。",
+        "手機裁掉兩側各約 17%，比 LinkedIn 更兇，重點務必置中。",
+        "封面與頭像用了同一組畫面，兩張視覺互相競爭。",
+        "圖片解析度可輸出，但構圖不適合 2.7:1 這種寬版位。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀屬 P3。",
+
+      "naming": { "template": "{name}_Facebook_Cover_{date}", "fallback_name": "CHUN_EN" }
+    }
+  ],
+
+  "stage": {
+    "_doc": "沿用 profile_header 模板。比例為示意值，不仿真平台 UI。",
+    "template": "profile_header",
+    "disclaimer": "此畫面為版位模擬。實際平台介面可能因裝置、帳號類型（個人／粉專）與平台版本略有差異。",
+    "desktop": {
+      "banner_aspect": "2.7:1",
+      "avatar_diameter_ratio": 0.15,
+      "avatar_left_ratio": 0.035,
+      "avatar_overlap_ratio": 0.35
+    },
+    "mobile": {
+      "banner_visible_ratio": 0.66,
+      "avatar_diameter_ratio": 0.26,
+      "avatar_left_ratio": 0.05,
+      "avatar_overlap_ratio": 0.4
+    },
+    "placeholder": {
+      "name": "您的姓名／粉專名稱",
+      "headline": "簡介或類別｜例：形象顧問",
+      "meta": "1,234 個讚・1,300 位追蹤者"
+    },
+    "small_preview_sizes": [96, 48, 32]
+  },
+
+  "export": {
+    "preview_naming": { "template": "{name}_Facebook_Preview_{date}", "fallback_name": "CHUN_EN" },
+    "zip_naming": { "template": "{name}_Facebook_Deploy_{date}", "fallback_name": "CHUN_EN" },
+    "readme_included": true,
+    "record_spec_version": true
+  }
+}

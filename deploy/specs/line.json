@@ -1,0 +1,319 @@
+{
+  "_doc": "LINE 版位規格。個人檔案背景是直式 9:16 全屏，頭像與姓名疊在中央帶（保守估計值）；VOOM 貼文 1:1。",
+  "platform": "line",
+  "display_name": "LINE",
+  "version": "2026-08-04",
+  "is_active": true,
+
+  "_sources": [
+    "頭像 640×640、JPG/PNG、3MB 內、圓形顯示：形象照平台應用指南 v2.0（2026/08/03 查證）",
+    "個人檔案背景（2026/08/04 查證，第二手多來源一致）：系統基準 720×1280（9:16）、建議上傳 1080×1920；「最上部から名前の下まで」約 720×920（換算 1080 座標≈1380）；頭像置中偏中央、姓名與狀態訊息疊在背景上",
+    "VOOM 貼文 1200×1200、10MB 內；多圖版型會變橫式（3 張 1080×540、4 張 1080×720）：指南 v2.0 第 06 節",
+    "⚠️ 中央遮擋帶精確座標各來源說法不一，本檔採保守估計並以示意呈現"
+  ],
+
+  "_modes_note": "順序即畫面順序，建議項放第一個。",
+  "modes": [
+    {
+      "id": "profile",
+      "display_name": "頭像＋個人檔案背景",
+      "subtitle": "Profile Deployment",
+      "slots": ["avatar", "background"],
+      "recommended": true,
+      "summary": "別人點進你個人檔案看到的整個畫面。頭像與姓名會疊在背景中央，兩張要一起判斷。"
+    },
+    {
+      "id": "background_only",
+      "display_name": "個人檔案背景",
+      "subtitle": "Profile Background",
+      "slots": ["background"],
+      "summary": "只處理背景。直式 9:16 全屏，中央會被頭像與姓名蓋住。"
+    },
+    {
+      "id": "voom",
+      "display_name": "VOOM 貼文",
+      "subtitle": "VOOM Post",
+      "slots": ["voom"],
+      "summary": "方形貼文首圖。多圖時版型會變橫式，主體置中最穩。"
+    }
+  ],
+
+  "slots": [
+    {
+      "platform": "line",
+      "slot": "avatar",
+      "display_name": "頭像",
+      "display_name_en": "Profile Photo",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 640,
+        "height": 640,
+        "aspect_ratio": "1:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 320, "height": 320 },
+      "resolution_tiers": { "good": 640, "acceptable": 480, "poor": 320 },
+
+      "display_shape": "circle",
+      "desktop_crop": { "x": 0, "y": 0, "width": 640, "height": 640 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 640, "height": 640 },
+      "safe_zone": { "shape": "circle", "cx": 320, "cy": 320, "r": 320 },
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "circle_mask",
+          "kind": "circle_mask",
+          "tone": "danger",
+          "label": "圓形外的四角會被切掉",
+          "geometry": { "cx": 320, "cy": 320, "r": 320 },
+          "default_on": true
+        },
+        {
+          "id": "subject_zone",
+          "kind": "circle",
+          "tone": "safe",
+          "label": "建議五官落在此圈內",
+          "geometry": { "cx": 320, "cy": 294, "r": 236 },
+          "description": "聊天列表常縮到 48px，臉要夠大、頭頂與雙肩留 15–20% 空間。",
+          "default_on": true
+        },
+        {
+          "id": "center_cross",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "圓心",
+          "geometry": { "cx": 320, "cy": 320 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": { "anchor": "center", "eye_line_ratio": 0.38 },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "聊天列表、好友列表、群組成員都是這一張，常縮到 48px。LINE 是半私領域，要用形象照還是生活照，先想清楚受眾。",
+        "good_for": [
+          "頭肩照或胸上照，臉佔比明顯",
+          "眼神清楚、表情比商務平台可以更放鬆",
+          "背景乾淨",
+          "縮到 48px 仍能辨識五官"
+        ],
+        "avoid": [
+          "全身照、人物過小",
+          "大面積道具或手勢遮臉",
+          "解析度不足的舊照"
+        ],
+        "subject_position": "臉置中，頭頂留 15–20% 空間",
+        "has_overlap": false,
+        "shot_type": "頭肩／胸上",
+        "diagram": "avatar"
+      },
+
+      "advice": [
+        "人物太小，縮到 48px 後五官會糊掉。",
+        "人物偏離圓心，圓形裁切後會歪一邊。",
+        "檔案上限 3MB，本工具輸出的 JPG 遠低於此，可直接上傳。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀屬 P3。",
+
+      "naming": { "template": "{name}_LINE_Profile_{date}", "fallback_name": "CHUN_EN" }
+    },
+
+    {
+      "platform": "line",
+      "slot": "background",
+      "display_name": "個人檔案背景",
+      "display_name_en": "Profile Background",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 1080,
+        "height": 1920,
+        "aspect_ratio": "9:16",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 720, "height": 1280 },
+      "resolution_tiers": { "good": 1080, "acceptable": 900, "poor": 720 },
+      "_tiers_note": "系統基準 720×1280，建議上傳 1080×1920。",
+
+      "display_shape": "rect",
+      "desktop_crop": { "x": 0, "y": 0, "width": 1080, "height": 1920 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 1080, "height": 1920 },
+
+      "safe_zone": { "shape": "rect", "x": 60, "y": 140, "width": 960, "height": 620 },
+      "_safe_zone_note": "上方安全區：頭像帶以上的區域，重要視覺放這裡最穩。",
+
+      "avatar_overlap": { "shape": "rect", "x": 270, "y": 860, "width": 540, "height": 540 },
+      "_avatar_overlap_note": "頭像與姓名、狀態訊息疊在中央帶（保守估計；各裝置顯示範圍略有差異）。",
+
+      "guides": [
+        {
+          "id": "avatar_overlap",
+          "kind": "rect",
+          "tone": "danger",
+          "label": "頭像與姓名區",
+          "geometry": { "x": 270, "y": 860, "width": 540, "height": 540 },
+          "description": "頭像、姓名、狀態訊息會疊在畫面中央帶。人臉或文字放這裡會被蓋住。",
+          "default_on": true
+        },
+        {
+          "id": "avatar_spot",
+          "kind": "circle",
+          "tone": "warn",
+          "label": "頭像位置（示意）",
+          "geometry": { "cx": 540, "cy": 1030, "r": 150 },
+          "description": "圓形頭像大約落在這裡（保守估計）。",
+          "default_on": true
+        },
+        {
+          "id": "safe_top",
+          "kind": "rect",
+          "tone": "safe",
+          "label": "上方安全區",
+          "geometry": { "x": 60, "y": 140, "width": 960, "height": 620 },
+          "description": "頭像帶以上，重要視覺放這裡。",
+          "default_on": true
+        }
+      ],
+
+      "recommended_subject_position": {
+        "anchor": "top",
+        "_note": "主體放上三分之一，避開中央的頭像與姓名帶。"
+      },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "別人點進你個人檔案看到的整個畫面。它不是一張獨立的照片，是頭像的背景舞台：中央會被你的頭像和姓名蓋住。",
+        "good_for": [
+          "直式構圖、主體在上三分之一",
+          "空間、材質、氛圍照",
+          "中央帶單純乾淨的畫面",
+          "與頭像互補而不是重複的視覺"
+        ],
+        "avoid": [
+          "人臉放在畫面中央（會被頭像蓋住）",
+          "文字放在中央帶",
+          "橫式照片硬轉直式",
+          "與頭像同一張照片"
+        ],
+        "subject_position": "上三分之一，避開中央帶",
+        "has_overlap": true,
+        "shot_type": "直式環境／氛圍／留白",
+        "diagram": "fullscreen"
+      },
+
+      "advice": [
+        "主體或人臉落在中央帶，實際會被你的頭像和姓名蓋住。",
+        "各裝置顯示範圍略有差異，貼近上下邊緣的內容不保證完整可見。",
+        "背景太搶戲會壓過頭像；它的角色是舞台，不是主角。",
+        "頭像與背景一起看才準，建議走「頭像＋個人檔案背景」流程。"
+      ],
+      "_advice_note": "遮擋帶為保守估計（第二手來源）；靜態顧問提示。",
+
+      "naming": { "template": "{name}_LINE_Profile_BG_{date}", "fallback_name": "CHUN_EN" }
+    },
+
+    {
+      "platform": "line",
+      "slot": "voom",
+      "display_name": "VOOM 貼文",
+      "display_name_en": "VOOM Post",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 1200,
+        "height": 1200,
+        "aspect_ratio": "1:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 600, "height": 600 },
+      "resolution_tiers": { "good": 1200, "acceptable": 900, "poor": 600 },
+
+      "display_shape": "rect",
+      "desktop_crop": { "x": 0, "y": 0, "width": 1200, "height": 1200 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 1200, "height": 1200 },
+      "safe_zone": { "shape": "rect", "x": 120, "y": 120, "width": 960, "height": 960 },
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "safe_zone",
+          "kind": "rect",
+          "tone": "safe",
+          "label": "主體安全範圍",
+          "geometry": { "x": 120, "y": 120, "width": 960, "height": 960 },
+          "description": "多圖貼文的版型會變橫式（3 張 1080×540、4 張 1080×720），主體置中才不會被裁掉。",
+          "default_on": true
+        },
+        {
+          "id": "center_cross",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "中心線",
+          "geometry": { "cx": 600, "cy": 600 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": { "anchor": "center" },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "VOOM 動態的貼文首圖。方形 1:1 最穩：多圖貼文的版型會隨張數變成橫式，主體置中的方形構圖在任何版型都活得下來。",
+        "good_for": [
+          "主體置中的方形構圖",
+          "單圖或多圖的首圖",
+          "人物半身或作品照"
+        ],
+        "avoid": [
+          "主體貼近上下邊緣（多圖橫式版型會裁掉）",
+          "重要文字放邊緣",
+          "解析度不足的舊照"
+        ],
+        "subject_position": "置中",
+        "has_overlap": false,
+        "shot_type": "方形，主體置中",
+        "diagram": "square_post"
+      },
+
+      "advice": [
+        "3 張貼文版型變 1080×540、4 張變 1080×720，都是橫式：主體不置中就會被裁。",
+        "檔案上限 10MB，本工具輸出遠低於此。"
+      ],
+      "_advice_note": "靜態顧問提示。",
+
+      "naming": { "template": "{name}_LINE_VOOM_{date}", "fallback_name": "CHUN_EN" }
+    }
+  ],
+
+  "stage": {
+    "_doc": "line_profile 模板：手機直式個人檔案（背景全屏＋頭像姓名疊中央）；佇列含 VOOM 時並排貼文卡。",
+    "template": "line_profile",
+    "disclaimer": "此畫面為版位模擬，頭像與姓名位置為保守估計。實際平台介面可能因裝置與平台版本略有差異。",
+    "avatar_cy_ratio": 0.54,
+    "placeholder": {
+      "name": "您的姓名",
+      "headline": "狀態訊息｜例：形象影像・台中",
+      "meta": ""
+    },
+    "small_preview_sizes": [96, 48, 32]
+  },
+
+  "export": {
+    "preview_naming": { "template": "{name}_LINE_Preview_{date}", "fallback_name": "CHUN_EN" },
+    "zip_naming": { "template": "{name}_LINE_Deploy_{date}", "fallback_name": "CHUN_EN" },
+    "readme_included": true,
+    "record_spec_version": true
+  }
+}

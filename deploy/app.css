@@ -382,6 +382,39 @@ h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--
 .res-actual-box img { width: 100%; height: 100%; object-fit: cover; }
 .res-actual .cap { font-size: 0.9rem; color: var(--muted); }
 
+/* ---- LINE 個人檔案模板 ---- */
+.line-stage { display: flex; gap: 2.4rem; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+.line-col { display: flex; flex-direction: column; align-items: center; }
+.line-phone {
+  position: relative; width: 280px; aspect-ratio: 9 / 16;
+  background: #0D0A07; border: 1px solid var(--hairline); border-radius: 1.4rem; overflow: hidden;
+}
+.line-phone .line-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.line-phone .ph-fill { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.95rem; }
+.line-center {
+  position: absolute; left: 50%; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  width: 100%; text-align: center; pointer-events: none;
+}
+.line-avatar {
+  width: 78px; height: 78px; border-radius: 50%; overflow: hidden;
+  border: 3px solid rgba(20, 16, 11, 0.55); background: #241D14;
+}
+.line-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.line-name { font-size: 1.05rem; color: var(--paper); text-shadow: 0 1px 8px rgba(0,0,0,0.7); }
+.line-status { font-size: 0.85rem; color: var(--paper-dim); text-shadow: 0 1px 8px rgba(0,0,0,0.7); max-width: 85%; }
+
+.voom-card { width: 300px; background: var(--ink-lift); border: 1px solid var(--hairline); }
+.voom-head { display: flex; gap: 0.7rem; align-items: center; padding: 0.8rem 0.9rem; }
+.voom-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: #0D0A07; border: 1px solid var(--hairline); flex: none; }
+.voom-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.voom-name { font-size: 0.95rem; color: var(--paper); }
+.voom-time { font-size: 0.8rem; color: var(--muted); }
+.voom-img { width: 100%; aspect-ratio: 1 / 1; background: #0D0A07; position: relative; }
+.voom-img img { width: 100%; height: 100%; object-fit: cover; }
+.voom-img .ph-fill { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.95rem; }
+.voom-foot { padding: 0.7rem 0.9rem; font-size: 0.85rem; color: var(--muted); }
+
 /* ---- 頭像矩陣模板（商務頭像組） ---- */
 .mock-wrap.wide { max-width: 900px; }
 .mock.matrix {

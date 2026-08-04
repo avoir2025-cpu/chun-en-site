@@ -175,7 +175,7 @@ function slotCard(s) {
   const meta = el('div', 'sc-meta');
   [['建議照片', s.card.shot_type],
    ['主體位置', s.card.subject_position],
-   ['頭像遮擋', ov ? `有，左下角約 ${ov.width}×${ov.height}` : '無'],
+   ['頭像遮擋', ov ? `有，約 ${ov.width}×${ov.height}（見疊層）` : '無'],
    ['顯示形狀', s.display_shape === 'circle' ? '圓形（四角會被切掉）' : '矩形']
   ].forEach(([k, v]) => {
     const d = el('div');
@@ -835,10 +835,11 @@ function renderCropCanvas(slotId, w, h) {
 const STAGE_TEMPLATES = {
   profile_header: mockProfile,
   resume_card: mockResumeCard,
-  avatar_matrix: mockAvatarMatrix
+  avatar_matrix: mockAvatarMatrix,
+  line_profile: mockLineProfile
 };
 /* 桌面／手機切換與 A/B 對這些模板沒有意義 */
-const SINGLE_VIEW_TEMPLATES = ['avatar_matrix'];
+const SINGLE_VIEW_TEMPLATES = ['avatar_matrix', 'line_profile'];
 
 function renderStage() {
   const cfg = platformSpec().stage;
@@ -952,6 +953,63 @@ function mockResumeCard(cfg, view) {
   return wrapEl;
 }
 
+/* LINE 個人檔案：9:16 背景全屏、頭像與姓名疊在中央帶；佇列含 VOOM 時並排貼文卡 */
+function mockLineProfile(cfg) {
+  const wrapEl = el('div', 'mock-wrap wide');
+  const row = el('div', 'line-stage');
+
+  if (state.queue.includes('background') || state.queue.includes('avatar')) {
+    const col = el('div', 'line-col');
+    const phone = el('div', 'line-phone');
+    const bgUrl = state.queue.includes('background') ? croppedDataURL('background', 720) : null;
+    if (bgUrl) { const i = el('img'); i.src = bgUrl; i.alt = ''; i.className = 'line-bg'; phone.appendChild(i); }
+    else phone.appendChild(el('div', 'ph-fill', '尚未設定背景'));
+
+    const center = el('div', 'line-center');
+    center.style.top = (cfg.avatar_cy_ratio * 100) + '%';
+    const av = el('div', 'line-avatar');
+    const avUrl = state.queue.includes('avatar') ? croppedDataURL('avatar', 300) : null;
+    if (avUrl) { const i = el('img'); i.src = avUrl; i.alt = ''; av.appendChild(i); }
+    center.appendChild(av);
+    center.appendChild(el('div', 'line-name', state.name.trim() || cfg.placeholder.name));
+    center.appendChild(el('div', 'line-status', state.headline.trim() || cfg.placeholder.headline));
+    phone.appendChild(center);
+
+    col.appendChild(phone);
+    col.appendChild(el('div', 'mock-cap', '個人檔案'));
+    row.appendChild(col);
+  }
+
+  if (state.queue.includes('voom')) {
+    const col = el('div', 'line-col');
+    const card = el('div', 'voom-card');
+    const head = el('div', 'voom-head');
+    const av = el('div', 'voom-avatar');
+    const avUrl = state.queue.includes('avatar') ? croppedDataURL('avatar', 120) : null;
+    if (avUrl) { const i = el('img'); i.src = avUrl; i.alt = ''; av.appendChild(i); }
+    head.appendChild(av);
+    const ht = el('div');
+    ht.appendChild(el('div', 'voom-name', state.name.trim() || cfg.placeholder.name));
+    ht.appendChild(el('div', 'voom-time', '剛剛'));
+    head.appendChild(ht);
+    card.appendChild(head);
+
+    const img = el('div', 'voom-img');
+    const vUrl = croppedDataURL('voom', 700);
+    if (vUrl) { const i = el('img'); i.src = vUrl; i.alt = ''; img.appendChild(i); }
+    else img.appendChild(el('div', 'ph-fill', '尚未設定貼文圖'));
+    card.appendChild(img);
+    card.appendChild(el('div', 'voom-foot', '♡ 123　💬 8　↗ 分享'));
+
+    col.appendChild(card);
+    col.appendChild(el('div', 'mock-cap', 'VOOM'));
+    row.appendChild(col);
+  }
+
+  wrapEl.appendChild(row);
+  return wrapEl;
+}
+
 /* 頭像矩陣：同一張裁切在各平台常見顯示尺寸下並排檢視 */
 function mockAvatarMatrix(cfg) {
   const url = croppedDataURL('avatar', 400);
@@ -1003,7 +1061,88 @@ async function exportStageBlob() {
   const tpl = cfg.template || 'profile_header';
   if (tpl === 'resume_card') return exportResumeCardBlob(cfg);
   if (tpl === 'avatar_matrix') return exportAvatarMatrixBlob(cfg);
+  if (tpl === 'line_profile') return exportLineProfileBlob(cfg);
   return exportProfileHeaderBlob(cfg);
+}
+
+async function exportLineProfileBlob(cfg) {
+  const hasProfile = state.queue.includes('background') || state.queue.includes('avatar');
+  const hasVoom = state.queue.includes('voom');
+  const pad = 70, phoneW = 540, phoneH = 960, voomW = 620;
+  const W = pad * 2 + (hasProfile ? phoneW : 0) + (hasProfile && hasVoom ? pad : 0) + (hasVoom ? voomW : 0);
+  const H = phoneH + pad * 2;
+
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#1C1710';
+  ctx.fillRect(0, 0, W, H);
+
+  try { await document.fonts.ready; } catch (e) { /* 字型未就緒不影響輸出 */ }
+  ctx.textBaseline = 'alphabetic';
+
+  let x = pad;
+  if (hasProfile) {
+    if (state.assets.background) {
+      ctx.drawImage(renderCropCanvas('background', phoneW, phoneH), x, pad);
+    } else {
+      ctx.fillStyle = '#0D0A07';
+      ctx.fillRect(x, pad, phoneW, phoneH);
+    }
+    // 頭像＋姓名疊中央帶
+    const cx = x + phoneW / 2;
+    const cy = pad + phoneH * cfg.avatar_cy_ratio;
+    const r = 78;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, r + 5, 0, Math.PI * 2); ctx.fillStyle = 'rgba(20,16,11,0.55)'; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
+    if (state.assets.avatar) ctx.drawImage(renderCropCanvas('avatar', r * 2, r * 2), cx - r, cy - r);
+    else { ctx.fillStyle = '#241D14'; ctx.fillRect(cx - r, cy - r, r * 2, r * 2); }
+    ctx.restore();
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#F5F1E8';
+    ctx.font = '400 34px "Noto Serif TC", serif';
+    ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 8;
+    ctx.fillText(state.name.trim() || cfg.placeholder.name, cx, cy + r + 52);
+    ctx.font = '400 22px "Noto Sans TC", sans-serif';
+    ctx.fillStyle = '#CFC5B4';
+    ctx.fillText(state.headline.trim() || cfg.placeholder.headline, cx, cy + r + 90);
+    ctx.shadowBlur = 0;
+    ctx.textAlign = 'left';
+    x += phoneW + pad;
+  }
+
+  if (hasVoom) {
+    const top = pad + 60;
+    ctx.fillStyle = '#241D14';
+    ctx.fillRect(x, top, voomW, voomW + 150);
+    // header
+    const ar = 26, acx = x + 24 + ar, acy = top + 24 + ar;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(acx, acy, ar, 0, Math.PI * 2); ctx.clip();
+    if (state.assets.avatar) ctx.drawImage(renderCropCanvas('avatar', ar * 2, ar * 2), acx - ar, acy - ar);
+    else { ctx.fillStyle = '#0D0A07'; ctx.fillRect(acx - ar, acy - ar, ar * 2, ar * 2); }
+    ctx.restore();
+    ctx.fillStyle = '#F5F1E8';
+    ctx.font = '400 24px "Noto Sans TC", sans-serif';
+    ctx.fillText(state.name.trim() || cfg.placeholder.name, x + 24 + ar * 2 + 16, acy - 2);
+    ctx.fillStyle = '#8B7D6B';
+    ctx.font = '400 18px "Noto Sans TC", sans-serif';
+    ctx.fillText('剛剛', x + 24 + ar * 2 + 16, acy + 24);
+    // image
+    const iy = top + 24 + ar * 2 + 20;
+    if (state.assets.voom) ctx.drawImage(renderCropCanvas('voom', voomW - 48, voomW - 48), x + 24, iy);
+    else { ctx.fillStyle = '#0D0A07'; ctx.fillRect(x + 24, iy, voomW - 48, voomW - 48); }
+    ctx.fillStyle = '#8B7D6B';
+    ctx.font = '400 20px "Noto Sans TC", sans-serif';
+    ctx.fillText('♡ 123　💬 8　↗ 分享', x + 24, iy + voomW - 48 + 42);
+  }
+
+  ctx.fillStyle = '#8B7D6B';
+  ctx.font = '400 18px "Noto Sans TC", sans-serif';
+  ctx.fillText(cfg.disclaimer, pad, H - 24);
+
+  return new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.92));
 }
 
 async function exportAvatarMatrixBlob(cfg) {

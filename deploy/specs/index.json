@@ -39,8 +39,8 @@
       "display_name_en": "LINE",
       "file": "line.json",
       "phase": "P1",
-      "is_active": false,
-      "tagline": "即將開放"
+      "is_active": true,
+      "tagline": "個人檔案背景是頭像的舞台，中央會被頭像與姓名蓋住。"
     },
     {
       "id": "facebook",
@@ -48,8 +48,8 @@
       "display_name_en": "Facebook",
       "file": "facebook.json",
       "phase": "P1",
-      "is_active": false,
-      "tagline": "即將開放"
+      "is_active": true,
+      "tagline": "手機只顯示封面中央約 66% 寬，比 LinkedIn 裁得更兇。"
     }
   ],
   "resolution_status": {
