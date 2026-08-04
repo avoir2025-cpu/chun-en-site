@@ -1,0 +1,238 @@
+{
+  "_doc": "Google 商家檔案版位規格。誠實前提：Google 官方沒有公布封面比例，而且明講你設定的封面不一定會是實際顯示的第一張圖。",
+  "platform": "gbp",
+  "display_name": "Google 商家檔案",
+  "version": "2026-08-04",
+  "is_active": true,
+
+  "_sources": [
+    "官方說明中心「管理商家檔案的相片和影片」（2026/08/04 查證繁中版，第一手）：格式 JPG 或 PNG、檔案介於 10 KB 到 5 MB、建議解析度高寬各 720 像素、最低 250 像素",
+    "官方說明中心（第一手，重要）：「在某些情況下，封面相片不一定會是貴商家顯示的首張圖片」——Google 保留以自家系統判斷改用其他相片的權利",
+    "官方說明中心（第一手）：Google 未公布封面相片的長寬比",
+    "封面實際以 16:9 橫式顯示、常用 1024×576：業界慣例（第二手，多來源一致）。因官方無規格，本工具採 16:9 並把安全區抓保守。",
+    "各版面（搜尋知識面板／地圖卡片／手機）裁切寬度不同，建議重點落在中央約 70%：第二手，屬經驗法則"
+  ],
+  "_recheck_note": "封面比例無官方規格，屬本工具信心度最低的數字。覆核方式：實際在自家 GBP 換一張封面，量搜尋與地圖兩處的顯示比例。",
+
+  "_modes_note": "順序即畫面順序，建議項放第一個。",
+  "modes": [
+    {
+      "id": "full",
+      "display_name": "封面＋標誌完整部署",
+      "subtitle": "Full Deployment",
+      "slots": ["cover", "logo"],
+      "recommended": true,
+      "summary": "兩張一起判斷。封面是橫式、標誌是正方，兩張的構圖邏輯完全不同。"
+    },
+    {
+      "id": "cover_only",
+      "display_name": "封面相片",
+      "subtitle": "Cover Photo",
+      "slots": ["cover"],
+      "summary": "只處理封面。各版面裁切寬度不同，重點要放中央。"
+    },
+    {
+      "id": "logo_only",
+      "display_name": "商家標誌",
+      "subtitle": "Logo",
+      "slots": ["logo"],
+      "summary": "只處理標誌。官方建議 720×720，正方形。"
+    }
+  ],
+
+  "slots": [
+    {
+      "platform": "gbp",
+      "slot": "cover",
+      "display_name": "封面相片",
+      "display_name_en": "Cover Photo",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 1200,
+        "height": 675,
+        "aspect_ratio": "16:9",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "_output_note": "官方沒有公布封面比例，此處採業界慣例 16:9。慣用值 1024×576，本工具輸出 1200×675 留畫質餘裕（仍遠低於 5MB 上限）。",
+      "minimum_effective": { "width": 720, "height": 405 },
+      "resolution_tiers": { "good": 1200, "acceptable": 1024, "poor": 720 },
+      "_tiers_note": "官方最低 250px、建議 720px；橫式版位以寬度計，低於 720 在桌機知識面板會鬆。",
+
+      "display_shape": "rect",
+      "desktop_crop": { "x": 0, "y": 0, "width": 1200, "height": 675 },
+      "mobile_crop": { "x": 180, "y": 0, "width": 840, "height": 675 },
+      "_mobile_crop_note": "各版面（搜尋／地圖／手機）裁切寬度不同且無官方規格，此處以中央 70% 作為保守估計，非官方值。",
+
+      "safe_zone": { "shape": "rect", "x": 180, "y": 68, "width": 840, "height": 539 },
+      "_safe_zone_note": "中央 70% 寬再上下留 10% 邊界。",
+
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "mobile_crop",
+          "kind": "outside_rect",
+          "tone": "warn",
+          "label": "各版面可能裁掉的左右",
+          "geometry": { "x": 180, "y": 0, "width": 840, "height": 675 },
+          "description": "搜尋知識面板、地圖卡片、手機三處的顯示寬度都不同。這是保守估計，不是官方值。",
+          "default_on": true
+        },
+        {
+          "id": "safe_zone",
+          "kind": "rect",
+          "tone": "safe",
+          "label": "建議重點範圍",
+          "geometry": { "x": 180, "y": 68, "width": 840, "height": 539 },
+          "description": "主體放這裡，三個版面都還在框內。",
+          "default_on": true
+        }
+      ],
+
+      "recommended_subject_position": { "anchor": "center", "_note": "重點置中，離左右邊界至少 180px。" },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "商家檔案最上方那張橫式代表照。⚠️ Google 官方明講：你設定的封面「不一定會是實際顯示的首張圖片」——系統可能改用它判斷更合適的照片，包含顧客上傳的。所以這張的任務是「爭取雀屏中選」，不是「保證上架」。",
+        "good_for": [
+          "真實場景照（空間、工作中的樣子）",
+          "橫式構圖、重點置中",
+          "光線充足、對焦清楚",
+          "能代表商家性質的畫面"
+        ],
+        "avoid": [
+          "疊滿文字或標語的設計圖（Google 偏好真實攝影，設計圖較容易被顧客的實拍取代）",
+          "過度濾鏡或明顯修圖（違反官方品質要求）",
+          "重點貼近左右邊界",
+          "把標誌當封面用（標誌有專屬欄位）"
+        ],
+        "subject_position": "置中，離左右邊界至少 180px",
+        "has_overlap": false,
+        "shot_type": "橫式環境／工作場景",
+        "diagram": "banner"
+      },
+
+      "advice": [
+        "重點落在左右邊緣，換個版面就被裁掉。",
+        "Google 不保證顯示你設定的封面，畫面越接近真實場景越有機會被選中。",
+        "疊字設計圖在 GBP 特別吃虧，容易輸給顧客的實拍照。",
+        "解析度低於官方建議 720px，在桌機知識面板會顯得鬆散。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀屬 P3。",
+
+      "naming": { "template": "{name}_Google商家_封面_{date}", "fallback_name": "CHUN_EN" }
+    },
+
+    {
+      "platform": "gbp",
+      "slot": "logo",
+      "display_name": "商家標誌",
+      "display_name_en": "Logo",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 720,
+        "height": 720,
+        "aspect_ratio": "1:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "_output_note": "官方建議解析度高寬各 720 像素，直接照用。",
+      "minimum_effective": { "width": 250, "height": 250 },
+      "resolution_tiers": { "good": 720, "acceptable": 480, "poor": 250 },
+      "_tiers_note": "官方最低 250×250。",
+
+      "display_shape": "circle",
+      "desktop_crop": { "x": 0, "y": 0, "width": 720, "height": 720 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 720, "height": 720 },
+      "safe_zone": { "shape": "circle", "cx": 360, "cy": 360, "r": 360 },
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "circle_mask",
+          "kind": "circle_mask",
+          "tone": "danger",
+          "label": "多數版面以圓形顯示，四角會切掉",
+          "geometry": { "cx": 360, "cy": 360, "r": 360 },
+          "default_on": true
+        },
+        {
+          "id": "subject_zone",
+          "kind": "circle",
+          "tone": "safe",
+          "label": "建議主體落在此圈內",
+          "geometry": { "cx": 360, "cy": 360, "r": 266 },
+          "description": "個人品牌若用人像當標誌，臉要夠大；商標則要留出邊界，別貼滿。",
+          "default_on": true
+        },
+        {
+          "id": "center_cross",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "圓心",
+          "geometry": { "cx": 360, "cy": 360 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": { "anchor": "center" },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "顧客用來辨識商家的識別圖。一人公司或個人工作室常直接用經營者的形象照，這時它等同於另一個頭像版位。",
+        "good_for": [
+          "頭肩照，臉佔比明顯（個人品牌）",
+          "留出四周邊界的商標（企業）",
+          "背景單純、去背或純色",
+          "縮小後仍能辨識"
+        ],
+        "avoid": [
+          "主體貼滿整個方框（圓形顯示會切掉）",
+          "細長橫式商標硬塞進正方",
+          "與封面用同一張照片",
+          "低對比、看不清輪廓"
+        ],
+        "subject_position": "置中，四周留 15% 以上空間",
+        "has_overlap": false,
+        "shot_type": "頭肩照／商標",
+        "diagram": "avatar"
+      },
+
+      "advice": [
+        "主體貼滿方框，圓形顯示時會被切掉邊角。",
+        "橫式商標硬塞正方形，左右會出現大片空白。",
+        "標誌與封面用同一張照片，識別度會互相稀釋。",
+        "解析度低於官方最低 250×250，會被退件。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀屬 P3。",
+
+      "naming": { "template": "{name}_Google商家_標誌_{date}", "fallback_name": "CHUN_EN" }
+    }
+  ],
+
+  "stage": {
+    "_doc": "gbp_card 模板＝Google 搜尋商家資訊卡（知識面板）示意：封面在上、標誌與商家名在下。比例為示意值，不仿真 Google UI。",
+    "template": "gbp_card",
+    "disclaimer": "此畫面為版位模擬。Google 未公布封面相片的比例規格，且官方明訂系統可能改用其他相片作為顯示的首張圖片，實際結果以 Google 判斷為準。",
+    "placeholder": {
+      "name": "您的商家名稱",
+      "headline": "商家類別｜例：形象顧問公司",
+      "meta": "★ 4.9　(38 則評論)　・　台北市"
+    },
+    "small_preview_sizes": [96, 48, 32]
+  },
+
+  "export": {
+    "preview_naming": { "template": "{name}_Google商家_預覽_{date}", "fallback_name": "CHUN_EN" },
+    "zip_naming": { "template": "{name}_Google商家_部署_{date}", "fallback_name": "CHUN_EN" },
+    "readme_included": true,
+    "record_spec_version": true
+  }
+}

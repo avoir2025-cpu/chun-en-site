@@ -1,0 +1,241 @@
+{
+  "_doc": "Instagram 版位規格。核心價值＝貼文與九宮格縮圖比例不同，同一張照片在個人檔案會被裁掉左右。",
+  "platform": "instagram",
+  "display_name": "Instagram",
+  "version": "2026-08-04",
+  "is_active": true,
+
+  "_sources": [
+    "貼文最高直式比例 4:5（1080×1350）：長年既定規格，多來源一致（第二手，但屬業界共識層級）",
+    "個人檔案九宮格縮圖已從 1:1 正方改為 3:4 直式（1080×1440）：Meta 未發布正式規格頁；由 Buffer／Oktopost／Kapwing／Boderia 等多個獨立來源交叉確認（第二手，多來源）。改版時間各來源說法不一（2025 年初～2025 年 8 月），故本檔只記比例不記日期。",
+    "4:5 貼文在 3:4 九宮格的存活區 1012×1350：由上述兩個比例推導（1350 × 3/4 = 1012.5），非引用",
+    "頭像建議上傳 320×320、顯示為圓形：Instagram 官方說明中心未公布明確像素值，採多來源共識（第二手）"
+  ],
+  "_recheck_note": "九宮格比例是 Meta 近期改動且未官方發布，屬本工具最需要定期覆核的數字。覆核時請實際開一個 IG 個人檔案量縮圖比例。",
+
+  "_modes_note": "順序即畫面順序，建議項放第一個。",
+  "modes": [
+    {
+      "id": "full",
+      "display_name": "頭像＋貼文完整部署",
+      "subtitle": "Full Deployment",
+      "slots": ["avatar", "post"],
+      "recommended": true,
+      "summary": "兩張一起判斷。貼文在動態是 4:5，到了個人檔案九宮格會再被裁成 3:4。"
+    },
+    {
+      "id": "avatar_only",
+      "display_name": "個人檔案頭像",
+      "subtitle": "Profile Photo",
+      "slots": ["avatar"],
+      "summary": "只處理頭像。限時動態圈、留言、搜尋結果都是這一張，圓形顯示。"
+    },
+    {
+      "id": "post_only",
+      "display_name": "貼文（含九宮格檢查）",
+      "subtitle": "Feed Post",
+      "slots": ["post"],
+      "summary": "只處理貼文。重點是確認九宮格縮圖裁掉左右之後，人物還在不在框內。"
+    }
+  ],
+
+  "slots": [
+    {
+      "platform": "instagram",
+      "slot": "avatar",
+      "display_name": "個人檔案頭像",
+      "display_name_en": "Profile Photo",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 720,
+        "height": 720,
+        "aspect_ratio": "1:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 320, "height": 320 },
+      "resolution_tiers": { "good": 720, "acceptable": 480, "poor": 320 },
+      "_tiers_note": "建議上傳 320×320；輸出 720 讓平台自己縮，未來版面放大也還撐得住。",
+
+      "display_shape": "circle",
+      "desktop_crop": { "x": 0, "y": 0, "width": 720, "height": 720 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 720, "height": 720 },
+      "safe_zone": { "shape": "circle", "cx": 360, "cy": 360, "r": 360 },
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "circle_mask",
+          "kind": "circle_mask",
+          "tone": "danger",
+          "label": "圓形外的四角會被切掉",
+          "geometry": { "cx": 360, "cy": 360, "r": 360 },
+          "default_on": true
+        },
+        {
+          "id": "subject_zone",
+          "kind": "circle",
+          "tone": "safe",
+          "label": "建議五官落在此圈內",
+          "geometry": { "cx": 360, "cy": 331, "r": 262 },
+          "description": "留言與限動圈常縮到 32px，臉要夠大才認得出人。",
+          "default_on": true
+        },
+        {
+          "id": "center_cross",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "圓心",
+          "geometry": { "cx": 360, "cy": 360 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": { "anchor": "center", "eye_line_ratio": 0.38 },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "限時動態圈、留言、搜尋結果、私訊都用這一張，常縮到 32–40px。IG 偏生活感的場合，商務硬照未必是最好的選擇。",
+        "good_for": [
+          "頭肩照，臉佔比明顯",
+          "眼神清楚、表情放鬆",
+          "背景乾淨、色調明快",
+          "縮到限動圈仍能辨識"
+        ],
+        "avoid": [
+          "全身照、人物過小",
+          "過度嚴肅的證件照感",
+          "背景雜亂搶焦點",
+          "深色服裝配深色背景"
+        ],
+        "subject_position": "臉置中，頭頂留 15–20% 空間",
+        "has_overlap": false,
+        "shot_type": "頭肩／胸上",
+        "diagram": "avatar"
+      },
+
+      "advice": [
+        "人物在畫面中太小，縮到限動圈就認不出來了。",
+        "頭頂留白過多，臉在圓形裡會偏下。",
+        "背景與服裝對比不足，輪廓會糊成一片。",
+        "IG 的受眾比 LinkedIn 生活化，過度正式的表情容易顯得疏離。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀屬 P3。",
+
+      "naming": { "template": "{name}_Instagram_Profile_{date}", "fallback_name": "CHUN_EN" }
+    },
+
+    {
+      "platform": "instagram",
+      "slot": "post",
+      "display_name": "貼文／九宮格縮圖",
+      "display_name_en": "Feed Post",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 1080,
+        "height": 1350,
+        "aspect_ratio": "4:5",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "_output_note": "4:5 是 IG 動態能吃到的最高直式比例，佔版面最大。輸出用它，九宮格的裁切另以疊層提示。",
+      "minimum_effective": { "width": 1080, "height": 1350 },
+      "resolution_tiers": { "good": 1080, "acceptable": 864, "poor": 640 },
+
+      "display_shape": "rect",
+      "desktop_crop": { "x": 0, "y": 0, "width": 1080, "height": 1350 },
+      "mobile_crop": { "x": 34, "y": 0, "width": 1012, "height": 1350 },
+      "_mobile_crop_note": "此處的 mobile_crop 借用來表示「九宮格縮圖」的裁切範圍（3:4），不是手機與桌機的差異——IG 兩邊動態都是 4:5，真正的差異在動態 vs 個人檔案。",
+
+      "safe_zone": { "shape": "rect", "x": 34, "y": 68, "width": 1012, "height": 1214 },
+      "_safe_zone_note": "九宮格存活區（1012 寬）再上下留 5% 邊界。",
+
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "grid_crop",
+          "kind": "outside_rect",
+          "tone": "warn",
+          "label": "九宮格會裁掉的左右",
+          "geometry": { "x": 34, "y": 0, "width": 1012, "height": 1350 },
+          "description": "個人檔案的縮圖是 3:4，比貼文的 4:5 窄。左右各約 34px 會被切掉。",
+          "default_on": true
+        },
+        {
+          "id": "safe_zone",
+          "kind": "rect",
+          "tone": "safe",
+          "label": "動態與九宮格都看得到",
+          "geometry": { "x": 34, "y": 68, "width": 1012, "height": 1214 },
+          "description": "人物與重點放這裡，滑動態和點進個人檔案都完整。",
+          "default_on": true
+        }
+      ],
+
+      "recommended_subject_position": { "anchor": "center", "_note": "主體置中，離左右邊界至少 100px。" },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "形象照發成貼文時用。動態裡是 4:5 直式，但點進你的個人檔案，同一張會被裁成 3:4 的九宮格縮圖——這是最多人上線後才發現的落差。",
+        "good_for": [
+          "直式構圖、主體置中",
+          "上下留白足夠的半身或全身",
+          "與其他貼文色調一致（九宮格是整體看的）",
+          "單人、主體明確"
+        ],
+        "avoid": [
+          "人物貼近左右邊界（九宮格會切掉）",
+          "橫式照片硬轉直式",
+          "重點資訊壓在畫面左右兩側",
+          "與前後貼文色溫差距過大"
+        ],
+        "subject_position": "置中，離左右邊界至少 100px",
+        "has_overlap": false,
+        "shot_type": "直式半身／全身",
+        "diagram": "post"
+      },
+
+      "advice": [
+        "人物偏左或偏右，九宮格縮圖會把肩膀切掉。",
+        "九宮格是三張一排看的，單張好看不等於整排協調。",
+        "上下留白太少，動態滑過時會有壓迫感。",
+        "解析度可用，但直式構圖不足，硬裁成 4:5 會失去平衡。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀屬 P3。",
+
+      "naming": { "template": "{name}_Instagram_Post_{date}", "fallback_name": "CHUN_EN" }
+    }
+  ],
+
+  "stage": {
+    "_doc": "ig_grid 模板＝手機版個人檔案：頭像資訊列＋3×3 九宮格。使用者的貼文放第一格，其餘為留白佔位。比例為示意值，不仿真平台 UI。",
+    "template": "ig_grid",
+    "disclaimer": "此畫面為版位模擬。九宮格縮圖比例為 Meta 近期改動且未正式發布規格，本工具採多來源交叉確認值，實際顯示可能因 App 版本略有差異。",
+    "grid": {
+      "thumb_aspect": "3 / 4",
+      "cols": 3,
+      "rows": 3,
+      "filled_index": 0
+    },
+    "placeholder": {
+      "name": "your_account",
+      "headline": "職稱或一句話定位",
+      "meta": "128 貼文　1,024 粉絲　286 追蹤中"
+    },
+    "small_preview_sizes": [110, 56, 32]
+  },
+
+  "export": {
+    "preview_naming": { "template": "{name}_Instagram_Preview_{date}", "fallback_name": "CHUN_EN" },
+    "zip_naming": { "template": "{name}_Instagram_Deploy_{date}", "fallback_name": "CHUN_EN" },
+    "readme_included": true,
+    "record_spec_version": true
+  }
+}

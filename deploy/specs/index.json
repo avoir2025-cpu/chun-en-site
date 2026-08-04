@@ -1,6 +1,6 @@
 {
   "_doc": "CHUN.EN 影像部署模擬器｜平台規格索引。改規格＝改本目錄下的 JSON 再 push，不改程式邏輯。",
-  "bundle_version": "2026-08-03",
+  "bundle_version": "2026-08-04",
   "coordinate_unit": "output_px",
   "_coordinate_note": "所有 safe_zone / avatar_overlap / mobile_crop / desktop_crop / guides 的座標，一律以該版位 output.width × output.height 的像素為基準，原點在左上角。程式端自行換算成畫面比例。",
   "source": "CHUN.EN 形象照平台應用指南 v2.0（規格查證日 2026/08/03）",
@@ -50,6 +50,33 @@
       "phase": "P1",
       "is_active": true,
       "tagline": "手機只顯示封面中央約 66% 寬，比 LinkedIn 裁得更兇。"
+    },
+    {
+      "id": "instagram",
+      "display_name": "Instagram",
+      "display_name_en": "Instagram",
+      "file": "instagram.json",
+      "phase": "P2",
+      "is_active": true,
+      "tagline": "貼文是 4:5，九宮格縮圖卻是 3:4——同一張照片會再被裁一次。"
+    },
+    {
+      "id": "youtube",
+      "display_name": "YouTube",
+      "display_name_en": "YouTube",
+      "file": "youtube.json",
+      "phase": "P2",
+      "is_active": true,
+      "tagline": "上傳 2560×1440，手機只看得到正中央 18%。全平台裁最兇的版位。"
+    },
+    {
+      "id": "gbp",
+      "display_name": "Google 商家檔案",
+      "display_name_en": "Google Business Profile",
+      "file": "gbp.json",
+      "phase": "P2",
+      "is_active": true,
+      "tagline": "封面沒有官方比例，而且 Google 不保證顯示你設定的那張。"
     }
   ],
   "resolution_status": {

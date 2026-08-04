@@ -903,10 +903,13 @@ const STAGE_TEMPLATES = {
   profile_header: mockProfile,
   resume_card: mockResumeCard,
   avatar_matrix: mockAvatarMatrix,
-  line_profile: mockLineProfile
+  line_profile: mockLineProfile,
+  ig_grid: mockIgGrid,
+  yt_channel: mockYtChannel,
+  gbp_card: mockGbpCard
 };
 /* 桌面／手機切換與 A/B 對這些模板沒有意義 */
-const SINGLE_VIEW_TEMPLATES = ['avatar_matrix', 'line_profile'];
+const SINGLE_VIEW_TEMPLATES = ['avatar_matrix', 'line_profile', 'ig_grid', 'yt_channel', 'gbp_card'];
 
 function renderStage() {
   const cfg = platformSpec().stage;
@@ -1119,6 +1122,185 @@ function mockAvatarMatrix(cfg) {
   return wrapEl;
 }
 
+/* 裁切視窗：把一張完整輸出圖，只露出 crop 指定的那一塊。
+   關鍵：CSS 的百分比 margin（含 marginTop）一律以「containing block 的寬」換算，
+   所以只要把圖寬設成 srcW/crop.width，1 個原圖 px 就等於 (1/crop.width) 的容器寬，
+   x、y 位移用同一個分母就對得準。yt_channel／gbp_card／ig_grid 共用這一支，
+   別各自算各自的（LINE 頭像三處各算各的那個 bug 就是這樣來的）。 */
+function cropWindowEl(url, crop, srcW, placeholderText) {
+  const box = el('div', 'cropwin');
+  box.style.aspectRatio = `${crop.width} / ${crop.height}`;
+  if (!url) {
+    box.appendChild(el('div', 'ph-fill', placeholderText || '尚未設定'));
+    return box;
+  }
+  const i = el('img');
+  i.src = url; i.alt = '';
+  i.style.width = (srcW / crop.width * 100) + '%';
+  i.style.marginLeft = (-crop.x / crop.width * 100) + '%';
+  i.style.marginTop = (-crop.y / crop.width * 100) + '%';
+  box.appendChild(i);
+  return box;
+}
+
+/* Instagram：左邊動態貼文（4:5 原樣），右邊個人檔案九宮格（3:4 再裁一次）。
+   兩邊並排才看得出「同一張照片在兩個地方不一樣」——這就是本平台存在的理由。 */
+function mockIgGrid(cfg) {
+  const g = cfg.grid;
+  const postUrl = state.queue.includes('post') ? croppedDataURL('post', 720) : null;
+  const avatarUrl = state.queue.includes('avatar') ? croppedDataURL('avatar', 300) : null;
+
+  const wrapEl = el('div', 'mock-wrap wide');
+  const row = el('div', 'ig-stage');
+
+  /* --- 左：動態貼文 --- */
+  if (state.queue.includes('post')) {
+    const col = el('div', 'ig-col');
+    const card = el('div', 'ig-post');
+    const head = el('div', 'ig-post-head');
+    const av = el('div', 'ig-post-av');
+    if (avatarUrl) { const i = el('img'); i.src = avatarUrl; i.alt = ''; av.appendChild(i); }
+    head.appendChild(av);
+    head.appendChild(el('div', 'ig-post-name', state.name.trim() || cfg.placeholder.name));
+    card.appendChild(head);
+
+    const img = el('div', 'ig-post-img');
+    if (postUrl) { const i = el('img'); i.src = postUrl; i.alt = ''; img.appendChild(i); }
+    else img.appendChild(el('div', 'ph-fill', '尚未設定貼文'));
+    card.appendChild(img);
+    card.appendChild(el('div', 'ig-post-foot', '♡ 248　💬 12　↗'));
+
+    col.appendChild(card);
+    col.appendChild(el('div', 'mock-cap', '動態貼文　4:5 完整顯示'));
+    row.appendChild(col);
+  }
+
+  /* --- 右：個人檔案九宮格 --- */
+  const col2 = el('div', 'ig-col');
+  const phone = el('div', 'ig-phone');
+
+  const bar = el('div', 'ig-bar');
+  const bav = el('div', 'ig-bar-av');
+  if (avatarUrl) { const i = el('img'); i.src = avatarUrl; i.alt = ''; bav.appendChild(i); }
+  bar.appendChild(bav);
+  const bmeta = el('div', 'ig-bar-meta');
+  bmeta.appendChild(el('div', 'ig-bar-name', state.name.trim() || cfg.placeholder.name));
+  bmeta.appendChild(el('div', 'ig-bar-sub', state.headline.trim() || cfg.placeholder.headline));
+  bmeta.appendChild(el('div', 'ig-bar-stat', cfg.placeholder.meta));
+  bar.appendChild(bmeta);
+  phone.appendChild(bar);
+
+  const grid = el('div', 'ig-grid');
+  const total = g.cols * g.rows;
+  for (let n = 0; n < total; n++) {
+    const cell = el('div', 'ig-cell');
+    cell.style.aspectRatio = g.thumb_aspect;
+    if (n === g.filled_index && postUrl) {
+      const i = el('img'); i.src = postUrl; i.alt = '';
+      cell.appendChild(i);
+      cell.classList.add('on');
+    }
+    grid.appendChild(cell);
+  }
+  phone.appendChild(grid);
+
+  col2.appendChild(phone);
+  col2.appendChild(el('div', 'mock-cap', '個人檔案九宮格　3:4 左右再被裁'));
+  row.appendChild(col2);
+
+  wrapEl.appendChild(row);
+  return wrapEl;
+}
+
+/* YouTube：頻道頁首（橫幅只露桌機可視帶）＋三裝置可視範圍對照。
+   重點是讓人看到「上傳的整張」與「手機真的看得到的那一條」差多少。 */
+function mockYtChannel(cfg) {
+  const bs = state.queue.includes('banner') ? slotSpec('banner') : null;
+  const bannerUrl = bs ? croppedDataURL('banner', 1280) : null;
+  const avatarUrl = state.queue.includes('avatar') ? croppedDataURL('avatar', 300) : null;
+
+  const wrapEl = el('div', 'mock-wrap wide');
+  const col = el('div', 'yt-stage');
+
+  /* --- 頻道頁首（桌機） --- */
+  const card = el('div', 'yt-channel');
+  const desk = (cfg.devices || []).find((d) => d.id === 'desktop');
+  if (bs && desk) {
+    card.appendChild(cropWindowEl(bannerUrl, desk.crop, bs.output.width, '尚未設定橫幅'));
+  }
+  const head = el('div', 'yt-head');
+  const av = el('div', 'yt-av');
+  if (avatarUrl) { const i = el('img'); i.src = avatarUrl; i.alt = ''; av.appendChild(i); }
+  head.appendChild(av);
+  const ht = el('div', 'yt-ht');
+  ht.appendChild(el('div', 'yt-name', state.name.trim() || cfg.placeholder.name));
+  ht.appendChild(el('div', 'yt-sub', cfg.placeholder.headline));
+  ht.appendChild(el('div', 'yt-desc', state.headline.trim() || cfg.placeholder.meta));
+  head.appendChild(ht);
+  card.appendChild(head);
+  col.appendChild(card);
+  col.appendChild(el('div', 'mock-cap', '頻道頁首（桌機）'));
+
+  /* --- 三裝置可視範圍 --- */
+  if (bs) {
+    const devRow = el('div', 'yt-devices');
+    (cfg.devices || []).forEach((d) => {
+      const box = el('div', 'yt-dev');
+      box.appendChild(cropWindowEl(bannerUrl, d.crop, bs.output.width, '尚未設定'));
+      box.appendChild(el('div', 'yt-dev-label', d.label));
+      box.appendChild(el('div', 'yt-dev-note', d.note));
+      devRow.appendChild(box);
+    });
+    col.appendChild(devRow);
+    col.appendChild(el('div', 'mock-cap', '同一張橫幅，三種裝置看到的範圍'));
+  }
+
+  wrapEl.appendChild(col);
+  return wrapEl;
+}
+
+/* Google 商家檔案：搜尋知識面板示意卡＋封面在窄版面的裁切對照 */
+function mockGbpCard(cfg) {
+  const cs = state.queue.includes('cover') ? slotSpec('cover') : null;
+  const coverUrl = cs ? croppedDataURL('cover', 900) : null;
+  const logoUrl = state.queue.includes('logo') ? croppedDataURL('logo', 300) : null;
+
+  const wrapEl = el('div', 'mock-wrap wide');
+  const row = el('div', 'gbp-stage');
+
+  const col = el('div', 'gbp-col');
+  const card = el('div', 'gbp-card');
+  const cover = el('div', 'gbp-cover');
+  if (coverUrl) { const i = el('img'); i.src = coverUrl; i.alt = ''; cover.appendChild(i); }
+  else cover.appendChild(el('div', 'ph-fill', '尚未設定封面'));
+  card.appendChild(cover);
+
+  const body = el('div', 'gbp-body');
+  const lg = el('div', 'gbp-logo');
+  if (logoUrl) { const i = el('img'); i.src = logoUrl; i.alt = ''; lg.appendChild(i); }
+  body.appendChild(lg);
+  const bt = el('div', 'gbp-bt');
+  bt.appendChild(el('div', 'gbp-name', state.name.trim() || cfg.placeholder.name));
+  bt.appendChild(el('div', 'gbp-cat', state.headline.trim() || cfg.placeholder.headline));
+  bt.appendChild(el('div', 'gbp-meta', cfg.placeholder.meta));
+  body.appendChild(bt);
+  card.appendChild(body);
+
+  col.appendChild(card);
+  col.appendChild(el('div', 'mock-cap', '搜尋商家資訊卡（示意）'));
+  row.appendChild(col);
+
+  if (cs) {
+    const col2 = el('div', 'gbp-col narrow');
+    col2.appendChild(cropWindowEl(coverUrl, cs.mobile_crop, cs.output.width, '尚未設定封面'));
+    col2.appendChild(el('div', 'mock-cap', '窄版面裁切（保守估計）'));
+    row.appendChild(col2);
+  }
+
+  wrapEl.appendChild(row);
+  return wrapEl;
+}
+
 /* 每個版位各給一顆返回鍵：從舞台看出問題，直接跳回那一張 */
 function renderStageActions() {
   const box = $('stageActions');
@@ -1148,6 +1330,9 @@ async function exportStageBlob() {
   if (tpl === 'resume_card') return exportResumeCardBlob(cfg);
   if (tpl === 'avatar_matrix') return exportAvatarMatrixBlob(cfg);
   if (tpl === 'line_profile') return exportLineProfileBlob(cfg);
+  if (tpl === 'ig_grid') return exportIgGridBlob(cfg);
+  if (tpl === 'yt_channel') return exportYtChannelBlob(cfg);
+  if (tpl === 'gbp_card') return exportGbpCardBlob(cfg);
   return exportProfileHeaderBlob(cfg);
 }
 
@@ -1279,6 +1464,193 @@ async function exportAvatarMatrixBlob(cfg) {
   ctx.font = '400 18px "Noto Sans TC", sans-serif';
   ctx.fillText(cfg.disclaimer, pad, H - 26);
 
+  return new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.92));
+}
+
+/* 把某版位的輸出圖，只取 crop 那一塊畫進畫布（等比縮到 dw×dh）。
+   與 cropWindowEl 是同一套換算，只是換成 canvas。 */
+function drawCropped(ctx, slotId, crop, dx, dy, dw) {
+  const s = slotSpec(slotId);
+  const dh = Math.round(dw * crop.height / crop.width);
+  if (!state.assets[slotId]) {
+    ctx.fillStyle = '#0D0A07';
+    ctx.fillRect(dx, dy, dw, dh);
+    return dh;
+  }
+  const full = renderCropCanvas(slotId, s.output.width, s.output.height);
+  ctx.drawImage(full, crop.x, crop.y, crop.width, crop.height, dx, dy, dw, dh);
+  return dh;
+}
+
+function stageHeader(ctx, cfg, pad, title) {
+  ctx.textBaseline = 'alphabetic';
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#F5F1E8';
+  ctx.font = '400 40px "Noto Serif TC", serif';
+  ctx.fillText(state.name.trim() || cfg.placeholder.name, pad, 88);
+  ctx.fillStyle = '#A88A5C';
+  ctx.font = '400 22px "Noto Sans TC", sans-serif';
+  ctx.fillText(title, pad, 126);
+}
+
+function stageFooter(ctx, cfg, pad, W, H) {
+  ctx.fillStyle = '#8B7D6B';
+  ctx.font = '400 18px "Noto Sans TC", sans-serif';
+  ctx.textAlign = 'left';
+  const max = W - pad * 2;
+  let line = cfg.disclaimer;
+  while (line.length > 4 && ctx.measureText(line).width > max) line = line.slice(0, -2);
+  if (line !== cfg.disclaimer) line = line.slice(0, -1) + '…';
+  ctx.fillText(line, pad, H - 26);
+}
+
+/* IG：左貼文（4:5）右九宮格（3:4），一眼看出同一張照片被裁掉哪裡 */
+async function exportIgGridBlob(cfg) {
+  const g = cfg.grid;
+  const pad = 70, gap = 60;
+  const postW = 520, postH = Math.round(postW * 5 / 4);
+  const cellW = 200, cellH = Math.round(cellW * 4 / 3), cellGap = 8;
+  const gridW = cellW * g.cols + cellGap * (g.cols - 1);
+  const W = pad * 2 + postW + gap + gridW;
+  const gridH = cellH * g.rows + cellGap * (g.rows - 1);
+  const top = 170;
+  const H = top + Math.max(postH, gridH) + 110;
+
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#1C1710';
+  ctx.fillRect(0, 0, W, H);
+  try { await document.fonts.ready; } catch (e) { /* 字型未就緒不影響輸出 */ }
+  stageHeader(ctx, cfg, pad, 'Instagram｜動態貼文 vs 個人檔案九宮格');
+
+  const ps = state.queue.includes('post') ? slotSpec('post') : null;
+  if (ps) {
+    drawCropped(ctx, 'post', { x: 0, y: 0, width: ps.output.width, height: ps.output.height }, pad, top, postW);
+  } else {
+    ctx.fillStyle = '#0D0A07'; ctx.fillRect(pad, top, postW, postH);
+  }
+  ctx.fillStyle = '#CFC5B4';
+  ctx.font = '400 19px "Noto Sans TC", sans-serif';
+  ctx.fillText('動態貼文　4:5 完整顯示', pad, top + postH + 34);
+
+  const gx = pad + postW + gap;
+  for (let n = 0; n < g.cols * g.rows; n++) {
+    const cx = gx + (n % g.cols) * (cellW + cellGap);
+    const cy = top + Math.floor(n / g.cols) * (cellH + cellGap);
+    if (n === g.filled_index && ps) {
+      // 3:4 縮圖＝從 4:5 原圖水平置中裁到 height×3/4
+      const cw = Math.round(ps.output.height * 3 / 4);
+      drawCropped(ctx, 'post',
+        { x: Math.round((ps.output.width - cw) / 2), y: 0, width: cw, height: ps.output.height },
+        cx, cy, cellW);
+    } else {
+      ctx.fillStyle = '#241D14';
+      ctx.fillRect(cx, cy, cellW, cellH);
+    }
+  }
+  ctx.fillStyle = '#C9A96E';
+  ctx.font = '400 19px "Noto Sans TC", sans-serif';
+  ctx.fillText('個人檔案九宮格　3:4 左右再被裁', gx, top + gridH + 34);
+
+  stageFooter(ctx, cfg, pad, W, H);
+  return new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.92));
+}
+
+/* YouTube：三裝置可視範圍上下堆疊，比例真實，落差自己會說話 */
+async function exportYtChannelBlob(cfg) {
+  const pad = 70, W = 1600, inner = W - pad * 2;
+  const devices = cfg.devices || [];
+  const bs = state.queue.includes('banner') ? slotSpec('banner') : null;
+
+  let H = 170;
+  const rows = devices.map((d) => {
+    const dw = Math.round(inner * d.crop.width / 2560);
+    const dh = Math.round(dw * d.crop.height / d.crop.width);
+    H += dh + 76;
+    return { d, dw, dh };
+  });
+  H += 60;
+
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#1C1710';
+  ctx.fillRect(0, 0, W, H);
+  try { await document.fonts.ready; } catch (e) { /* 字型未就緒不影響輸出 */ }
+  stageHeader(ctx, cfg, pad, 'YouTube 頻道橫幅｜同一張圖，三種裝置看到的範圍');
+
+  let y = 170;
+  rows.forEach(({ d, dw, dh }) => {
+    if (bs) drawCropped(ctx, 'banner', d.crop, pad, y, dw);
+    else { ctx.fillStyle = '#0D0A07'; ctx.fillRect(pad, y, dw, dh); }
+    ctx.strokeStyle = 'rgba(245,241,232,0.18)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(pad + 0.5, y + 0.5, dw - 1, dh - 1);
+    ctx.fillStyle = '#F5F1E8';
+    ctx.font = '400 22px "Noto Sans TC", sans-serif';
+    ctx.fillText(d.label, pad, y + dh + 32);
+    ctx.fillStyle = '#8B7D6B';
+    ctx.font = '400 18px "Noto Sans TC", sans-serif';
+    ctx.fillText(d.note, pad + 80, y + dh + 32);
+    y += dh + 76;
+  });
+
+  stageFooter(ctx, cfg, pad, W, H);
+  return new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.92));
+}
+
+/* Google 商家：搜尋資訊卡示意＋窄版面裁切對照 */
+async function exportGbpCardBlob(cfg) {
+  const pad = 70, W = 1600;
+  const cardW = 860;
+  const cs = state.queue.includes('cover') ? slotSpec('cover') : null;
+  const coverH = Math.round(cardW * 9 / 16);
+  const top = 170;
+  const bodyH = 150;
+  const narrowW = W - pad * 2 - cardW - 60;
+  const H = top + coverH + bodyH + 110;
+
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#1C1710';
+  ctx.fillRect(0, 0, W, H);
+  try { await document.fonts.ready; } catch (e) { /* 字型未就緒不影響輸出 */ }
+  stageHeader(ctx, cfg, pad, 'Google 商家檔案｜搜尋資訊卡示意');
+
+  if (cs) drawCropped(ctx, 'cover', { x: 0, y: 0, width: cs.output.width, height: cs.output.height }, pad, top, cardW);
+  else { ctx.fillStyle = '#0D0A07'; ctx.fillRect(pad, top, cardW, coverH); }
+
+  ctx.fillStyle = '#241D14';
+  ctx.fillRect(pad, top + coverH, cardW, bodyH);
+  const lr = 46, lcx = pad + 40 + lr, lcy = top + coverH + 75;
+  ctx.save();
+  ctx.beginPath(); ctx.arc(lcx, lcy, lr, 0, Math.PI * 2); ctx.clip();
+  if (state.assets.logo) ctx.drawImage(renderCropCanvas('logo', lr * 2, lr * 2), lcx - lr, lcy - lr);
+  else { ctx.fillStyle = '#14100B'; ctx.fillRect(lcx - lr, lcy - lr, lr * 2, lr * 2); }
+  ctx.restore();
+
+  const tx = lcx + lr + 28;
+  ctx.fillStyle = '#F5F1E8';
+  ctx.font = '400 30px "Noto Serif TC", serif';
+  ctx.fillText(state.name.trim() || cfg.placeholder.name, tx, lcy - 8);
+  ctx.fillStyle = '#CFC5B4';
+  ctx.font = '400 20px "Noto Sans TC", sans-serif';
+  ctx.fillText(state.headline.trim() || cfg.placeholder.headline, tx, lcy + 24);
+  ctx.fillStyle = '#8B7D6B';
+  ctx.font = '400 18px "Noto Sans TC", sans-serif';
+  ctx.fillText(cfg.placeholder.meta, tx, lcy + 54);
+
+  if (cs && narrowW > 160) {
+    const nx = pad + cardW + 60;
+    const nh = drawCropped(ctx, 'cover', cs.mobile_crop, nx, top, narrowW);
+    ctx.fillStyle = '#C9A96E';
+    ctx.font = '400 19px "Noto Sans TC", sans-serif';
+    ctx.fillText('窄版面裁切（保守估計）', nx, top + nh + 34);
+  }
+
+  stageFooter(ctx, cfg, pad, W, H);
   return new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.92));
 }
 

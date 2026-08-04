@@ -1,0 +1,249 @@
+{
+  "_doc": "YouTube 版位規格。核心價值＝上傳 2560×1440，但電視以外的裝置只看得到中央一條 423px 高的帶狀區。",
+  "platform": "youtube",
+  "display_name": "YouTube",
+  "version": "2026-08-04",
+  "is_active": true,
+
+  "_sources": [
+    "官方說明中心「管理頻道品牌宣傳」（2026/08/04 查證，第一手）：頻道橫幅最小 2048×1152（16:9）、建議 2560×1440（尤其為了電視）、文字與標誌安全區 1235×338（以最小尺寸計）、檔案不得超過 6 MB",
+    "官方說明中心（第一手）：個人資料相片顯示 98×98、檔案不得超過 15 MB、支援 JPG/GIF/BMP/PNG（不支援動畫 GIF）",
+    "安全區換算 1546×423：官方 1235×338 以最小尺寸 2048×1152 計，等比放大到 2560×1440 即 1544×422.5，業界通用值取 1546×423（本檔採用，誤差 2px 不影響判斷）",
+    "各裝置顯示寬度 電視 2560×1440／桌機 2560×423／平板 1855×423／手機 1546×423（第二手，多來源一致）"
+  ],
+
+  "_modes_note": "順序即畫面順序，建議項放第一個。",
+  "modes": [
+    {
+      "id": "full",
+      "display_name": "橫幅＋頭像完整部署",
+      "subtitle": "Full Deployment",
+      "slots": ["banner", "avatar"],
+      "recommended": true,
+      "summary": "兩張一起判斷。橫幅是全平台裁得最兇的版位，重點只能放中央那一條。"
+    },
+    {
+      "id": "avatar_only",
+      "display_name": "頻道頭像",
+      "subtitle": "Profile Picture",
+      "slots": ["avatar"],
+      "summary": "只處理頭像。留言、影片頁、搜尋結果都是這一張，官方顯示 98×98。"
+    },
+    {
+      "id": "banner_only",
+      "display_name": "頻道橫幅",
+      "subtitle": "Channel Banner",
+      "slots": ["banner"],
+      "summary": "只處理橫幅。上傳 2560×1440，但手機只看得到中央 1546×423。"
+    }
+  ],
+
+  "slots": [
+    {
+      "platform": "youtube",
+      "slot": "banner",
+      "display_name": "頻道橫幅",
+      "display_name_en": "Channel Banner",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 2560,
+        "height": 1440,
+        "aspect_ratio": "16:9",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.9
+      },
+      "_output_note": "官方建議尺寸。品質 0.9 是為了壓在 6MB 限制內。",
+      "minimum_effective": { "width": 2048, "height": 1152 },
+      "resolution_tiers": { "good": 2560, "acceptable": 2048, "poor": 1546 },
+      "_tiers_note": "官方最小上傳 2048×1152；低於 1546 連手機可視區都撐不起來。",
+
+      "display_shape": "rect",
+      "desktop_crop": { "x": 0, "y": 509, "width": 2560, "height": 423 },
+      "_desktop_crop_note": "桌機顯示 2560×423，垂直置中：(1440-423)/2 = 508.5 取 509。",
+      "mobile_crop": { "x": 507, "y": 509, "width": 1546, "height": 423 },
+      "_mobile_crop_note": "手機顯示 1546×423，水平也置中：(2560-1546)/2 = 507。這一塊等於官方安全區。",
+
+      "safe_zone": { "shape": "rect", "x": 507, "y": 509, "width": 1546, "height": 423 },
+      "_safe_zone_note": "官方安全區，唯一保證所有裝置都看得到的範圍。",
+
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "mobile_crop",
+          "kind": "outside_rect",
+          "tone": "danger",
+          "label": "只有這一條所有裝置都看得到",
+          "geometry": { "x": 507, "y": 509, "width": 1546, "height": 423 },
+          "description": "官方安全區 1546×423。框外的部分只有電視版會完整出現，手機完全看不到。",
+          "default_on": true
+        },
+        {
+          "id": "desktop_band",
+          "kind": "rect",
+          "tone": "warn",
+          "label": "桌機可視帶",
+          "geometry": { "x": 0, "y": 509, "width": 2560, "height": 423 },
+          "description": "桌機看得到整條寬度，但高度一樣只有中央 423px。上下各約 509px 被裁掉。",
+          "default_on": true
+        },
+        {
+          "id": "safe_center",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "畫面中心",
+          "geometry": { "cx": 1280, "cy": 720 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": { "anchor": "center", "_note": "重點務必落在中央 1546×423 內。" },
+      "recommended_text_position": { "anchor": "center" },
+
+      "card": {
+        "purpose": "頻道首頁最上方的橫向空間。上傳的是 2560×1440 這麼大一張，但只有電視版會完整顯示——手機只看得到正中央 1546×423，等於整張圖的 18%。",
+        "good_for": [
+          "橫式構圖、重點嚴格置中",
+          "上下大量留白或延伸背景",
+          "低對比、不搶影片縮圖焦點",
+          "留白處可放頻道定位一句話"
+        ],
+        "avoid": [
+          "重點貼近上下邊緣（手機桌機都看不到）",
+          "把直式人像硬塞進 16:9",
+          "文字排到中央安全區之外",
+          "細小文字（手機縮放後讀不到）"
+        ],
+        "subject_position": "嚴格置中，重點落在中央 1546×423 內",
+        "has_overlap": false,
+        "shot_type": "橫式環境／留白背景",
+        "diagram": "banner"
+      },
+
+      "advice": [
+        "重點落在安全區之外，手機使用者完全看不到。",
+        "上下各被裁掉約 509px，這是所有平台裡最兇的垂直裁切。",
+        "橫幅與頭像用了同一組畫面，視覺互相競爭。",
+        "解析度低於官方最小 2048×1152，電視版會明顯模糊。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀屬 P3。",
+
+      "naming": { "template": "{name}_YouTube_Banner_{date}", "fallback_name": "CHUN_EN" }
+    },
+
+    {
+      "platform": "youtube",
+      "slot": "avatar",
+      "display_name": "頻道頭像",
+      "display_name_en": "Profile Picture",
+      "is_active": true,
+      "version": "2026-08-04",
+
+      "output": {
+        "width": 800,
+        "height": 800,
+        "aspect_ratio": "1:1",
+        "file_format": "image/jpeg",
+        "extension": "jpg",
+        "quality": 0.92
+      },
+      "minimum_effective": { "width": 320, "height": 320 },
+      "resolution_tiers": { "good": 800, "acceptable": 480, "poor": 320 },
+      "_tiers_note": "官方只說顯示 98×98；輸出 800 讓平台自己縮，各版面放大都夠用。",
+
+      "display_shape": "circle",
+      "desktop_crop": { "x": 0, "y": 0, "width": 800, "height": 800 },
+      "mobile_crop": { "x": 0, "y": 0, "width": 800, "height": 800 },
+      "safe_zone": { "shape": "circle", "cx": 400, "cy": 400, "r": 400 },
+      "avatar_overlap": null,
+
+      "guides": [
+        {
+          "id": "circle_mask",
+          "kind": "circle_mask",
+          "tone": "danger",
+          "label": "圓形外的四角會被切掉",
+          "geometry": { "cx": 400, "cy": 400, "r": 400 },
+          "default_on": true
+        },
+        {
+          "id": "subject_zone",
+          "kind": "circle",
+          "tone": "safe",
+          "label": "建議五官落在此圈內",
+          "geometry": { "cx": 400, "cy": 368, "r": 292 },
+          "description": "官方顯示 98×98，留言區更小，臉要夠大才認得出人。",
+          "default_on": true
+        },
+        {
+          "id": "center_cross",
+          "kind": "crosshair",
+          "tone": "info",
+          "label": "圓心",
+          "geometry": { "cx": 400, "cy": 400 },
+          "default_on": false
+        }
+      ],
+
+      "recommended_subject_position": { "anchor": "center", "eye_line_ratio": 0.38 },
+      "recommended_text_position": null,
+
+      "card": {
+        "purpose": "頻道頁、影片頁、留言、搜尋結果都用這一張。官方顯示尺寸只有 98×98，比多數平台的頭像更小。",
+        "good_for": [
+          "頭肩照，臉佔比明顯",
+          "眼神清楚、視線朝向鏡頭",
+          "背景乾淨、與品牌色一致",
+          "縮到 98px 仍能辨識"
+        ],
+        "avoid": [
+          "全身照、人物過小",
+          "大面積文字或標語",
+          "團體照裁出來的單人",
+          "低對比、糊成一團的背景"
+        ],
+        "subject_position": "臉置中，頭頂留 15–20% 空間",
+        "has_overlap": false,
+        "shot_type": "頭肩／胸上",
+        "diagram": "avatar"
+      },
+
+      "advice": [
+        "人物在畫面中太小，縮到 98px 就看不出是誰。",
+        "頭頂留白過多，臉在圓形裡會偏下。",
+        "背景與服裝對比不足，輪廓會糊成一片。",
+        "人物偏離圓心，圓形裁切後會歪一邊。"
+      ],
+      "_advice_note": "靜態顧問提示；自動判讀屬 P3。",
+
+      "naming": { "template": "{name}_YouTube_Avatar_{date}", "fallback_name": "CHUN_EN" }
+    }
+  ],
+
+  "stage": {
+    "_doc": "yt_channel 模板＝頻道頁首（橫幅裁成桌機可視帶＋圓形頭像）＋三裝置可視範圍對照。比例為示意值，不仿真平台 UI。",
+    "template": "yt_channel",
+    "disclaimer": "此畫面為版位模擬。實際顯示會因裝置尺寸、瀏覽器視窗寬度與 YouTube 版本略有差異。",
+    "devices": [
+      { "id": "tv", "label": "電視", "note": "完整顯示 2560×1440", "crop": { "x": 0, "y": 0, "width": 2560, "height": 1440 } },
+      { "id": "desktop", "label": "桌機", "note": "2560×423，上下被裁", "crop": { "x": 0, "y": 509, "width": 2560, "height": 423 } },
+      { "id": "mobile", "label": "手機", "note": "1546×423，只剩中央 18%", "crop": { "x": 507, "y": 509, "width": 1546, "height": 423 } }
+    ],
+    "placeholder": {
+      "name": "您的頻道名稱",
+      "headline": "@your_handle・1.2 萬位訂閱者・86 部影片",
+      "meta": "頻道定位一句話"
+    },
+    "small_preview_sizes": [98, 48, 32]
+  },
+
+  "export": {
+    "preview_naming": { "template": "{name}_YouTube_Preview_{date}", "fallback_name": "CHUN_EN" },
+    "zip_naming": { "template": "{name}_YouTube_Deploy_{date}", "fallback_name": "CHUN_EN" },
+    "readme_included": true,
+    "record_spec_version": true
+  }
+}
