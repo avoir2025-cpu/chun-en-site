@@ -184,6 +184,15 @@
           "geometry": { "x": 560, "y": 48, "width": 780, "height": 440 },
           "description": "主體與文字放這裡，桌機與手機都完整看得到。",
           "default_on": true
+        },
+        {
+          "id": "avatar_live",
+          "kind": "avatar_live",
+          "tone": "warn",
+          "label": "頭像實際疊加",
+          "geometry": { "cx": 187, "cy": 717, "r": 127 },
+          "description": "頭像疊在封面左下角、只露出上緣（官方重疊約 40px）。頭像還沒裁時顯示虛線示意圈。",
+          "default_on": true
         }
       ],
 

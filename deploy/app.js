@@ -534,6 +534,42 @@ function renderGuides(s) {
     } else if (g.kind === 'crosshair') {
       svg.appendChild(svgEl('line', { x1: geo.cx, y1: 0, x2: geo.cx, y2: H, stroke: col, 'stroke-width': sk * 0.55, 'stroke-dasharray': dash }));
       svg.appendChild(svgEl('line', { x1: 0, y1: geo.cy, x2: W, y2: geo.cy, stroke: col, 'stroke-width': sk * 0.55, 'stroke-dasharray': dash }));
+    } else if (g.kind === 'avatar_live') {
+      /* 真實疊加：把已裁好的頭像（含姓名）直接疊在裁切畫面上 */
+      const avUrl = state.assets.avatar ? croppedDataURL('avatar', 300) : null;
+      if (avUrl) {
+        const clipId = 'gclip_' + g.id;
+        const defs = svgEl('defs', {});
+        const clip = svgEl('clipPath', { id: clipId });
+        clip.appendChild(svgEl('circle', { cx: geo.cx, cy: geo.cy, r: geo.r }));
+        defs.appendChild(clip);
+        svg.appendChild(defs);
+        const img = svgEl('image', {
+          x: geo.cx - geo.r, y: geo.cy - geo.r, width: geo.r * 2, height: geo.r * 2,
+          'clip-path': `url(#${clipId})`, preserveAspectRatio: 'xMidYMid slice'
+        });
+        img.setAttribute('href', avUrl);
+        svg.appendChild(img);
+        svg.appendChild(svgEl('circle', { cx: geo.cx, cy: geo.cy, r: geo.r, fill: 'none', stroke: 'rgba(20,16,11,0.55)', 'stroke-width': sk * 1.6 }));
+      } else {
+        svg.appendChild(svgEl('circle', { cx: geo.cx, cy: geo.cy, r: geo.r, fill: 'rgba(20,16,11,0.35)', stroke: col, 'stroke-width': sk, 'stroke-dasharray': dash }));
+        svg.appendChild(svgText(geo.cx, geo.cy + fs * 0.35, '頭像', fs, col));
+      }
+      if (g.show_name) {
+        const cfg = platformSpec().stage;
+        const nm = svgText(geo.cx, geo.cy + geo.r + fs * 2.1,
+          state.name.trim() || (cfg.placeholder && cfg.placeholder.name) || '您的姓名', Math.round(fs * 1.35), '#F5F1E8');
+        nm.setAttribute('paint-order', 'stroke');
+        nm.setAttribute('stroke', 'rgba(0,0,0,0.55)');
+        nm.setAttribute('stroke-width', sk * 0.9);
+        svg.appendChild(nm);
+        const st = svgText(geo.cx, geo.cy + geo.r + fs * 3.6,
+          state.headline.trim() || (cfg.placeholder && cfg.placeholder.headline) || '狀態訊息', Math.round(fs * 0.9), '#CFC5B4');
+        st.setAttribute('paint-order', 'stroke');
+        st.setAttribute('stroke', 'rgba(0,0,0,0.55)');
+        st.setAttribute('stroke-width', sk * 0.7);
+        svg.appendChild(st);
+      }
     }
   });
 }

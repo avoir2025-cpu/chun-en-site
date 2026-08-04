@@ -183,6 +183,15 @@
           "geometry": { "x": 600, "y": 48, "width": 746, "height": 300 },
           "description": "主體與文字放這裡，桌機與手機都完整看得到，也不會被頭像壓到。",
           "default_on": true
+        },
+        {
+          "id": "avatar_live",
+          "kind": "avatar_live",
+          "tone": "warn",
+          "label": "頭像實際疊加",
+          "geometry": { "cx": 140, "cy": 375, "r": 107 },
+          "description": "把你裁好的頭像直接疊在左下角，邊裁橫幅邊看真實效果。頭像還沒裁時顯示虛線示意圈。",
+          "default_on": true
         }
       ],
 
