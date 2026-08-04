@@ -63,7 +63,12 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid var(--hairline);
 }
 .topbar-brand { font-family: var(--wordmark); font-size: 1.35rem; letter-spacing: 0.18em; }
-.topbar-title { text-align: center; line-height: 1.35; }
+.topbar-title {
+  text-align: center; line-height: 1.35;
+  padding: 0.2rem 0.9rem; border-radius: 0.2rem;
+  border: 1px solid transparent; transition: border-color 0.3s var(--ease-out);
+}
+.topbar-title:hover { border-color: var(--hairline); }
 .topbar-title .en { display: block; font-family: var(--serif-en); font-size: 0.95rem; letter-spacing: 0.14em; color: var(--gold); }
 .topbar-title .tc { display: block; font-size: 1rem; color: var(--paper-dim); }
 .topbar-exit { font-size: 1rem; color: var(--muted); border-bottom: 1px solid transparent; }

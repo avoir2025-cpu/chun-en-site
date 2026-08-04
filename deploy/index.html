@@ -12,16 +12,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="app.css?v=202608040900" />
+  <link rel="stylesheet" href="app.css?v=202608041000" />
 </head>
 <body>
 
 <header class="topbar">
   <a class="topbar-brand" href="/">CHUN.EN</a>
-  <div class="topbar-title">
+  <a class="topbar-title" href="/deploy/" id="toolHome" title="回到模擬器首頁（已上傳的照片會保留）">
     <span class="en">Visual OS｜Deploy</span>
     <span class="tc">定格・影像部署模擬器</span>
-  </div>
+  </a>
   <a class="topbar-exit" href="/c-photos.html">離開</a>
 </header>
 
@@ -29,7 +29,7 @@
 <nav class="stepper" id="stepper" hidden>
   <button class="step" data-goto="pick"><i>1</i><span>選擇版位</span></button>
   <button class="step" data-goto="crop"><i>2</i><span>裁切判斷</span></button>
-  <button class="step" data-goto="stage"><i>3</i><span>舞台預覽</span></button>
+  <button class="step" data-goto="stage"><i>3</i><span>效果預覽</span></button>
   <button class="step" data-goto="export"><i>4</i><span>下載</span></button>
 </nav>
 
@@ -156,7 +156,7 @@
     <div class="wrap">
       <div class="stage-head">
         <div>
-          <h2>舞台預覽</h2>
+          <h2>實際效果預覽</h2>
           <p class="lede sm">這是正式下載前的必要步驟。單看裁切結果看不出頭像壓在橫幅上的實際效果。</p>
         </div>
         <div class="stage-switch" role="tablist">
@@ -190,7 +190,7 @@
 
       <div class="export-actions">
         <button class="btn btn-ghost" id="btnDlAll" disabled>全部下載</button>
-        <button class="btn btn-gold" id="btnDlZip" disabled>下載 ZIP（含舞台預覽與使用建議）</button>
+        <button class="btn btn-gold" id="btnDlZip" disabled>下載 ZIP（含效果預覽圖與使用建議）</button>
       </div>
 
       <p class="engine-todo">全部輸出都在您的裝置上完成，不經過任何伺服器。ZIP 內另含使用說明與規格版本紀錄。</p>
@@ -212,6 +212,6 @@
 <input type="file" id="filePicker" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" hidden />
 
 <script src="/consent.js?v=202607150900" defer></script>
-<script src="app.js?v=202608040900" defer></script>
+<script src="app.js?v=202608041000" defer></script>
 </body>
 </html>

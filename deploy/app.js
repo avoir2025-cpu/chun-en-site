@@ -110,7 +110,7 @@ function renderPicker() {
   SPECS.index.platforms.forEach((p) => {
     const b = el('button', 'plat' + (p.id === state.platform ? ' on' : ''));
     b.appendChild(el('span', null, p.display_name));
-    b.appendChild(el('span', 'ph', p.is_active ? p.phase : '即將開放'));
+    if (!p.is_active) b.appendChild(el('span', 'ph', '即將開放'));
     b.disabled = !p.is_active;
     b.title = p.tagline || '';
     b.addEventListener('click', () => { state.platform = p.id; state.mode = null; renderPicker(); });
@@ -425,7 +425,7 @@ function renderCrop() {
   // 下一步按鈕：不是最後一個版位就標明接下來編輯什麼
   $('btnToNext').textContent = state.cursor < state.queue.length - 1
     ? `下一步：編輯${slotSpec(state.queue[state.cursor + 1]).display_name}`
-    : '前往舞台預覽';
+    : '預覽實際效果';
 
   renderGuides(s);
   renderGuideToggles(s);
@@ -963,7 +963,7 @@ function readmeText() {
     lines.push('');
   });
   lines.push(`${fillTemplate(spec.export.preview_naming.template, spec.export.preview_naming.fallback_name, state.name)}.jpg`);
-  lines.push('  舞台預覽圖（版位模擬，非平台實際截圖）');
+  lines.push('  效果預覽圖（版位模擬，非平台實際截圖）');
   lines.push('');
   lines.push('── 使用建議 ──');
   state.queue.forEach((slotId) => {
@@ -1105,7 +1105,7 @@ function renderExport() {
   const li = el('li');
   const left = el('div');
   left.appendChild(el('div', 'fn', pname));
-  left.appendChild(el('div', 'fm', '舞台預覽圖（版位模擬）'));
+  left.appendChild(el('div', 'fm', '效果預覽圖（版位模擬）'));
   li.appendChild(left);
   const pb = el('button', 'btn btn-ghost sm', '下載');
   pb.disabled = !allSlotsReady();
@@ -1167,10 +1167,18 @@ $('btnDlZip').addEventListener('click', async (e) => {
   } catch (err) {
     alert('打包失敗，請改用「全部下載」逐檔取得。');
   }
-  b.disabled = false; b.textContent = '下載 ZIP（含舞台預覽與使用建議）';
+  b.disabled = false; b.textContent = '下載 ZIP（含效果預覽圖與使用建議）';
 });
 
 /* ================= §11 啟動 ================= */
+/* 頂列中央＝模擬器首頁。是真的連結（可另開分頁），但同頁點擊改走內部回首頁，
+   不重新載入，已上傳的照片就不會消失。 */
+$('toolHome').addEventListener('click', (e) => {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+  e.preventDefault();
+  go('pick');
+});
+
 /* 成品預覽＋解析度檢查：桌面放右欄頂端，手機移到裁切框正下方（同一畫面內看得到） */
 const liveMQ = window.matchMedia('(max-width: 1080px)');
 function placeLiveWrap() {
