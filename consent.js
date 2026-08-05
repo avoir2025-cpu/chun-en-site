@@ -65,15 +65,41 @@
       l.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
       document.head.appendChild(l);
     }
-    /* --- Elfsight（Google 評論元件，僅同意後載入） --- */
+    /* --- Elfsight（Google 評論元件，僅同意後載入） ---
+       2026-08-05 防呆改版：
+       - 內部流量（?internal=1 標記過的自己人）不載入 Elfsight，
+         免費版 200 view/月額度留給真訪客，內部一律看靜態評論
+       - 靜態評論(.tsm-grid)不再被清掉：widget 真的渲染出內容才隱藏，
+         額度用完/腳本被擋/載入失敗時評論區維持靜態版，不會空白 */
     var slot = document.getElementById('elfsight-slot');
-    if (slot && !slot.dataset.loaded) {
+    if (slot && !slot.dataset.loaded && !isInternal()) {
       slot.dataset.loaded = 'true';
-      slot.innerHTML = '<div class="' + ELFSIGHT_APP + '" data-elfsight-app-lazy></div>';
+      var widget = document.createElement('div');
+      widget.className = ELFSIGHT_APP;
+      widget.setAttribute('data-elfsight-app-lazy', '');
+      slot.appendChild(widget);
       var e = document.createElement('script');
       e.async = true;
       e.src = 'https://elfsightcdn.com/platform.js';
       document.head.appendChild(e);
+      var staticGrid = slot.querySelector('.tsm-grid');
+      if (staticGrid) {
+        /* widget 是 lazy 載入（滾到可視範圍才渲染），不能用固定時限輪詢；
+           改盯尺寸：長出高度＝渲染成功，那一刻才收掉靜態版。
+           只看高度不數子節點——Elfsight 渲染在 Shadow DOM，light DOM 可能是空的 */
+        var hideStatic = function () {
+          if (widget.offsetHeight > 60) { staticGrid.style.display = 'none'; return true; }
+          return false;
+        };
+        if (!hideStatic()) {
+          if (typeof ResizeObserver !== 'undefined') {
+            var ro = new ResizeObserver(function () { if (hideStatic()) ro.disconnect(); });
+            ro.observe(widget);
+          } else {
+            var timer = setInterval(function () { if (hideStatic()) clearInterval(timer); }, 800);
+          }
+        }
+      }
     }
   }
 
