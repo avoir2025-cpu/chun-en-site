@@ -16,6 +16,28 @@
   var LINKEDIN_PARTNER_ID = '';          // LinkedIn Insight Tag（投放前填入）
   var ELFSIGHT_APP = 'elfsight-app-93473a4d-e044-4d20-a10b-664ca6a579f2';
 
+  /* ========== 內部流量開關 ==========
+     自己人（含手機、外出的網路）測站時，網址加 ?internal=1 開一次即可，
+     這台瀏覽器之後所有事件都會帶 traffic_type=internal，
+     被 GA4 的「內部流量」資料篩選器認出來。要關掉用 ?internal=0。
+     IP 規則只擋得住固定網路，這個開關才擋得住手機網路與在外測試。 */
+  var INTERNAL_KEY = 'chunen-internal';
+
+  function isInternal() {
+    var flag = false;
+    try {
+      var q = window.location.search;
+      if (q.indexOf('internal=') > -1) {
+        var on = q.indexOf('internal=0') === -1;
+        if (on) { localStorage.setItem(INTERNAL_KEY, '1'); }
+        else { localStorage.removeItem(INTERNAL_KEY); }
+        console.info('[CHUN.EN] 內部流量標記：' + (on ? '開啟' : '關閉'));
+      }
+      flag = localStorage.getItem(INTERNAL_KEY) === '1';
+    } catch (e) {}
+    return flag;
+  }
+
   function loadTrackers() {
     /* --- GA4 --- */
     if (GA_ID && GA_ID.indexOf('XXXX') === -1 && !window.__gaLoaded) {
@@ -28,7 +50,9 @@
       function gtag() { window.dataLayer.push(arguments); }
       window.gtag = gtag;
       gtag('js', new Date());
-      gtag('config', GA_ID, { anonymize_ip: true });
+      var cfg = { anonymize_ip: true };
+      if (isInternal()) cfg.traffic_type = 'internal';
+      gtag('config', GA_ID, cfg);
     }
     /* --- LinkedIn Insight Tag --- */
     if (LINKEDIN_PARTNER_ID && !window.__liLoaded) {
@@ -85,6 +109,7 @@
 
   /* ========== 初始化 ========== */
   function init() {
+    isInternal();               // 先認網址上的開關，就算選「僅必要」也要記住
     var saved = null;
     try { saved = localStorage.getItem(KEY); } catch (e) {}
     if (saved === 'all') {
