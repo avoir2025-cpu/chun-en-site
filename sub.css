@@ -1061,17 +1061,70 @@
   color: var(--muted-bright);
 }
 
-/* ---- 靜態評論（Cookie 未同意時的 fallback，同意後由 Elfsight 覆蓋） ---- */
-.tsm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: #E4DCCD; text-align: left; }
-@media (max-width: 720px) { .tsm-grid { grid-template-columns: 1fr; } }
-.tsm { background: #FBF8F1; padding: clamp(1.4rem, 3vh, 2rem); }
+/* ---- 靜態評論輪播（Cookie 未同意／內部流量／Elfsight 未渲染時的 fallback）
+       2026-08-06 由兩欄格線改為橫向輪播：卡片數不足時不會留空格，
+       手機與觸控板可直接左右滑，桌機另有箭頭與頁次點 ---- */
+.tsm-static { text-align: left; }
+.tsm-rail { position: relative; }
+.tsm-track {
+  display: flex; gap: 1px; background: #E4DCCD;
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.tsm-track::-webkit-scrollbar { display: none; }
+.tsm-track:focus-visible { outline: 1px solid #A88A5C; outline-offset: 3px; }
+.tsm {
+  flex: 0 0 calc((100% - 2px) / 3);
+  scroll-snap-align: start;
+  display: flex; flex-direction: column;
+  background: #FBF8F1; padding: clamp(1.4rem, 3vh, 2rem);
+  text-decoration: none; color: inherit;
+  transition: background 0.5s var(--ease-out);
+}
+.tsm:hover { background: #FFFDF8; }
 .tsm p { font-family: var(--sans-tc); font-size: 0.9rem; font-weight: 400; line-height: 2; color: #4A4238; }
 .tsm p::before { content: "\201C"; font-family: var(--serif-en); font-size: 1.6rem; color: #A88A5C; margin-right: 0.2rem; }
 .tsm cite { display: block; margin-top: 0.9rem; font-style: normal; font-size: 0.8rem; letter-spacing: 0.06em; color: #8A6D3F; }
 .tsm cite .stars { color: #C9A96A; letter-spacing: 0.15em; margin-right: 0.5em; }
-/* 奇數則時最後一則跨滿整行，兩欄格線不留空格 2026-08-06 */
-.tsm:nth-child(odd):not(:has(~ .tsm)) { grid-column: 1 / -1; }
-.tsm-note { grid-column: 1 / -1; background: #FBF8F1; padding: 1rem 1.6rem; font-family: var(--sans-tc); font-size: 0.78rem; font-weight: 400; color: #9A8D7B; }
+.tsm-src {
+  margin-top: auto; padding-top: 1rem;
+  font-family: var(--sans-tc); font-size: 0.72rem; letter-spacing: 0.06em; color: #B3A48C;
+  transition: color 0.5s var(--ease-out);
+}
+.tsm:hover .tsm-src { color: #8A6D3F; }
+@media (max-width: 980px) { .tsm { flex-basis: calc((100% - 1px) / 2); } }
+@media (max-width: 720px) { .tsm { flex-basis: 100%; } }
+
+/* 箭頭：桌機才出現，觸控裝置直接滑 */
+.tsm-nav {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+  width: 40px; height: 40px; border: 1px solid #E4DCCD; border-radius: 50%;
+  background: rgba(251, 248, 241, 0.94); color: #8A6D3F;
+  font-family: var(--serif-en); font-size: 1.5rem; line-height: 1;
+  cursor: pointer; display: none; align-items: center; justify-content: center;
+  transition: background 0.4s var(--ease-out), color 0.4s var(--ease-out), opacity 0.4s var(--ease-out);
+}
+.tsm-nav:hover { background: #A88A5C; color: #FBF8F1; }
+.tsm-nav[disabled] { opacity: 0.25; cursor: default; }
+.tsm-nav[disabled]:hover { background: rgba(251, 248, 241, 0.94); color: #8A6D3F; }
+.tsm-prev { left: -20px; }
+.tsm-next { right: -20px; }
+@media (hover: hover) and (min-width: 721px) { .tsm-nav { display: flex; } }
+
+/* 頁次點 */
+.tsm-dots { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1.2rem; }
+.tsm-dot {
+  width: 6px; height: 6px; padding: 0; border: 0; border-radius: 50%;
+  background: #DCD2BF; cursor: pointer; transition: background 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+}
+.tsm-dot[aria-selected="true"] { background: #A88A5C; transform: scale(1.35); }
+.tsm-dots:empty { display: none; }
+
+.tsm-note { margin-top: 1.1rem; font-family: var(--sans-tc); font-size: 0.78rem; font-weight: 400; color: #9A8D7B; }
+
+@media (prefers-reduced-motion: reduce) { .tsm-track { scroll-behavior: auto; } }
 
 /* ============================================================
    中文斷行優化 2026-07-13：改掉瀏覽器預設的貪婪斷行
