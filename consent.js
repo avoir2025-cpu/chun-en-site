@@ -82,7 +82,7 @@
       e.async = true;
       e.src = 'https://elfsightcdn.com/platform.js';
       document.head.appendChild(e);
-      var staticGrid = slot.querySelector('.tsm-grid');
+      var staticGrid = slot.querySelector('.tsm-static, .tsm-grid');
       if (staticGrid) {
         /* widget 是 lazy 載入（滾到可視範圍才渲染），不能用固定時限輪詢；
            改盯尺寸：長出高度＝渲染成功，那一刻才收掉靜態版。
