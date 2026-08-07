@@ -150,11 +150,12 @@
   gap: 1.5rem;
   padding: 1.1rem 0;
   border-bottom: 1px dotted var(--hairline);
-  font-size: 0.95rem;
+  font-size: 1.02rem;
 }
 .price-list .price {
   font-family: var(--serif-en);
   font-style: italic;
+  font-size: 1.28rem;
   color: var(--gold-light);
   letter-spacing: 0.05em;
   white-space: nowrap;
@@ -1521,6 +1522,6 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   .author-portrait { max-width: 220px; }
 }
 
-/* 服務頁價目放大版 2026-08-05 */
-.price-list--lg li { font-size: 1.02rem; }
-.price-list--lg .price { font-size: 1.28rem; }
+/* 2026-08-07：價目放大版已併入 .price-list 基礎樣式（原本只有 c-photos 掛 --lg，
+   b-room 漏掉，而基礎值 0.95rem 又低於字級規範的 1rem 下限）。
+   --lg 保留為空殼，舊 HTML 留著這個 class 也不會壞。 */
