@@ -124,6 +124,20 @@
   color: var(--paper-dim);
   max-width: 44em;
 }
+/* 標出「這一步只屬於完整形象企劃」，避免流程寫滿六步卻只標單次拍攝的價格 */
+.step-only {
+  display: inline-block;
+  margin-right: 0.7em;
+  padding: 0.15em 0.7em;
+  border: 1px solid var(--gold);
+  border-radius: 2px;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  line-height: 1.9;
+  color: var(--gold-light);
+  white-space: nowrap;
+  vertical-align: 0.05em;
+}
 
 /* ============ Investment ============ */
 .invest {
