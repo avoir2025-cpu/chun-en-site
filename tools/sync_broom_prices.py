@@ -76,13 +76,21 @@ def fetch_rows():
 
 
 def render(items):
+    """對客補充改為可見說明行。
+
+    原本渲染成 title 提示框，只有桌機滑鼠移上去看得到，手機完全讀不到，
+    等於「同價不同服務」的差異對多數訪客不存在。改成 li 內的第二行。
+    """
     lines = []
     for i in items:
         name = html.escape(i["name"])
         price = html.escape(i["price"]) or "LINE 諮詢"
-        note = html.escape(i["note"], quote=True)
-        title = f' title="{note}"' if note else ""
-        lines.append(f'        <li><span{title}>{name}</span><span class="price">{price}</span></li>')
+        note = html.escape(i["note"])
+        note_html = f'<span class="pl-note">{note}</span>' if note else ""
+        lines.append(
+            f'        <li><span class="pl-item"><span class="pl-name">{name}</span>'
+            f'{note_html}</span><span class="price">{price}</span></li>'
+        )
     return "\n".join(lines)
 
 

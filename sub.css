@@ -152,6 +152,16 @@
   border-bottom: 1px dotted var(--hairline);
   font-size: 1.02rem;
 }
+/* 對客補充改為可見說明行（原本只有 title 提示框，手機讀不到） */
+.price-list .pl-item { display: block; }
+.price-list .pl-note {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--paper-dim);
+  max-width: 34em;
+}
 .price-list .price {
   font-family: var(--serif-en);
   font-style: italic;
