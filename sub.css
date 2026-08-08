@@ -116,6 +116,65 @@
   letter-spacing: 0.18em;
   color: var(--gold-light);
 }
+/* 兩種需求對照：用自家兩個產品做對照，不拿同業當對手 */
+.cmp {
+  margin-top: clamp(2rem, 5vh, 3rem);
+  border-top: 1px solid var(--gold);
+}
+.cmp-head,
+.cmp-row {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr 1fr;
+  gap: clamp(1rem, 2.4vw, 2.2rem);
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.cmp-head { padding: 0.9rem 0; }
+.cmp-t {
+  font-family: var(--sans-tc);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--gold-light);
+}
+.cmp-t em {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  color: var(--paper-dim);
+}
+.cmp-k {
+  font-family: var(--sans-tc);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--gold-light);
+}
+.cmp-v {
+  font-family: var(--sans-tc);
+  font-size: 0.92rem;
+  font-weight: 400;
+  line-height: 1.9;
+  color: var(--paper-dim);
+}
+@media (max-width: 680px) {
+  .cmp-head { display: none; }
+  .cmp-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 1.3rem 0; }
+  .cmp-k { font-size: 1rem; margin-bottom: 0.2rem; }
+  .cmp-v::before {
+    content: attr(data-c);
+    display: block;
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    color: var(--gold-light);
+    margin-bottom: 0.1rem;
+  }
+}
 .phase-tag .en {
   font-family: var(--serif-en);
   font-style: italic;
