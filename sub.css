@@ -116,6 +116,52 @@
   letter-spacing: 0.18em;
   color: var(--gold-light);
 }
+/* 結尾 CTA 前的「預約後你會得到什麼」：把 CTA 從空洞邀約變成可預期的內容 */
+.final-brief {
+  max-width: 40em;
+  margin: clamp(2.2rem, 5vh, 3.2rem) auto 0;
+  padding: clamp(1.6rem, 3.5vw, 2.2rem) clamp(1.4rem, 3vw, 2rem);
+  border-top: 1px solid var(--gold);
+  border-bottom: 1px solid var(--hairline);
+  background: rgba(255, 255, 255, 0.03);
+  text-align: left;
+}
+.final-brief .fb-t {
+  font-family: var(--sans-tc);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--gold-light);
+}
+.final-brief ul { list-style: none; margin: 1.1rem 0 0; padding: 0; }
+.final-brief li {
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  gap: 0.4rem;
+  font-family: var(--sans-tc);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.95;
+  color: var(--paper-dim);
+  padding: 0.42rem 0;
+}
+.final-brief .fb-n {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--gold);
+}
+.final-brief .fb-f {
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--hairline);
+  font-family: var(--sans-tc);
+  font-size: 0.92rem;
+  font-weight: 400;
+  line-height: 1.9;
+  color: var(--paper-dim);
+}
+
 /* 兩種需求對照：用自家兩個產品做對照，不拿同業當對手 */
 .cmp {
   margin-top: clamp(2rem, 5vh, 3rem);
