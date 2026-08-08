@@ -206,19 +206,41 @@
   line-height: 1.9;
   color: var(--paper-dim);
 }
+/* 對照表手機版改橫滑 2026-08-08：原本 ≤680px 把三欄塌成一欄、欄名整排 display:none，
+   讀起來變成「項目→斜體小標→文字→斜體小標→文字」連續七組，對照的意義完全消失
+   （user 實測看不懂）。改成保留三欄橫向捲動、欄名不隱藏、第一欄 sticky 釘住，
+   捲到右邊仍然知道自己在看哪一列。
+   ⚠️ `.rv` 的 transform 會建立包含塊，會讓內部 sticky 失效，所以 reveal 掛在
+   `.cmp-scroll` 的外層，捲動容器本身保持乾淨。 */
+.cmp-hint { display: none; }
 @media (max-width: 680px) {
-  .cmp-head { display: none; }
-  .cmp-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 1.3rem 0; }
-  .cmp-k { font-size: 1rem; margin-bottom: 0.2rem; }
-  .cmp-v::before {
-    content: attr(data-c);
+  .cmp-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .cmp-scroll::-webkit-scrollbar { display: none; }
+  .cmp { min-width: 33rem; }
+  .cmp-head,
+  .cmp-row { grid-template-columns: 5.8rem 1fr 1fr; gap: 1rem; }
+  .cmp-head > span:first-child,
+  .cmp-k {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--ink);
+    padding-right: 0.5rem;
+  }
+  .cmp-hint {
     display: block;
-    font-family: var(--serif-en);
-    font-style: italic;
-    font-size: 0.8rem;
-    letter-spacing: 0.14em;
-    color: var(--gold-light);
-    margin-bottom: 0.1rem;
+    margin: 0.85rem 0 0;
+    font-family: var(--sans-tc);
+    font-weight: 400;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+    color: var(--muted-bright);
   }
 }
 .phase-tag .en {
