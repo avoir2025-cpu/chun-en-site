@@ -111,6 +111,9 @@
     } else if (href.indexOf('apply.html') > -1) {
       track('click_apply_entry', { link_location: location.pathname });
     }
+    /* 首頁分流器：知道訪客實際選了哪一條線 */
+    var lane = a.getAttribute('data-path');
+    if (lane) track('click_pathfinder', { lane: lane });
   }, { passive: true });
 
   /* 申請表單：首次輸入 → start_application */
@@ -124,8 +127,24 @@
     });
   }
 
+  /* 分流器進入視野 → view_pathfinder（一次）
+     首頁沒有價目，#plans 是分流器不是報價區；分流器已上移到第二屏，
+     若仍併進 view_pricing 會讓該事件近乎等於工作階段數。 */
+  var pathEl = document.getElementById('plans');
+  if (pathEl && 'IntersectionObserver' in window) {
+    var fio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          track('view_pathfinder', { page: location.pathname });
+          fio.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    fio.observe(pathEl);
+  }
+
   /* 方案/報價區進入視野 → view_pricing（一次） */
-  var pricingEl = document.querySelector('#plans, .invest, .tiers');
+  var pricingEl = document.querySelector('.invest, .tiers');
   if (pricingEl && 'IntersectionObserver' in window) {
     var pio = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
