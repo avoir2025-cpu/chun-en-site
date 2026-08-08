@@ -106,6 +106,24 @@
 .steps {
   border-top: 1px solid var(--hairline);
 }
+/* 把長流程切成前期／當日／後期三段，客戶不用讀完十項才拼得出「我最後拿到什麼」 */
+.phase-tag {
+  margin-top: clamp(2.4rem, 5vh, 3.6rem);
+  margin-bottom: 1.1rem;
+  font-family: var(--sans-tc);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: var(--gold-light);
+}
+.phase-tag .en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 0.82rem;
+  letter-spacing: 0.22em;
+  margin-left: 0.9em;
+  color: var(--gold-light);
+}
 .step {
   display: grid;
   grid-template-columns: clamp(64px, 8vw, 110px) 1fr;
