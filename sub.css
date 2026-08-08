@@ -19,6 +19,16 @@
   object-fit: cover;
   filter: brightness(0.58) saturate(0.92);
 }
+/* 主體為淺色服裝的 hero（signature）：手機版標題會壓在亮部，加強中下段遮罩 */
+@media (max-width: 720px) {
+  .page-hero.hero-scrim::after {
+    background: linear-gradient(180deg,
+      rgba(20, 16, 11, 0.45) 0%,
+      rgba(20, 16, 11, 0.12) 28%,
+      rgba(20, 16, 11, 0.70) 62%,
+      rgba(20, 16, 11, 0.95) 100%);
+  }
+}
 .page-hero::after {
   content: "";
   position: absolute; inset: 0; z-index: -1;
@@ -1555,3 +1565,55 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 /* 2026-08-07：價目放大版已併入 .price-list 基礎樣式（原本只有 c-photos 掛 --lg，
    b-room 漏掉，而基礎值 0.95rem 又低於字級規範的 1rem 下限）。
    --lg 保留為空殼，舊 HTML 留著這個 class 也不會壞。 */
+
+/* ============ 分欄 Hero（提案版型：左文字／右直式人像） ============
+   直式客戶照片可原生使用，不必裁成 2.2:1，也不會切到頭。 */
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  min-height: clamp(520px, 72svh, 720px);
+  padding-top: var(--nav-h);
+  background: var(--ink);
+}
+.hero-split .hs-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2.5rem, 6vw, 6rem) clamp(1.5rem, 5vw, 5rem);
+}
+.hero-split .hs-media { position: relative; overflow: hidden; }
+/* picture 若不絕對定位，img 的 height:100% 會回退成原生比例，反過來把整列撐高 */
+.hero-split .hs-media picture { position: absolute; inset: 0; display: block; }
+.hero-split .hs-media img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 22%;
+  filter: brightness(0.86) saturate(0.95);
+}
+/* 圖片左緣往文字側做一道漸層，兩欄不會硬碰硬 */
+.hero-split .hs-media::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(90deg, var(--ink) 0%, rgba(20,16,11,0) 22%);
+}
+.hero-split .hero-eyebrow { margin-bottom: 1rem; }
+.hero-split h1 {
+  font-weight: 300;
+  font-size: clamp(2rem, 3.6vw, 3.4rem);
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+}
+.hero-split .hero-line { margin-top: 1.4rem; max-width: 34ch; }
+.hero-split .hero-ctas { margin-top: clamp(1.8rem, 3vh, 2.6rem); }
+
+@media (max-width: 860px) {
+  .hero-split {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .hero-split .hs-media { order: -1; aspect-ratio: 4 / 5; }
+  .hero-split .hs-media::before {
+    background: linear-gradient(180deg, rgba(20,16,11,0) 55%, var(--ink) 100%);
+  }
+  .hero-split .hs-copy { padding-top: clamp(1.5rem, 4vh, 2.5rem); }
+}
