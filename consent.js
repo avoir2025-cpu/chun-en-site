@@ -112,7 +112,7 @@
     bar.setAttribute('aria-label', 'Cookie 同意設定');
     bar.innerHTML =
       '<p class="consent-text">本網站使用 Cookie 以優化瀏覽體驗、匿名流量分析與評論展示。' +
-      '<a href="privacy.html">隱私權政策</a></p>' +
+      '<a href="/privacy.html">隱私權政策</a></p>' +
       '<div class="consent-actions">' +
       '<button class="consent-btn consent-accept" type="button">接受</button>' +
       '<button class="consent-btn consent-necessary" type="button">僅必要</button>' +
