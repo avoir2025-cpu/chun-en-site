@@ -3,7 +3,7 @@
    ============================================================
    - 首次造訪顯示編輯感深色橫幅（接受 / 僅必要）
    - 選擇存 localStorage；footer「Cookie 設定」可隨時重開
-   - 「接受」後才載入：GA4、LinkedIn Insight Tag、Elfsight 評論
+   - 「接受」後才載入：GA4、Meta Pixel、LinkedIn Insight Tag、Elfsight 評論
    - 「僅必要」：評論區顯示靜態說明 + Google Maps 連結
    ============================================================ */
 (function () {
@@ -13,8 +13,42 @@
 
   /* ========== 追蹤工具設定 ========== */
   var GA_ID = 'G-SDGX47Z79R';           // Google Analytics 4
+  var META_PIXEL_ID = '';                // Meta Pixel（事件管理工具的資料來源 ID，15-16 位數字）
   var LINKEDIN_PARTNER_ID = '';          // LinkedIn Insight Tag（投放前填入）
   var ELFSIGHT_APP = 'elfsight-app-93473a4d-e044-4d20-a10b-664ca6a579f2';
+
+  /* ========== GA4 事件 → Meta 事件對照 ==========
+     全站事件都走 v5.js / deploy/app.js 的 track()，最後都落到 window.gtag('event', …)。
+     這裡在 gtag 出口掛一個鏡射，把「對廣告有意義的那幾個」同步送一份給 Pixel，
+     好處是 v5.js 與 app.js 一行都不用改，同意閘與佇列邏輯也完全沿用既有那套。
+
+     只鏡射白名單內的事件，不是全部：Pixel 事件太雜會讓受眾與最佳化訊號變糊，
+     而且每一發都是一次網路請求。要加新的就往這張表加。
+
+     type='track' 是 Meta 標準事件（可拿來當廣告最佳化目標），
+     type='custom' 是自訂事件（只能拿來做再行銷受眾，不能當最佳化目標）。 */
+  var META_EVENT_MAP = {
+    /* 主 CTA：點 LINE 加好友。這是全站最重要的轉換，廣告要最佳化的就是它 */
+    click_line:         { type: 'track',  name: 'Lead',             params: { channel: 'line' } },
+    /* 合作需求表單送出（apply.html），另一條真實的商業線索 */
+    submit_application: { type: 'track',  name: 'Lead',             params: { channel: 'form' } },
+    click_email:        { type: 'track',  name: 'Contact',          params: {} },
+    /* 看過方案/價目：拿來做再行銷受眾（看過但沒加 LINE 的人） */
+    view_pricing:       { type: 'track',  name: 'ViewContent',      params: { content_type: 'pricing' } },
+    /* 開始填表但沒送出，是最值錢的再行銷名單，所以獨立成一個事件 */
+    start_application:  { type: 'custom', name: 'StartApplication', params: {} }
+  };
+
+  function mirrorToMeta(name, params) {
+    if (typeof window.fbq !== 'function') return;
+    var m = META_EVENT_MAP[name];
+    if (!m) return;                       // 不在白名單就不送
+    var payload = { source_event: name, page: location.pathname };
+    var k;
+    for (k in m.params) { if (m.params.hasOwnProperty(k)) payload[k] = m.params[k]; }
+    if (params && params.link_location) payload.link_location = params.link_location;
+    window.fbq(m.type === 'track' ? 'track' : 'trackCustom', m.name, payload);
+  }
 
   /* ========== 內部流量開關 ==========
      自己人（含手機、外出的網路）測站時，網址加 ?internal=1 開一次即可，
@@ -47,12 +81,33 @@
       s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
       document.head.appendChild(s);
       window.dataLayer = window.dataLayer || [];
-      function gtag() { window.dataLayer.push(arguments); }
+      /* 事件同時鏡射給 Meta Pixel；'js' / 'config' 這類設定呼叫不鏡射 */
+      function gtag() {
+        window.dataLayer.push(arguments);
+        if (arguments[0] === 'event') mirrorToMeta(arguments[1], arguments[2]);
+      }
       window.gtag = gtag;
       gtag('js', new Date());
       var cfg = { anonymize_ip: true };
       if (isInternal()) cfg.traffic_type = 'internal';
       gtag('config', GA_ID, cfg);
+    }
+    /* --- Meta Pixel ---
+       內部流量完全不載入。Meta 沒有 GA4 那種「內部流量」篩選器，
+       自己人的瀏覽與點擊一旦進了 Pixel 就洗不掉，還會被拿去算相似受眾。 */
+    if (META_PIXEL_ID && !window.__fbLoaded && !isInternal()) {
+      window.__fbLoaded = true;
+      /* Meta 官方 base code（含載入前的呼叫佇列，不要改寫） */
+      !function (f, b, e, v, n, t, s) {
+        if (f.fbq) return; n = f.fbq = function () {
+          n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+        t = b.createElement(e); t.async = !0; t.src = v;
+        s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+      }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+      window.fbq('init', META_PIXEL_ID);
+      window.fbq('track', 'PageView');
     }
     /* --- LinkedIn Insight Tag --- */
     if (LINKEDIN_PARTNER_ID && !window.__liLoaded) {
