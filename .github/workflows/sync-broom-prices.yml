@@ -15,7 +15,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: 從 Google Sheets 同步三頁價目
-        run: python3 tools/sync_prices.py
+        env:
+          PRICE_SHEET_ID: ${{ secrets.PRICE_SHEET_ID }}
+        run: python3 .github/scripts/sync_prices.py
 
       - name: 有變動則提交
         run: |

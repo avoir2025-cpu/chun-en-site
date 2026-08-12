@@ -64,3 +64,19 @@ docs/
 __pycache__/
 *.pyc
 _docs/
+
+# ---------- 資安（2026-08-12 稽核後）：工作工具與內部筆記不進公開 repo ----------
+# GitHub Pages 會原樣送出 repo 內容；工具、稽核筆記、開發腳本一律只留本機。
+tools/
+scripts/
+.claude/
+README.md
+_ASSETS_NEEDED.md
+_RESPONSIVE_AUDIT.md
+_GOOGLE_REVIEWS_SETUP.md
+HERO對照表.png
+CHUN_EN_官網商業檢視_v5.md
+作品集對照表*.png
+同步圖片.bat
+對客素材/
+素材投放區/
