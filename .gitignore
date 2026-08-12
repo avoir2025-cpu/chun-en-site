@@ -67,9 +67,9 @@ _docs/
 
 # ---------- 資安（2026-08-12 稽核後）：工作工具與內部筆記不進公開 repo ----------
 # GitHub Pages 會原樣送出 repo 內容；工具、稽核筆記、開發腳本一律只留本機。
-tools/
-scripts/
-.claude/
+/tools/
+/scripts/
+/.claude/
 README.md
 _ASSETS_NEEDED.md
 _RESPONSIVE_AUDIT.md
