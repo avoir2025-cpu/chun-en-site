@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """after-the-shoot 內文示意圖：一次拍攝，四種崗位
 
-來源素材＝客戶作品集原檔\20260211_許景泰（works/02 已上牆，同一天四套造型）。
+來源素材＝客戶作品集原檔中同一場拍攝的四套造型（作品牆已收錄）。
+執行前設定環境變數 CHUNEN_DIAGRAM_SRC 指向該資料夾。
 2 倍算繪後降採樣到 1400 寬，輸出 assets/gallery/journal/after-the-shoot-roles-v1-1400.jpg。
 
 重跑：python tools/diagram-src/after-the-shoot-roles.py
@@ -9,7 +10,7 @@
 import os
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
-SRC = r"C:\Users\3D-U\Desktop\Claude\客戶作品集原檔\20260211_許景泰"
+SRC = os.environ.get("CHUNEN_DIAGRAM_SRC", "")   # 素材資料夾走環境變數，不寫死客戶姓名與本機路徑
 OUT = os.path.join(os.path.dirname(__file__), "..", "..",
                    "assets", "gallery", "journal", "after-the-shoot-roles-v1-1400.jpg")
 
