@@ -170,6 +170,35 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://chunen.tw/#business",
+    "name": "CHUN.EN 形象美學",
+    "description": "商業視覺定位顧問。從職業角色定位、服裝策略、妝髮設計到品牌影像，建立完整商業形象系統。",
+    "image": "https://chunen.tw/assets/img/hero-poster.jpg",
+    "url": "https://chunen.tw/",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "臺灣大道二段 300 號 A 棟 6F-1",
+      "addressLocality": "西區",
+      "addressRegion": "台中市",
+      "postalCode": "403",
+      "addressCountry": "TW"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": "24.1514", "longitude": "120.6645" },
+    "priceRange": "$$$",
+    "hasMap": "https://maps.app.goo.gl/ey2JQd5JV9D5Xh4f8",
+    "sameAs": [
+      "https://instagram.com/chun_en321",
+      "https://www.facebook.com/chunen.tw",
+      "https://lin.ee/rVFo0r2",
+      "https://maps.app.goo.gl/ey2JQd5JV9D5Xh4f8"
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
     "@type": "Service",
     "@id": "https://chunen.tw/b-room.html#service",
     "name": "B.room 妝髮造型設計",
@@ -179,10 +208,10 @@
     "provider": {
       "@id": "https://chunen.tw/#business"
     },
-    "areaServed": {
-      "@type": "Country",
-      "name": "臺灣"
-    },
+    "areaServed": [
+      { "@type": "City", "name": "臺中市" },
+      { "@type": "Country", "name": "臺灣" }
+    ],
     "audience": {
       "@type": "Audience",
       "audienceType": "專業工作者、品牌主理人、企業領導者與高能見度專業人士"
