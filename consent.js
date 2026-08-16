@@ -13,7 +13,7 @@
 
   /* ========== 追蹤工具設定 ========== */
   var GA_ID = 'G-SDGX47Z79R';           // Google Analytics 4
-  var META_PIXEL_ID = '';                // Meta Pixel（事件管理工具的資料來源 ID，15-16 位數字）
+  var META_PIXEL_ID = '1974244583279228'; // Meta Pixel 資料集「CHUN.EN Web」（2026-08-16 啟用）
   var LINKEDIN_PARTNER_ID = '';          // LinkedIn Insight Tag（投放前填入）
   var ELFSIGHT_APP = 'elfsight-app-93473a4d-e044-4d20-a10b-664ca6a579f2';
 
