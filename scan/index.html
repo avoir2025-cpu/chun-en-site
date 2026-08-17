@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>免費 AI 視覺定位快診｜CHUN.EN 形象美學</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Noto+Serif+TC:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14100B; --ink-soft:#1B150E; --paper:#F5F1E8; --paper-dim:#CFC5B4;
+    --gold:#A88A5C; --gold-light:#C9A96E; --muted:#8B7D6B; --muted-bright:#A79A88;
+    --hairline:rgba(245,241,232,0.14);
+    --serif:'Noto Serif TC',serif; --sans:'Noto Sans TC',sans-serif; --wordmark:'Italiana',serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{background:#0B0906;}
+  body{font-family:var(--sans);color:var(--paper);background:linear-gradient(175deg,#17120C 0%,var(--ink) 40%,#100C08 100%);min-height:100vh;}
+  .wrap{max-width:560px;margin:0 auto;padding:0 22px 80px;}
+
+  /* progress */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(245,241,232,.08);z-index:10;}
+  .progress i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width .3s;}
+
+  header{text-align:center;padding:44px 0 8px;}
+  .wordmark{font-family:var(--wordmark);font-size:20px;letter-spacing:.16em;color:var(--paper);}
+  .wordmark span{color:var(--gold-light);}
+  h1{font-family:var(--serif);font-weight:500;font-size:24px;letter-spacing:.12em;margin-top:18px;}
+  .intro{margin-top:14px;color:var(--muted-bright);font-weight:300;font-size:14px;line-height:1.9;}
+  .intro b{color:var(--paper);font-weight:400;}
+
+  .sec{margin-top:38px;}
+  .sec-tag{font-family:var(--serif);font-size:12px;letter-spacing:.4em;color:var(--gold);border-bottom:1px solid var(--hairline);padding-bottom:8px;}
+
+  .q{margin-top:26px;}
+  .q-title{font-family:var(--serif);font-size:16.5px;font-weight:500;line-height:1.7;}
+  .q-note{font-size:11.5px;color:var(--muted);margin-top:4px;letter-spacing:.05em;}
+  .q.miss .q-title{color:#D9A08C;}
+  .opts{margin-top:12px;display:flex;flex-direction:column;gap:8px;}
+  .opts.grid2{display:grid;grid-template-columns:1fr 1fr;}
+  .opt{border:1px solid var(--hairline);border-radius:6px;padding:11px 14px;font-size:14px;font-weight:300;
+       color:var(--paper-dim);line-height:1.55;cursor:pointer;user-select:none;transition:all .15s;background:rgba(245,241,232,.02);}
+  .opt.on{border-color:var(--gold);color:var(--paper);background:rgba(168,138,92,.12);}
+  .opt.dis{opacity:.35;pointer-events:none;}
+  textarea{width:100%;background:rgba(245,241,232,.03);border:1px solid var(--hairline);border-radius:6px;
+           color:var(--paper);font-family:var(--sans);font-weight:300;font-size:14px;padding:12px;margin-top:12px;
+           min-height:74px;resize:vertical;}
+  textarea:focus{outline:none;border-color:var(--gold);}
+  .count{text-align:right;font-size:11px;color:var(--muted);margin-top:4px;}
+
+  .consent{margin-top:36px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;}
+  .box{flex:0 0 20px;height:20px;border:1px solid var(--muted);border-radius:4px;margin-top:2px;position:relative;transition:all .15s;}
+  .consent.on .box{border-color:var(--gold);background:var(--gold);}
+  .consent.on .box::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:13px;font-weight:500;}
+  .consent p{font-size:12.5px;color:var(--muted-bright);font-weight:300;line-height:1.8;}
+  .consent.miss p{color:#D9A08C;}
+
+  .submit{margin-top:34px;width:100%;padding:16px;border:none;border-radius:6px;cursor:pointer;
+          background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--ink);
+          font-family:var(--serif);font-size:16px;font-weight:600;letter-spacing:.2em;}
+  .submit:disabled{opacity:.5;}
+  .errbar{display:none;margin-top:14px;padding:10px 14px;border:1px solid rgba(217,160,140,.4);border-radius:6px;
+          color:#D9A08C;font-size:13px;line-height:1.7;}
+
+  /* success view */
+  #done{display:none;text-align:center;padding-top:80px;}
+  #done h2{font-family:var(--serif);font-size:22px;letter-spacing:.1em;font-weight:500;}
+  #done .sub{margin-top:20px;color:var(--muted-bright);font-weight:300;font-size:14px;line-height:2.1;}
+  #done .line-btn{display:block;margin:36px auto 0;max-width:320px;padding:16px;border-radius:6px;text-decoration:none;
+          background:#06C755;color:#fff;font-size:16px;font-weight:500;letter-spacing:.08em;}
+  #done .hint{margin-top:14px;font-size:12px;color:var(--muted);}
+  footer{margin-top:70px;text-align:center;font-size:11px;letter-spacing:.15em;color:var(--muted);}
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden;}
+</style>
+</head>
+<body>
+<div class="progress"><i id="bar"></i></div>
+
+<div class="wrap" id="form-view">
+  <header>
+    <div class="wordmark">CHUN<span>.EN</span></div>
+    <h1>免費 AI 視覺定位快診</h1>
+    <p class="intro">不用幾分鐘，也不用上傳照片。<br>先看一下：<b>現在的你，和你真正想傳達的角色，<br>是不是同一個方向。</b></p>
+  </header>
+
+  <div id="qs"></div>
+
+  <!-- Q12 -->
+  <div class="sec">
+    <div class="q" id="q12box">
+      <div class="q-title">如果這份快診只能回答你一個問題，你最想知道什麼？</div>
+      <div class="q-note">選填，一句話就好</div>
+      <textarea id="q12" maxlength="200" placeholder="（可以跳過）"></textarea>
+      <div class="count"><span id="q12n">0</span>/200</div>
+    </div>
+  </div>
+
+  <div class="consent" id="consent">
+    <div class="box"></div>
+    <p>我同意 CHUN.EN 形象美學蒐集以上資料，用於產出本次快診結果與後續服務聯繫。我可隨時透過 LINE 要求刪除資料。</p>
+  </div>
+
+  <input class="hp" type="text" name="hp" id="hp" tabindex="-1" autocomplete="off">
+  <button class="submit" id="go">取得我的快診結果</button>
+  <div class="errbar" id="err"></div>
+
+  <footer>CHUN.EN　COMMERCIAL IMAGE STRATEGY</footer>
+</div>
+
+<div class="wrap" id="done">
+  <div class="wordmark">CHUN<span>.EN</span></div>
+  <h2>你的初步判讀正在生成</h2>
+  <p class="sub">我們會依你剛才的回答，整理：<br>
+  目前角色與影像是否同步<br>主要被看見的場景<br>目前最值得注意的地方<br>初步視覺方向</p>
+  <a class="line-btn" id="claim" href="https://lin.ee/7DXWsNcz">加入 LINE｜取得完整快診結果</a>
+  <p class="hint">加入後，快診結果會直接傳送給你</p>
+  <footer>CHUN.EN　COMMERCIAL IMAGE STRATEGY</footer>
+</div>
+
+<script>
+// ====== 設定 ======
+var API = 'https://n8n.321avoir.com/webhook/quickscan-intake';
+var LIFF_CLAIM_URL = '';   // LIFF 上線後填入,例如 https://liff.line.me/xxxx-yyyy → 自動帶 ?t=token
+var LINE_ADD = 'https://lin.ee/7DXWsNcz';
+
+// ====== 題目定義(v5.3 FINAL) ======
+var SECS = [
+ {tag:'A｜現在的你', qs:[
+  {id:'q1', t:'如果明天需要交出一張「代表現在的你」的照片，用在官網、履歷或活動介紹，你目前比較接近哪一種狀態？', type:'single', opts:[
+   ['q1.ready_now','有，現在就能直接使用'],
+   ['q1.not_satisfied','有照片，但自己沒有很滿意'],
+   ['q1.outdated_identity','有照片，但已經不像現在的我'],
+   ['q1.no_representative_photo','手上沒有真正能代表現在的照片']]},
+  {id:'q2', t:'你現在最主要的角色是？', type:'single', opts:[
+   ['q2.professional','專業工作者／企業任職'],
+   ['q2.manager','主管／帶團隊'],
+   ['q2.executive','高階主管／決策者'],
+   ['q2.founder','創辦人／老闆／店主'],
+   ['q2.freelancer','自由接案／自營工作者'],
+   ['q2.high_exposure','講師／顧問／內容創作者等高曝光角色'],
+   ['q2.student_jobseeker','學生／求職或轉職中'],
+   ['q2.social_life','目前以生活、社交需求為主']]},
+  {id:'q3', t:'你的工作主要屬於哪個領域？', type:'single', grid:true, opts:[
+   ['q3.tech','科技／工程／製造'],
+   ['q3.finance','金融／保險／房產'],
+   ['q3.medical','醫療／健康'],
+   ['q3.legal','法律／會計／專業服務'],
+   ['q3.education','教育／顧問／培訓'],
+   ['q3.creative','品牌／行銷／媒體／創意'],
+   ['q3.service','零售／餐飲／旅宿／服務'],
+   ['q3.public','政府／學校／非營利'],
+   ['q3.no_industry','目前沒有固定產業'],
+   ['q3.other','其他']]}]},
+ {tag:'B｜誰在看你', qs:[
+  {id:'q4', t:'哪些人最需要快速理解你是誰？', note:'最多選 2 個', type:'multi', cap:2, excl:'q4.unclear', opts:[
+   ['q4.enterprise_clients','企業客戶／合作夥伴'],
+   ['q4.consumers','一般消費者／顧客'],
+   ['q4.internal_team','公司主管／同事／團隊'],
+   ['q4.recruiters','雇主／招募者'],
+   ['q4.professional_peers','同行／專業圈'],
+   ['q4.public_audience','媒體／活動／公開受眾'],
+   ['q4.international_clients','海外客戶／國際合作對象'],
+   ['q4.social','新認識的人／社交圈'],
+   ['q4.unclear','還沒有特別想過']]},
+  {id:'q5', t:'你的照片目前最常出現在哪些地方？', note:'最多選 3 個', type:'multi', cap:3, excl:'q5.none', opts:[
+   ['q5.line_avatar','LINE／通訊軟體頭像'],
+   ['q5.social_media','IG／Facebook 等社群'],
+   ['q5.website','官網／團隊介紹'],
+   ['q5.linkedin_resume','LinkedIn／履歷／求職平台'],
+   ['q5.namecard_deck','名片／提案／簡報'],
+   ['q5.media_events','媒體／講座／活動頁面'],
+   ['q5.dating_social','交友／社交平台'],
+   ['q5.none','幾乎沒有固定使用']]}]},
+ {tag:'C｜現在的影像卡在哪裡', qs:[
+  {id:'q6', t:'你現在最常使用的照片，大約是多久以前拍的？', type:'single', grid:true, opts:[
+   ['q6.within_1y','一年內'],
+   ['q6.y1_3','1–3 年'],
+   ['q6.y3_5','3–5 年'],
+   ['q6.over_5y','5 年以上'],
+   ['q6.unknown','不記得'],
+   ['q6.no_regular_photo','目前沒有固定使用的照片']]},
+  {id:'q7', t:'你在不同地方使用的照片，目前比較接近哪一種狀態？', type:'single', opts:[
+   ['q7.varied_consistent','不同場合有不同照片，但整體看起來是一個方向'],
+   ['q7.single_photo','多數地方都使用同一張照片'],
+   ['q7.mixed_styles','照片不少，但風格、年代差很多'],
+   ['q7.adhoc','需要的時候才臨時找一張'],
+   ['q7.almost_none','幾乎沒有固定能用的照片']]},
+  {id:'q8', t:'如果只能先改善兩件事，你覺得目前的照片最需要處理什麼？', note:'最多選 2 個', type:'multi', cap:2, excl2:['q8.no_assets_to_assess','q8.no_major_issue'], opts:[
+   ['q8.outdated','照片太舊，已經不像現在的我'],
+   ['q8.too_casual','看起來太生活化，專業角色不夠明確'],
+   ['q8.too_formal','太正式或太有距離，不像平常的自己'],
+   ['q8.role_changed','我的角色已經變了，但照片還停在以前'],
+   ['q8.insufficient_scenarios','有照片，但不夠應付不同平台與場合'],
+   ['q8.inconsistent_system','每張單看都可以，放在一起卻不像同一套'],
+   ['q8.role_unclear','照片好看，但看不太出我是做什麼、什麼角色'],
+   ['q8.unsure_problem','說不上來，只覺得哪裡不對'],
+   ['q8.no_assets_to_assess','目前沒有足夠的照片可以判斷'],
+   ['q8.no_major_issue','目前其實沒有明顯問題']]}]},
+ {tag:'D｜你希望往哪裡走', qs:[
+  {id:'q9', t:'如果別人第一次看到你的照片，你最希望他感受到哪些特質？', note:'最多選 2 個', type:'multi', cap:2, excl:'q9.unclear', opts:[
+   ['q9.professional','專業、有實力'],
+   ['q9.trustworthy','可靠、值得信任'],
+   ['q9.composed','沉穩、有份量'],
+   ['q9.approachable','親切、好溝通'],
+   ['q9.refined','精緻、有品味'],
+   ['q9.decisive','俐落、有決策感'],
+   ['q9.distinctive','有辨識度、容易被記住'],
+   ['q9.creative','有創意、有自己的觀點'],
+   ['q9.authentic','自然、真實、不刻意'],
+   ['q9.unclear','還不確定']]},
+  {id:'q10', t:'這一兩年，你的角色或被看見的方式，有沒有發生這些變化？', note:'可複選', type:'multi', cap:0, excl:'q10.no_change', opts:[
+   ['q10.promotion','升職／開始帶團隊／進入決策角色'],
+   ['q10.founding','開始創業／開業／接案'],
+   ['q10.career_change','轉職／換產業／換專業方向'],
+   ['q10.personal_branding','開始經營社群或個人品牌'],
+   ['q10.exposure_up','演講、媒體、公開曝光變多'],
+   ['q10.audience_shift','客戶層級或主要受眾改變了'],
+   ['q10.appearance_change','外型或個人風格已有明顯變化'],
+   ['q10.no_change','沒有明顯變化']]},
+  {id:'q11', t:'接下來半年，你最可能在哪些情境需要使用自己的照片或形象？', note:'最多選 3 個', type:'multi', cap:3, excl:'q11.none_yet', opts:[
+   ['q11.job_change','求職／轉職／升遷'],
+   ['q11.new_business','開業／創業／新服務'],
+   ['q11.website_update','官網／品牌／團隊頁更新'],
+   ['q11.speaking_media','演講／授課／媒體／活動'],
+   ['q11.social_branding','社群／個人品牌'],
+   ['q11.proposal_biz','提案／商務合作'],
+   ['q11.wedding_event','婚禮／重要活動'],
+   ['q11.social_new','社交／認識新的人'],
+   ['q11.none_yet','暫時沒有，只想先了解']]},
+  {id:'q11a', t:'過去一年，你有沒有遇過以下幾種時刻？', note:'可複選，也可以跳過', type:'multi', cap:0, excl:'q11a.none', optional:true, opts:[
+   ['q11a.dress_mismatch','到了某個場合，才發現自己的穿著和現場有點不對'],
+   ['q11a.wardrobe_blank','重要場合前，看著衣櫃卻不知道該穿什麼'],
+   ['q11a.role_dressing_gap','工作或角色變了之後，發現以前習慣的穿法好像不太適合現在'],
+   ['q11a.unrecognized_self','看到活動或會議照片，才發現自己的整體呈現和想像中有落差'],
+   ['q11a.none','沒有特別印象']]}]}
+];
+
+// ====== 狀態 ======
+var state = {};        // qid -> string | array
+var REQUIRED = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11'];
+
+// ====== 渲染 ======
+var qsEl = document.getElementById('qs');
+SECS.forEach(function(sec){
+  var s = document.createElement('div'); s.className = 'sec';
+  s.innerHTML = '<div class="sec-tag">' + sec.tag + '</div>';
+  sec.qs.forEach(function(q){
+    state[q.id] = (q.type === 'multi') ? [] : null;
+    var box = document.createElement('div'); box.className = 'q'; box.id = 'box-' + q.id;
+    var html = '<div class="q-title">' + q.t + '</div>';
+    if (q.note) html += '<div class="q-note">' + q.note + '</div>';
+    html += '<div class="opts' + (q.grid ? ' grid2' : '') + '" id="opts-' + q.id + '">';
+    q.opts.forEach(function(o){
+      html += '<div class="opt" data-q="' + q.id + '" data-k="' + o[0] + '">' + o[1] + '</div>';
+    });
+    html += '</div>';
+    box.innerHTML = html;
+    s.appendChild(box);
+  });
+  qsEl.appendChild(s);
+});
+
+var QDEF = {};
+SECS.forEach(function(sec){ sec.qs.forEach(function(q){ QDEF[q.id] = q; }); });
+
+// ====== 互動 ======
+document.addEventListener('click', function(e){
+  var el = e.target.closest('.opt'); if (!el) return;
+  var qid = el.dataset.q, key = el.dataset.k, q = QDEF[qid];
+  if (q.type === 'single') {
+    state[qid] = key;
+  } else {
+    var excls = q.excl2 || (q.excl ? [q.excl] : []);
+    var cur = state[qid].slice();
+    var i = cur.indexOf(key);
+    if (i !== -1) { cur.splice(i, 1); }
+    else {
+      if (excls.indexOf(key) !== -1) { cur = [key]; }                 // 勾 Exclusive → 清其他
+      else {
+        cur = cur.filter(function(k){ return excls.indexOf(k) === -1; }); // 勾一般 → 清 Exclusive
+        if (q.cap && cur.length >= q.cap) return;                      // 達上限
+        cur.push(key);
+      }
+    }
+    state[qid] = cur;
+  }
+  paint(qid);
+  progress();
+});
+
+function paint(qid){
+  var q = QDEF[qid], v = state[qid];
+  document.querySelectorAll('#opts-' + qid + ' .opt').forEach(function(el){
+    var on = (q.type === 'single') ? (v === el.dataset.k) : (v.indexOf(el.dataset.k) !== -1);
+    el.classList.toggle('on', on);
+    el.classList.remove('dis');
+  });
+  if (q.type === 'multi' && q.cap && v.length >= q.cap) {
+    document.querySelectorAll('#opts-' + qid + ' .opt:not(.on)').forEach(function(el){ el.classList.add('dis'); });
+  }
+  document.getElementById('box-' + qid).classList.remove('miss');
+}
+
+function progress(){
+  var done = REQUIRED.filter(function(k){
+    var v = state[k]; return Array.isArray(v) ? v.length > 0 : !!v;
+  }).length;
+  document.getElementById('bar').style.width = Math.round(done / REQUIRED.length * 100) + '%';
+}
+
+// q12 counter
+var q12 = document.getElementById('q12');
+q12.addEventListener('input', function(){ document.getElementById('q12n').textContent = q12.value.length; });
+
+// consent
+var consent = document.getElementById('consent');
+consent.addEventListener('click', function(){ consent.classList.toggle('on'); consent.classList.remove('miss'); });
+
+// ====== 送出 ======
+document.getElementById('go').addEventListener('click', function(){
+  var err = document.getElementById('err');
+  err.style.display = 'none';
+
+  var missing = REQUIRED.filter(function(k){
+    var v = state[k]; return Array.isArray(v) ? v.length === 0 : !v;
+  });
+  if (missing.length) {
+    missing.forEach(function(k){ document.getElementById('box-' + k).classList.add('miss'); });
+    document.getElementById('box-' + missing[0]).scrollIntoView({behavior:'smooth', block:'center'});
+    err.textContent = '還有 ' + missing.length + ' 題沒有回答，已標示在上方';
+    err.style.display = 'block';
+    return;
+  }
+  if (!consent.classList.contains('on')) {
+    consent.classList.add('miss');
+    consent.scrollIntoView({behavior:'smooth', block:'center'});
+    err.textContent = '送出前請先勾選同意';
+    err.style.display = 'block';
+    return;
+  }
+
+  var params = new URLSearchParams(location.search);
+  var payload = {
+    consent: true,
+    src: params.get('src') || 'direct',
+    code: params.get('code') || '',
+    q12: q12.value.trim(),
+    hp: document.getElementById('hp').value,
+    answers: JSON.parse(JSON.stringify(state))
+  };
+
+  var btn = document.getElementById('go');
+  btn.disabled = true; btn.textContent = '送出中…';
+
+  fetch(API, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).then(function(r){ return r.json(); }).then(function(j){
+    if (!j.ok) throw new Error(j.error || 'submit_failed');
+    try { localStorage.setItem('qs_token', j.token); } catch(e){}
+    var claim = document.getElementById('claim');
+    if (LIFF_CLAIM_URL) claim.href = LIFF_CLAIM_URL + '?t=' + encodeURIComponent(j.token);
+    else claim.href = LINE_ADD;
+    document.getElementById('form-view').style.display = 'none';
+    document.getElementById('done').style.display = 'block';
+    window.scrollTo(0, 0);
+    document.getElementById('bar').style.width = '100%';
+  }).catch(function(e){
+    btn.disabled = false; btn.textContent = '取得我的快診結果';
+    err.textContent = '送出時發生問題，請再試一次。若持續失敗，可直接加 LINE @duf9466e 告訴我們。';
+    err.style.display = 'block';
+  });
+});
+</script>
+</body>
+</html>
