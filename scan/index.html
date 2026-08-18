@@ -125,7 +125,7 @@ var API = 'https://n8n.321avoir.com/webhook/quickscan-intake';
 var LIFF_CLAIM_URL = 'https://liff.line.me/2009829734-QouuRpC8';   // 快診領取 LIFF,自動帶 ?t=token
 var LINE_ADD = 'https://lin.ee/7DXWsNcz';
 
-// ====== 題目定義(v5.3 FINAL) ======
+// ====== 題目定義(v5.3 FINAL + v5.3.1 補丁:Q3 加美業) ======
 var SECS = [
  {tag:'A｜現在的你', qs:[
   {id:'q1', t:'如果明天需要交出一張「代表現在的你」的照片，用在官網、履歷或活動介紹，你目前比較接近哪一種狀態？', type:'single', opts:[
@@ -150,6 +150,7 @@ var SECS = [
    ['q3.education','教育／顧問／培訓'],
    ['q3.creative','品牌／行銷／媒體／創意'],
    ['q3.service','零售／餐飲／旅宿／服務'],
+   ['q3.beauty','美業（美髮／美容／彩妝／造型）'],
    ['q3.public','政府／學校／非營利'],
    ['q3.no_industry','目前沒有固定產業'],
    ['q3.other','其他']]}]},
