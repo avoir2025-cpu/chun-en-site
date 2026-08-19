@@ -235,12 +235,16 @@ var SECS = [
    ['q11a.wardrobe_blank','重要場合前，看著衣櫃卻不知道該穿什麼'],
    ['q11a.role_dressing_gap','工作或角色變了之後，發現以前習慣的穿法好像不太適合現在'],
    ['q11a.unrecognized_self','看到活動或會議照片，才發現自己的整體呈現和想像中有落差'],
-   ['q11a.none','沒有特別印象']]}]}
+   ['q11a.none','沒有特別印象']]},
+  {id:'q0', t:'你的性別是？', note:'用於報告的視覺呈現', type:'single', opts:[
+   ['q0.female','女性'],
+   ['q0.male','男性'],
+   ['q0.na','其他／不方便透露']]}]}
 ];
 
 // ====== 狀態 ======
 var state = {};        // qid -> string | array
-var REQUIRED = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11'];
+var REQUIRED = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q0'];
 
 // ====== 渲染 ======
 var qsEl = document.getElementById('qs');
