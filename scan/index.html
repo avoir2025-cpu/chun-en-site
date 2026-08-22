@@ -73,7 +73,23 @@
   #done .hint{margin-top:14px;font-size:12px;color:var(--muted);}
   footer{margin-top:70px;text-align:center;font-size:11px;letter-spacing:.15em;color:var(--muted);}
   .hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden;}
+
+  /* ===== v6 分步 ===== */
+  .step{display:none;}
+  .step.on{display:block;}
+  .stepbar{display:flex;gap:6px;margin-top:26px;}
+  .stepbar i{flex:1;height:2px;background:rgba(245,241,232,.10);border-radius:2px;transition:background .25s;}
+  .stepbar i.on{background:var(--gold);}
+  .stepno{margin-top:14px;font-size:11.5px;letter-spacing:.22em;color:var(--muted);}
+  .nav{margin-top:34px;display:flex;gap:12px;}
+  .nav button{flex:1;padding:16px;border:none;border-radius:6px;cursor:pointer;
+        font-family:var(--serif);font-size:16px;font-weight:600;letter-spacing:.2em;}
+  .nav .next{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--ink);}
+  .nav .back{flex:0 0 34%;background:transparent;border:1px solid var(--hairline);color:var(--muted-bright);
+        font-size:14px;letter-spacing:.12em;}
+  .nav button:disabled{opacity:.5;}
 </style>
+<script src="/consent.js?v=202608221600" defer></script>
 </head>
 <body>
 <div class="progress"><i id="bar"></i></div>
@@ -83,27 +99,35 @@
     <div class="wordmark">CHUN<span>.EN</span></div>
     <h1>免費 AI 視覺定位快診</h1>
     <p class="intro">不用幾分鐘，也不用上傳照片。<br>先看一下：<b>現在的你，和你真正想傳達的角色，<br>是不是同一個方向。</b></p>
+    <div class="stepbar" id="stepbar"></div>
+    <div class="stepno" id="stepno"></div>
   </header>
 
   <div id="qs"></div>
 
-  <!-- Q12 -->
-  <div class="sec">
-    <div class="q" id="q12box">
-      <div class="q-title">如果這份快診只能回答你一個問題，你最想知道什麼？</div>
-      <div class="q-note">選填，一句話就好</div>
-      <textarea id="q12" maxlength="200" placeholder="（可以跳過）"></textarea>
-      <div class="count"><span id="q12n">0</span>/200</div>
+  <div class="step" id="step-4">
+    <div class="sec">
+      <div class="sec-tag">四｜最後一題</div>
+      <div class="q" id="q12box">
+        <div class="q-title">如果這份快診只能回答你一個問題，你最想知道什麼？</div>
+        <div class="q-note">選填，一句話就好</div>
+        <textarea id="q12" maxlength="200" placeholder="（可以跳過）"></textarea>
+        <div class="count"><span id="q12n">0</span>/200</div>
+      </div>
+    </div>
+
+    <div class="consent" id="consent">
+      <div class="box"></div>
+      <p>我同意 CHUN.EN 形象美學蒐集以上資料，用於產出本次快診結果與後續服務聯繫。我可隨時透過 LINE 要求刪除資料。</p>
     </div>
   </div>
 
-  <div class="consent" id="consent">
-    <div class="box"></div>
-    <p>我同意 CHUN.EN 形象美學蒐集以上資料，用於產出本次快診結果與後續服務聯繫。我可隨時透過 LINE 要求刪除資料。</p>
-  </div>
-
   <input class="hp" type="text" name="hp" id="hp" tabindex="-1" autocomplete="off">
-  <button class="submit" id="go">取得我的快診結果</button>
+
+  <div class="nav" id="nav">
+    <button class="back" id="back" type="button">上一步</button>
+    <button class="next" id="next" type="button">下一步</button>
+  </div>
   <div class="errbar" id="err"></div>
 
   <footer>CHUN.EN　COMMERCIAL IMAGE STRATEGY</footer>
@@ -125,9 +149,77 @@ var API = 'https://n8n.321avoir.com/webhook/quickscan-intake';
 var LIFF_CLAIM_URL = 'https://liff.line.me/2009829734-QouuRpC8';   // 快診領取 LIFF,自動帶 ?t=token
 var LINE_ADD = 'https://lin.ee/7DXWsNcz';
 
-// ====== 題目定義(v5.3 FINAL + v5.3.1 補丁:Q3 加美業) ======
-var SECS = [
- {tag:'A｜現在的你', qs:[
+// ====== GA4（consent.js 同意後才會有 gtag）======
+// ⚠️ 同意閘之前 gtag 還不存在，直接呼叫會整發掉。掃碼當下正是最關鍵的那幾發，
+//    所以先進佇列，等 gtag 出現再一次補送。
+var _evq = [], _flushed = false;
+function track(name, params){
+  var p = params || {};
+  p.src = (new URLSearchParams(location.search)).get('src') || 'direct';
+  if (typeof window.gtag === 'function') { window.gtag('event', name, p); return; }
+  if (_evq.length < 40) _evq.push([name, p]);
+}
+setInterval(function(){
+  if (_flushed || typeof window.gtag !== 'function') return;
+  _flushed = true;
+  _evq.forEach(function(e){ window.gtag('event', e[0], e[1]); });
+  _evq = [];
+}, 800);
+
+// ====== 題目定義 ======
+// v6：新增外在選擇軸 W1–W4（放在最前面，因為穿搭是高頻日常需求，照片是低頻事件需求）
+//     q11a 退場（與 W1 重疊，改由引擎內部相容映射承接）
+//     q8 新增 self_image_gap（原 q11a 的影像落差，不進 scoring）
+// ⚠️ W 的選項文字是從 _build/scoring_w1.js 的 label 表產生的，不要手改這裡。
+//    報告 03 節的「你的回答」卡片印的就是那張表，改這裡會讓兩邊對不上。
+var STEPS = [
+ {no:1, name:'平常怎麼卡', tag:'一｜平常穿衣服的時候', qs:[
+  {id:'w1', t:'平常穿衣服時，你比較容易遇到哪些情況？', note:'最多選 3 個', type:'multi', cap:3,
+   excl2:['w1.clear','w1.not_interested'], opts:[
+   ['w1.too_many_choices','衣服不少，但要穿的時候還是不知道挑哪一套'],
+   ['w1.same_few_sets','來來回回都是那幾套'],
+   ['w1.unsure_what_suits','不太確定什麼衣服適合自己'],
+   ['w1.cannot_coordinate','單看每件都可以，穿在一起就覺得怪怪的'],
+   ['w1.occasion_gap','上班穿沒問題，重要場合就不知道怎麼穿'],
+   ['w1.quality_vs_formal','想穿得有質感一點，又怕看起來太正式'],
+   ['w1.pro_vs_old','想穿得專業一點，又怕看起來太老氣'],
+   ['w1.on_site_mismatch','出門前覺得可以，到了現場才覺得不太對'],
+   ['w1.clear','我其實滿清楚自己怎麼穿'],
+   ['w1.not_interested','平常不太在意穿搭']]},
+  {id:'w2', t:'你最容易在哪些時候不知道要穿什麼？', note:'最多選 3 個', type:'multi', cap:3,
+   excl:'w2.rarely', opts:[
+   ['w2.daily_work','平常上班'],
+   ['w2.client','見客戶'],
+   ['w2.meeting_pitch','重要會議或提案'],
+   ['w2.stage_event','上台、演講或參加活動'],
+   ['w2.social','約會、聚餐或認識新朋友'],
+   ['w2.formal','婚宴或正式場合'],
+   ['w2.oncamera','拍照、錄影或做社群內容'],
+   ['w2.interview','面試或找工作'],
+   ['w2.no_specific','沒有特定場合，平常就會卡'],
+   ['w2.rarely','我很少遇到這個問題']]}]},
+
+ {no:2, name:'最先卡在哪一層', tag:'二｜真的有場合的時候', qs:[
+  {id:'w3', t:'如果明天突然有一個重要場合，你最可能先煩惱什麼？', type:'single', opts:[
+   ['w3.what_to_wear','不知道穿什麼'],
+   ['w3.how_formal','不知道要穿多正式'],
+   ['w3.hair','不知道頭髮要怎麼整理'],
+   ['w3.makeup','不知道妝要畫到什麼程度'],
+   ['w3.overall','不知道整體搭起來會不會怪'],
+   ['w3.none','這些我大致都知道怎麼準備']]},
+  {id:'w4', t:'現在最想先改善哪一到兩件事？', note:'最多選 2 個', type:'multi', cap:2,
+   excl2:['w4.unknown','w4.none'], opts:[
+   ['w4.faster_daily','每天穿衣服不用想那麼久'],
+   ['w4.know_what_suits','知道自己到底適合怎麼穿'],
+   ['w4.occasion_ready','重要場合知道要穿什麼'],
+   ['w4.look_professional','看起來更專業、有精神'],
+   ['w4.grooming_routine','妝髮不用臨時才決定'],
+   ['w4.oncamera_complete','拍照或錄影時，知道整體要怎麼準備'],
+   ['w4.photo_set','有一組工作、社群或履歷可以直接用的照片'],
+   ['w4.unknown','我還不知道問題在哪'],
+   ['w4.none','目前沒有特別想改的']]}]},
+
+ {no:3, name:'照片與角色', tag:'三｜現在的你', qs:[
   {id:'q1', t:'如果明天需要交出一張「代表現在的你」的照片，用在官網、履歷或活動介紹，你目前比較接近哪一種狀態？', type:'single', opts:[
    ['q1.ready_now','有，現在就能直接使用'],
    ['q1.not_satisfied','有照片，但自己沒有很滿意'],
@@ -153,8 +245,7 @@ var SECS = [
    ['q3.beauty','美業（美髮／美容／彩妝／造型等）'],
    ['q3.public','政府／學校／非營利'],
    ['q3.no_industry','目前沒有固定產業'],
-   ['q3.other','其他']]}]},
- {tag:'B｜誰在看你', qs:[
+   ['q3.other','其他']]},
   {id:'q4', t:'哪些人最需要快速理解你是誰？', note:'最多選 2 個', type:'multi', cap:2, excl:'q4.unclear', opts:[
    ['q4.enterprise_clients','企業客戶／合作夥伴'],
    ['q4.consumers','一般消費者／顧客'],
@@ -173,8 +264,7 @@ var SECS = [
    ['q5.namecard_deck','名片／提案／簡報'],
    ['q5.media_events','媒體／講座／活動頁面'],
    ['q5.dating_social','交友／社交平台'],
-   ['q5.none','幾乎沒有固定使用']]}]},
- {tag:'C｜現在的影像卡在哪裡', qs:[
+   ['q5.none','幾乎沒有固定使用']]},
   {id:'q6', t:'你現在最常使用的照片，大約是多久以前拍的？', type:'single', grid:true, opts:[
    ['q6.within_1y','一年內'],
    ['q6.y1_3','1–3 年'],
@@ -188,7 +278,8 @@ var SECS = [
    ['q7.mixed_styles','照片不少，但風格、年代差很多'],
    ['q7.adhoc','需要的時候才臨時找一張'],
    ['q7.almost_none','幾乎沒有固定能用的照片']]},
-  {id:'q8', t:'如果只能先改善兩件事，你覺得目前的照片最需要處理什麼？', note:'最多選 2 個', type:'multi', cap:2, excl2:['q8.no_assets_to_assess','q8.no_major_issue'], opts:[
+  {id:'q8', t:'如果只能先改善兩件事，你覺得目前的照片最需要處理什麼？', note:'最多選 2 個', type:'multi', cap:2,
+   excl2:['q8.no_assets_to_assess','q8.no_major_issue'], opts:[
    ['q8.outdated','照片太舊，已經不像現在的我'],
    ['q8.too_casual','看起來太生活化，專業角色不夠明確'],
    ['q8.too_formal','太正式或太有距離，不像平常的自己'],
@@ -196,10 +287,10 @@ var SECS = [
    ['q8.insufficient_scenarios','有照片，但不夠應付不同平台與場合'],
    ['q8.inconsistent_system','每張單看都可以，放在一起卻不像同一套'],
    ['q8.role_unclear','照片好看，但看不太出我是做什麼、什麼角色'],
+   ['q8.self_image_gap','看到活動或會議的照片，才發現和自己想像的樣子不太一樣'],
    ['q8.unsure_problem','說不上來，只覺得哪裡不對'],
    ['q8.no_assets_to_assess','目前沒有足夠的照片可以判斷'],
-   ['q8.no_major_issue','目前其實沒有明顯問題']]}]},
- {tag:'D｜你希望往哪裡走', qs:[
+   ['q8.no_major_issue','目前其實沒有明顯問題']]},
   {id:'q9', t:'如果別人第一次看到你的照片，你最希望他感受到哪些特質？', note:'最多選 2 個', type:'multi', cap:2, excl:'q9.unclear', opts:[
    ['q9.professional','專業、有實力'],
    ['q9.trustworthy','可靠、值得信任'],
@@ -230,28 +321,30 @@ var SECS = [
    ['q11.wedding_event','婚禮／重要活動'],
    ['q11.social_new','社交／認識新的人'],
    ['q11.none_yet','暫時沒有，只想先了解']]},
-  {id:'q11a', t:'過去一年，你有沒有遇過以下幾種時刻？', note:'可複選，也可以跳過', type:'multi', cap:0, excl:'q11a.none', optional:true, opts:[
-   ['q11a.dress_mismatch','到了某個場合，才發現自己的穿著和現場有點不對'],
-   ['q11a.wardrobe_blank','重要場合前，看著衣櫃卻不知道該穿什麼'],
-   ['q11a.role_dressing_gap','工作或角色變了之後，發現以前習慣的穿法好像不太適合現在'],
-   ['q11a.unrecognized_self','看到活動或會議照片，才發現自己的整體呈現和想像中有落差'],
-   ['q11a.none','沒有特別印象']]},
   {id:'q0', t:'你的性別是？', type:'single', opts:[
    ['q0.female','女性'],
    ['q0.male','男性'],
-   ['q0.na','其他／不方便透露']]}]}
+   ['q0.na','其他／不方便透露']]}]},
+
+ {no:4, name:'送出', tag:'四｜最後一題', qs:[]}
 ];
 
+
 // ====== 狀態 ======
-var state = {};        // qid -> string | array
-var REQUIRED = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q0'];
+var state = {};
+var REQUIRED = ['w1','w2','w3','w4','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q0'];
+var QDEF = {}, STEP_OF = {};
+STEPS.forEach(function(st){ st.qs.forEach(function(q){ QDEF[q.id] = q; STEP_OF[q.id] = st.no; }); });
 
 // ====== 渲染 ======
 var qsEl = document.getElementById('qs');
-SECS.forEach(function(sec){
+STEPS.forEach(function(st){
+  if (!st.qs.length) return;                       // 第 4 步是寫死在 HTML 裡的
+  var wrap = document.createElement('div');
+  wrap.className = 'step'; wrap.id = 'step-' + st.no;
   var s = document.createElement('div'); s.className = 'sec';
-  s.innerHTML = '<div class="sec-tag">' + sec.tag + '</div>';
-  sec.qs.forEach(function(q){
+  s.innerHTML = '<div class="sec-tag">' + st.tag + '</div>';
+  st.qs.forEach(function(q){
     state[q.id] = (q.type === 'multi') ? [] : null;
     var box = document.createElement('div'); box.className = 'q'; box.id = 'box-' + q.id;
     var html = '<div class="q-title">' + q.t + '</div>';
@@ -264,35 +357,78 @@ SECS.forEach(function(sec){
     box.innerHTML = html;
     s.appendChild(box);
   });
-  qsEl.appendChild(s);
+  wrap.appendChild(s);
+  qsEl.appendChild(wrap);
 });
 
-var QDEF = {};
-SECS.forEach(function(sec){ sec.qs.forEach(function(q){ QDEF[q.id] = q; }); });
+// 步驟指示器
+var TOTAL = STEPS.length;
+var sb = document.getElementById('stepbar');
+for (var i = 0; i < TOTAL; i++) sb.appendChild(document.createElement('i'));
+
+// ====== 分步 ======
+var cur = 1, seen = {};
+function showStep(n){
+  cur = n;
+  for (var i = 1; i <= TOTAL; i++){
+    var el = document.getElementById('step-' + i);
+    if (el) el.classList.toggle('on', i === n);
+  }
+  var bars = sb.querySelectorAll('i');
+  for (var j = 0; j < bars.length; j++) bars[j].classList.toggle('on', j < n);
+  var st = STEPS[n - 1];
+  document.getElementById('stepno').textContent = '第 ' + n + ' 步／共 ' + TOTAL + '　' + st.name;
+  document.getElementById('back').style.display = (n === 1) ? 'none' : '';
+  document.getElementById('next').textContent = (n === TOTAL) ? '取得我的快診結果' : '下一步';
+  document.getElementById('bar').style.width = Math.round((n - 1) / TOTAL * 100) + '%';
+  document.getElementById('err').style.display = 'none';
+  window.scrollTo(0, 0);
+  if (!seen[n]) { seen[n] = 1; track('quickscan_step_view', {step_no:n, step_name:st.name}); }
+}
+
+document.getElementById('next').addEventListener('click', function(){
+  if (cur === TOTAL) { submit(); return; }
+  var need = REQUIRED.filter(function(k){ return STEP_OF[k] === cur; });
+  var missing = need.filter(function(k){
+    var v = state[k]; return Array.isArray(v) ? v.length === 0 : !v;
+  });
+  if (missing.length) {
+    var err = document.getElementById('err');
+    missing.forEach(function(k){ document.getElementById('box-' + k).classList.add('miss'); });
+    document.getElementById('box-' + missing[0]).scrollIntoView({behavior:'smooth', block:'center'});
+    err.textContent = '這一步還有 ' + missing.length + ' 題沒有回答，已標示在上方';
+    err.style.display = 'block';
+    return;
+  }
+  track('quickscan_step_complete', {step_no:cur, step_name:STEPS[cur - 1].name});
+  showStep(cur + 1);
+});
+document.getElementById('back').addEventListener('click', function(){ showStep(Math.max(1, cur - 1)); });
 
 // ====== 互動 ======
+var started = false;
 document.addEventListener('click', function(e){
   var el = e.target.closest('.opt'); if (!el) return;
+  if (!started) { started = true; track('quickscan_start', {}); }
   var qid = el.dataset.q, key = el.dataset.k, q = QDEF[qid];
   if (q.type === 'single') {
     state[qid] = key;
   } else {
     var excls = q.excl2 || (q.excl ? [q.excl] : []);
-    var cur = state[qid].slice();
-    var i = cur.indexOf(key);
-    if (i !== -1) { cur.splice(i, 1); }
+    var c = state[qid].slice();
+    var i = c.indexOf(key);
+    if (i !== -1) { c.splice(i, 1); }
     else {
-      if (excls.indexOf(key) !== -1) { cur = [key]; }                 // 勾 Exclusive → 清其他
+      if (excls.indexOf(key) !== -1) { c = [key]; }                    // 勾 Exclusive → 清其他
       else {
-        cur = cur.filter(function(k){ return excls.indexOf(k) === -1; }); // 勾一般 → 清 Exclusive
-        if (q.cap && cur.length >= q.cap) return;                      // 達上限
-        cur.push(key);
+        c = c.filter(function(k){ return excls.indexOf(k) === -1; });  // 勾一般 → 清 Exclusive
+        if (q.cap && c.length >= q.cap) return;                        // 達上限
+        c.push(key);
       }
     }
-    state[qid] = cur;
+    state[qid] = c;
   }
   paint(qid);
-  progress();
 });
 
 function paint(qid){
@@ -308,13 +444,6 @@ function paint(qid){
   document.getElementById('box-' + qid).classList.remove('miss');
 }
 
-function progress(){
-  var done = REQUIRED.filter(function(k){
-    var v = state[k]; return Array.isArray(v) ? v.length > 0 : !!v;
-  }).length;
-  document.getElementById('bar').style.width = Math.round(done / REQUIRED.length * 100) + '%';
-}
-
 // q12 counter
 var q12 = document.getElementById('q12');
 q12.addEventListener('input', function(){ document.getElementById('q12n').textContent = q12.value.length; });
@@ -324,14 +453,16 @@ var consent = document.getElementById('consent');
 consent.addEventListener('click', function(){ consent.classList.toggle('on'); consent.classList.remove('miss'); });
 
 // ====== 送出 ======
-document.getElementById('go').addEventListener('click', function(){
+function submit(){
   var err = document.getElementById('err');
   err.style.display = 'none';
 
   var missing = REQUIRED.filter(function(k){
     var v = state[k]; return Array.isArray(v) ? v.length === 0 : !v;
   });
-  if (missing.length) {
+  if (missing.length) {                       // 保險：理論上分步驗證已經擋掉
+    var back = STEP_OF[missing[0]];
+    showStep(back);
     missing.forEach(function(k){ document.getElementById('box-' + k).classList.add('miss'); });
     document.getElementById('box-' + missing[0]).scrollIntoView({behavior:'smooth', block:'center'});
     err.textContent = '還有 ' + missing.length + ' 題沒有回答，已標示在上方';
@@ -356,8 +487,9 @@ document.getElementById('go').addEventListener('click', function(){
     answers: JSON.parse(JSON.stringify(state))
   };
 
-  var btn = document.getElementById('go');
+  var btn = document.getElementById('next');
   btn.disabled = true; btn.textContent = '送出中…';
+  track('quickscan_step_complete', {step_no:TOTAL, step_name:'送出'});
 
   fetch(API, {
     method: 'POST',
@@ -369,16 +501,20 @@ document.getElementById('go').addEventListener('click', function(){
     var claim = document.getElementById('claim');
     if (LIFF_CLAIM_URL) claim.href = LIFF_CLAIM_URL + '?t=' + encodeURIComponent(j.token);
     else claim.href = LINE_ADD;
+    track('quickscan_submit', {});
     document.getElementById('form-view').style.display = 'none';
     document.getElementById('done').style.display = 'block';
     window.scrollTo(0, 0);
     document.getElementById('bar').style.width = '100%';
   }).catch(function(e){
     btn.disabled = false; btn.textContent = '取得我的快診結果';
+    track('quickscan_submit_error', {});
     err.textContent = '送出時發生問題，請再試一次。若持續失敗，可直接加 LINE @duf9466e 告訴我們。';
     err.style.display = 'block';
   });
-});
+}
+
+showStep(1);
 </script>
 </body>
 </html>
