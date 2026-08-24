@@ -44,6 +44,11 @@
        color:var(--paper-dim);line-height:1.55;cursor:pointer;user-select:none;transition:all .15s;background:rgba(245,241,232,.02);}
   .opt.on{border-color:var(--gold);color:var(--paper);background:rgba(168,138,92,.12);}
   .opt.dis{opacity:.35;pointer-events:none;}
+
+    /* 互斥選項的分組說明。用 .opt-sep 不用 .opt，
+       才不會被 paint() 的 `.opt` 選到，也不會被當成可點選項。 */
+    .opt-sep{font-size:11.5px;color:var(--muted);letter-spacing:.05em;line-height:1.6;
+       margin-top:6px;padding-top:12px;border-top:1px solid var(--hairline);}
   textarea{width:100%;background:rgba(245,241,232,.03);border:1px solid var(--hairline);border-radius:6px;
            color:var(--paper);font-family:var(--sans);font-weight:300;font-size:14px;padding:12px;margin-top:12px;
            min-height:74px;resize:vertical;}
@@ -353,7 +358,17 @@ STEPS.forEach(function(st){
     var html = '<div class="q-title">' + q.t + '</div>';
     if (q.note) html += '<div class="q-note">' + q.note + '</div>';
     html += '<div class="opts' + (q.grid ? ' grid2' : '') + '" id="opts-' + q.id + '">';
+    // 互斥選項（excl／excl2）獨立成一組：讓「最多選 N 個」在視覺上只管上面那一組。
+    // 2026-08-24：測試者勾了「平常不太在意穿搭」再勾別的，前一個無聲消失，
+    //   讀起來就是「不是可以選三個嗎」。互斥本身是對的（語意矛盾＋直接決定路由），
+    //   要改的是說明不是行為。九題都適用，互斥選項都在清單最後。
+    var qex = q.excl2 || (q.excl ? [q.excl] : []);
+    var qsplit = false;
     q.opts.forEach(function(o){
+      if (!qsplit && qex.indexOf(o[0]) !== -1) {
+        qsplit = true;
+        html += '<div class="opt-sep">以上都不太像的話，從下面選一個</div>';
+      }
       html += '<div class="opt" data-q="' + q.id + '" data-k="' + o[0] + '">' + o[1] + '</div>';
     });
     html += '</div>';
