@@ -144,10 +144,19 @@
   <p class="sub">我們會依你剛才的回答，整理：<br>
   目前角色與影像是否同步<br>主要被看見的場景<br>目前最值得注意的地方<br>初步視覺方向</p>
   <a class="line-btn" id="claim" href="https://lin.ee/7DXWsNcz">加入 LINE｜取得完整快診結果</a>
-  <p class="hint">加入後，快診結果會直接傳送給你</p>
+  <p class="hint" id="claim-hint">加入後，快診結果會直接傳送給你</p>
+  <!-- 電腦版：LIFF 在外部瀏覽器要先跑 LINE 網頁登入，而且後續兩顆按鈕都是
+       手機專用深連結。改成給 QR，讓客人用手機接手（2026-08-25）。 -->
+  <div id="claim-desktop" style="display:none">
+    <div id="qrbox" style="width:196px;height:196px;margin:0 auto;background:#fff;
+         padding:12px;border-radius:10px;box-sizing:border-box"></div>
+    <p class="hint" style="margin-top:16px;line-height:2">
+      用手機掃這個 QR，<br>就會直接進到 LINE 幫你把結果準備好。</p>
+  </div>
   <footer>CHUN.EN　COMMERCIAL IMAGE STRATEGY</footer>
 </div>
 
+<script src="qrcode.js"></script>
 <script>
 // ====== 設定 ======
 var API = 'https://n8n.321avoir.com/webhook/quickscan-intake';
@@ -517,8 +526,27 @@ function submit(){
     if (!j.ok) throw new Error(j.error || 'submit_failed');
     try { localStorage.setItem('qs_token', j.token); } catch(e){}
     var claim = document.getElementById('claim');
-    if (LIFF_CLAIM_URL) claim.href = LIFF_CLAIM_URL + '?t=' + encodeURIComponent(j.token);
-    else claim.href = LINE_ADD;
+    var claimUrl = LIFF_CLAIM_URL
+      ? (LIFF_CLAIM_URL + '?t=' + encodeURIComponent(j.token)) : LINE_ADD;
+    claim.href = claimUrl;
+
+    // 電腦版改給 QR：手機的 LINE 本來就登入著，掃進去就跳過網頁登入那一關，
+    // 而且後面每一步都在手機上（那是唯一每顆按鈕都正常的環境）。
+    // ⚠️ 產不出來就什麼都不做，維持原本那顆按鈕 —— 不要讓客人看到白畫面。
+    var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+    if (!isMobile && typeof qrcode === 'function') {
+      try {
+        var qr = qrcode(0, 'M');
+        qr.addData(claimUrl);
+        qr.make();
+        document.getElementById('qrbox').innerHTML = qr.createSvgTag({ scalable: true });
+        var svg = document.querySelector('#qrbox svg');
+        if (svg) { svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%'); }
+        claim.style.display = 'none';
+        document.getElementById('claim-hint').style.display = 'none';
+        document.getElementById('claim-desktop').style.display = 'block';
+      } catch (e) { /* 退回原本的按鈕 */ }
+    }
     track('quickscan_submit', {});
     document.getElementById('form-view').style.display = 'none';
     document.getElementById('done').style.display = 'block';
