@@ -173,11 +173,12 @@ function track(name, params){
   if (typeof window.gtag === 'function') { window.gtag('event', name, p); return; }
   if (_evq.length < 40) _evq.push([name, p]);
 }
-setInterval(function(){
+var _flushTimer = setInterval(function(){
   if (_flushed || typeof window.gtag !== 'function') return;
   _flushed = true;
   _evq.forEach(function(e){ window.gtag('event', e[0], e[1]); });
   _evq = [];
+  clearInterval(_flushTimer);
 }, 800);
 
 // ====== 題目定義 ======
@@ -533,6 +534,9 @@ function submit(){
     // 電腦版改給 QR：手機的 LINE 本來就登入著，掃進去就跳過網頁登入那一關，
     // 而且後面每一步都在手機上（那是唯一每顆按鈕都正常的環境）。
     // ⚠️ 產不出來就什麼都不做，維持原本那顆按鈕 —— 不要讓客人看到白畫面。
+    // 2026-08-27：領取這一格原本零埋點，所以「沒點」與「點了但綁定壞掉」分不出來。
+    //   claim_view 記客人看到哪一種（按鈕／QR），claim_click 記他有沒有真的按下去。
+    var claimMode = 'button';
     var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
     if (!isMobile && typeof qrcode === 'function') {
       try {
@@ -545,9 +549,15 @@ function submit(){
         claim.style.display = 'none';
         document.getElementById('claim-hint').style.display = 'none';
         document.getElementById('claim-desktop').style.display = 'block';
+        claimMode = 'qr';
       } catch (e) { /* 退回原本的按鈕 */ }
     }
     track('quickscan_submit', {});
+    track('quickscan_claim_view', {mode: claimMode});
+    // gtag 預設走 sendBeacon，所以按下去跳去 LINE 的當下這一發送得出去。
+    claim.addEventListener('click', function(){
+      track('quickscan_claim_click', {mode: claimMode, has_token: j.token ? 1 : 0});
+    });
     document.getElementById('form-view').style.display = 'none';
     document.getElementById('done').style.display = 'block';
     window.scrollTo(0, 0);
