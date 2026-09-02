@@ -7,7 +7,12 @@
 (function () {
   'use strict';
 
-  /* ===== Reveal ===== */
+  /* ===== Reveal =====
+     threshold 一定要是 0：比例門檻是「可見面積 / 元素面積」，
+     元素比視窗還高的時候永遠達不到。手機上長篇專欄的 .article-body
+     單一區塊動輒 8000px 以上，比例最多只到 0.07，過不了 0.08 的門檻，
+     整段內文就永遠停在 opacity:0 —— 手機版專欄整片空白就是這個原因。
+     改成「碰到就顯示」，進場節奏交給 rootMargin 控制。 */
   var reveals = document.querySelectorAll('.rv');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
@@ -17,8 +22,21 @@
           io.unobserve(e.target);
         }
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
     reveals.forEach(function (el) { io.observe(el); });
+
+    /* 保險絲：動效不管什麼原因沒跑起來，內容都不該被永久藏住 */
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        reveals.forEach(function (el) {
+          if (el.classList.contains('in')) return;
+          if (el.getBoundingClientRect().top < window.innerHeight) {
+            el.classList.add('in');
+            io.unobserve(el);
+          }
+        });
+      }, 1200);
+    });
   } else {
     reveals.forEach(function (el) { el.classList.add('in'); });
   }
