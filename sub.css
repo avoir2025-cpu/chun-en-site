@@ -1472,7 +1472,8 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 }
 @media (max-width: 680px) {
   .jrow { grid-template-columns: 1fr; gap: 1.1rem; }
-  .jrow-media { aspect-ratio: 16/9; }
+  /* 縮圖比例跟桌機一致(4/3)。曾經在手機改成 16/9，全寬之下那是把直式人像
+     從頭頂往下只留 37%，臉直接被切在鼻子；4/3 留到下巴與肩線 2026-09-02 */
   .jrow h3 { margin-top: 0.5rem; }
 }
 
@@ -1556,8 +1557,6 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   .dc .dc-brand { margin: 0.9rem 0 0; font-family: var(--serif-en); font-style: italic; font-size: 1rem; color: var(--gold-light); }
   .dc-takeaway { display: block; margin: 1.1rem 0 0; font-family: var(--serif-tc); font-weight: 400; font-size: 0.98rem; text-align: center; color: var(--paper-dim); }
   .dc-takeaway em { font-style: normal; color: var(--gold-light); }
-  /* journal 列表縮圖：三角色卡的臉偏上，手機 16:9 裁切下移對焦 */
-  .jrow-media img.face-right { object-position: 65% 32%; }
 }
 
 /* 勤美店空間相簿：左右滑動 2026-07-21 */
