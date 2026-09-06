@@ -174,4 +174,27 @@
     }, { threshold: 0.3 });
     pio.observe(pricingEl);
   }
+
+  /* ===== 冷流量 CTA 兩段式（搜尋／AI 進站且未帶 src：第一顆按鈕改成「看」或「免費做一件事」） ===== */
+  (function () {
+    var KEY = 'ce_cold';
+    var cold = null;
+    try { cold = sessionStorage.getItem(KEY); } catch (e) {}
+    if (cold === null) {
+      var ref = document.referrer || '';
+      var isSearch = /(^|\.)(google|bing|yahoo|duckduckgo|ecosia|brave)\.|chatgpt\.com|openai\.com|perplexity\.ai|gemini\.google|copilot\.microsoft/i.test(ref);
+      var hasSrc = /[?&]src=/.test(location.search);
+      cold = (isSearch && !hasSrc) ? '1' : '0';
+      try { sessionStorage.setItem(KEY, cold); } catch (e) {}
+    }
+    if (cold !== '1') return;
+    var els = document.querySelectorAll('a[data-cold-text]');
+    for (var i = 0; i < els.length; i++) {
+      var a = els[i];
+      a.textContent = a.getAttribute('data-cold-text');
+      a.setAttribute('href', a.getAttribute('data-cold-href'));
+      a.removeAttribute('target'); a.removeAttribute('rel');
+      a.setAttribute('data-cta-variant', 'cold');
+    }
+  })();
 })();
