@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <!--
+    短跳轉頁：chunen.tw/event → event-makeup.html（帶 UTM）
+    用途：開發信、名片、電話後補寄都用得到短網址，不必把整串 UTM 貼進信裡。
+    參數（都可省略）：
+      ?c=r1|r2|...   活動批次，預設 r1  → utm_campaign=event-agency-<c>
+      ?s=email|visit|call|card  來源，預設 email → utm_source=<s>，medium 自動對應
+    ⚠ 本頁不掛 GA4，避免與目的頁重複計數；本頁 noindex，不進 sitemap。
+  -->
+  <meta name="robots" content="noindex, nofollow" />
+  <title>前往 CHUN.EN 企業活動妝髮</title>
+  <script>
+  (function () {
+    var BASE = '/event-makeup.html';
+    var MEDIUM = { email: 'outreach', visit: 'offline', call: 'offline', card: 'offline' };
+    var s = 'email', c = 'r1';
+    try {
+      var q = new URLSearchParams(location.search);
+      var qs = (q.get('s') || '').toLowerCase();
+      var qc = (q.get('c') || '').toLowerCase();
+      if (/^[a-z]{2,10}$/.test(qs) && MEDIUM[qs]) s = qs;
+      if (/^[a-z0-9-]{1,20}$/.test(qc)) c = qc;
+    } catch (e) {}
+    var url = BASE
+      + '?utm_source=' + encodeURIComponent(s)
+      + '&utm_medium=' + encodeURIComponent(MEDIUM[s] || 'outreach')
+      + '&utm_campaign=' + encodeURIComponent('event-agency-' + c);
+    location.replace(url);
+  })();
+  </script>
+  <meta http-equiv="refresh" content="0;url=/event-makeup.html?utm_source=email&amp;utm_medium=outreach&amp;utm_campaign=event-agency-r1" />
+  <style>
+    body{margin:0;background:#14100B;color:#C9A96E;font-family:"Noto Sans TC",system-ui,sans-serif;
+         display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center}
+    a{color:#C9A96E}
+    p{font-size:1rem;line-height:2;letter-spacing:.06em}
+  </style>
+</head>
+<body>
+  <p>
+    正在前往 CHUN.EN 企業活動妝髮<br>
+    沒有自動跳轉的話，<a href="/event-makeup.html?utm_source=email&amp;utm_medium=outreach&amp;utm_campaign=event-agency-r1">請點這裡</a>
+  </p>
+</body>
+</html>
