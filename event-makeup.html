@@ -229,9 +229,13 @@
     document.querySelectorAll('[data-cta-mobile]').forEach(function (el) { el.hidden = !isMobile; });
     document.querySelectorAll('[data-cta-desktop]').forEach(function (el) { el.hidden = isMobile; });
 
-    /* 2) 來源歸因：?src=mail / visit / call → GA4（consent-gated，gtag 未載入時輪詢等待） */
+    /* 2) 來源歸因：優先讀 utm_source（GA4 原生支援、不必註冊自訂維度），
+          其次讀 src；兩者皆無則 direct。consent-gated，gtag 未載入時輪詢等待。 */
     var src = 'direct';
-    try { src = new URLSearchParams(location.search).get('src') || 'direct'; } catch (e) {}
+    try {
+      var q = new URLSearchParams(location.search);
+      src = q.get('utm_source') || q.get('src') || 'direct';
+    } catch (e) {}
     var tries = 0;
     (function send() {
       if (typeof window.gtag === 'function') {
