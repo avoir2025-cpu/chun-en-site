@@ -72,6 +72,43 @@
     return flag;
   }
 
+  /* ========== 站外 ?src= → GA4 來源 ==========
+     GA4 只認 utm_*，不認我們自己的 ?src=。早期貼在 Threads／IG／信件的連結只帶 src，
+     全部被記成 Direct（2026-09-23 實查：?src=threads_face 6 次、LINE 分享的
+     ?openExternalBrowser=1 18 次都在 Direct 裡）。已經貼出去的貼文改不回來，
+     所以在送 page_location 時補上 utm，不動網址列，也不影響 v5.js 以 ?src= 判斷冷流量。
+     只認站外前綴；web_* 是站內導流，補了會讓 GA4 在工作階段中途換來源，不能動。
+     網址本身已帶 utm_ 就完全不處理。新貼的連結請直接用 utm（對照表在內部文件）。 */
+  var SRC_RULES = [
+    [/^threads/,           'threads',   'social'],
+    [/^(ig|instagram)/,    'instagram', 'social'],
+    [/^(fb|facebook)/,     'facebook',  'social'],
+    [/^linkedin/,          'linkedin',  'social'],
+    [/^(mail|email|edm)/,  'email',     'outreach'],
+    [/^line/,              'line',      'message'],
+    [/^badminton/,         'print',     'offline']
+  ];
+
+  function campaignLocation() {
+    try {
+      if (/[?&]utm_/.test(window.location.search)) return null;
+      var p = new URLSearchParams(window.location.search);
+      var src = (p.get('src') || '').toLowerCase();
+      var hit = null, i;
+      for (i = 0; src && i < SRC_RULES.length; i++) {
+        if (SRC_RULES[i][0].test(src)) { hit = SRC_RULES[i]; break; }
+      }
+      if (!hit && p.get('openExternalBrowser') === '1') {
+        hit = [null, 'line', 'message']; src = 'line_share';
+      }
+      if (!hit) return null;
+      p.set('utm_source', hit[1]);
+      p.set('utm_medium', hit[2]);
+      p.set('utm_campaign', src);
+      return window.location.origin + window.location.pathname + '?' + p.toString() + window.location.hash;
+    } catch (e) { return null; }
+  }
+
   function loadTrackers() {
     /* --- GA4 --- */
     if (GA_ID && GA_ID.indexOf('XXXX') === -1 && !window.__gaLoaded) {
@@ -90,6 +127,8 @@
       gtag('js', new Date());
       var cfg = { anonymize_ip: true };
       if (isInternal()) cfg.traffic_type = 'internal';
+      var loc = campaignLocation();
+      if (loc) cfg.page_location = loc;
       gtag('config', GA_ID, cfg);
     }
     /* --- Meta Pixel ---
