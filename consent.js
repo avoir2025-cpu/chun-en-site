@@ -109,6 +109,24 @@
     } catch (e) { return null; }
   }
 
+  /* ========== Cloudflare Web Analytics（不使用 Cookie） ==========
+     不放 Cookie、不存個人資料，只回報匿名的瀏覽人次與來源，
+     已在 privacy.html 第一、三條揭露（2026-09-30 user 拍板）。
+     用途是拿到真實進站人數：GA4 只看得到按了「接受」的人（粗估四到五成）。
+     自己人（?internal=1 標記過的瀏覽器）不載入，數字才乾淨。
+     token 是公開值，本來就會出現在網頁原始碼裡。 */
+  var CF_BEACON_TOKEN = '16b7c61bf0b3445193617e297ba28dff';
+
+  function loadCloudflareAnalytics() {
+    if (!CF_BEACON_TOKEN || window.__cfLoaded || isInternal()) return;
+    window.__cfLoaded = true;
+    var c = document.createElement('script');
+    c.defer = true;
+    c.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    c.setAttribute('data-cf-beacon', JSON.stringify({ token: CF_BEACON_TOKEN }));
+    document.head.appendChild(c);
+  }
+
   function loadTrackers() {
     /* --- GA4 --- */
     if (GA_ID && GA_ID.indexOf('XXXX') === -1 && !window.__gaLoaded) {
@@ -230,6 +248,7 @@
   /* ========== 初始化 ========== */
   function init() {
     isInternal();               // 先認網址上的開關，就算選「僅必要」也要記住
+    loadCloudflareAnalytics();  // 無 Cookie 計數，已於隱私權政策揭露
     var saved = null;
     try { saved = localStorage.getItem(KEY); } catch (e) {}
     if (saved === 'all') {
