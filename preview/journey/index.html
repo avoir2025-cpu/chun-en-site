@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>CHUN.EN 蛻變旅程</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400&family=Noto+Sans+TC:wght@400&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="frames_m/f000.webp" fetchpriority="high">
+<style>
+[hidden]{display:none!important}
+:root{
+  --ink:#14100B; --ink-soft:#1B150E; --paper:#F5F1E8; --paper-dim:#CFC5B4;
+  --gold:#A88A5C; --gold-light:#C9A96E; --muted:#8B7D6B; --sheet:#F0EBE1;
+  --serif-tc:'Noto Serif TC',serif; --serif-en:'Cormorant Garamond',serif; --sans-tc:'Noto Sans TC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--ink)}
+body{background:var(--ink);color:var(--paper);font-family:var(--serif-tc);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.journey{position:relative;height:1290vh;height:1290svh}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.frame-box{position:absolute;overflow:hidden;background:#0d0b09}
+canvas{display:block;width:100%;height:100%}
+.load-line{position:absolute;left:0;bottom:0;height:2px;background:var(--gold-light);width:0;transition:width .3s ease}
+
+/* 標題文字 */
+.copy{position:absolute;opacity:0;transition:opacity .45s ease,transform .45s ease;transform:translateY(10px);pointer-events:none}
+.copy.on{opacity:1;transform:none}
+.eyebrow{font-family:var(--serif-en);font-size:.85rem;letter-spacing:.28em;color:var(--gold-light);text-transform:uppercase;margin-bottom:.9rem}
+.eyebrow b{font-family:var(--serif-tc);font-weight:400;letter-spacing:.2em;margin-left:.5em}
+.copy h2{font-weight:300;font-size:clamp(1.55rem,2.6vw,2.3rem);line-height:1.5;letter-spacing:.06em}
+.copy p{font-family:var(--sans-tc);font-size:1rem;line-height:1.9;letter-spacing:.04em;color:var(--paper-dim);margin-top:.8rem}
+.hint{font-family:var(--serif-en);font-size:.8rem;letter-spacing:.3em;color:var(--muted);margin-top:2.2rem;text-transform:uppercase}
+
+/* 段落指示 */
+.steps{list-style:none;display:flex;gap:0}
+.steps li{font-family:var(--serif-tc);color:var(--muted);transition:color .3s ease}
+.steps li.on{color:var(--gold-light)}
+
+/* ---------- 桌機：畫面置右、文字置左 ---------- */
+@media (min-width:900px){
+  .frame-box{right:max(4vw,calc(50vw - 640px));top:4svh;height:92svh;aspect-ratio:9/16}
+  .copy{left:max(6vw,calc(50vw - 600px));top:50%;width:min(36vw,440px);transform:translateY(calc(-50% + 10px))}
+  .copy.on{transform:translateY(-50%)}
+  .steps{position:absolute;left:max(6vw,calc(50vw - 600px));bottom:7svh;flex-direction:column;gap:.55rem}
+  .steps li{font-size:.85rem;letter-spacing:.18em}
+  .steps li::before{content:'';display:inline-block;width:18px;height:1px;background:currentColor;vertical-align:middle;margin-right:.8rem;transition:width .3s ease}
+  .steps li.on::before{width:36px}
+  .scrim{display:none}
+}
+
+/* ---------- 手機：9:16 置中鋪滿 ---------- */
+@media (max-width:899px){
+  .frame-box{left:50%;top:0;height:100%;width:max(100vw,calc(100svh * 9 / 16));transform:translateX(-50%)}
+  .scrim{position:absolute;left:0;right:0;height:38%;pointer-events:none;opacity:0;transition:opacity .45s ease}
+  .scrim.top{top:0;background:linear-gradient(to bottom,rgba(240,235,225,.97) 0%,rgba(240,235,225,.9) 45%,rgba(240,235,225,0) 100%)}
+  .scrim.bottom{bottom:0;background:linear-gradient(to top,rgba(14,11,8,.9) 0%,rgba(14,11,8,.72) 45%,rgba(14,11,8,0) 100%)}
+  .scrim.on{opacity:1}
+  .stage::after{content:'';position:absolute;left:0;right:0;top:0;height:76px;pointer-events:none;background:linear-gradient(to bottom,rgba(14,11,8,.5),rgba(14,11,8,0));transition:opacity .45s ease}
+  .stage.paper::after{opacity:0}
+  .steps{z-index:1}
+  .copy{left:16px;right:16px;text-align:center}
+  .copy[data-pos=top]{top:calc(52px + env(safe-area-inset-top))}
+  .copy[data-pos=bottom]{bottom:calc(30px + env(safe-area-inset-bottom))}
+  .copy[data-pos=top] h2{color:var(--ink)}
+  .copy[data-pos=top] p{color:#5a4e40}
+  .copy[data-pos=top] .eyebrow{color:var(--gold)}
+  .copy h2{font-size:1.45rem}
+  .copy p{font-size:.95rem;margin-top:.5rem}
+  .eyebrow{margin-bottom:.6rem;font-size:.78rem}
+  .steps{position:absolute;top:calc(16px + env(safe-area-inset-top));left:16px;right:16px;justify-content:space-between}
+  .steps li{font-size:.78rem;letter-spacing:.08em;color:rgba(207,197,180,.55);text-shadow:0 0 6px rgba(0,0,0,.35)}
+  .stage.paper .steps li{color:rgba(90,78,64,.55);text-shadow:none}
+  .steps li.on,.stage.paper .steps li.on{color:var(--gold)}
+  .stage:not(.paper) .steps li.on{color:var(--gold-light)}
+}
+
+/* 結尾 */
+.outro{min-height:70svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12svh 16px;background:var(--ink)}
+.outro h3{font-weight:300;font-size:clamp(1.4rem,2.4vw,2rem);letter-spacing:.08em;line-height:1.6}
+.outro p{font-family:var(--sans-tc);color:var(--paper-dim);margin-top:1rem;line-height:1.9;letter-spacing:.04em}
+.cta{display:inline-block;margin-top:2.4rem;padding:.95rem 2.4rem;border:1px solid var(--gold-light);color:var(--gold-light);text-decoration:none;font-family:var(--serif-tc);letter-spacing:.2em;font-size:.95rem;transition:background .3s ease,color .3s ease}
+.cta:hover{background:var(--gold-light);color:var(--ink)}
+
+/* 除錯（?debug=1） */
+.dbg{position:fixed;right:8px;bottom:8px;z-index:9;font:12px/1.5 ui-monospace,monospace;background:rgba(0,0,0,.75);color:#9f9;padding:6px 9px;border-radius:4px;pointer-events:none}
+</style>
+</head>
+<body>
+
+<section class="journey" id="journey" aria-label="從起點到被看見的六段旅程">
+  <div class="stage" id="stage">
+    <div class="frame-box"><canvas id="cv" width="720" height="1280" aria-hidden="true"></canvas><div class="load-line" id="loadLine"></div></div>
+    <div class="scrim top" id="scrimTop"></div>
+    <div class="scrim bottom" id="scrimBottom"></div>
+
+    <ol class="steps" id="steps">
+      <li>起點</li><li>定位</li><li>穿搭</li><li>妝髮</li><li>拍攝</li><li>曝光</li>
+    </ol>
+
+    <!-- ★對客文字全部是草稿，見校對稿 -->
+    <div class="copy" data-pos="bottom" data-from="0" data-to="0.75">
+      <div class="eyebrow">CHUN.EN</div>
+      <h2>一張形象照的背後<br>是一整段準備</h2>
+      <div class="hint">Scroll</div>
+    </div>
+    <div class="copy" data-pos="bottom" data-from="0.85" data-to="1.6">
+      <div class="eyebrow">01<b>起點</b></div>
+      <h2>你本來就有自己的樣子</h2>
+      <p>只是還沒有人陪你把它整理出來</p>
+    </div>
+    <div class="copy" data-pos="top" data-from="1.75" data-to="2.6">
+      <div class="eyebrow">02<b>定位</b></div>
+      <h2>先聽你說</h2>
+      <p>你在做什麼，想讓別人怎麼認識你</p>
+    </div>
+    <div class="copy" data-pos="top" data-from="2.85" data-to="4.2">
+      <div class="eyebrow">02<b>定位</b></div>
+      <h2>再量你的身形</h2>
+      <p>每一個建議，都對得回一個數字</p>
+    </div>
+    <div class="copy" data-pos="top" data-from="4.3" data-to="6.15">
+      <div class="eyebrow">02<b>定位</b></div>
+      <h2>選項很多<br>適合你的只有幾個</h2>
+      <p>臉型、身形、骨架、領型、剪裁，一項一項判讀</p>
+    </div>
+    <div class="copy" data-pos="top" data-from="6.25" data-to="6.95">
+      <div class="eyebrow">02<b>定位</b></div>
+      <h2>連顏色，都有依據</h2>
+    </div>
+    <div class="copy" data-pos="bottom" data-from="7.3" data-to="7.95">
+      <div class="eyebrow">03<b>穿搭</b></div>
+      <h2>衣服照著判讀挑</h2>
+      <p>每一件穿上身，都知道為什麼適合</p>
+    </div>
+    <div class="copy" data-pos="bottom" data-from="8.25" data-to="8.95">
+      <div class="eyebrow">04<b>妝髮</b></div>
+      <h2>妝髮順著你的輪廓走</h2>
+      <p>整理到剛好，看起來還是你</p>
+    </div>
+    <div class="copy" data-pos="bottom" data-from="9.5" data-to="10.35">
+      <div class="eyebrow">05<b>拍攝</b></div>
+      <h2>最後，才是按下快門</h2>
+    </div>
+    <div class="copy" data-pos="bottom" data-from="10.75" data-to="99">
+      <div class="eyebrow">06<b>曝光</b></div>
+      <h2>讓專業<br>在開口以前先被看見</h2>
+    </div>
+  </div>
+</section>
+
+<section class="outro">
+  <h3>定位、穿搭、妝髮、拍攝</h3>
+  <p>可單獨委託，也能整合為完整企劃</p>
+  <a class="cta" href="#">了解形象企劃</a>
+</section>
+
+<script>
+(() => {
+  const N = 272;
+  // 捲動位置（單位＝一個畫面高）對到影格；同一影格重複＝停留
+  const KF = [[0,0],[0.75,0],[1.6,23],[2.05,39],[2.55,40],[2.9,49],[4.2,85],[6.2,135],[6.95,151],[7.9,181],[8.9,211],[9.95,239],[10.4,239],[11.55,271],[11.9,271]];
+  const TOTAL = 11.9;
+  // 段落指示：哪個捲動位置起算哪一段
+  const STEP_AT = [0, 1.7, 7.05, 8.0, 9.0, 10.45];
+  // 畫面是報告紙（手機字放上方、淺色遮罩）的捲動區間
+  const PAPER = [[1.9, 7.0]];
+
+  const qs = new URLSearchParams(location.search);
+  const isMobile = matchMedia('(max-width: 899px)').matches;
+  const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  const box = cv.parentElement;
+  const cssW = box.getBoundingClientRect().width;
+  const hi = false; // 預覽版只附 720 影格
+  const DIR = hi ? 'frames_h' : 'frames_m';
+  cv.width = hi ? 1080 : 720; cv.height = hi ? 1920 : 1280;
+
+  const imgs = new Array(N), ok = new Uint8Array(N);
+  let loaded = 0;
+  const pad = i => 'f' + String(i).padStart(3, '0') + '.webp';
+
+  // 預載順序：開頭 12 格 → 每 8 格 → 每 4 格 → 每 2 格 → 其餘（快速捲動時至少有相近的格可畫）
+  const order = [], seen = new Uint8Array(N);
+  const push = i => { if (i < N && !seen[i]) { seen[i] = 1; order.push(i); } };
+  for (let i = 0; i < 12; i++) push(i);
+  for (const s of [8, 4, 2, 1]) for (let i = 0; i < N; i += s) push(i);
+
+  let target = 0, shown = -1, cur = 0;
+  function nearest(t) {
+    for (let d = 0; d < N; d++) {
+      if (t - d >= 0 && ok[t - d]) return t - d;
+      if (t + d < N && ok[t + d]) return t + d;
+    }
+    return -1;
+  }
+  function draw(i) {
+    const k = nearest(i);
+    if (k < 0 || k === shown) return;
+    ctx.drawImage(imgs[k], 0, 0, cv.width, cv.height);
+    shown = k;
+  }
+
+  let next = 0, active = 0;
+  const CONC = 6;
+  function pump() {
+    while (active < CONC && next < order.length) {
+      const i = order[next++]; active++;
+      const im = new Image(); im.decoding = 'async'; im.src = DIR + '/' + pad(i);
+      const done = () => {
+        active--; loaded++;
+        document.getElementById('loadLine').style.width = (loaded / N * 100) + '%';
+        if (loaded === N) document.getElementById('loadLine').hidden = true;
+        pump();
+      };
+      im.onload = () => { (im.decode ? im.decode() : Promise.resolve()).catch(() => {}).then(() => {
+        imgs[i] = im; ok[i] = 1;
+        if (Math.abs(i - Math.round(cur)) <= Math.abs(shown - Math.round(cur))) { shown = -1; draw(Math.round(cur)); }
+        done();
+      }); };
+      im.onerror = done;
+    }
+  }
+  pump();
+
+  const journey = document.getElementById('journey'), stage = document.getElementById('stage');
+  const copies = [...document.querySelectorAll('.copy')];
+  const steps = [...document.querySelectorAll('#steps li')];
+  const scrimTop = document.getElementById('scrimTop'), scrimBottom = document.getElementById('scrimBottom');
+
+  function unitAt() {
+    const r = journey.getBoundingClientRect();
+    const span = journey.offsetHeight - stage.offsetHeight;
+    return Math.min(Math.max(-r.top / span, 0), 1) * TOTAL;
+  }
+  function frameAt(u) {
+    for (let k = 1; k < KF.length; k++) {
+      const [u0, f0] = KF[k - 1], [u1, f1] = KF[k];
+      if (u <= u1) return f0 + (f1 - f0) * (u1 === u0 ? 1 : (u - u0) / (u1 - u0));
+    }
+    return N - 1;
+  }
+
+  let unit = 0, raf = 0;
+  function onScroll() {
+    unit = unitAt();
+    target = frameAt(unit);
+    let pos = null;
+    copies.forEach(c => {
+      const on = unit >= +c.dataset.from && unit <= +c.dataset.to;
+      c.classList.toggle('on', on);
+      if (on) pos = c.dataset.pos;
+    });
+    scrimTop.classList.toggle('on', pos === 'top');
+    scrimBottom.classList.toggle('on', pos === 'bottom');
+    let s = 0; STEP_AT.forEach((a, k) => { if (unit >= a) s = k; });
+    steps.forEach((li, k) => li.classList.toggle('on', k === s && unit >= 0.8));
+    stage.classList.toggle('paper', PAPER.some(([a, b]) => unit >= a && unit <= b));
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  function tick() {
+    raf = 0;
+    cur += (target - cur) * 0.22;
+    if (Math.abs(target - cur) < 0.4) cur = target;
+    draw(Math.round(cur));
+    if (dbg) dbg.textContent = `frame ${Math.round(cur)}/${N - 1}  scroll ${unit.toFixed(2)}  ${DIR}  loaded ${loaded}`;
+    if (cur !== target) raf = requestAnimationFrame(tick);
+  }
+
+  let dbg = null;
+  if (qs.get('debug')) { dbg = document.createElement('div'); dbg.className = 'dbg'; document.body.appendChild(dbg); }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  // 給校對用：?u=4.5 直接跳到某個捲動位置
+  if (qs.get('u')) {
+    const span = journey.offsetHeight - stage.offsetHeight;
+    scrollTo(0, journey.offsetTop + (+qs.get('u') / TOTAL) * span);
+  }
+  onScroll();
+})();
+</script>
+</body>
+</html>
