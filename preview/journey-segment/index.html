@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>CHUN.EN 妝髮與拍攝</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400&family=Noto+Sans+TC:wght@400&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="frames_m/f000.webp" fetchpriority="high">
+<style>
+[hidden]{display:none!important}
+:root{
+  --ink:#14100B; --ink-soft:#1B150E; --paper:#F5F1E8; --paper-dim:#CFC5B4;
+  --gold:#A88A5C; --gold-light:#C9A96E; --muted:#8B7D6B; --sheet:#F0EBE1;
+  --serif-tc:'Noto Serif TC',serif; --serif-en:'Cormorant Garamond',serif; --sans-tc:'Noto Sans TC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--ink)}
+body{background:var(--ink);color:var(--paper);font-family:var(--serif-tc);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.journey{position:relative;height:1290vh;height:1290svh}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.frame-box{position:absolute;overflow:hidden;background:#0d0b09}
+canvas{display:block;width:100%;height:100%}
+.load-line{position:absolute;left:0;bottom:0;height:2px;background:var(--gold-light);width:0;transition:width .3s ease}
+
+/* 標題文字 */
+.copy{position:absolute;opacity:0;transition:opacity .45s ease,transform .45s ease;transform:translateY(10px);pointer-events:none}
+.copy.on{opacity:1;transform:none}
+.eyebrow{font-family:var(--serif-en);font-size:.85rem;letter-spacing:.28em;color:var(--gold-light);text-transform:uppercase;margin-bottom:.9rem}
+.eyebrow b{font-family:var(--serif-tc);font-weight:400;letter-spacing:.2em;margin-left:.5em}
+.copy h2{font-weight:300;font-size:clamp(1.55rem,2.6vw,2.3rem);line-height:1.5;letter-spacing:.06em}
+.copy p{font-family:var(--sans-tc);font-size:1rem;line-height:1.9;letter-spacing:.04em;color:var(--paper-dim);margin-top:.8rem}
+.hint{font-family:var(--sans-tc);font-size:.95rem;letter-spacing:.2em;color:var(--paper-dim);margin-top:2rem}
+.hint .chev{display:inline-block;width:8px;height:8px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;margin-left:.7em;vertical-align:.25em;animation:chev 1.6s ease-in-out infinite;transform:rotate(45deg)}
+@keyframes chev{0%,100%{transform:translateY(0) rotate(45deg)}50%{transform:translateY(5px) rotate(45deg)}}
+@media (prefers-reduced-motion:reduce){.hint .chev{animation:none}}
+
+/* 段落指示 */
+.steps{list-style:none;display:flex;gap:0}
+.steps li{font-family:var(--serif-tc);color:var(--muted);transition:color .3s ease}
+.steps li.on{color:var(--gold-light)}
+
+/* ---------- 桌機：畫面置右、文字置左 ---------- */
+@media (min-width:900px){
+  .frame-box{right:max(4vw,calc(50vw - 640px));top:4svh;height:92svh;aspect-ratio:9/16}
+  .copy{left:max(6vw,calc(50vw - 600px));top:50%;width:min(36vw,440px);transform:translateY(calc(-50% + 10px))}
+  .copy.on{transform:translateY(-50%)}
+  .steps{position:absolute;left:max(6vw,calc(50vw - 600px));bottom:7svh;flex-direction:column;gap:.55rem}
+  .steps li{font-size:.85rem;letter-spacing:.18em}
+  .steps li::before{content:'';display:inline-block;width:18px;height:1px;background:currentColor;vertical-align:middle;margin-right:.8rem;transition:width .3s ease}
+  .steps li.on::before{width:36px}
+  .scrim{display:none}
+}
+
+/* ---------- 手機：9:16 置中鋪滿 ---------- */
+@media (max-width:899px){
+  .frame-box{left:50%;top:0;height:100%;width:max(100vw,calc(100svh * 9 / 16));transform:translateX(-50%)}
+  .scrim{position:absolute;left:0;right:0;height:50%;pointer-events:none;opacity:0;transition:opacity .45s ease}
+  .scrim.top{top:0;background:linear-gradient(to bottom,rgba(240,235,225,.98) 0%,rgba(240,235,225,.95) 55%,rgba(240,235,225,0) 100%)}
+  .scrim.bottom{bottom:0;background:linear-gradient(to top,rgba(14,11,8,.96) 0%,rgba(14,11,8,.86) 50%,rgba(14,11,8,0) 100%)}
+  .scrim.on{opacity:1}
+  .stage::after{content:'';position:absolute;left:0;right:0;top:0;height:76px;pointer-events:none;background:linear-gradient(to bottom,rgba(14,11,8,.5),rgba(14,11,8,0));transition:opacity .45s ease}
+  .stage.paper::after{opacity:0}
+  .steps{z-index:1}
+  .copy{left:16px;right:16px;text-align:center}
+  .copy[data-pos=top]{top:calc(52px + env(safe-area-inset-top))}
+  .copy[data-pos=bottom]{bottom:calc(30px + env(safe-area-inset-bottom))}
+  .copy[data-pos=top] h2{color:var(--ink)}
+  .copy[data-pos=top] p{color:#5a4e40}
+  .copy[data-pos=top] .eyebrow{color:var(--gold)}
+  .copy h2{font-size:1.7rem;line-height:1.45}
+  .copy p{font-size:1.05rem;line-height:1.75;margin-top:.6rem;color:var(--paper)}
+  .copy[data-pos=top] p{color:#3d342a}
+  .eyebrow{margin-bottom:.6rem;font-size:.9rem}
+  .eyebrow b{font-size:1rem}
+  .steps{position:absolute;top:calc(16px + env(safe-area-inset-top));left:16px;right:16px;justify-content:space-between}
+  .steps li{font-size:.9rem;letter-spacing:.08em;color:rgba(207,197,180,.55);text-shadow:0 0 6px rgba(0,0,0,.35)}
+  .stage.paper .steps li{color:rgba(90,78,64,.55);text-shadow:none}
+  .steps li.on,.stage.paper .steps li.on{color:var(--gold)}
+  .stage:not(.paper) .steps li.on{color:var(--gold-light)}
+}
+
+/* 結尾 */
+.outro{min-height:70svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12svh 16px;background:var(--ink)}
+.outro h3{font-weight:300;font-size:clamp(1.4rem,2.4vw,2rem);letter-spacing:.08em;line-height:1.6}
+.outro p{font-family:var(--sans-tc);color:var(--paper-dim);margin-top:1rem;line-height:1.9;letter-spacing:.04em}
+.cta{display:inline-block;margin-top:2.4rem;padding:.95rem 2.4rem;border:1px solid var(--gold-light);color:var(--gold-light);text-decoration:none;font-family:var(--serif-tc);letter-spacing:.2em;font-size:.95rem;transition:background .3s ease,color .3s ease}
+.cta:hover{background:var(--gold-light);color:var(--ink)}
+
+/* 除錯（?debug=1） */
+.dbg{position:fixed;right:8px;bottom:8px;z-index:9;font:12px/1.5 ui-monospace,monospace;background:rgba(0,0,0,.75);color:#9f9;padding:6px 9px;border-radius:4px;pointer-events:none}
+</style>
+</head>
+<body>
+
+<section class="journey" id="journey" aria-label="從起點到被看見的六段旅程">
+  <div class="stage" id="stage">
+    <div class="frame-box"><canvas id="cv" width="720" height="1280" aria-hidden="true"></canvas><div class="load-line" id="loadLine"></div></div>
+    <div class="scrim top" id="scrimTop"></div>
+    <div class="scrim bottom" id="scrimBottom"></div>
+
+    <ol class="steps" id="steps">
+      <li>妝髮</li><li>拍攝</li><li>成果</li>
+    </ol>
+
+    <!-- ★對客文字全部是草稿 -->
+    <div class="copy" data-pos="bottom" data-from="0" data-to="0.55">
+      <div class="eyebrow">CHUN.EN</div>
+      <h2>從整理造型<br>到拍下那張照片</h2>
+      <div class="hint">往下滑<span class="chev" aria-hidden="true"></span></div>
+    </div>
+    <div class="copy" data-pos="bottom" data-from="0.65" data-to="4.1">
+      <div class="eyebrow">04<b>妝髮</b></div>
+      <h2>妝髮順著你的輪廓走</h2>
+      <p>整理到剛好，看起來還是你</p>
+    </div>
+    <div class="copy" data-pos="bottom" data-from="4.3" data-to="7.1">
+      <div class="eyebrow">05<b>拍攝</b></div>
+      <h2>最後，才是按下快門</h2>
+      <p>在棚內完成拍攝，拍完當場一起挑出主肖像</p>
+    </div>
+    <div class="copy" data-pos="bottom" data-from="7.25" data-to="99">
+      <div class="eyebrow">成果</div>
+      <h2>讓專業<br>在開口以前先被看見</h2>
+    </div>
+  </div>
+</section>
+
+<section class="outro">
+  <h3>定位、穿搭、妝髮、拍攝</h3>
+  <p>可單獨委託，也能整合為完整企劃</p>
+  <a class="cta" href="#">了解形象企劃</a>
+</section>
+
+<script>
+(() => {
+  const N = 180;
+  const KF = [[0,0],[0.6,0],[2.4,24],[3.2,42],[4.2,72],[4.9,96],[5.2,99],[6.2,126],[7.2,156],[8.2,179],[8.8,179]];
+  const TOTAL = 8.8;
+  const STEP_AT = [0, 4.2, 7.2];
+  const PAPER = [];
+
+  const qs = new URLSearchParams(location.search);
+  const isMobile = matchMedia('(max-width: 899px)').matches;
+  // 手機：捲動長度縮成 0.6 倍、畫面直接跟手、只把目前位置附近的影格留在記憶體
+  const S = isMobile ? 0.6 : 1;
+  const WIN_BACK = isMobile ? 10 : N, WIN_FWD = isMobile ? 28 : N, CONC = isMobile ? 4 : 6;
+  const FOLLOW = isMobile ? 1 : 0.35;
+
+  const journey = document.getElementById('journey'), stage = document.getElementById('stage');
+  journey.style.height = ((TOTAL * S + 1) * 100) + 'svh';
+
+  const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  cv.width = 720; cv.height = 1280;
+  const DIR = 'frames_m';
+  const pad = i => 'f' + String(i).padStart(3, '0') + '.webp';
+  const imgs = new Array(N).fill(null), state = new Uint8Array(N);   // 0 無、1 載入中、2 可畫
+  let shown = -1, cur = 0, target = 0, center = 0, active = 0, firstBatch = 0;
+  const loadLine = document.getElementById('loadLine');
+
+  function nearest(t) {
+    for (let d = 0; d < N; d++) {
+      if (t - d >= 0 && state[t - d] === 2) return t - d;
+      if (t + d < N && state[t + d] === 2) return t + d;
+    }
+    return -1;
+  }
+  function draw(i) {
+    const k = nearest(i);
+    if (k < 0 || k === shown) return;
+    ctx.drawImage(imgs[k], 0, 0, cv.width, cv.height);
+    shown = k;
+  }
+  function inWin(i) { return i >= center - WIN_BACK - 4 && i <= center + WIN_FWD + 4; }
+  function release() {
+    if (!isMobile) return;
+    for (let i = 0; i < N; i++) {
+      if (state[i] === 2 && !inWin(i) && i !== shown) { imgs[i].src = ''; imgs[i] = null; state[i] = 0; }
+    }
+  }
+  function pump() {
+    release();
+    const lo = Math.max(0, center - WIN_BACK), hi = Math.min(N - 1, center + WIN_FWD);
+    for (let d = 0; d <= Math.max(WIN_BACK, WIN_FWD) && active < CONC; d++) {   // 往前優先、由近到遠
+      for (const i of [center + d, center - d]) {
+        if (i < lo || i > hi || state[i] || active >= CONC) continue;
+        state[i] = 1; active++;
+        const im = new Image(); im.decoding = 'async'; im.src = DIR + '/' + pad(i);
+        const done = ok => {
+          active--;
+          if (ok && inWin(i)) {
+            imgs[i] = im; state[i] = 2;
+            if (i <= WIN_FWD) firstBatch++;
+            const c = Math.round(cur);
+            if (shown < 0 || Math.abs(i - c) < Math.abs(shown - c)) { shown = -1; draw(c); }
+          } else { state[i] = 0; im.src = ''; }
+          if (loadLine && !loadLine.hidden) {
+            const pct = Math.min(1, firstBatch / (Math.min(WIN_FWD, N - 1) + 1));
+            loadLine.style.width = pct * 100 + '%';
+            if (pct >= 1) loadLine.hidden = true;
+          }
+          pump();
+        };
+        im.onload = () => (im.decode ? im.decode() : Promise.resolve()).then(() => done(true), () => done(true));
+        im.onerror = () => done(false);
+      }
+    }
+  }
+
+  const copies = [...document.querySelectorAll('.copy')];
+  const steps = [...document.querySelectorAll('#steps li')];
+  const scrimTop = document.getElementById('scrimTop'), scrimBottom = document.getElementById('scrimBottom');
+  function unitAt() {
+    const r = journey.getBoundingClientRect(), span = journey.offsetHeight - stage.offsetHeight;
+    return Math.min(Math.max(-r.top / span, 0), 1) * TOTAL;   // 以原始單位計，跟 KF 與文字區間對齊
+  }
+  function frameAt(u) {
+    for (let k = 1; k < KF.length; k++) {
+      const [u0, f0] = KF[k - 1], [u1, f1] = KF[k];
+      if (u <= u1) return f0 + (f1 - f0) * (u1 === u0 ? 1 : (u - u0) / (u1 - u0));
+    }
+    return N - 1;
+  }
+
+  let unit = 0, raf = 0, dbg = null;
+  function onScroll() {
+    unit = unitAt();
+    target = frameAt(unit);
+    const nc = Math.round(target);
+    if (Math.abs(nc - center) >= 3) { center = nc; pump(); }
+    let pos = null;
+    copies.forEach(c => {
+      const on = unit >= +c.dataset.from && unit <= +c.dataset.to;
+      c.classList.toggle('on', on);
+      if (on) pos = c.dataset.pos;
+    });
+    scrimTop.classList.toggle('on', pos === 'top');
+    scrimBottom.classList.toggle('on', pos === 'bottom');
+    let st = 0; STEP_AT.forEach((a, k) => { if (unit >= a) st = k; });
+    steps.forEach((li, k) => li.classList.toggle('on', k === st && unit >= 0.6));
+    stage.classList.toggle('paper', PAPER.some(([a, b]) => unit >= a && unit <= b));
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  function tick() {
+    raf = 0;
+    cur += (target - cur) * FOLLOW;
+    if (Math.abs(target - cur) < 0.4) cur = target;
+    draw(Math.round(cur));
+    if (dbg) dbg.textContent = 'frame ' + Math.round(cur) + '/' + (N - 1) + '  unit ' + unit.toFixed(2) + '  decoded ' + state.reduce((a, v) => a + (v === 2 ? 1 : 0), 0);
+    if (cur !== target) raf = requestAnimationFrame(tick);
+  }
+  if (qs.get('debug')) { dbg = document.createElement('div'); dbg.className = 'dbg'; document.body.appendChild(dbg); }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  if (qs.get('u')) { const span = journey.offsetHeight - stage.offsetHeight; scrollTo(0, journey.offsetTop + (+qs.get('u') / TOTAL) * span); }
+  pump();
+  onScroll();
+})();
+
+</script>
+</body>
+</html>
