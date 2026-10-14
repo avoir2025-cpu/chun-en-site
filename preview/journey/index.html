@@ -78,23 +78,6 @@ canvas{display:block;width:100%;height:100%}
   .stage:not(.paper) .steps li.on{color:var(--gold-light)}
 }
 
-.mflow{display:none}
-@media (max-width:899px){
-  .journey{display:none}
-  .mflow{display:block;padding-inline:16px;padding-block:28px 8px;max-width:560px;margin:0 auto}
-  .m-hero{padding-block:24px 8px}
-  .m-hero .eyebrow{margin-bottom:.8rem}
-  .m-hero h1{font-weight:300;font-size:1.75rem;line-height:1.5;letter-spacing:.05em}
-  .m-hero p{font-family:var(--sans-tc);color:var(--paper-dim);font-size:1.02rem;line-height:1.85;margin-top:.9rem}
-  .mstep{display:grid;gap:14px;padding-block:44px 8px;border-top:1px solid rgba(201,169,110,.22);margin-top:40px}
-  .mstep:first-of-type{margin-top:28px}
-  .mhead{display:flex;align-items:baseline;gap:14px}
-  .mnum{font-family:var(--serif-en);font-size:2.2rem;line-height:1;color:var(--gold-light)}
-  .mhead h2{font-weight:400;font-size:1.55rem;letter-spacing:.12em}
-  .mlead{font-size:1.15rem;line-height:1.7;letter-spacing:.04em;color:var(--paper)}
-  .mstep video{display:block;width:100%;max-width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 40%;background:#0d0b09}
-  .mstep p.mbody{font-family:var(--sans-tc);font-size:1.02rem;line-height:1.9;color:var(--paper-dim)}
-}
 /* 結尾 */
 .outro{min-height:70svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12svh 16px;background:var(--ink)}
 .outro h3{font-weight:300;font-size:clamp(1.4rem,2.4vw,2rem);letter-spacing:.08em;line-height:1.6}
@@ -169,51 +152,6 @@ canvas{display:block;width:100%;height:100%}
   </div>
 </section>
 
-
-<main class="mflow" aria-label="六個步驟">
-  <header class="m-hero">
-    <div class="eyebrow">CHUN.EN</div>
-    <h1>一張形象照的背後<br>是一整段準備</h1>
-    <p>往下看，一個人從起點到被看見的六個步驟。</p>
-  </header>
-  <section class="mstep">
-    <div class="mhead"><span class="mnum">01</span><h2>起點</h2></div>
-    <p class="mlead">你本來的樣子</p>
-    <video src="clips_m/s1.mp4" poster="clips_m/s1.jpg" muted playsinline loop preload="none" aria-label="起點畫面"></video>
-    <p class="mbody">還沒整理過的日常狀態，也是我們開始了解你的地方。</p>
-  </section>
-  <section class="mstep">
-    <div class="mhead"><span class="mnum">02</span><h2>定位</h2></div>
-    <p class="mlead">訪談、量身、判讀報告</p>
-    <video src="clips_m/s2.mp4" poster="clips_m/s2.jpg" muted playsinline loop preload="none" aria-label="定位畫面"></video>
-    <p class="mbody">先聽你說工作與常出現的場合，再量身。最後寫成一份判讀：適合你的臉型、身形、領型、剪裁與顏色。</p>
-  </section>
-  <section class="mstep">
-    <div class="mhead"><span class="mnum">03</span><h2>穿搭</h2></div>
-    <p class="mlead">照著判讀挑衣服</p>
-    <video src="clips_m/s3.mp4" poster="clips_m/s3.jpg" muted playsinline loop preload="none" aria-label="穿搭畫面"></video>
-    <p class="mbody">依報告提出風格建議，你挑選之後試穿調整，每一件都知道為什麼適合。</p>
-  </section>
-  <section class="mstep">
-    <div class="mhead"><span class="mnum">04</span><h2>妝髮</h2></div>
-    <p class="mlead">順著你的輪廓整理</p>
-    <video src="clips_m/s4.mp4" poster="clips_m/s4.jpg" muted playsinline loop preload="none" aria-label="妝髮畫面"></video>
-    <p class="mbody">妝髮配合你的輪廓與要出席的場合，整理到剛好，看起來還是你。</p>
-  </section>
-  <section class="mstep">
-    <div class="mhead"><span class="mnum">05</span><h2>拍攝</h2></div>
-    <p class="mlead">拍出可以用的形象照</p>
-    <video src="clips_m/s5.mp4" poster="clips_m/s5.jpg" muted playsinline loop preload="none" aria-label="拍攝畫面"></video>
-    <p class="mbody">在棚內完成拍攝，拍完當場一起看照片，挑出你的主肖像。</p>
-  </section>
-  <section class="mstep">
-    <div class="mhead"><span class="mnum">06</span><h2>曝光</h2></div>
-    <p class="mlead">用在每個被看見的地方</p>
-    <video src="clips_m/s6.mp4" poster="clips_m/s6.jpg" muted playsinline loop preload="none" aria-label="曝光畫面"></video>
-    <p class="mbody">LinkedIn、電子名片、官網與宣傳物，都用同一套形象。讓專業，在開口以前先被看見。</p>
-  </section>
-</main>
-
 <section class="outro">
   <h3>定位、穿搭、妝髮、拍攝</h3>
   <p>可單獨委託，也能整合為完整企劃</p>
@@ -233,11 +171,10 @@ canvas{display:block;width:100%;height:100%}
 
   const qs = new URLSearchParams(location.search);
   const isMobile = matchMedia('(max-width: 899px)').matches;
-  if (isMobile) return;   // 手機版改用下方直式段落＋短片
   const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
   const box = cv.parentElement;
   const cssW = box.getBoundingClientRect().width;
-  const hi = false;
+  const hi = false; // 預覽版只附 720 影格
   const DIR = hi ? 'frames_h' : 'frames_m';
   cv.width = hi ? 1080 : 720; cv.height = hi ? 1920 : 1280;
 
@@ -325,7 +262,7 @@ canvas{display:block;width:100%;height:100%}
   }
   function tick() {
     raf = 0;
-    cur += (target - cur) * 0.35;
+    cur += (target - cur) * 0.22;
     if (Math.abs(target - cur) < 0.4) cur = target;
     draw(Math.round(cur));
     if (dbg) dbg.textContent = `frame ${Math.round(cur)}/${N - 1}  scroll ${unit.toFixed(2)}  ${DIR}  loaded ${loaded}`;
@@ -342,18 +279,6 @@ canvas{display:block;width:100%;height:100%}
     scrollTo(0, journey.offsetTop + (+qs.get('u') / TOTAL) * span);
   }
   onScroll();
-})();
-</script>
-<script>
-(() => {
-  if (!matchMedia('(max-width: 899px)').matches) return;
-  const vids = [...document.querySelectorAll('.mstep video')];
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const io = new IntersectionObserver(es => es.forEach(e => {
-    const v = e.target;
-    if (e.isIntersecting) { v.preload = 'auto'; v.play().catch(() => {}); } else { v.pause(); }
-  }), { threshold: 0, rootMargin: '-25% 0px -25% 0px' });
-  vids.forEach(v => io.observe(v));
 })();
 </script>
 </body>
