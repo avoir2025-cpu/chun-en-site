@@ -1764,3 +1764,7 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   }
   .hero-split .hs-copy { padding-top: clamp(1.5rem, 4vh, 2.5rem); }
 }
+
+/* ---- 品牌名維持半形原貌（2026-10-26）：首屏小標不轉大寫、手機選單不吃 0.3em 字距 ---- */
+.hero-eyebrow .eb-brand { text-transform: none; letter-spacing: 0.06em; }
+.mnav-acc .sub a .mb { letter-spacing: 0.06em; }
