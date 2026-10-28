@@ -1768,3 +1768,12 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 /* ---- 品牌名維持半形原貌（2026-10-26）：首屏小標不轉大寫、手機選單不吃 0.3em 字距 ---- */
 .hero-eyebrow .eb-brand { text-transform: none; letter-spacing: 0.06em; }
 .mnav-acc .sub a .mb { letter-spacing: 0.06em; }
+
+/* 文末參考資料：標題旁＋號收合 */
+.article-body details.refs > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin: 3.6rem 0 0; padding-top: 2.2rem; border-top: 1px solid var(--hairline); }
+.article-body details.refs > summary::-webkit-details-marker { display: none; }
+.article-body details.refs > summary h2 { margin: 0; padding-top: 0; border-top: 0; }
+.article-body details.refs > summary .mark { font-family: var(--serif-en); color: var(--gold); font-size: 1.5rem; line-height: 1.5; transition: transform 0.4s var(--ease-out); flex-shrink: 0; }
+.article-body details.refs > summary:hover .mark { color: var(--gold-light); }
+.article-body details.refs[open] > summary .mark { transform: rotate(45deg); }
+.article-body details.refs > ol { margin-top: 1.4rem; }
