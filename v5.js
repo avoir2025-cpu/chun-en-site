@@ -197,4 +197,24 @@
       a.setAttribute('data-cta-variant', 'cold');
     }
   })();
+
+  /* ===== 搜尋／AI 進站改用專屬 LINE 追蹤連結：LINE 後台「加入管道」就分得出 GEO 與 SEO 帶來多少加好友（不靠 GA4 同意閘） ===== */
+  (function () {
+    var LINKS = { ai: 'https://lin.ee/oOnyIec6', search: 'https://lin.ee/QR9L9f4' };  // 在 LINE OA「加好友工具」建好兩條追蹤連結後填入；空字串＝維持原連結
+    var KEY = 'ce_line_src';
+    var src = null;
+    try { src = sessionStorage.getItem(KEY); } catch (e) {}
+    if (src === null) {
+      var ref = document.referrer || '', q = location.search;
+      if (/chatgpt\.com|openai\.com|perplexity\.ai|gemini\.google|copilot\.microsoft|claude\.ai/i.test(ref) ||
+          /[?&]utm_source=(chatgpt|perplexity|gemini|copilot)/i.test(q)) src = 'ai';
+      else if (/(^|\.)(google|bing|yahoo|duckduckgo|ecosia|brave)\./i.test(ref) && !/[?&](src|utm_[a-z]+|gclid|gbraid|wbraid|fbclid)=/i.test(q)) src = 'search';  // 廣告點擊與自帶來源的不算搜尋
+      else src = '';
+      try { sessionStorage.setItem(KEY, src); } catch (e) {}
+    }
+    var to = src && LINKS[src];
+    if (!to) return;
+    var as = document.querySelectorAll('a[href*="lin.ee/"]');
+    for (var i = 0; i < as.length; i++) as[i].setAttribute('href', to);
+  })();
 })();
