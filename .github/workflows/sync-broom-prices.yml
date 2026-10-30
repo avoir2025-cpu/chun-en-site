@@ -20,13 +20,36 @@ jobs:
         run: python3 .github/scripts/sync_prices.py
 
       - name: 有變動則提交
+        id: commit
         run: |
           if git diff --quiet a-voir.html b-room.html c-photos.html; then
             echo "價目無變動"
             exit 0
           fi
+          echo "files=$(git diff --name-only a-voir.html b-room.html c-photos.html | xargs)" >> "$GITHUB_OUTPUT"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add a-voir.html b-room.html c-photos.html
           git commit -m "自動同步三頁價目（Google Sheets 產品主檔）"
           git push
+
+      # 等 GitHub Pages 把新版送上線再通知 IndexNow，否則 Bing 會抓到舊版。
+      # 價目同步每天改 b-room，沒通知的話 Bing 曾停在舊版近兩週（10/18→10/30）。
+      - name: 上線後通知 IndexNow
+        if: steps.commit.outputs.files != ''
+        run: |
+          for i in $(seq 1 45); do
+            pending=""
+            for f in ${{ steps.commit.outputs.files }}; do
+              live=$(curl -s "https://chunen.tw/$f" | md5sum | cut -c1-32)
+              repo=$(git show "HEAD:$f" | md5sum | cut -c1-32)
+              [ "$live" = "$repo" ] || pending="$pending $f"
+            done
+            if [ -z "$pending" ]; then
+              python3 tools/ping_indexnow.py
+              exit 0
+            fi
+            echo "等待上線：$pending"
+            sleep 20
+          done
+          echo "::warning::15 分鐘內線上版仍未更新，略過 IndexNow：$pending"
