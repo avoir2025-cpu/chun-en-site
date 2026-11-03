@@ -117,6 +117,24 @@
     if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
   }
 
+  /* LINE 點擊匿名計數：不用 Cookie、不帶識別碼，只記頁面／進站來源／按鈕位置，不受 GA4 同意閘影響
+     （LINE 後台的管道數字單日未滿 20 不顯示，官網這種小量只能自己記；privacy.html 第一條已揭露） */
+  function countLine(a) {
+    if (!window.fetch) return;
+    try { if (localStorage.getItem('chunen-internal') === '1') return; } catch (e) {}
+    var src = '';
+    try { src = sessionStorage.getItem('ce_line_src') || ''; } catch (e) {}
+    var body = JSON.stringify({
+      page: location.pathname,
+      src: src || 'other',
+      slot: a.closest('.float-line') ? 'float' : 'page'
+    });
+    fetch('https://booking.321avoir.com/beacon/line_click.php', {
+      method: 'POST', mode: 'no-cors', credentials: 'omit', keepalive: true,
+      headers: { 'Content-Type': 'text/plain' }, body: body
+    }).catch(function () {});
+  }
+
   /* 點擊委派：LINE / Email / 申請入口 */
   document.addEventListener('click', function (e) {
     var a = e.target.closest ? e.target.closest('a') : null;
@@ -124,6 +142,7 @@
     var href = a.getAttribute('href') || '';
     if (href.indexOf('lin.ee') > -1) {
       track('click_line', { link_location: location.pathname });
+      countLine(a);
     } else if (href.indexOf('mailto:') === 0) {
       track('click_email', { link_location: location.pathname });
     } else if (href.indexOf('apply.html') > -1) {
