@@ -46,7 +46,9 @@ jobs:
               [ "$live" = "$repo" ] || pending="$pending $f"
             done
             if [ -z "$pending" ]; then
-              python3 tools/ping_indexnow.py
+              # 2026-11-12：tools/ 不在公開 repo，改用 .github/scripts/ 的副本；checkout 只有最新一次提交，直接指定網址
+              args=""; for f in ${{ steps.commit.outputs.files }}; do args="$args --url https://chunen.tw/$f"; done
+              python3 .github/scripts/ping_indexnow.py $args
               exit 0
             fi
             echo "等待上線：$pending"
