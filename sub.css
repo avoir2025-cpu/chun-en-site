@@ -1777,3 +1777,23 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 .article-body details.refs > summary:hover .mark { color: var(--gold-light); }
 .article-body details.refs[open] > summary .mark { transform: rotate(45deg); }
 .article-body details.refs > ol { margin-top: 1.4rem; }
+
+/* ============ 男士專頁 men.html（2026-11-13） ============ */
+.men-hero-q { margin-top: 1.4rem; font-family: var(--serif-tc); font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--gold-light); letter-spacing: 0.04em; }
+.hero-split .hero-line + .hero-line { margin-top: 0.9rem; }
+.svc-item .svc-see { margin-top: 1rem; font-size: 0.85rem; letter-spacing: 0.04em; color: var(--gold-light); }
+.men-h3 { font-size: clamp(1.02rem, 1.4vw, 1.15rem); font-weight: 400; letter-spacing: 0.1em; color: var(--gold-light); }
+.men-src { display: block; margin-top: 0.8rem; font-style: normal; font-size: 0.8rem; letter-spacing: 0.06em; line-height: 1.6; color: var(--muted); }
+.men-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 360px); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+.men-split-media { margin-top: 1.8rem; }
+.men-split-media img, .men-case img { display: block; width: 100%; height: auto; }
+.men-cases { --mc-gap: clamp(1.2rem, 2.4vw, 2.4rem); display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(2.4rem, 5vh, 3.4rem) var(--mc-gap); margin-top: clamp(2rem, 5vh, 3rem); }
+.men-case { flex: 0 1 calc((100% - 2 * var(--mc-gap)) / 3); min-width: 0; }
+.men-case h3 { margin-top: 1.3rem; font-size: 1.02rem; font-weight: 400; letter-spacing: 0.08em; line-height: 1.6; color: var(--gold-light); }
+.men-case blockquote { margin-top: 0.9rem; padding-left: 1rem; border-left: 2px solid var(--gold); font-size: 0.95rem; line-height: 1.95; color: var(--paper-dim); }
+@media (max-width: 1024px) { .men-case { flex-basis: calc((100% - var(--mc-gap)) / 2); } }
+@media (max-width: 860px) {
+  .men-split { grid-template-columns: 1fr; }
+  .men-split-media { max-width: 340px; }
+}
+@media (max-width: 640px) { .men-case { flex-basis: 100%; } }

@@ -42,7 +42,14 @@ TARGETS = [
     {"brand": "à voir", "file": "a-voir.html", "marker": "AVOIR_PRICES"},
     {"brand": "b.room", "file": "b-room.html", "marker": "BROOM_PRICES"},
     {"brand": "c.photos", "file": "c-photos.html", "marker": "CPHOTOS_PRICES"},
+    # 男士專頁不分品牌，照「行銷名稱」挑，依此順序顯示（2026-11-13）
+    {"names": ["角色定位諮詢", "衣櫥健檢", "形象選品服務", "日常妝髮造型", "商務妝髮造型",
+               "活動妝髮造型", "型男妝髮課程", "品牌／職業形象照拍攝"],
+     "file": "men.html", "marker": "MEN_PRICES"},
 ]
+
+# 照名稱挑的頁面少了任何一項，就不更新該頁，並把錯誤寫進這個檔，workflow 最後一步看到就判失敗
+ERROR_FILE = ROOT / ".sync_errors"
 
 COL_NAME = "行銷名稱"
 COL_PRICE = "對客價格顯示"
@@ -117,7 +124,22 @@ def write_block(path, marker, body):
 def main():
     items = fetch_rows()
     changed = False
+    errors = []
     for t in TARGETS:
+        if "names" in t:
+            by_name = {}
+            for i in items:
+                by_name.setdefault(i["name"], i)
+            missing = [n for n in t["names"] if n not in by_name]
+            print(f"（照名稱）→ {t['file']}：要 {len(t['names'])} 項，找到 {len(t['names']) - len(missing)} 項")
+            if missing:
+                msg = f"{t['file']} 缺少品項：{'、'.join(missing)}（主檔可能改名或下架），本頁不更新"
+                print(f"  ❌ {msg}")
+                errors.append(msg)
+                continue
+            if write_block(ROOT / t["file"], t["marker"], render([by_name[n] for n in t["names"]])):
+                changed = True
+            continue
         picked = [i for i in items if i["brand"] == norm(t["brand"])]
         print(f"{t['brand']} → {t['file']}：{len(picked)} 項")
         for i in picked:
@@ -128,6 +150,8 @@ def main():
         if write_block(ROOT / t["file"], t["marker"], render(picked)):
             changed = True
     print("有變動" if changed else "全部無變動")
+    if errors:
+        ERROR_FILE.write_text(chr(10).join(errors) + chr(10), encoding="utf-8")
 
 
 if __name__ == "__main__":
