@@ -22,14 +22,14 @@ jobs:
       - name: 有變動則提交
         id: commit
         run: |
-          if git diff --quiet a-voir.html b-room.html c-photos.html men.html; then
+          if git diff --quiet a-voir.html b-room.html c-photos.html men.html makeup-course.html; then
             echo "價目無變動"
             exit 0
           fi
-          echo "files=$(git diff --name-only a-voir.html b-room.html c-photos.html men.html | xargs)" >> "$GITHUB_OUTPUT"
+          echo "files=$(git diff --name-only a-voir.html b-room.html c-photos.html men.html makeup-course.html | xargs)" >> "$GITHUB_OUTPUT"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add a-voir.html b-room.html c-photos.html men.html
+          git add a-voir.html b-room.html c-photos.html men.html makeup-course.html
           git commit -m "自動同步服務頁價目（Google Sheets 產品主檔）"
           git push
 
@@ -56,7 +56,7 @@ jobs:
           done
           echo "::warning::15 分鐘內線上版仍未更新，略過 IndexNow：$pending"
 
-      # 照名稱挑的頁面（men.html）少了品項時，前面照常提交其他頁，最後在這裡讓流程變紅
+      # 照名稱挑的頁面（men.html、makeup-course.html）少了品項時，前面照常提交其他頁，最後在這裡讓流程變紅
       - name: 檢查有沒有缺品項
         if: always()
         run: |
