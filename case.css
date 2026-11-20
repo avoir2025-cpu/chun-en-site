@@ -133,3 +133,8 @@ body.case-page{background:#F6F3ED;color:#241D16}
  .cs .sec-head::after{display:none}
 }
 @media (max-width:560px){.cs .usage{grid-template-columns:1fr}}
+
+/* 影片 */
+.cs .vid{margin:0 auto 3rem;max-inline-size:900px}
+.cs .vid video{display:block;inline-size:100%;block-size:auto;aspect-ratio:16/9;background:#14100B}
+.cs .vid figcaption{margin-top:.8rem;font-size:.82rem;letter-spacing:.06em;color:var(--sub)}
