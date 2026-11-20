@@ -138,3 +138,43 @@ body.case-page{background:#F6F3ED;color:#241D16}
 .cs .vid{margin:0 auto 3rem;max-inline-size:900px}
 .cs .vid video{display:block;inline-size:100%;block-size:auto;aspect-ratio:16/9;background:#14100B}
 .cs .vid figcaption{margin-top:.8rem;font-size:.82rem;letter-spacing:.06em;color:var(--sub)}
+
+/* v14：價值標籤、案例資料、引文、表格、下一步 */
+.cs .vlabel{display:inline-block;margin:0 0 1rem;padding:.3rem .8rem;border:1px solid var(--gold);font-family:var(--serif-en);font-size:.78rem;letter-spacing:.2em;color:var(--gold)}
+.cs .narrow-in{max-inline-size:660px;margin-inline:auto}
+.cs .wrap>.narrow-in:first-child .sec-head{margin-block-end:2rem}
+.cs .wrap>.narrow-in.prose{margin-block-end:clamp(2.5rem,6vw,4.5rem)}
+.cs .wrap>.narrow-in.prose:last-child{margin-block:0}
+.cs .facts{inline-size:100%;border-collapse:collapse;margin-block-start:2.2rem;font-size:.93rem;line-height:1.8}
+.cs .facts caption{caption-side:top;text-align:start;font-family:var(--serif-en);font-size:.78rem;letter-spacing:.24em;color:var(--gold);padding-block-end:.8rem}
+.cs .facts th,.cs .facts td{padding:.75rem 0;border-bottom:1px solid var(--line);vertical-align:top;text-align:start}
+.cs .facts th{inline-size:7.5em;font-weight:400;color:var(--sub);padding-inline-end:1rem;white-space:nowrap}
+.cs .facts td{color:var(--txt)}
+.cs .kp li strong{font-weight:500;color:var(--gold)}
+.cs blockquote.pq{margin:1.6rem 0 0;padding:1.4rem 1.6rem;background:var(--band);border:0;border-inline-start:2px solid var(--gold);font-family:var(--serif-tc);font-weight:300;font-size:1.02rem;line-height:2;color:var(--txt)}
+.cs blockquote.pq cite{display:block;margin-top:.8rem;font-style:normal;font-size:.8rem;letter-spacing:.1em;color:var(--sub)}
+.cs .tbl{overflow-x:auto;margin-block:.4rem 1.8rem}
+.cs .tbl table{inline-size:100%;border-collapse:collapse;font-size:.95rem;line-height:1.85}
+.cs .tbl th,.cs .tbl td{padding:.85rem .6rem .85rem 0;border-bottom:1px solid var(--line);text-align:start;vertical-align:top}
+.cs .tbl thead th{font-weight:400;font-size:.8rem;letter-spacing:.12em;color:var(--gold);border-bottom-color:var(--gold)}
+.cs .tbl tbody th{font-weight:500;color:var(--txt);white-space:nowrap;padding-inline-end:1.2rem}
+.cs .tbl td{color:var(--sub)}
+.cs .pfig{margin:1.4rem 0 1.8rem}
+.cs .pfig figcaption{margin-top:.7rem;font-size:.82rem;color:var(--sub)}
+.cs .rv-lead{margin:0 auto 1.6rem;font-family:var(--serif-tc);font-size:.95rem;letter-spacing:.12em;color:var(--sub)}
+.cs .cta-sec{background:#EFE9DE}
+.cs .cta-sec .sec-head{margin-block-end:1.2rem}
+.cs .cta-lead{max-inline-size:44em;line-height:2;color:#2E261D;margin:0 0 2.4rem}
+.cs .cta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1.2rem}
+.cs .cta-card{display:flex;flex-direction:column;gap:.8rem;padding:2rem 1.8rem;background:var(--paper);border:1px solid var(--line);text-decoration:none;transition:border-color .3s,transform .3s}
+.cs .cta-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.cs .cta-card .ct{margin:0;font-family:var(--serif-tc);font-size:1.25rem;color:var(--txt)}
+.cs .cta-card p{margin:0;font-size:.95rem;line-height:1.95;color:var(--sub)}
+.cs .cta-card .go{margin-top:auto;padding-top:.6rem;font-size:.88rem;letter-spacing:.08em;color:var(--gold)}
+.cs .cta-note{margin:1.6rem 0 0;font-size:.88rem;line-height:1.9;color:var(--sub)}
+.cs .cta-line{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.6rem;margin-top:2rem;padding-top:1.6rem;border-top:1px solid var(--line)}
+.cs .cta-line p{margin:0;flex:1 1 22rem;line-height:1.9;color:#2E261D}
+.cs .line-btn{display:inline-block;padding:.85rem 1.8rem;background:#241D16;color:#F6F3ED;text-decoration:none;font-size:.9rem;letter-spacing:.12em}
+.cs .line-btn:hover{background:#9A7A45}
+.cs .prose p.vlabel{font-family:var(--serif-en);font-weight:400;font-size:.78rem;line-height:1.4;letter-spacing:.2em;color:var(--gold);margin:0 0 1rem}
+.cs .cta-line p{letter-spacing:.02em;font-size:.95rem}
