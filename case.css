@@ -1,0 +1,134 @@
+/* 案例頁（明亮電影感）2026-11-20 — journal/*-case.html 共用 */
+[hidden]{display:none!important}
+body.case-page{background:#F6F3ED;color:#241D16}
+.case-page .footer{background:#14100B;margin-top:0!important}
+.cs{--txt:#241D16;--sub:#6B6155;--gold:#9A7A45;--line:rgba(36,29,22,.14);--paper:#F6F3ED;--band:#ECE6DB}
+.cs *{box-sizing:border-box}
+.cs img{display:block;inline-size:100%;block-size:auto}
+.cs picture{display:block}
+.cs a{color:inherit}
+.cs .wrap{inline-size:min(100% - 2.5rem,1200px);margin-inline:auto;padding:0}
+.cs .narrow{inline-size:min(100% - 2.5rem,660px);margin-inline:auto}
+.cs section{padding-block:clamp(4.5rem,10vw,8rem)}
+.cs section.tight{padding-block-start:0}
+.cs .eyebrow{font-family:var(--serif-en);letter-spacing:.32em;font-size:.78rem;color:var(--gold);text-transform:uppercase;margin:0}
+
+/* hero：overlay＝照片滿版、左側淡出；split＝左文右圖 */
+.cs .xhero{position:relative;isolation:isolate}
+.cs .xhero h1{font-family:var(--serif-tc);font-weight:200;font-size:clamp(2.1rem,4.2vw,3.8rem);line-height:1.4;margin:1.2rem 0 1.6rem;color:var(--txt)}
+.cs .xhero h1 em{font-style:normal;color:var(--gold)}
+.cs .who{font-size:.95rem;letter-spacing:.1em;color:var(--sub);border-inline-start:1px solid var(--gold);padding-inline-start:1rem;margin:0}
+.cs .hero-eyebrow{font-family:var(--serif-en);letter-spacing:.32em;font-size:.78rem;color:var(--gold);text-transform:none;margin:0}
+.cs .xhero .hq{font-family:var(--serif-tc);font-weight:200;font-size:clamp(2.1rem,4.2vw,3.8rem);line-height:1.4;margin:1.2rem 0 1.4rem;color:var(--txt)}
+.cs .xhero .hq em{font-style:normal;color:var(--gold);white-space:nowrap}
+.cs .xhero h1.h1-sm{font-weight:400;font-size:clamp(1rem,1.3vw,1.15rem);letter-spacing:.08em;line-height:1.8;color:var(--sub);margin:0;border-inline-start:1px solid var(--gold);padding-inline-start:1rem}
+.cs .xhero .jcard-media{aspect-ratio:auto;overflow:visible;margin:0;inline-size:auto}
+.cs .xhero .jcard-media picture,.cs .xhero .jcard-media img{block-size:100%}
+.cs .xhero.overlay{min-block-size:min(100svh,920px);display:grid;align-items:end}
+.cs .xhero.overlay .jcard-media{position:absolute;inset:0;z-index:-2}
+.cs .xhero.overlay img{block-size:100%;object-fit:cover;object-position:var(--pos,70% 18%)}
+.cs .xhero.overlay::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#F6F3ED 0%,rgba(246,243,237,.88) 34%,rgba(246,243,237,.15) 68%,rgba(246,243,237,0) 100%),linear-gradient(0deg,#F6F3ED 0%,rgba(246,243,237,0) 30%)}
+.cs .xhero.overlay .xhero-txt{inline-size:min(100% - 2.5rem,1200px);margin-inline:auto;padding-block:0 clamp(4rem,10vh,7rem)}
+.cs .xhero.overlay .xhero-txt>*{max-inline-size:34rem}
+.cs .xhero.split{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);min-block-size:min(100svh,900px);padding-block-start:var(--nav-h)}
+.cs .xhero.split .xhero-txt{display:flex;flex-direction:column;justify-content:center;padding-block:clamp(2.5rem,5vw,5rem);padding-inline:clamp(2rem,4vw,4.5rem) max(1.25rem,calc((100% - 1200px)/2))}
+.cs .xhero.split .jcard-media{min-block-size:100%}
+.cs .xhero.split img{block-size:100%;object-fit:cover;object-position:var(--pos,50% 25%)}
+
+/* 本文重點 */
+.cs .kp{border-block:1px solid var(--line);padding-block:1.6rem;margin-block-start:clamp(2rem,5vw,3.5rem)}
+.cs .kp ul{margin:.9rem 0 0;padding:0;list-style:none;display:grid;gap:.7rem}
+.cs .kp li{position:relative;padding-inline-start:1.3rem;font-size:.95rem;line-height:1.9;color:var(--txt)}
+.cs .kp li::before{content:"";position:absolute;inset-inline-start:0;inset-block-start:.85em;inline-size:.5rem;block-size:1px;background:var(--gold)}
+
+.cs .intro p,.cs .prose p{font-family:var(--serif-tc);font-weight:300;font-size:clamp(1.05rem,1.4vw,1.15rem);line-height:2.15;margin:0 0 1.4em;color:#2E261D}
+.cs .prose strong{font-weight:500;color:var(--txt)}
+.cs .prose a,.cs .tips-end a{color:var(--gold)}
+.cs .sec-head{display:flex;align-items:baseline;gap:1.4rem;margin-block-end:clamp(2.2rem,5vw,4rem)}
+.cs .sec-head span{font-family:var(--serif-en);font-style:italic;color:var(--gold);font-size:1.1rem;white-space:nowrap}
+.cs .sec-head::after{content:"";flex:1;block-size:1px;background:var(--line)}
+.cs h2{font-family:var(--serif-tc);font-weight:300;font-size:clamp(1.6rem,2.7vw,2.4rem);margin:0;line-height:1.4;color:var(--txt)}
+.cs .narrow .sec-head{margin-block-end:2rem}
+
+/* 造型列：大圖左右交錯 */
+.cs .row{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(2rem,6vw,6rem);align-items:center;margin-block-end:clamp(3.5rem,8vw,6.5rem)}
+.cs .row.flip{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+.cs .row.flip figure{order:2}
+.cs .row figure{margin:0}
+.cs .row figcaption{margin-top:.8rem;font-size:.82rem;color:var(--sub);letter-spacing:.04em}
+.cs .row .no{font-family:var(--serif-en);font-size:clamp(4rem,9vw,7.5rem);line-height:.9;color:transparent;-webkit-text-stroke:1px var(--gold);margin:0}
+.cs .row h3{font-family:var(--serif-tc);font-weight:300;font-size:clamp(1.5rem,2.4vw,2rem);margin:1.2rem 0 1rem;color:var(--txt)}
+.cs .row p.d{font-size:1rem;line-height:2.05;color:var(--sub);margin:0;max-inline-size:26em}
+.cs .closing{font-family:var(--serif-tc);font-weight:300;font-size:clamp(1.15rem,1.8vw,1.45rem);line-height:1.9;text-align:center;max-inline-size:28em;margin:0 auto;color:var(--gold)}
+
+/* 用在哪裡 */
+.cs .usage{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.2rem,3vw,2.5rem);margin-block-end:3.5rem}
+.cs .use picture{aspect-ratio:3/4;overflow:clip}
+.cs .use img{block-size:100%;object-fit:cover;object-position:50% 18%}
+.cs .use .xtag{display:block;margin:1.3rem 0 .6rem;font-size:.78rem;letter-spacing:.22em;color:var(--gold);text-decoration:none}
+.cs .use p{margin:0;line-height:2;color:var(--sub);font-size:.97rem}
+
+/* 評論 */
+.cs .review{text-align:center;background:var(--band)}
+.cs .review blockquote{margin:0 auto;max-inline-size:38em;font-family:var(--serif-tc);font-weight:200;font-size:clamp(1.15rem,1.8vw,1.5rem);line-height:2.1;color:var(--txt);border:0;padding:0}
+.cs .review b{font-weight:400;color:var(--gold)}
+.cs .review cite{display:block;margin-top:2.4rem;font-style:normal;font-size:.8rem;letter-spacing:.14em;color:var(--sub)}
+
+/* 拍之前先想 */
+.cs .tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.cs .tip{background:var(--paper);padding:2rem 1.6rem}
+.cs .tip .tn{font-family:var(--serif-en);color:var(--gold);font-size:1.6rem}
+.cs .tip h3{font-family:var(--serif-tc);font-weight:400;font-size:1.12rem;margin:.8rem 0;color:var(--txt)}
+.cs .tip p{margin:0;font-size:.94rem;line-height:1.95;color:var(--sub)}
+.cs .tips-end{margin-top:2.4rem;line-height:2;color:#2E261D;max-inline-size:46em}
+
+/* FAQ */
+.cs .xfaq details{border-bottom:1px solid var(--line);padding-block:1.4rem}
+.cs .xfaq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-family:var(--serif-tc);font-size:1.08rem;color:var(--txt)}
+.cs .xfaq summary::-webkit-details-marker{display:none}
+.cs .xfaq details p{margin:1rem 0 0;line-height:2;color:var(--sub)}
+.cs .pm{position:relative;inline-size:.8rem;block-size:.8rem;flex:none}
+.cs .pm::before,.cs .pm::after{content:"";position:absolute;inset-block-start:50%;inset-inline-start:0;inline-size:100%;block-size:1px;background:currentColor;transition:transform .3s}
+.cs .pm::after{transform:rotate(90deg)}
+.cs details[open] .pm::after{transform:rotate(0)}
+
+/* 作者、相關閱讀（沿用全站 .author-card／.related，只換亮色） */
+.cs .author-card{margin-top:0;padding-block:2rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cs .author-card img{filter:none}
+.cs .author-card .ac-name{color:var(--txt)}
+.cs .author-card .ac-name em,.cs .author-card .ac-role{color:var(--gold)}
+.cs .author-card .ac-bio{color:var(--sub)}
+.cs .related{border-top:0;padding-top:0;margin-top:3rem}
+.cs .related-t{color:var(--gold)}
+.cs .related a{color:var(--txt);border-bottom:1px solid var(--line);padding-block:1rem}
+.cs .related a:hover{color:var(--gold)}
+.cs .cs-author{display:grid;grid-template-columns:4.5rem 1fr;gap:1.2rem;align-items:start;padding-block:2rem;border-block:1px solid var(--line)}
+.cs .cs-author img{inline-size:4.5rem;block-size:4.5rem;border-radius:50%;object-fit:cover}
+.cs .cs-author .n{margin:0;font-family:var(--serif-tc);font-size:1.05rem;color:var(--txt)}
+.cs .cs-author .n a{text-decoration:none}
+.cs .cs-author .n em{font-family:var(--serif-en);font-style:italic;color:var(--gold);margin-inline-start:.5rem}
+.cs .cs-author .r{margin:.2rem 0 .6rem;font-size:.8rem;letter-spacing:.08em;color:var(--gold)}
+.cs .cs-author .b{margin:0;font-size:.9rem;line-height:1.9;color:var(--sub)}
+.cs .rel{margin-block-start:3rem}
+.cs .rel a{display:flex;justify-content:space-between;gap:1rem;padding-block:1.1rem;border-bottom:1px solid var(--line);text-decoration:none;font-family:var(--serif-tc);color:var(--txt)}
+.cs .rel .arr{color:var(--gold);transition:transform .3s}
+.cs .rel a:hover .arr{transform:translateX(4px)}
+.cs .back{margin-top:2.5rem;font-size:.85rem;letter-spacing:.1em}
+.cs .back a{color:var(--sub);text-decoration:none}
+
+@media (max-width:820px){
+ .cs .xhero.overlay{min-block-size:0;display:block}
+ .cs .xhero.overlay .jcard-media{position:relative;inset:auto;aspect-ratio:4/5}
+ .cs .xhero.overlay img{object-position:var(--pos-m,50% 18%)}
+ .cs .xhero.overlay::before{background:linear-gradient(0deg,#F6F3ED 0%,rgba(246,243,237,0) 40%);inset-block-end:auto;block-size:calc(100vw * 1.25)}
+ .cs .xhero.overlay .xhero-txt{padding-block:0 3rem;margin-top:-4rem;position:relative}
+ .cs .xhero.split{grid-template-columns:1fr;min-block-size:0}
+ .cs .xhero.split .jcard-media{order:-1;aspect-ratio:4/5;min-block-size:0}
+ .cs .xhero.split img{object-position:var(--pos-m,50% 20%)}
+ .cs .xhero.split .xhero-txt{padding:2.4rem 1.25rem 1rem}
+ .cs .row,.cs .row.flip{grid-template-columns:1fr;gap:1.4rem}
+ .cs .row.flip figure{order:0}
+ .cs .sec-head{flex-direction:column;align-items:flex-start;gap:.5rem}
+ .cs .sec-head::after{display:none}
+}
+@media (max-width:560px){.cs .usage{grid-template-columns:1fr}}
