@@ -94,7 +94,8 @@ body.case-page{background:#F6F3ED;color:#241D16}
 
 /* 作者、相關閱讀（沿用全站 .author-card／.related，只換亮色） */
 .cs .author-card{margin-top:0;padding-block:2rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.cs .author-card img{filter:none}
+.cs .author-card picture{flex:none;inline-size:68px}
+.cs .author-card img{filter:none;inline-size:68px;block-size:68px;border-radius:50%;object-fit:cover;object-position:center 25%}
 .cs .author-card .ac-name{color:var(--txt)}
 .cs .author-card .ac-name em,.cs .author-card .ac-role{color:var(--gold)}
 .cs .author-card .ac-bio{color:var(--sub)}
