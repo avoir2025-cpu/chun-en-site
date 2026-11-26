@@ -1541,6 +1541,9 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
 /* 觀點清單：項目間留空、字重與內文一致 2026-07-21 */
 .article-body ul li { font-weight: 400; color: #CFC5B6; font-size: 1.05rem; line-height: 2.15; letter-spacing: 0.02em; }
 .article-body ul li + li { margin-top: 0.7em; }
+/* 11/26：全站 * reset 把 ul 的 padding 歸零，項目符號掛到內文欄外（手機只離螢幕邊 5px），
+   清單後的段落也直接貼著最後一項。收回欄內、和段落一樣留下方間距 */
+.article-body > ul { padding-left: 1.3em; margin-bottom: 1.6rem; }
 
 /* 手機版示意圖：SVG 縮太小，改為左右滑動卡片 2026-07-21 */
 .diagram-cards, .dc-lead, .dc-takeaway { display: none; }
