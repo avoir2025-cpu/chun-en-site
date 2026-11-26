@@ -178,3 +178,41 @@ body.case-page{background:#F6F3ED;color:#241D16}
 .cs .line-btn:hover{background:#9A7A45}
 .cs .prose p.vlabel{font-family:var(--serif-en);font-weight:400;font-size:.78rem;line-height:1.4;letter-spacing:.2em;color:var(--gold);margin:0 0 1rem}
 .cs .cta-line p{letter-spacing:.02em;font-size:.95rem}
+
+/* 頁首 D「雜誌封面」2026-11-26：刊頭細線＋大字標題＋直排署名＋造型目次＋製作名單；字與人不重疊、照片不蓋漸層 */
+.cs .pd{background:var(--paper);padding:calc(var(--nav-h) + 1.8rem) clamp(1.5rem,4vw,4rem) 1.6rem;block-size:min(100svh,1000px);display:flex;flex-direction:column}
+.cs .mz-meta{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;font-family:var(--serif-en);font-size:.74rem;letter-spacing:.3em;text-transform:uppercase;color:var(--sub);border-block-end:1px solid var(--txt);padding-block-end:.7rem;margin:0;font-variant-numeric:lining-nums}
+.cs .mz-meta .hero-eyebrow{font-size:inherit;letter-spacing:inherit;color:var(--gold)}
+.cs .pd-body{flex:1;min-block-size:0;display:grid;grid-template-columns:2rem minmax(0,1.3fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);gap:0 clamp(1.5rem,3vw,3rem);padding-block:2.2rem 1.6rem}
+.cs .pd-vert{writing-mode:vertical-rl;font-family:var(--serif-tc);font-size:.84rem;letter-spacing:.55em;color:var(--sub);margin:0;align-self:start;border-left:1px solid var(--gold);padding-left:.7rem}
+.cs .pd-type{display:flex;flex-direction:column;justify-content:space-between;min-block-size:0}
+.cs .pd-title{font-family:var(--serif-tc);font-weight:200;color:var(--txt);margin:0;letter-spacing:.02em;font-size:clamp(2.8rem,5.6vw,5.8rem);line-height:1.2}
+.cs .pd-title em{font-style:normal;color:var(--gold)}
+.cs .pd-title .hang{margin-inline-start:-.55em}
+.cs .pd-cite{font-size:.78rem;letter-spacing:.14em;color:var(--sub);margin:1rem 0 0}
+.cs .pd-low{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:end;border-block-start:1px solid var(--line);padding-block-start:1.2rem}
+.cs .pd-sub{font-family:var(--serif-tc);font-weight:400;font-size:.92rem;letter-spacing:.12em;line-height:1.9;color:var(--sub);margin:0}
+.cs .pd-lbl{font-family:var(--serif-en);font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin:0 0 .7rem}
+.cs .pd-lines{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
+.cs .pd-lines li{display:flex;gap:1rem;align-items:baseline;font-family:var(--serif-tc);font-size:.95rem;letter-spacing:.08em;color:var(--txt)}
+.cs .pd-lines li span{font-family:var(--serif-en);color:var(--gold);font-size:.85rem;min-inline-size:1.4rem;font-variant-numeric:lining-nums}
+.cs .pd-fig{margin:0;position:relative;min-block-size:0}
+.cs .pd .jcard-media{aspect-ratio:auto;overflow:hidden;margin:0;block-size:100%}
+.cs .pd .jcard-media picture,.cs .pd .jcard-media img{block-size:100%}
+.cs .pd .jcard-media img{object-fit:cover;object-position:var(--pos,50% 16%)}
+.cs .pd-no{position:absolute;inset-inline-start:-.08em;inset-block-end:-.18em;font-family:var(--serif-en);font-size:clamp(5rem,9vw,9rem);line-height:1;color:transparent;-webkit-text-stroke:1px var(--gold);transform:translateX(-55%);font-variant-numeric:lining-nums}
+.cs .pd-credit{display:flex;flex-wrap:wrap;gap:.3rem 2.2rem;font-size:.74rem;letter-spacing:.16em;color:var(--sub);margin:0;border-block-start:1px solid var(--line);padding-block-start:.9rem}
+.cs .pd-credit b{font-family:var(--serif-en);font-weight:400;text-transform:uppercase;letter-spacing:.24em;color:var(--gold);margin-inline-end:.7rem;font-size:.7rem}
+@media (max-width:820px){
+ .cs .pd{block-size:auto;padding:calc(var(--nav-h) + 1.2rem) 1.25rem 1.4rem}
+ .cs .mz-meta{font-size:.62rem;letter-spacing:.18em}
+ .cs .mz-meta>span:nth-child(2){display:none}
+ .cs .pd-body{grid-template-columns:1fr;grid-template-rows:auto;padding-block:1.4rem 1.2rem;gap:1.4rem}
+ .cs .pd-vert{writing-mode:horizontal-tb;letter-spacing:.3em;border-left:0;padding:0;font-size:.8rem}
+ .cs .pd-fig{order:-1;margin-inline:-1.25rem}
+ .cs .pd .jcard-media{aspect-ratio:4/5;block-size:auto}
+ .cs .pd .jcard-media img{object-position:var(--pos-m,50% 16%)}
+ .cs .pd-no{transform:none;inset-inline-start:1rem;font-size:5rem}
+ .cs .pd-title{font-size:2.3rem}
+ .cs .pd-low{grid-template-columns:1fr;gap:1.2rem;margin-top:1.6rem}
+}
