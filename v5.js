@@ -237,3 +237,108 @@
     for (var i = 0; i < as.length; i++) as[i].setAttribute('href', to);
   })();
 })();
+
+
+/* ============================================================
+   LINE 入口修正包（G1a 原型，2026-10-23 原型，2026-11-17 重接到現行版本）
+   上線時建議整段附加到 v5.js 尾端（或另存 line-entry.js 全站載入），並 bump 全站 ?v=
+   1. Cookie 橫幅顯示期間，在 <body> 加 consent-open 與 --consent-h，讓右下 LINE 鈕讓位
+   2. 桌機（滑鼠操作、寬度 ≥ 900px）點任何 lin.ee 連結：站內開行動條碼面板
+      手機與平板照舊直接開 LINE
+   不改原本的 click_line 事件（v5.js 的委派照常觸發），另外多送一個 line_qr_view
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ---------- 1. 橫幅讓位 ---------- */
+  var root = document.documentElement;
+  function syncConsent() {
+    var bar = document.querySelector('.consent-bar');
+    var open = !!(bar && bar.classList.contains('show'));
+    document.body.classList.toggle('consent-open', open);
+    if (open) root.style.setProperty('--consent-h', bar.offsetHeight + 'px');
+  }
+  var barObserver = null;
+  function watchBar() {
+    var bar = document.querySelector('.consent-bar');
+    if (bar && !barObserver) {
+      barObserver = new MutationObserver(syncConsent);
+      barObserver.observe(bar, { attributes: true, attributeFilter: ['class'] });
+    }
+    if (!bar && barObserver) { barObserver.disconnect(); barObserver = null; }
+    syncConsent();
+  }
+  new MutationObserver(watchBar).observe(document.body, { childList: true });
+  window.addEventListener('resize', syncConsent, { passive: true });
+  watchBar();
+
+  /* ---------- 2. 桌機行動條碼面板 ---------- */
+  // 追蹤連結 → 行動條碼檔（與 LINE 後台的渠道一一對應，掃碼加入仍記在同一條渠道）
+  var QR = {
+    '7DXWsNcz': { key: 'main' },
+    'XsKBFdi': { key: 'broom', perk: true },
+    'wINWAGj': { key: 'journal' },
+    '8ZpeJyG': { key: 'portfolio' },
+    'nRBmVEh': { key: 'event', file: '/assets/images/line-qr-event-makeup-360.png' },
+    '8sU9fkj': { key: 'men' },
+    'oOnyIec6': { key: 'ai' },     // 從 AI 進站時 v5.js 會換成這條
+    'QR9L9f4': { key: 'search' }   // 從搜尋進站時 v5.js 會換成這條
+  };
+  function qrSrc(id) {
+    var o = window.LINE_QR_OVERRIDE; // 原型用：本機預覽時以 data URI 取代
+    if (o && o[id]) return o[id];
+    var m = QR[id];
+    return m.file || ('/assets/images/line-qr-' + m.key + '-360.png');
+  }
+  function isDesktop() {
+    return window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth >= 900;
+  }
+
+  var panel = null, lastFocus = null;
+  function build() {
+    panel = document.createElement('div');
+    panel.className = 'line-panel';
+    panel.hidden = true;
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-labelledby', 'line-panel-title');
+    panel.innerHTML =
+      '<div class="line-panel__box">' +
+        '<button class="line-panel__close" type="button" aria-label="關閉">×</button>' +
+        '<p class="line-panel__eyebrow">LINE</p>' +
+        '<h2 class="line-panel__title" id="line-panel-title">用手機加入 LINE</h2>' +
+        '<img class="line-panel__qr" alt="CHUN.EN LINE 官方帳號行動條碼" width="196" height="196" />' +
+        '<p class="line-panel__text">用手機 LINE 掃描行動條碼加入好友，再點選想了解的服務，我們會接著說明與安排。</p>' +
+        '<p class="line-panel__perk" hidden>加入好友可領取 B.room 妝髮抵用券 NT$500，到店日常、商務、活動妝髮適用。</p>' +
+        '<p class="line-panel__alt">企業合作或正式洽談，可以<a href="/apply.html">填寫企業合作需求</a><br>或來信 <a href="mailto:contact@chunen.tw">contact@chunen.tw</a></p>' +
+      '</div>';
+    document.body.appendChild(panel);
+    panel.addEventListener('click', function (e) { if (e.target === panel) close(); });
+    panel.querySelector('.line-panel__close').addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && panel && !panel.hidden) close(); });
+  }
+  function open(id, trigger) {
+    if (!panel) build();
+    lastFocus = trigger || document.activeElement;
+    panel.querySelector('.line-panel__qr').src = qrSrc(id);
+    panel.querySelector('.line-panel__perk').hidden = !QR[id].perk;
+    panel.hidden = false;
+    requestAnimationFrame(function () { panel.classList.add('show'); });
+    panel.querySelector('.line-panel__close').focus();
+    if (typeof window.gtag === 'function') window.gtag('event', 'line_qr_view', { link_location: location.pathname, channel: QR[id].key });
+  }
+  function close() {
+    panel.classList.remove('show');
+    setTimeout(function () { panel.hidden = true; }, 300);
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href*="lin.ee/"]') : null;
+    if (!a || !isDesktop()) return;
+    var m = (a.getAttribute('href') || '').match(/lin\.ee\/([A-Za-z0-9]+)/);
+    if (!m || !QR[m[1]]) return; // 沒有對應行動條碼的連結（例如廣告渠道）照舊開新分頁
+    e.preventDefault();
+    open(m[1], a);
+  });
+})();

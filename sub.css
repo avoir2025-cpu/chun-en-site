@@ -1800,3 +1800,128 @@ h1 em, h2 em, h3 em, .big em, .sec-h2 em, .final h2 em { white-space: nowrap; }
   .men-split-media { max-width: 340px; }
 }
 @media (max-width: 640px) { .men-case { flex-basis: 100%; } }
+
+
+/* ============================================================
+   LINE 入口修正包（G1a 原型，2026-10-23 原型，2026-11-17 重接到現行版本）
+   上線時建議整段附加到 sub.css 尾端，並 bump 全站 ?v=
+   1. Cookie 橫幅顯示期間，右下 LINE 鈕往上讓位（原本被橫幅蓋住）
+   2. 手機版橫幅改成較矮的版型（實測 142px → 121px）
+   3. 桌機點 LINE：站內開行動條碼面板，不再開新分頁到 LINE 的掃碼頁
+   ============================================================ */
+
+/* ---- 1. 橫幅顯示時，浮動鈕讓位 ---- */
+.float-line {
+  transition: bottom 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+}
+body.consent-open .float-line {
+  bottom: calc(var(--consent-h, 150px) + 14px);
+}
+
+/* ---- 2. 手機版橫幅變矮：文字與按鈕同一列，按鈕縮小 ---- */
+@media (max-width: 640px) {
+  .consent-bar {
+    gap: 0.7rem 0.9rem;
+    padding: 0.85rem 1rem max(env(safe-area-inset-bottom), 0.85rem);
+    justify-content: space-between;
+  }
+  .consent-text {
+    flex: 1 1 100%;
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+  .consent-actions { flex: 1 1 100%; gap: 0.6rem; }
+  .consent-btn {
+    flex: 1 1 0;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* ---- 3. 桌機 LINE 行動條碼面板 ---- */
+.line-panel[hidden] { display: none !important; }
+.line-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 9800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(10, 8, 5, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.line-panel.show { opacity: 1; }
+.line-panel__box {
+  position: relative;
+  width: min(440px, 100%);
+  background: var(--ink-soft, #241D14);
+  border: 1px solid rgba(201, 169, 110, 0.35);
+  padding: 2.4rem 2.2rem 2rem;
+  text-align: center;
+  color: var(--paper, #F5F1E8);
+  transform: translateY(12px);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.line-panel.show .line-panel__box { transform: none; }
+.line-panel__eyebrow {
+  font-family: var(--serif-en, serif);
+  font-size: 0.78rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--gold-light, #C9A96E);
+}
+.line-panel__title {
+  margin-top: 0.8rem;
+  font-family: var(--serif-tc, serif);
+  font-weight: 400;
+  font-size: 1.35rem;
+  letter-spacing: 0.06em;
+}
+.line-panel__qr {
+  display: block;
+  width: 196px;
+  height: 196px;
+  margin: 1.6rem auto 1.3rem;
+  padding: 10px;
+  background: #fff;
+}
+.line-panel__text {
+  text-wrap: pretty;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--paper-dim, #CFC5B4);
+}
+.line-panel__perk {
+  margin-top: 1rem;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--gold-light, #C9A96E);
+}
+.line-panel__alt {
+  margin-top: 1.4rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--hairline, rgba(245, 241, 232, 0.14));
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--paper-dim, #CFC5B4);
+}
+.line-panel__alt a { color: var(--gold-light, #C9A96E); border-bottom: 1px solid rgba(201, 169, 110, 0.4); }
+.line-panel__close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.7rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 0;
+  background: transparent;
+  color: var(--paper-dim, #CFC5B4);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.line-panel__close:hover,
+.line-panel__close:focus-visible { color: var(--paper, #F5F1E8); }
